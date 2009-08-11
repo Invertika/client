@@ -2,7 +2,7 @@ CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
-!define SRCDIR "..\..\..\#Installer\tmw\"
+!define SRCDIR "..\..\..\..\#Installer\tmw\"
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Invertika"
