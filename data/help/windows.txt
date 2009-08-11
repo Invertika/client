@@ -1,0 +1,12 @@
+ <- @@index|Zurück zum Index@@
+ 
+ 
+##3                            === FENSTER ===
+ 
+##2SHORTCUT:
+	Um ein Item zur Shortcutleiste hinzuzufügen muss man auf das Item im Inventory Fenster klicken
+	und anschließend auf eine der Boxen im Shortcutfenster. Um die ein Shortcut zu entfernen muss man
+	es einfach aus dem Shortcutfenster ziehen.
+	
+	Zur Zeit kann das ganze nur mit stapelbaren Items (z.B. Essen) gemacht werden, also nicht
+	mit Waffen etc.

@@ -1,0 +1,16 @@
+ <- @@index|Zurueck zum Index@@
+ 
+ 
+##3                             === SKILLS ===
+ 
+  Du kannst deine Skills verbessern indem du dein Job Level erhoehst.
+  Fuer jedes Job Level erhaelst du einen Punkt den du fuer die Grundskills
+  ausgeben kannst.
+
+##4 Grundskills: 
+ 
+     ##2Level 1:##P ermoeglicht den Handel mit andern
+     ##2Level 2:##P ermoeglicht es Emotionen auszudruecken
+     ##2Level 3:##P ermoeglicht es zu Sitzen
+     Die anderen Level sind noch nicht implementiert.
+ 
