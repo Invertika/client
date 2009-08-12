@@ -6,19 +6,23 @@
 seeseekey <seeseekey invertika.org>
 
 ##2 Entwicklung von Inhalten:
-
-seeseekey <seeseekey invertika.org>
-Delegan <delegan invertika.org>
+seeseekey <seeseekey googlemail.com>
+Delegan <delegan jerilynn.net>
 subnet_zero <zinkoxid googlemail.com>
+
+##2 Scripting
+seeseekey <seeseekey googlemail.com>
 
 ##2 Musik und SFX Entwicklung:
 DJh2o2 <djh2o2 web.de>
 Nikola Whallon "saturn" <6.saturn.6 gmail.com>
 
 ##2 Übersetzungen:
-
-seeseekey <seeseekey invertika.org>
+seeseekey <seeseekey googlemail.com>
 MasterSam <mustersam web.de>
+
+== Andere Beiträge ==
+-
 
 ##3                        === DEVELOPMENT TEAM ===
  
