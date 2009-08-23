@@ -3,7 +3,7 @@
  <option name="appName" value="Invertika - Beyond the fantasy"/>
  <option name="appShort" value="ivk"/>
  <option name="appIcon" value="icons/tmw.png"/>
- <option name="loginMusic" value="ivk_godness.ogg"/>
+ <option name="loginMusic" value="godness.ogg"/>
  <option name="defaultServer" value="server.invertika.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultUpdateHost" value="http://updates.invertika.org"/>
