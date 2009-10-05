@@ -6,7 +6,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Invertika"
-!define PRODUCT_VERSION "v742"
+!define PRODUCT_VERSION "v1001"
 !define PRODUCT_PUBLISHER "The Invertika Developer Team"
 !define PRODUCT_WEB_SITE "http://invertika.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\invertika.exe"
@@ -40,8 +40,6 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_LICENSE "${SRCDIR}\COPYING"
 ; Directory page
 !insertmacro MUI_PAGE_DIRECTORY
-; Components page
-!insertmacro MUI_PAGE_COMPONENTS
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
@@ -69,9 +67,9 @@ FunctionEnd
 !insertmacro MUI_UNPAGE_FINISH
 
 ;Languages
-!insertmacro MUI_LANGUAGE "German"  # first language is the default language
-!insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "English" # first language is the default language
 !insertmacro MUI_LANGUAGE "French"
+!insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Spanish"
 !insertmacro MUI_LANGUAGE "SimpChinese"
 !insertmacro MUI_LANGUAGE "TradChinese"
@@ -138,94 +136,21 @@ Function .onInit
   File /oname=$PLUGINSDIR\setup_finish.bmp "setup_finish.bmp"
 FunctionEnd
 
-Section "Anwendungsdaten (benötigt)" SecCore
+Section "Invertika (benötigt)" SecCore
   SectionIn RO
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   CreateDirectory "$SMPROGRAMS\Invertika"
   CreateShortCut "$SMPROGRAMS\Invertika\Invertika.lnk" "$INSTDIR\invertika.exe"
   CreateShortCut "$DESKTOP\Invertika.lnk" "$INSTDIR\invertika.exe"
-  CreateDirectory "$INSTDIR\data"
-  CreateDirectory "$INSTDIR\data\fonts"
-  CreateDirectory "$INSTDIR\data\graphics"
-  CreateDirectory "$INSTDIR\data\help"
-  CreateDirectory "$INSTDIR\data\icons"
-  CreateDirectory "$INSTDIR\data\maps"
-  CreateDirectory "$INSTDIR\data\sfx"
-  CreateDirectory "$INSTDIR\data\graphics\gui"
-  CreateDirectory "$INSTDIR\data\graphics\images"
-  CreateDirectory "$INSTDIR\data\graphics\images\ambient"
-  CreateDirectory "$INSTDIR\data\graphics\items"
-  CreateDirectory "$INSTDIR\data\graphics\minimaps"
-  CreateDirectory "$INSTDIR\data\graphics\particles"
-  CreateDirectory "$INSTDIR\data\graphics\sprites"
-  CreateDirectory "$INSTDIR\data\graphics\tiles"
 
-  SetOverwrite ifnewer
   SetOutPath "$INSTDIR"
-
-  File "${SRCDIR}\invertika.exe"
-  File "${SRCDIR}\*.dll"
-  File "${SRCDIR}\AUTHORS"
-  File "${SRCDIR}\AUTHORS-INVERTIKA"
-  File "${SRCDIR}\COPYING"
-  File "${SRCDIR}\The Mana World.url"
-  SetOutPath "$INSTDIR\data"
-  File "${SRCDIR}\data\branding.xml"
-  File "${SRCDIR}\data\effects.xml"
-  File "${SRCDIR}\data\emotes.xml"
-  File "${SRCDIR}\data\hair.xml"
-  File "${SRCDIR}\data\items.xml"
-  File "${SRCDIR}\data\monsters.xml"
-  File "${SRCDIR}\data\npcs.xml"
-  File "${SRCDIR}\data\skills.xml"
-  File "${SRCDIR}\data\status-effects.xml"
-  File "${SRCDIR}\data\units.xml"
-  SetOutPath "$INSTDIR\data\fonts"
-  File "${SRCDIR}\data\fonts\*.ttf"
-  SetOutPath "$INSTDIR\data\graphics\gui"
-  File "${SRCDIR}\data\graphics\gui\*.png"
-  File "${SRCDIR}\data\graphics\gui\*.xml"
-  SetOutPath "$INSTDIR\data\graphics\images"
-  File "${SRCDIR}\data\graphics\images\*.png"
-  SetOutPath "$INSTDIR\data\graphics\images\ambient"
-  File "${SRCDIR}\data\graphics\images\ambient\*.png"
-  SetOutPath "$INSTDIR\data\graphics\items"
-  File "${SRCDIR}\data\graphics\items\*.png"
-  SetOutPath "$INSTDIR\data\graphics\particles"
-  File "${SRCDIR}\data\graphics\particles\*.png"
-  File "${SRCDIR}\data\graphics\particles\*.xml"
-  SetOutPath "$INSTDIR\data\graphics\sprites"
-  File "${SRCDIR}\data\graphics\sprites\*.png"
-  File "${SRCDIR}\data\graphics\sprites\*.xml"
-  SetOutPath "$INSTDIR\data\graphics\tiles"
-  File "${SRCDIR}\data\graphics\tiles\*.png"
-  SetOutPath "$INSTDIR\data\help"
-  File "${SRCDIR}\data\help\*.txt"
-  SetOutPath "$INSTDIR\data\maps"
-  File "${SRCDIR}\data\maps\*.tmx"
-  SetOutPath "$INSTDIR\data\sfx"
-  File "${SRCDIR}\data\sfx\*.ogg"
-  SetOutPath "$INSTDIR\data\icons\"
-  File "${SRCDIR}\data\icons\tmw.ico"
-SectionEnd
-
-Section "Musik" SecMusic
-  CreateDirectory "$INSTDIR\data\music"
-  SetOutPath "$INSTDIR\data\music"
-  File /nonfatal "${SRCDIR}\data\music\*.ogg"
-SectionEnd
-
-Section "Übersetzungen" SecTrans
-  SetOutPath "$INSTDIR"
-  File /nonfatal /r "${SRCDIR}\translations"
+  File /r "${SRCDIR}\*.*"
 SectionEnd
 
 ;Package descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "Invertika Anwendungsdaten"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecMusic} "Hintergrundmusik"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecTrans} "Übersetzungen für 23 Sprachen"
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecCore} "Invertika"
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 Section -AdditionalIcons
@@ -261,9 +186,7 @@ Section Uninstall
 
   RMDir "$SMPROGRAMS\Invertika"
 
-  RMDir /r "$INSTDIR\data"
-  RMDir /r "$INSTDIR\updates"
-  RMDir "$INSTDIR"
+  RMDir /r "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   DeleteRegKey HKLM "${PRODUCT_DIR_REGKEY}"
