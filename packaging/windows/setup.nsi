@@ -6,7 +6,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Invertika"
-!define PRODUCT_VERSION "v1001"
+!define PRODUCT_VERSION "v1010"
 !define PRODUCT_PUBLISHER "The Invertika Developer Team"
 !define PRODUCT_WEB_SITE "http://invertika.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\invertika.exe"
@@ -19,9 +19,9 @@ SetCompressor /SOLID lzma
 ; MUI Settings
 !define MUI_ABORTWARNING
 ;!define MUI_ICON "${NSISDIR}\Contrib\Graphics\Icons\win-install.ico"
-!define MUI_ICON "${SRCDIR}\data\icons\tmw.ico"
+!define MUI_ICON "${SRCDIR}\data\icons\ivk.ico"
 ;!define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\win-uninstall.ico"
-!define MUI_UNICON "${SRCDIR}\data\icons\tmw.ico"
+!define MUI_UNICON "${SRCDIR}\data\icons\ivk.ico"
 
 ;Language Selection Dialog Settings
 ;Remember the installer language
