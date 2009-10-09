@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
- <option name="appName" value="Invertika - Beyond the fantasy"/>
+ <option name="appName" value="Invertika - Beyond the Fantasy"/>
  <option name="appShort" value="ivk"/>
  <option name="appIcon" value="icons/ivk.png"/>
  <option name="loginMusic" value="godness.ogg"/>
