@@ -1,0 +1,3033 @@
+# Hebrew translation for mana
+# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# This file is distributed under the same license as the mana package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: mana\n"
+"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2009-06-09 21:24+0200\n"
+"PO-Revision-Date: 2009-06-02 15:28+0000\n"
+"Last-Translator: Ddorda <d.dorda@gmail.com>\n"
+"Language-Team: Hebrew <he@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2009-06-08 19:32+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+#: src/commandhandler.cpp:113 src/commandhandler.cpp:273
+msgid "Unknown command."
+msgstr "פקודה לא ידועה."
+
+#: src/commandhandler.cpp:142
+msgid "-- Help --"
+msgstr "-- עזרה --"
+
+#: src/commandhandler.cpp:143
+msgid "/help > Display this help"
+msgstr "/help > הצג עזרה זו"
+
+#: src/commandhandler.cpp:145
+msgid "/where > Display map name"
+msgstr "/where > הצג את שם המפה"
+
+#: src/commandhandler.cpp:146
+msgid "/who > Display number of online users"
+msgstr "/who > הצג את מספר המשתמשים המחוברים"
+
+#: src/commandhandler.cpp:147
+msgid "/me > Tell something about yourself"
+msgstr "/me > אמור משהו על עצמך"
+
+#: src/commandhandler.cpp:149
+msgid "/clear > Clears this window"
+msgstr "/clear > נקה את חלון זה"
+
+#: src/commandhandler.cpp:151
+msgid "/msg > Send a private message to a user"
+msgstr "/msg > שלח הודעה פרטית למשתמש"
+
+#: src/commandhandler.cpp:152
+msgid "/whisper > Alias of msg"
+msgstr "/whisper > שם נוסף ל-msg"
+
+#: src/commandhandler.cpp:153
+msgid "/w > Alias of msg"
+msgstr "/w > שם נוסף ל-msg"
+
+#: src/commandhandler.cpp:154
+msgid "/query > Makes a tab for private messages with another user"
+msgstr "/query > יוצר לשונית עבור הודעות פרטיות עם משתמש אחר"
+
+#: src/commandhandler.cpp:155
+msgid "/q > Alias of query"
+msgstr "/q > שם נוסף ל-query"
+
+#: src/commandhandler.cpp:157
+msgid "/list > Display all public channels"
+msgstr "/list > הצג את כל החדרים הציבוריים"
+
+#: src/commandhandler.cpp:158
+msgid "/join > Join or create a channel"
+msgstr "/join > צור או הצטרף לחדר"
+
+#: src/commandhandler.cpp:160
+msgid "/party > Invite a user to party"
+msgstr "/party > הזמן משתמש לחגיגה"
+
+#: src/commandhandler.cpp:162
+msgid "/record > Start recording the chat to an external file"
+msgstr "/record > התחל להקליט את השיחה לקובץ חיצוני"
+
+#: src/commandhandler.cpp:163
+msgid "/toggle > Determine whether <return> toggles the chat log"
+msgstr "/toggle > קובע אם <אנטר> סוגר את תיבת הטקסט של הצ'אט"
+
+#: src/commandhandler.cpp:164
+msgid "/present > Get list of players present (sent to chat log, if logging)"
+msgstr "/present > קבל את רשימת הנמצאים (ישלח לרישום, אם פעיל)"
+
+#: src/commandhandler.cpp:166
+msgid "/announce > Global announcement (GM only)"
+msgstr "/announce > הודעה גלובאלית (GM בלבד)"
+
+#: src/commandhandler.cpp:170
+msgid "For more information, type /help <command>."
+msgstr "למידע נוסף, הקלד /help <command>."
+
+#: src/commandhandler.cpp:174
+msgid "Command: /help"
+msgstr "פקודה: /help"
+
+#: src/commandhandler.cpp:175
+msgid "This command displays a list of all commands available."
+msgstr "פקודה זו מציגה רשימה של כל הפקודות האפשריות."
+
+#: src/commandhandler.cpp:176
+msgid "Command: /help <command>"
+msgstr "פקודה: /help <command>"
+
+#: src/commandhandler.cpp:177
+msgid "This command displays help on <command>."
+msgstr "פקודה זו מציגה עזרה על <command>."
+
+#: src/commandhandler.cpp:185
+msgid "Command: /announce <msg>"
+msgstr "פקודה: /announce <msg>"
+
+#: src/commandhandler.cpp:186
+msgid "*** only available to a GM ***"
+msgstr "*** זמין ל-GM בלבד ***"
+
+#: src/commandhandler.cpp:187
+msgid "This command sends the message <msg> to all players currently online."
+msgstr ""
+"This command sends the message <msg> to all players currently online.\r\n"
+"פקודה זו שולחת את ההודעה <msg> לכל השחקנים המחוברים."
+
+#: src/commandhandler.cpp:192
+msgid "Command: /clear"
+msgstr "פקודה: /clear"
+
+#: src/commandhandler.cpp:193
+msgid "This command clears the chat log of previous chat."
+msgstr "פקודה זו מנקה את רישום השיחה הקודמת."
+
+#: src/commandhandler.cpp:197
+msgid "Command: /join <channel>"
+msgstr "פקודה: /join <channel>"
+
+#: src/commandhandler.cpp:198
+msgid "This command makes you enter <channel>."
+msgstr "פקודה זו מכניסה אותך אל <channel>."
+
+#: src/commandhandler.cpp:199
+msgid "If <channel> doesn't exist, it's created."
+msgstr "אם <channel> אינו קיים, הוא נוצר."
+
+#: src/commandhandler.cpp:203
+msgid "Command: /list"
+msgstr "פקודה: /list"
+
+#: src/commandhandler.cpp:204
+msgid "This command shows a list of all channels."
+msgstr "פקודה זו מציגה את רשימת כל החדרים."
+
+#: src/commandhandler.cpp:208
+msgid "Command: /me <message>"
+msgstr "פקודה: /me <message>"
+
+#: src/commandhandler.cpp:209
+msgid "This command tell others you are (doing) <msg>."
+msgstr "פקודה זו תאמר לאחרים שאתה (עושה) <msg>."
+
+#: src/commandhandler.cpp:213
+msgid "Command: /msg <nick> <message>"
+msgstr "פקודה: /msg <nick> <message>"
+
+#: src/commandhandler.cpp:214
+msgid "Command: /whisper <nick> <message>"
+msgstr "פקודה: /whisper <nick> <message>"
+
+#: src/commandhandler.cpp:215
+msgid "Command: /w <nick> <message>"
+msgstr "פקודה: /w <nick> <message>"
+
+#: src/commandhandler.cpp:216
+msgid "This command sends the text <message> to <nick>."
+msgstr "פקודה זו שולחת את הטקסט <message> אל <nick>."
+
+#: src/commandhandler.cpp:217 src/commandhandler.cpp:231
+#: src/gui/widgets/channeltab.cpp:81 src/gui/widgets/channeltab.cpp:90
+#: src/net/ea/gui/partytab.cpp:79
+msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
+msgstr "אם <nick> מכיל רווחים בתוכו, תחום אותו במרכאות כפולות (\")."
+
+#: src/commandhandler.cpp:222
+msgid "Command: /query <nick>"
+msgstr "פקודה: /query <nick>"
+
+#: src/commandhandler.cpp:223
+msgid "Command: /q <nick>"
+msgstr "פקודה: /q <nick>"
+
+#: src/commandhandler.cpp:224
+msgid "This command tries to make a tab for whispers betweenyou and <nick>."
+msgstr "הפקודה מנסה ליצור לשונית עבור מסרים בינך לבין <nick>."
+
+#: src/commandhandler.cpp:229
+msgid "Command: /party <nick>"
+msgstr "פקודה: /party <nick>"
+
+#: src/commandhandler.cpp:230 src/net/ea/gui/partytab.cpp:78
+msgid "This command invites <nick> to party with you."
+msgstr "פקודה זו מזמינה את <nick> לחגוג איתך."
+
+#: src/commandhandler.cpp:236
+msgid "Command: /present"
+msgstr "פקודה: /present"
+
+#: src/commandhandler.cpp:237
+msgid ""
+"This command gets a list of players within hearing and sends it to either "
+"the record log if recording, or the chat log otherwise."
+msgstr ""
+"פקודה זו מקבלת את רשימת המשתמשים המופיעים על המסך, ושולח אותה לרישום, אם "
+"הינך מקליט רישום, או אל השיחה."
+
+#: src/commandhandler.cpp:243
+msgid "Command: /record <filename>"
+msgstr "פקודה: /record <filename>"
+
+#: src/commandhandler.cpp:244
+msgid "This command starts recording the chat log to the file <filename>."
+msgstr "פקודה זו מתחילה להקליט רישום שיחה לקובץ <filename>."
+
+#: src/commandhandler.cpp:246
+msgid "Command: /record"
+msgstr "פקודה: /record"
+
+#: src/commandhandler.cpp:247
+msgid "This command finishes a recording session."
+msgstr "פקודה זו מסיימת תהליך הקלטה."
+
+#: src/commandhandler.cpp:251
+msgid "Command: /toggle <state>"
+msgstr "פקודה: /toggle <state>"
+
+#: src/commandhandler.cpp:252
+msgid ""
+"This command sets whether the return key should toggle the chat log, or "
+"whether the chat log turns off automatically."
+msgstr ""
+"הפקודה קובעת אם מקש האנטר יסגור את תיבת הטקסט של הצ'אט או שהוא ייסגר באופן "
+"אוטומטי."
+
+#: src/commandhandler.cpp:254
+msgid ""
+"<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or \"0"
+"\", \"no\", \"false\" to turn the toggle off."
+msgstr ""
+"<state> יכול להיות אחד משני משני מצבים. \"1\", \"yes\", \"ture\" כדי לשנות "
+"למצב פעיל, או \"0\", no\", falst\" כדי לשנות למצב כבוי."
+
+#: src/commandhandler.cpp:257
+msgid "Command: /toggle"
+msgstr "פקודה: /toggle"
+
+#: src/commandhandler.cpp:258
+msgid "This command displays the return toggle status."
+msgstr "הפקודה מציגה את מצב סגירת הטקסט האוטומטית."
+
+#: src/commandhandler.cpp:262
+msgid "Command: /where"
+msgstr "פקודה: /where"
+
+#: src/commandhandler.cpp:263
+msgid "This command displays the name of the current map."
+msgstr "פקודה זו מציגה את שם המפה הנוכחית."
+
+#: src/commandhandler.cpp:267
+msgid "Command: /who"
+msgstr "פקודה: /who"
+
+#: src/commandhandler.cpp:268
+msgid "This command displays the number of players currently online."
+msgstr "פקודה זו מציגה את מספר השחקנים המחוברים כרגע."
+
+#: src/commandhandler.cpp:274
+msgid "Type /help for a list of commands."
+msgstr "הקלד /help לרשימת הפקודות."
+
+#: src/commandhandler.cpp:340
+msgid "Cannot send empty whispers!"
+msgstr "לא ניתן לשלוח לחישות ריקות!"
+
+#: src/commandhandler.cpp:348
+#, c-format
+msgid ""
+"Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
+"you."
+msgstr ""
+"לא ניתן ליצור לשונית לחישות עבור הכינוי \"%s\"! הלשונית כבר קיימת או שמדובר "
+"בך."
+
+#: src/commandhandler.cpp:362
+#, c-format
+msgid "Requesting to join channel %s."
+msgstr "מבקש להצטרף לחדר %s."
+
+#: src/commandhandler.cpp:394
+msgid "Return toggles chat."
+msgstr "סגירת תיבת הטקסט האוטומטית."
+
+#: src/commandhandler.cpp:394
+msgid "Message closes chat."
+msgstr "ההודעה סוגרת את תיבת הטקסט."
+
+#: src/commandhandler.cpp:403
+msgid "Return now toggles chat."
+msgstr "מקש האנטר כעת סוגר את תיבת הטקסט."
+
+#: src/commandhandler.cpp:407
+msgid "Message now closes chat."
+msgstr "ההודעה כעת סוגרת את תיבת הטקסט."
+
+#: src/commandhandler.h:31
+#, c-format
+msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+msgstr ""
+"האפשרויות עבור /%s הינם \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+
+#: src/engine.cpp:88
+msgid "Could not load map"
+msgstr "לא ניתן לטעון את המפה"
+
+#: src/engine.cpp:89
+#, c-format
+msgid "Error while loading %s"
+msgstr "שגיאה בעת טעינת %s"
+
+#: src/game.cpp:237
+msgid "General"
+msgstr "כללי"
+
+#: src/game.cpp:404
+msgid "Screenshot saved to ~/"
+msgstr "תמונת־מסך נשמרה במיקום ~/"
+
+#: src/game.cpp:409
+msgid "Saving screenshot failed!"
+msgstr "שמירת תמונת־מסך נכשלה"
+
+#: src/game.cpp:485
+msgid "The connection to the server was lost, the program will now quit"
+msgstr "החיבור לשרת נכשל, התוכנה תסגר כעת"
+
+#: src/game.cpp:491
+msgid "Network Error"
+msgstr "שגיאת רשת"
+
+#: src/game.cpp:657 src/gui/buy.cpp:71 src/gui/quitdialog.cpp:32
+#: src/gui/quitdialog.cpp:35 src/gui/quitdialog.cpp:36 src/gui/sell.cpp:73
+#: src/keyboardconfig.cpp:101
+msgid "Quit"
+msgstr "יציאה"
+
+#: src/game.cpp:658
+msgid "Are you sure you want to quit?"
+msgstr "האם אתה בטוח שברצונך לצאת?"
+
+#: src/game.cpp:665
+msgid "no"
+msgstr "לא"
+
+#: src/game.cpp:805
+msgid "Ignoring incoming trade requests"
+msgstr "מתעלם מהצעות סחר נכנסות"
+
+#: src/game.cpp:812
+msgid "Accepting incoming trade requests"
+msgstr "מאשר הצעות סחר נכנסות"
+
+#: src/gui/buddywindow.cpp:35
+msgid "Buddy"
+msgstr "חבר"
+
+#: src/gui/buddywindow.cpp:38
+msgid "Buddy List"
+msgstr "רשימת חברים"
+
+#: src/gui/buy.cpp:46 src/gui/buy.cpp:70 src/gui/buysell.cpp:40
+msgid "Buy"
+msgstr "קנה"
+
+#: src/gui/buy.cpp:65 src/gui/buy.cpp:256 src/gui/sell.cpp:67
+#: src/gui/sell.cpp:278
+#, c-format
+msgid "Price: %s / Total: %s"
+msgstr "מחיר: %s / סה\"כ: %s"
+
+#: src/gui/buy.cpp:72 src/gui/sell.cpp:74
+msgid "Max"
+msgstr "מקסימום"
+
+#: src/gui/buy.cpp:73 src/gui/buy.cpp:223 src/gui/buy.cpp:241
+#: src/gui/sell.cpp:75 src/gui/sell.cpp:250 src/gui/sell.cpp:264
+#, c-format
+msgid "Description: %s"
+msgstr "תיאור: %s"
+
+#: src/gui/buy.cpp:74 src/gui/buy.cpp:225 src/gui/buy.cpp:242
+#: src/gui/sell.cpp:76 src/gui/sell.cpp:252 src/gui/sell.cpp:265
+#, c-format
+msgid "Effect: %s"
+msgstr "השפעה: %s"
+
+#: src/gui/buysell.cpp:34
+msgid "Shop"
+msgstr "חנות"
+
+#: src/gui/buysell.cpp:40 src/gui/sell.cpp:46 src/gui/sell.cpp:72
+msgid "Sell"
+msgstr "מכר"
+
+#: src/gui/buysell.cpp:40 src/gui/changeemaildialog.cpp:53
+#: src/gui/changepassworddialog.cpp:57 src/gui/charcreatedialog.cpp:74
+#: src/gui/charselectdialog.cpp:104 src/gui/connection.cpp:38
+#: src/gui/itemamount.cpp:96 src/gui/login.cpp:75 src/gui/npcpostdialog.cpp:54
+#: src/gui/quitdialog.cpp:40 src/gui/register.cpp:81
+#: src/gui/serverdialog.cpp:104 src/gui/serverselectdialog.cpp:67
+#: src/gui/setup.cpp:73 src/gui/textdialog.cpp:37
+#: src/gui/unregisterdialog.cpp:53 src/gui/updatewindow.cpp:112
+msgid "Cancel"
+msgstr "בטל"
+
+#: src/gui/changeemaildialog.cpp:43 src/gui/changeemaildialog.cpp:52
+#: src/gui/charselectdialog.cpp:115
+msgid "Change Email Address"
+msgstr "שנה כתובת דואר אלקטרוני"
+
+#: src/gui/changeemaildialog.cpp:47 src/gui/changepassworddialog.cpp:51
+#: src/gui/charselectdialog.cpp:107
+#, c-format
+msgid "Account: %s"
+msgstr "משתמש: %s"
+
+#: src/gui/changeemaildialog.cpp:49
+msgid "Type New Email Address twice:"
+msgstr "הקלד כתובת דוא\"ל חדשה פעמיים:"
+
+#: src/gui/changepassworddialog.cpp:46 src/gui/changepassworddialog.cpp:55
+#: src/gui/charselectdialog.cpp:110
+msgid "Change Password"
+msgstr "שנה סיסמה"
+
+#: src/gui/changepassworddialog.cpp:60 src/gui/login.cpp:52
+#: src/gui/register.cpp:61 src/gui/unregisterdialog.cpp:50
+msgid "Password:"
+msgstr "סיסמה:"
+
+#: src/gui/changepassworddialog.cpp:62
+#, fuzzy
+msgid "Type new password twice:"
+msgstr "הקלד סיסמה חדשה פעמיים:"
+
+#: src/gui/charcreatedialog.cpp:54
+msgid "Create Character"
+msgstr "צור שחקן"
+
+#: src/gui/charcreatedialog.cpp:66 src/gui/login.cpp:51
+#: src/gui/register.cpp:60
+msgid "Name:"
+msgstr "שם:"
+
+#: src/gui/charcreatedialog.cpp:69
+msgid "Hair Color:"
+msgstr "צבע שיער:"
+
+#: src/gui/charcreatedialog.cpp:72
+msgid "Hair Style:"
+msgstr "תיספורת:"
+
+#: src/gui/charcreatedialog.cpp:73
+msgid "Create"
+msgstr "צור"
+
+#: src/gui/charcreatedialog.cpp:75 src/gui/register.cpp:75
+msgid "Male"
+msgstr "זכר"
+
+#: src/gui/charcreatedialog.cpp:76 src/gui/register.cpp:76
+msgid "Female"
+msgstr "נקבה"
+
+#: src/gui/charcreatedialog.cpp:94 src/gui/charcreatedialog.cpp:234
+#, c-format
+msgid "Please distribute %d points"
+msgstr "אנא חלק %d נקודות"
+
+#: src/gui/charcreatedialog.cpp:172 src/gui/register.cpp:222
+#: src/gui/serverdialog.cpp:163 src/main.cpp:1517
+#: src/net/ea/charserverhandler.cpp:123 src/net/ea/charserverhandler.cpp:140
+msgid "Error"
+msgstr "שגיאה"
+
+#: src/gui/charcreatedialog.cpp:173
+msgid "Your name needs to be at least 4 characters."
+msgstr "יש להכניס לפחות 4 תוים בשם."
+
+#: src/gui/charcreatedialog.cpp:226
+msgid "Character stats OK"
+msgstr "נתוני שחקן - אישור"
+
+#: src/gui/charcreatedialog.cpp:238
+#, c-format
+msgid "Please remove %d points"
+msgstr "אנא הסר %d נקודות"
+
+#: src/gui/charselectdialog.cpp:77
+msgid "Confirm Character Delete"
+msgstr "אשר מחיקת שחקן"
+
+#: src/gui/charselectdialog.cpp:78
+msgid "Are you sure you want to delete this character?"
+msgstr "האם אתה בטוח כי ברצונך למחוק את השחקן?"
+
+#: src/gui/charselectdialog.cpp:95
+msgid "Account and Character Management"
+msgstr "ניהול משתמש ושחקן"
+
+#: src/gui/charselectdialog.cpp:103 src/gui/login.cpp:74
+#: src/gui/okdialog.cpp:42 src/gui/quitdialog.cpp:39
+#: src/gui/serverdialog.cpp:103 src/gui/serverselectdialog.cpp:66
+#: src/gui/textdialog.cpp:36 src/gui/trade.cpp:69 src/gui/trade.cpp:71
+msgid "OK"
+msgstr "אישור"
+
+#: src/gui/charselectdialog.cpp:105
+msgid "Previous"
+msgstr "הקודם"
+
+#: src/gui/charselectdialog.cpp:106 src/gui/npcdialog.cpp:43
+msgid "Next"
+msgstr "הבא"
+
+#: src/gui/charselectdialog.cpp:108 src/gui/charselectdialog.cpp:117
+#: src/gui/charselectdialog.cpp:296 src/gui/charselectdialog.cpp:317
+#: src/gui/unregisterdialog.cpp:49
+#, c-format
+msgid "Name: %s"
+msgstr "שם: %s"
+
+#: src/gui/charselectdialog.cpp:109 src/gui/charselectdialog.cpp:118
+#: src/gui/charselectdialog.cpp:298 src/gui/charselectdialog.cpp:318
+#: src/gui/status.cpp:55 src/gui/status.cpp:174
+#, c-format
+msgid "Level: %d"
+msgstr "רמה: %d"
+
+#: src/gui/charselectdialog.cpp:112 src/gui/charselectdialog.cpp:157
+#: src/gui/charselectdialog.cpp:159 src/gui/charselectdialog.cpp:327
+msgid "New"
+msgstr "חדש"
+
+#: src/gui/charselectdialog.cpp:113 src/gui/charselectdialog.cpp:158
+#: src/gui/charselectdialog.cpp:159 src/gui/charselectdialog.cpp:310
+#: src/gui/setup_players.cpp:228
+msgid "Delete"
+msgstr "מחק"
+
+#: src/gui/charselectdialog.cpp:114 src/gui/unregisterdialog.cpp:52
+msgid "Unregister"
+msgstr "בטל רישום"
+
+#: src/gui/charselectdialog.cpp:119
+#, c-format
+msgid "Money: %d"
+msgstr "זהב: %d"
+
+#: src/gui/charselectdialog.cpp:154 src/gui/charselectdialog.cpp:300
+#: src/gui/charselectdialog.cpp:320
+#, c-format
+msgid "Job Level: %d"
+msgstr "רמת עבודה: %d"
+
+#: src/gui/charselectdialog.cpp:155 src/gui/charselectdialog.cpp:303
+#: src/gui/charselectdialog.cpp:322 src/gui/status.cpp:57
+#: src/gui/status.cpp:182
+#, c-format
+msgid "Money: %s"
+msgstr "כסף: %s"
+
+#: src/gui/chat.cpp:73 src/gui/palette.cpp:93
+msgid "Chat"
+msgstr "שיחה"
+
+#: src/gui/chat.cpp:326
+#, c-format
+msgid "%d players are present."
+msgstr "%d משתמשים נוכחים."
+
+#: src/gui/chat.cpp:327
+msgid "Present: "
+msgstr "נוכחים: "
+
+#: src/gui/chat.cpp:344
+msgid "Attendance written to record log."
+msgstr "מקליט שמות נוכחים לרישום."
+
+#: src/gui/chat.cpp:471
+#, c-format
+msgid "Whispering to %s: %s"
+msgstr "לוחש אל %s: %s"
+
+#: src/gui/confirmdialog.cpp:42
+msgid "Yes"
+msgstr "כן"
+
+#: src/gui/confirmdialog.cpp:43
+msgid "No"
+msgstr "לא"
+
+#: src/gui/connection.cpp:40 src/gui/updatewindow.cpp:110
+msgid "Connecting..."
+msgstr "מתחבר..."
+
+#: src/gui/equipmentwindow.cpp:71 src/gui/windowmenu.cpp:60
+msgid "Equipment"
+msgstr "לבוש"
+
+#: src/gui/equipmentwindow.cpp:90 src/gui/inventorywindow.cpp:74
+#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:269
+msgid "Unequip"
+msgstr "הורד"
+
+#: src/gui/guildwindow.cpp:50 src/gui/guildwindow.cpp:54
+msgid "Guild"
+msgstr "גילדה"
+
+#: src/gui/guildwindow.cpp:63
+msgid "Create Guild"
+msgstr "צור גילדה"
+
+#: src/gui/guildwindow.cpp:64
+msgid "Invite User"
+msgstr "הזמן משתמש"
+
+#: src/gui/guildwindow.cpp:65
+msgid "Quit Guild"
+msgstr "עזוב גילדה"
+
+#: src/gui/help.cpp:34
+msgid "Help"
+msgstr "עזרה"
+
+#: src/gui/help.cpp:47 src/gui/npcdialog.cpp:44 src/gui/storagewindow.cpp:68
+msgid "Close"
+msgstr "סגור"
+
+#: src/gui/inventorywindow.cpp:54 src/gui/windowmenu.cpp:61
+msgid "Inventory"
+msgstr "ציוד"
+
+#: src/gui/inventorywindow.cpp:69 src/gui/inventorywindow.cpp:71
+#: src/gui/inventorywindow.cpp:271
+msgid "Equip"
+msgstr "השתמש"
+
+#: src/gui/inventorywindow.cpp:70 src/gui/inventorywindow.cpp:71
+#: src/gui/inventorywindow.cpp:275 src/gui/skill.cpp:150
+msgid "Use"
+msgstr "השתמש"
+
+#: src/gui/inventorywindow.cpp:80
+msgid "Drop"
+msgstr "השלך"
+
+#: src/gui/inventorywindow.cpp:81
+msgid "Split"
+msgstr "פצל"
+
+#: src/gui/inventorywindow.cpp:92 src/gui/storagewindow.cpp:78
+msgid "Slots:"
+msgstr "בשימוש:"
+
+#: src/gui/inventorywindow.cpp:93
+msgid "Weight:"
+msgstr "משקל:"
+
+#: src/gui/itemamount.cpp:95
+msgid "Ok"
+msgstr "אישור"
+
+#: src/gui/itemamount.cpp:97
+msgid "All"
+msgstr "הכל"
+
+#: src/gui/itemamount.cpp:123
+msgid "Select amount of items to trade."
+msgstr "בחר כמות חפצים לסחור."
+
+#: src/gui/itemamount.cpp:126
+msgid "Select amount of items to drop."
+msgstr "בחר כמות חפצים להשליך."
+
+#: src/gui/itemamount.cpp:129
+msgid "Select amount of items to store."
+msgstr "בחר כמות חפצים לאחסן."
+
+#: src/gui/itemamount.cpp:132
+msgid "Select amount of items to retrieve."
+msgstr "בחר כמות חפצים להחזיר."
+
+#: src/gui/itemamount.cpp:135
+msgid "Select amount of items to split."
+msgstr "בחר כמות חפצים לפצל."
+
+#: src/gui/itempopup.cpp:91
+msgid "Weight: "
+msgstr "משקל: "
+
+#: src/gui/login.cpp:48
+msgid "Login"
+msgstr "התחברות"
+
+#: src/gui/login.cpp:54 src/gui/register.cpp:64 src/gui/serverdialog.cpp:76
+#: src/gui/widgets/chattab.cpp:135
+msgid "Server:"
+msgstr "שרת:"
+
+#: src/gui/login.cpp:55 src/gui/register.cpp:65 src/gui/serverdialog.cpp:77
+msgid "Port:"
+msgstr "פורט:"
+
+#: src/gui/login.cpp:56
+msgid "Recent:"
+msgstr "לאחרונה:"
+
+#: src/gui/login.cpp:73
+msgid "Remember Username"
+msgstr "זכור שם משתמש"
+
+#: src/gui/login.cpp:76 src/gui/register.cpp:56 src/gui/register.cpp:80
+msgid "Register"
+msgstr "הרשם"
+
+#: src/gui/magic.cpp:32 src/gui/skilldialog.cpp:117 src/gui/windowmenu.cpp:64
+#: src/localplayer.cpp:771
+msgid "Magic"
+msgstr "קסם"
+
+#: src/gui/magic.cpp:39
+msgid "Cast Test Spell 1"
+msgstr "הטל קסם נסיון 1"
+
+#: src/gui/magic.cpp:40
+msgid "Cast Test Spell 2"
+msgstr "הטל קסם נסיון 2"
+
+#: src/gui/magic.cpp:41
+msgid "Cast Test Spell 3"
+msgstr "הטל קסם נסיון 3"
+
+#: src/gui/minimap.cpp:45 src/gui/minimap.cpp:84
+msgid "Map"
+msgstr "מפה"
+
+#: src/gui/npcdialog.cpp:42
+msgid "Waiting for server"
+msgstr "ממתין לשרת"
+
+#: src/gui/npcdialog.cpp:45
+msgid "Submit"
+msgstr "שלח"
+
+#: src/gui/npcdialog.cpp:48 src/gui/npcpostdialog.cpp:39
+msgid "NPC"
+msgstr "NPC"
+
+#: src/gui/npcdialog.cpp:104
+msgid "Reset"
+msgstr "אפס"
+
+#: src/gui/npcpostdialog.cpp:44
+msgid "To:"
+msgstr "אל:"
+
+#: src/gui/npcpostdialog.cpp:51
+msgid "Send"
+msgstr "שלח"
+
+#: src/gui/npcpostdialog.cpp:85
+msgid "Failed to send as sender or letter invalid."
+msgstr "נכשלה השליחה מכיוון והשולח או המכתב בעלי שגיאה."
+
+#: src/gui/palette.cpp:81 src/gui/setup_video.cpp:142
+msgid "Text"
+msgstr "טקסט"
+
+#: src/gui/palette.cpp:82
+msgid "Text Shadow"
+msgstr "הצללת טקסט"
+
+#: src/gui/palette.cpp:83
+msgid "Text Outline"
+msgstr "מתאר הטקסט"
+
+#: src/gui/palette.cpp:84
+msgid "Progress Bar Labels"
+msgstr "תוויות סרגל התקדמות"
+
+#: src/gui/palette.cpp:86
+msgid "Background"
+msgstr "רקע"
+
+#: src/gui/palette.cpp:88
+msgid "Highlight"
+msgstr "הדגשה"
+
+#: src/gui/palette.cpp:89
+msgid "Tab Highlight"
+msgstr "לשונית הדגשה"
+
+#: src/gui/palette.cpp:90
+msgid "Item too expensive"
+msgstr "החפץ יקר מדי"
+
+#: src/gui/palette.cpp:91
+msgid "Item is equipped"
+msgstr "החפץ בשימוש"
+
+#: src/gui/palette.cpp:94
+msgid "GM"
+msgstr "GM"
+
+#: src/gui/palette.cpp:95
+msgid "Player"
+msgstr "שחקן"
+
+#: src/gui/palette.cpp:96
+msgid "Whisper"
+msgstr "לחישה"
+
+#: src/gui/palette.cpp:97
+msgid "Is"
+msgstr "הינו"
+
+#: src/gui/palette.cpp:98 src/gui/partywindow.cpp:48
+#: src/gui/partywindow.cpp:75 src/net/ea/gui/partytab.cpp:39
+msgid "Party"
+msgstr "חגיגה"
+
+#: src/gui/palette.cpp:99
+msgid "Server"
+msgstr "שרת"
+
+#: src/gui/palette.cpp:100
+msgid "Logger"
+msgstr "רישום"
+
+#: src/gui/palette.cpp:101
+msgid "Hyperlink"
+msgstr "קישור"
+
+#: src/gui/palette.cpp:103
+msgid "Being"
+msgstr "נהיה"
+
+#: src/gui/palette.cpp:104
+msgid "Other Players' Names"
+msgstr "שמות המשתמשים האחרים"
+
+#: src/gui/palette.cpp:105
+msgid "Own Name"
+msgstr "השם שלך"
+
+#: src/gui/palette.cpp:106
+msgid "GM Names"
+msgstr "שמות המנהלים"
+
+#: src/gui/palette.cpp:107
+msgid "NPCs"
+msgstr "דמויות"
+
+#: src/gui/palette.cpp:108
+msgid "Monsters"
+msgstr "מפלצות"
+
+#: src/gui/palette.cpp:110
+msgid "Unknown Item Type"
+msgstr "סוג חפץ לא ידוע"
+
+#: src/gui/palette.cpp:111
+msgid "Generics"
+msgstr "כלליים"
+
+#: src/gui/palette.cpp:112
+msgid "Hats"
+msgstr "כובעים"
+
+#: src/gui/palette.cpp:113
+msgid "Usables"
+msgstr "שימושיים"
+
+#: src/gui/palette.cpp:114
+msgid "Shirts"
+msgstr "חולצות"
+
+#: src/gui/palette.cpp:115
+msgid "1 Handed Weapons"
+msgstr "נשקים ליד אחת"
+
+#: src/gui/palette.cpp:116
+msgid "Pants"
+msgstr "מכנסיים"
+
+#: src/gui/palette.cpp:117
+msgid "Shoes"
+msgstr "נעליים"
+
+#: src/gui/palette.cpp:118
+msgid "2 Handed Weapons"
+msgstr "נשקים לשתי ידיים"
+
+#: src/gui/palette.cpp:119
+msgid "Shields"
+msgstr "מגנים"
+
+#: src/gui/palette.cpp:120
+msgid "Rings"
+msgstr "טבעות"
+
+#: src/gui/palette.cpp:121
+msgid "Necklaces"
+msgstr "שרשראות"
+
+#: src/gui/palette.cpp:122
+msgid "Arms"
+msgstr "ידיים"
+
+#: src/gui/palette.cpp:123
+msgid "Ammo"
+msgstr "תחמושת"
+
+#: src/gui/palette.cpp:125
+msgid "Particle Effects"
+msgstr "אפקטים חלקיים"
+
+#: src/gui/palette.cpp:126
+msgid "Pickup Notification"
+msgstr "הודעה על לקיחה"
+
+#: src/gui/palette.cpp:127
+msgid "Exp Notification"
+msgstr "הודעה על נק' נסיון"
+
+#: src/gui/palette.cpp:129
+msgid "Player hits Monster"
+msgstr "משתמש מכה מפלצת"
+
+#: src/gui/palette.cpp:131
+msgid "Monster hits Player"
+msgstr "משתמש מכה משתמש"
+
+#: src/gui/palette.cpp:132
+msgid "Critical Hit"
+msgstr "מכה קריטית"
+
+#: src/gui/palette.cpp:133
+msgid "Misses"
+msgstr "פספוס"
+
+#: src/gui/palette.cpp:135
+msgid "HP Bar"
+msgstr "סרגל חיים"
+
+#: src/gui/palette.cpp:136
+msgid "3/4 HP Bar"
+msgstr "3/4 סרגל חיים"
+
+#: src/gui/palette.cpp:137
+msgid "1/2 HP Bar"
+msgstr "1/2 סרגל חיים"
+
+#: src/gui/palette.cpp:138
+msgid "1/4 HP Bar"
+msgstr "1/4 סרגל חיים"
+
+#: src/gui/partywindow.cpp:70
+#, c-format
+msgid "Party (%s)"
+msgstr "חגיגה (%s)"
+
+#: src/gui/partywindow.cpp:174
+msgid "Received party request, but one already exists."
+msgstr "התקבלה הזמנה למסיבה, אך הזמנה זהה כבר קיימת."
+
+#: src/gui/partywindow.cpp:182
+#, c-format
+msgid "%s has invited you to join their party."
+msgstr "%s הזמין אותך לחגיגה שלהם."
+
+#: src/gui/partywindow.cpp:185
+#, c-format
+msgid "%s has invited you to join the %s party."
+msgstr "%s הזמין אותך להצטרף לחגיגת ה-%s."
+
+#: src/gui/partywindow.cpp:191
+msgid "Accept Party Invite"
+msgstr "אשר את הזמנת החגיגה"
+
+#: src/gui/partywindow.cpp:204
+#, c-format
+msgid "Accepted invite from %s."
+msgstr "אשר את ההזמנה של %s."
+
+#: src/gui/partywindow.cpp:211
+#, c-format
+msgid "Rejected invite from %s."
+msgstr "דחה את ההזמנה של %s."
+
+#: src/gui/popupmenu.cpp:77
+msgid "@@name|Add name to chat@@"
+msgstr "@@name|הוסף שם לשיחה@@"
+
+#: src/gui/popupmenu.cpp:89
+#, c-format
+msgid "@@trade|Trade With %s@@"
+msgstr "@@trade|סחור עם %s@@"
+
+#: src/gui/popupmenu.cpp:90 src/gui/popupmenu.cpp:138
+#, c-format
+msgid "@@attack|Attack %s@@"
+msgstr "@@attack|תקוף את %s@@"
+
+#: src/gui/popupmenu.cpp:96
+#, c-format
+msgid "@@friend|Befriend %s@@"
+msgstr "@@friend|הצע חברות %s@@"
+
+#: src/gui/popupmenu.cpp:99
+#, c-format
+msgid "@@disregard|Disregard %s@@"
+msgstr "@@disregard|זלזל %s@@"
+
+#: src/gui/popupmenu.cpp:100
+#, c-format
+msgid "@@ignore|Ignore %s@@"
+msgstr "@@ignore|התעלם %s@@"
+
+#: src/gui/popupmenu.cpp:104 src/gui/popupmenu.cpp:109
+#, c-format
+msgid "@@unignore|Un-Ignore %s@@"
+msgstr "@@unignore|אל-התעלם %s@@"
+
+#: src/gui/popupmenu.cpp:105
+#, c-format
+msgid "@@ignore|Completely ignore %s@@"
+msgstr "@@ignore|התעלם לחלוטין %s@@"
+
+#: src/gui/popupmenu.cpp:116
+#, c-format
+msgid "@@guild|Invite %s to join your guild@@"
+msgstr "@@guild|הזמן את %s להצטרף לגילדה@@"
+
+#: src/gui/popupmenu.cpp:119
+#, c-format
+msgid "@@party|Invite %s to join your party@@"
+msgstr "@@party|הזמן את %s להצטרף לחגיגה@@"
+
+#: src/gui/popupmenu.cpp:124
+msgid "@@admin-kick|Kick player@@"
+msgstr "@@admin-kick|העף שחקן@@"
+
+#: src/gui/popupmenu.cpp:132
+#, c-format
+msgid "@@talk|Talk To %s@@"
+msgstr "@@talk|דבר אל %s@@"
+
+#: src/gui/popupmenu.cpp:141
+msgid "@@admin-kick|Kick monster@@"
+msgstr "@@admin-kick|העף מפלצת@@"
+
+#: src/gui/popupmenu.cpp:152 src/gui/popupmenu.cpp:170
+#: src/gui/popupmenu.cpp:383
+msgid "@@cancel|Cancel@@"
+msgstr "@@cancel|ביטול@@"
+
+#: src/gui/popupmenu.cpp:165
+#, c-format
+msgid "@@pickup|Pick up %s@@"
+msgstr "@@pickup|הרם %s@@"
+
+#: src/gui/popupmenu.cpp:166 src/gui/popupmenu.cpp:381
+msgid "@@chat|Add to chat@@"
+msgstr "@@chat|הוסף לשיחה@@"
+
+#: src/gui/popupmenu.cpp:356
+msgid "@@use|Unequip@@"
+msgstr "@@use|הפשט@@"
+
+#: src/gui/popupmenu.cpp:358
+msgid "@@use|Equip@@"
+msgstr "@@use|השתמש@@"
+
+#: src/gui/popupmenu.cpp:361
+msgid "@@use|Use@@"
+msgstr "@@use|Use@@"
+
+#: src/gui/popupmenu.cpp:363
+msgid "@@drop|Drop@@"
+msgstr "@@drop|השלך@@"
+
+#: src/gui/popupmenu.cpp:367
+msgid "@@split|Split@@"
+msgstr "@@split|פצל@@"
+
+#: src/gui/popupmenu.cpp:372
+msgid "@@store|Store@@"
+msgstr "@@store|אחסן@@"
+
+#: src/gui/popupmenu.cpp:379
+msgid "@@retrieve|Retrieve@@"
+msgstr "@@retrieve|החזר@@"
+
+#: src/gui/quitdialog.cpp:37
+msgid "Switch server"
+msgstr "החלף שרת"
+
+#: src/gui/quitdialog.cpp:38
+msgid "Switch character"
+msgstr "החלף שחקן"
+
+#: src/gui/recorder.cpp:87
+msgid "Finishing recording."
+msgstr "מסיים להקליט."
+
+#: src/gui/recorder.cpp:91
+msgid "Not currently recording."
+msgstr "אינו מקליט כרגע."
+
+#: src/gui/recorder.cpp:96
+msgid "Already recording."
+msgstr "כבר מקליט."
+
+#: src/gui/recorder.cpp:104
+msgid "Starting to record..."
+msgstr "מתחיל להקליט..."
+
+#: src/gui/recorder.cpp:113
+msgid "Failed to start recording."
+msgstr "שגיאה בהתחלת ההקלטה."
+
+#: src/gui/recorder.h:39
+msgid "Recording..."
+msgstr "מקליט..."
+
+#: src/gui/recorder.h:40
+msgid "Stop recording"
+msgstr "מפסיק להקליט"
+
+#: src/gui/register.cpp:62
+msgid "Confirm:"
+msgstr "אשר:"
+
+#: src/gui/register.cpp:67
+msgid "Email:"
+msgstr "דוא\"ל:"
+
+#: src/gui/register.cpp:170
+#, c-format
+msgid "The username needs to be at least %d characters long."
+msgstr "שם המשתמש חייב להכיל לפחות %d תוים."
+
+#: src/gui/register.cpp:178
+#, c-format
+msgid "The username needs to be less than %d characters long."
+msgstr "שם המשתמש חייב להכיל פחות מ-%d תוים."
+
+#: src/gui/register.cpp:186
+#, c-format
+msgid "The password needs to be at least %d characters long."
+msgstr "הסיסמה חייבת להכיל לפחות %d תוים."
+
+#: src/gui/register.cpp:194
+#, c-format
+msgid "The password needs to be less than %d characters long."
+msgstr "הסיסמה חייבת להכיל פחות מ-%d תוים."
+
+#: src/gui/register.cpp:201
+msgid "Passwords do not match."
+msgstr "הסיסמאות אינן תואמות."
+
+#: src/gui/serverdialog.cpp:74
+msgid "Choose your server"
+msgstr "בחר את השרת שלך"
+
+#: src/gui/serverdialog.cpp:164
+msgid "Please type both the address and the port of a server."
+msgstr "אנא הכנס גם את כתובת וגם את פורט השרת."
+
+#: src/gui/serverselectdialog.cpp:59
+msgid "Select Server"
+msgstr "בחר שרת"
+
+#: src/gui/setup.cpp:65 src/gui/windowmenu.cpp:69 src/main.cpp:939
+msgid "Setup"
+msgstr "הגדרות"
+
+#: src/gui/setup.cpp:73
+msgid "Apply"
+msgstr "אשר"
+
+#: src/gui/setup.cpp:73
+msgid "Reset Windows"
+msgstr "אתחל חלונות"
+
+#: src/gui/setup_audio.cpp:41
+msgid "Sound"
+msgstr "צליל"
+
+#: src/gui/setup_audio.cpp:45
+msgid "Audio"
+msgstr "שמע"
+
+#: src/gui/setup_audio.cpp:48
+msgid "Sfx volume"
+msgstr "עוצמת SFX"
+
+#: src/gui/setup_audio.cpp:49
+msgid "Music volume"
+msgstr "עוצמת מוזיקה"
+
+#: src/gui/setup_colors.cpp:45
+msgid "This is what the color looks like"
+msgstr "כך הצבע נראה"
+
+#: src/gui/setup_colors.cpp:50
+msgid "Colors"
+msgstr "צבעים"
+
+#: src/gui/setup_colors.cpp:71
+msgid "Type: "
+msgstr "סוג: "
+
+#: src/gui/setup_colors.cpp:82 src/gui/setup_colors.cpp:430
+msgid "Static"
+msgstr "סטטי"
+
+#: src/gui/setup_colors.cpp:84 src/gui/setup_colors.cpp:85
+#: src/gui/setup_colors.cpp:431
+msgid "Pulse"
+msgstr "פעימה"
+
+#: src/gui/setup_colors.cpp:86 src/gui/setup_colors.cpp:87
+#: src/gui/setup_colors.cpp:432
+msgid "Rainbow"
+msgstr "קשת בענן"
+
+#: src/gui/setup_colors.cpp:88 src/gui/setup_colors.cpp:89
+#: src/gui/setup_colors.cpp:432
+msgid "Spectrum"
+msgstr "מינסרה"
+
+#: src/gui/setup_colors.cpp:93
+msgid "Delay: "
+msgstr "עיכוב: "
+
+#: src/gui/setup_colors.cpp:108
+msgid "Red: "
+msgstr "אדום: "
+
+#: src/gui/setup_colors.cpp:123
+msgid "Green: "
+msgstr "ירוק: "
+
+#: src/gui/setup_colors.cpp:138
+msgid "Blue: "
+msgstr "כחול: "
+
+#: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
+msgid "Press the button to start calibration"
+msgstr "לחץ על הכפתור בכדי להתחיל בכיול"
+
+#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
+msgid "Calibrate"
+msgstr "כייל"
+
+#: src/gui/setup_joystick.cpp:39
+msgid "Enable joystick"
+msgstr "אפשר ג'ויסטיק"
+
+#: src/gui/setup_joystick.cpp:41
+msgid "Joystick"
+msgstr "ג'ויסטיק"
+
+#: src/gui/setup_joystick.cpp:83
+msgid "Stop"
+msgstr "עצור"
+
+#: src/gui/setup_joystick.cpp:84
+msgid "Rotate the stick"
+msgstr "סובב את המקל"
+
+#: src/gui/setup_keyboard.cpp:77
+msgid "Keyboard"
+msgstr "מקלדת"
+
+#: src/gui/setup_keyboard.cpp:86
+msgid "Assign"
+msgstr "שנה"
+
+#: src/gui/setup_keyboard.cpp:90
+msgid "Default"
+msgstr "ברירת מחדל"
+
+#: src/gui/setup_keyboard.cpp:119
+msgid "Key Conflict(s) Detected."
+msgstr "נמצאו קונפליקטי מקשים."
+
+#: src/gui/setup_keyboard.cpp:120
+msgid "Resolve them, or gameplay may result in strange behaviour."
+msgstr "פתור אותם, אחרת המשחק עלול להתנהג באופן מוזר."
+
+#: src/gui/setup_players.cpp:56
+msgid "Name"
+msgstr "שם"
+
+#: src/gui/setup_players.cpp:57
+msgid "Relation"
+msgstr "התנהגות"
+
+#: src/gui/setup_players.cpp:62
+msgid "Neutral"
+msgstr "ניטרלי"
+
+#: src/gui/setup_players.cpp:63
+msgid "Friend"
+msgstr "חבר"
+
+#: src/gui/setup_players.cpp:64
+msgid "Disregarded"
+msgstr "מזלזל"
+
+#: src/gui/setup_players.cpp:65
+msgid "Ignored"
+msgstr "מתעלם"
+
+#: src/gui/setup_players.cpp:207 src/gui/setup_video.cpp:131
+msgid "???"
+msgstr "???"
+
+#: src/gui/setup_players.cpp:224
+msgid "Allow trading"
+msgstr "אפשר מסחר"
+
+#: src/gui/setup_players.cpp:226
+msgid "Allow whispers"
+msgstr "אפשר לחישות"
+
+#: src/gui/setup_players.cpp:230
+msgid "Put all whispers in tabs"
+msgstr "הכנס את כל הלחישות ללשוניות"
+
+#: src/gui/setup_players.cpp:232
+msgid "Players"
+msgstr "שחקנים"
+
+#: src/gui/setup_players.cpp:257
+msgid "When ignoring:"
+msgstr "כאשר מתעלם:"
+
+#: src/gui/setup_video.cpp:112
+msgid "Tiny"
+msgstr "מזערי"
+
+#: src/gui/setup_video.cpp:113
+msgid "Small"
+msgstr "קטן"
+
+#: src/gui/setup_video.cpp:114
+msgid "Medium"
+msgstr "בינוני"
+
+#: src/gui/setup_video.cpp:115
+msgid "Large"
+msgstr "גדול"
+
+#: src/gui/setup_video.cpp:141
+msgid "No text"
+msgstr "ללא טקסט"
+
+#: src/gui/setup_video.cpp:143
+msgid "Bubbles, no names"
+msgstr "בועות, ללא שמות"
+
+#: src/gui/setup_video.cpp:144
+msgid "Bubbles with names"
+msgstr "בועות עם שמות"
+
+#: src/gui/setup_video.cpp:153
+msgid "off"
+msgstr "כבוי"
+
+#: src/gui/setup_video.cpp:154 src/gui/setup_video.cpp:164
+msgid "low"
+msgstr "נמוך"
+
+#: src/gui/setup_video.cpp:155 src/gui/setup_video.cpp:166
+msgid "high"
+msgstr "גבוה"
+
+#: src/gui/setup_video.cpp:165
+msgid "medium"
+msgstr "בינוני"
+
+#: src/gui/setup_video.cpp:167
+msgid "max"
+msgstr "מקסימלי"
+
+#: src/gui/setup_video.cpp:187
+msgid "Full screen"
+msgstr "מסך מלא"
+
+#: src/gui/setup_video.cpp:188
+msgid "OpenGL"
+msgstr "‏OpenGL"
+
+#: src/gui/setup_video.cpp:189
+msgid "Custom cursor"
+msgstr "סמן-עכבר מותאם"
+
+#: src/gui/setup_video.cpp:191
+msgid "Visible names"
+msgstr "שמות גלויים"
+
+#: src/gui/setup_video.cpp:193
+msgid "Particle effects"
+msgstr "אפקטים חלקיים"
+
+#: src/gui/setup_video.cpp:195
+msgid "Show name"
+msgstr "הצג שם"
+
+#: src/gui/setup_video.cpp:196
+msgid "Show pickup notification"
+msgstr "הצג התרעת לקיחה"
+
+#: src/gui/setup_video.cpp:197
+msgid "in chat"
+msgstr "בשיחה"
+
+#: src/gui/setup_video.cpp:198
+msgid "as particle"
+msgstr "באופן חלקי"
+
+#: src/gui/setup_video.cpp:203
+msgid "FPS Limit:"
+msgstr "הגבלת FPS:"
+
+#: src/gui/setup_video.cpp:214
+msgid "Video"
+msgstr "וידאו"
+
+#: src/gui/setup_video.cpp:219
+msgid "Overhead text"
+msgstr "טקסט מעל הראש"
+
+#: src/gui/setup_video.cpp:220
+msgid "Gui opacity"
+msgstr "אטימות Gui"
+
+#: src/gui/setup_video.cpp:221
+msgid "Ambient FX"
+msgstr "אופף FX"
+
+#: src/gui/setup_video.cpp:222
+msgid "Particle Detail"
+msgstr "מידע חלקי"
+
+#: src/gui/setup_video.cpp:223
+msgid "Font size"
+msgstr "גודל הגופן"
+
+#: src/gui/setup_video.cpp:356
+msgid "Failed to switch to "
+msgstr "נכשל במעבר אל "
+
+#: src/gui/setup_video.cpp:357
+msgid "windowed"
+msgstr "חלון"
+
+#: src/gui/setup_video.cpp:357
+msgid "fullscreen"
+msgstr "מסך מלא"
+
+#: src/gui/setup_video.cpp:358
+msgid "mode and restoration of old mode also failed!"
+msgstr "מצב ושיחזור מצב ישן נכשלו!"
+
+#: src/gui/setup_video.cpp:367
+msgid "Switching to full screen"
+msgstr "מחליף למסך מלא"
+
+#: src/gui/setup_video.cpp:368
+msgid "Restart needed for changes to take effect."
+msgstr "נדרש איתחול כדי שהשינויים יהיו ברי-תוקף."
+
+#: src/gui/setup_video.cpp:380
+msgid "Changing OpenGL"
+msgstr "משנה OpenGL"
+
+#: src/gui/setup_video.cpp:381
+msgid "Applying change to OpenGL requires restart."
+msgstr "אישור שינויים עבור OpenGL דורש איתחול."
+
+#: src/gui/setup_video.cpp:442
+msgid "Screen resolution changed"
+msgstr "רזולוצית המסך השתנתה"
+
+#: src/gui/setup_video.cpp:443
+msgid "Restart your client for the change to take effect."
+msgstr "טען מחדש כדי שהשינוי יחול."
+
+#: src/gui/setup_video.cpp:467
+msgid "Particle effect settings changed."
+msgstr "הגדרות השינוי החלקי השתנו."
+
+#: src/gui/setup_video.cpp:468
+msgid "Changes will take effect on map change."
+msgstr "השינויים יחולו על שינוי המפה."
+
+#: src/gui/skill.cpp:53
+msgid "Mystery Skill"
+msgstr "כישור מיסתורי"
+
+#: src/gui/skill.cpp:129 src/gui/skilldialog.cpp:99 src/gui/windowmenu.cpp:62
+msgid "Skills"
+msgstr "כישורים"
+
+#: src/gui/skill.cpp:148 src/gui/skill.cpp:200
+#, c-format
+msgid "Skill points: %d"
+msgstr "נקודות כישורים:  %d"
+
+#: src/gui/skill.cpp:149
+msgid "Up"
+msgstr "למעלה"
+
+#: src/gui/skilldialog.cpp:113
+msgid "Weapons"
+msgstr "נשקים"
+
+#: src/gui/skilldialog.cpp:121
+msgid "Crafts"
+msgstr "מלאכה"
+
+#: src/gui/status.cpp:56 src/gui/status.cpp:177
+#, c-format
+msgid "Job: %d"
+msgstr "עבודה: %d"
+
+#: src/gui/status.cpp:60
+msgid "HP:"
+msgstr "חיים:"
+
+#: src/gui/status.cpp:63
+msgid "Exp:"
+msgstr "נסיון:"
+
+#: src/gui/status.cpp:66
+msgid "MP:"
+msgstr "קסם:"
+
+#: src/gui/status.cpp:69
+msgid "Job:"
+msgstr "עבודה:"
+
+#: src/gui/status.cpp:77
+msgid "Stats"
+msgstr "רמות"
+
+#: src/gui/status.cpp:78
+msgid "Total"
+msgstr "סה\"כ"
+
+#: src/gui/status.cpp:79
+msgid "Cost"
+msgstr "עלות"
+
+#: src/gui/status.cpp:83
+msgid "Attack:"
+msgstr "התקפה:"
+
+#: src/gui/status.cpp:84
+msgid "Defense:"
+msgstr "הגנה:"
+
+#: src/gui/status.cpp:85
+msgid "M.Attack:"
+msgstr "התקפת קסם:"
+
+#: src/gui/status.cpp:86
+msgid "M.Defense:"
+msgstr "הגנת קסם:"
+
+#: src/gui/status.cpp:88
+#, no-c-format
+msgid "% Accuracy:"
+msgstr "% דיוק:"
+
+#: src/gui/status.cpp:90
+#, no-c-format
+msgid "% Evade:"
+msgstr "% התחמקות:"
+
+#: src/gui/status.cpp:92
+#, no-c-format
+msgid "% Reflex:"
+msgstr "% ריפלקס:"
+
+#: src/gui/status.cpp:198
+msgid "Strength"
+msgstr "עוצמה"
+
+#: src/gui/status.cpp:199
+msgid "Agility"
+msgstr "זריזות"
+
+#: src/gui/status.cpp:200
+msgid "Vitality"
+msgstr "חיוניות"
+
+#: src/gui/status.cpp:201
+msgid "Intelligence"
+msgstr "תבונה"
+
+#: src/gui/status.cpp:202
+msgid "Dexterity"
+msgstr "מיומנות"
+
+#: src/gui/status.cpp:203
+msgid "Luck"
+msgstr "מזל"
+
+#: src/gui/status.cpp:221
+#, c-format
+msgid "Remaining Status Points: %d"
+msgstr "נקודות מצב נותרות: %d"
+
+#: src/gui/status.cpp:384
+msgid "Max level"
+msgstr "רמה מקסימלית"
+
+#: src/gui/storagewindow.cpp:54
+msgid "Storage"
+msgstr "איחסון"
+
+#: src/gui/storagewindow.cpp:65
+msgid "Store"
+msgstr "אחסן"
+
+#: src/gui/storagewindow.cpp:66
+msgid "Retrieve"
+msgstr "החזר"
+
+#: src/gui/trade.cpp:51
+msgid "Propose trade"
+msgstr "מציע לחור"
+
+#: src/gui/trade.cpp:52
+msgid "Confirmed. Waiting..."
+msgstr "אושר. ממתין..."
+
+#: src/gui/trade.cpp:53
+msgid "Agree trade"
+msgstr "הסכם למסחר"
+
+#: src/gui/trade.cpp:54
+msgid "Agreed. Waiting..."
+msgstr "מוסכם. ממתין..."
+
+#: src/gui/trade.cpp:57
+msgid "Trade: You"
+msgstr "סחור: אתה"
+
+#: src/gui/trade.cpp:70 src/gui/trade.cpp:71
+msgid "Trade"
+msgstr "סחרר"
+
+#: src/gui/trade.cpp:73
+msgid "Add"
+msgstr "הוסף"
+
+#: src/gui/trade.cpp:95 src/gui/trade.cpp:131
+#, c-format
+msgid "You get %s."
+msgstr "אתה מקבל %s."
+
+#: src/gui/trade.cpp:96
+msgid "You give:"
+msgstr "אתה נותן:"
+
+#: src/gui/trade.cpp:100
+msgid "Change"
+msgstr "שנה"
+
+#: src/gui/trade.cpp:268
+msgid "Failed adding item. You can not overlap one kind of item on the window."
+msgstr "הוספת הפריט נכשלה. לא ניתן להכניס מעל חפץ אחד לחלון."
+
+#: src/gui/trade.cpp:311
+msgid "You don't have enough money."
+msgstr "אין לך מספיק כסף."
+
+#: src/gui/updatewindow.cpp:91
+msgid "Updating..."
+msgstr "מעדכן..."
+
+#: src/gui/updatewindow.cpp:113
+msgid "Play"
+msgstr "שחק"
+
+#: src/gui/updatewindow.cpp:325
+msgid "curl error "
+msgstr "שגיאת קיפולים: "
+
+#: src/gui/updatewindow.cpp:326
+msgid " host: "
+msgstr " שרת מארח: "
+
+#: src/gui/updatewindow.cpp:449
+msgid "##1  The update process is incomplete."
+msgstr "##1  תהליך העדכון לא תם."
+
+#: src/gui/updatewindow.cpp:450
+msgid "##1  It is strongly recommended that"
+msgstr "##1  מומלץ ביותר שתנסה שוב מאוחר יותר"
+
+#: src/gui/updatewindow.cpp:451
+msgid "##1  you try again later"
+msgstr "-"
+
+#: src/gui/updatewindow.cpp:518
+msgid "Completed"
+msgstr "הסתיים"
+
+#: src/gui/widgets/channeltab.cpp:49
+msgid "/users > Lists the users in the current channel"
+msgstr "/users > רשימת המשתמשים בחדר הנוכחי"
+
+#: src/gui/widgets/channeltab.cpp:50
+msgid "/topic > Set the topic of the current channel"
+msgstr "/topic > קבע את כותרת נושא החדר"
+
+#: src/gui/widgets/channeltab.cpp:51
+msgid "/quit > Leave a channel"
+msgstr "/quit >עזוב את החדר"
+
+#: src/gui/widgets/channeltab.cpp:52
+msgid "/op > Make a user a channel operator"
+msgstr "/op > הפוך משתמש למנהל החדר"
+
+#: src/gui/widgets/channeltab.cpp:53
+msgid "/kick > Kick a user from the channel"
+msgstr "/kick > העף משתמש מהחדר"
+
+#: src/gui/widgets/channeltab.cpp:63
+msgid "Command: /users"
+msgstr "פקודה: /users"
+
+#: src/gui/widgets/channeltab.cpp:64
+msgid "This command shows the users in this channel."
+msgstr "פקודה זו מציגה את המשתמשים בחדר."
+
+#: src/gui/widgets/channeltab.cpp:68
+msgid "Command: /topic <message>"
+msgstr "פקודה: /topic <message>"
+
+#: src/gui/widgets/channeltab.cpp:69
+msgid "This command sets the topic to <message>."
+msgstr "פקודה זו מציבה את <message> ככותרת נושא החדר."
+
+#: src/gui/widgets/channeltab.cpp:73
+msgid "Command: /quit"
+msgstr "פקודה: /quit"
+
+#: src/gui/widgets/channeltab.cpp:74
+msgid "This command leaves the current channel."
+msgstr "הפקודה מוציאה אותך מהחדר הנוכחי."
+
+#: src/gui/widgets/channeltab.cpp:75
+msgid "If you're the last person in the channel, it will be deleted."
+msgstr "אם הינך האדם האחרון בחדר, הוא יימחק."
+
+#: src/gui/widgets/channeltab.cpp:79
+msgid "Command: /op <nick>"
+msgstr "פקודה: /op <nick>"
+
+#: src/gui/widgets/channeltab.cpp:80
+msgid "This command makes <nick> a channel operator."
+msgstr "פקודה זו הופכת את <nick> למנהל החדר."
+
+#: src/gui/widgets/channeltab.cpp:83
+msgid "Channel operators can kick and op other users from the channel."
+msgstr "מנהלי חדר יכולים להעיף משתמשים ולהפוך משתמשים אחרים בחדר למנהלים."
+
+#: src/gui/widgets/channeltab.cpp:88
+msgid "Command: /kick <nick>"
+msgstr "פקודה: /kick <nick>"
+
+#: src/gui/widgets/channeltab.cpp:89
+msgid "This command makes <nick> leave the channel."
+msgstr "פקודה זו גורמת ל-<nick> לעזוב את החדר."
+
+#: src/gui/widgets/channeltab.cpp:118
+msgid "Need a user to op!"
+msgstr "צריך משתמש שינהל!"
+
+#: src/gui/widgets/channeltab.cpp:125
+msgid "Need a user to kick!"
+msgstr "צריך משתמש שיעיף!"
+
+#: src/gui/widgets/chattab.cpp:114
+msgid "Global announcement:"
+msgstr "הודעה גלובאלית:"
+
+#: src/gui/widgets/chattab.cpp:120
+#, c-format
+msgid "Global announcement from %s:"
+msgstr "הודעה גלובאלית מאת %s:"
+
+#: src/gui/widgets/chattab.cpp:146
+#, c-format
+msgid "%s whispers: "
+msgstr "%s: לוחש: "
+
+#: src/gui/widgets/whispertab.cpp:49
+msgid "Cannot send empty chat!"
+msgstr "לא ניתן לשלוח הודעה ריקה!"
+
+#: src/gui/widgets/whispertab.cpp:68
+msgid "/close > Close the whisper tab"
+msgstr "/close > סוגר את לשונית הלחישות"
+
+#: src/gui/widgets/whispertab.cpp:78
+msgid "Command: /close"
+msgstr "פקודה: /close"
+
+#: src/gui/widgets/whispertab.cpp:79
+msgid "This command closes the current whisper tab."
+msgstr "הפקודה סוגרת את לשונית הלחישות הנוכחית."
+
+#: src/gui/windowmenu.cpp:59
+msgid "Status"
+msgstr "מצב"
+
+#: src/gui/windowmenu.cpp:65
+msgid "Guilds"
+msgstr "גילדות"
+
+#: src/gui/windowmenu.cpp:66
+msgid "Buddys"
+msgstr "חברים"
+
+#: src/gui/windowmenu.cpp:68
+msgid "Shortcut"
+msgstr "קיצור־דרך"
+
+#: src/keyboardconfig.cpp:41
+msgid "Move Up"
+msgstr "הזז למעלה"
+
+#: src/keyboardconfig.cpp:42
+msgid "Move Down"
+msgstr "הזז למטה"
+
+#: src/keyboardconfig.cpp:43
+msgid "Move Left"
+msgstr "הזז שמאלה"
+
+#: src/keyboardconfig.cpp:44
+msgid "Move Right"
+msgstr "הזז ימינה"
+
+#: src/keyboardconfig.cpp:45
+msgid "Attack"
+msgstr "תקוף"
+
+#: src/keyboardconfig.cpp:46
+msgid "Target & Attack"
+msgstr "כוון ותקוף"
+
+#: src/keyboardconfig.cpp:47
+msgid "Smilie"
+msgstr "חייך"
+
+#: src/keyboardconfig.cpp:48
+msgid "Talk"
+msgstr "דבר"
+
+#: src/keyboardconfig.cpp:49
+msgid "Stop Attack"
+msgstr "הפסק לתקוף"
+
+#: src/keyboardconfig.cpp:50
+msgid "Target Closest"
+msgstr "כוון לקרוב ביותר"
+
+#: src/keyboardconfig.cpp:51
+msgid "Target NPC"
+msgstr "כוון לדמות"
+
+#: src/keyboardconfig.cpp:52
+msgid "Target Player"
+msgstr "כוון לשחקן"
+
+#: src/keyboardconfig.cpp:53
+msgid "Pickup"
+msgstr "הרם"
+
+#: src/keyboardconfig.cpp:54
+msgid "Hide Windows"
+msgstr "הסתר חלונות"
+
+#: src/keyboardconfig.cpp:55
+msgid "Sit"
+msgstr "שב"
+
+#: src/keyboardconfig.cpp:56
+msgid "Screenshot"
+msgstr "תמונת־מסך"
+
+#: src/keyboardconfig.cpp:57
+msgid "Enable/Disable Trading"
+msgstr "אפשר/בטל מסחר"
+
+#: src/keyboardconfig.cpp:58
+msgid "Find Path to Mouse"
+msgstr "מצא נתיב לעכבר"
+
+#: src/keyboardconfig.cpp:59 src/keyboardconfig.cpp:60
+#: src/keyboardconfig.cpp:61 src/keyboardconfig.cpp:62
+#: src/keyboardconfig.cpp:63 src/keyboardconfig.cpp:64
+#: src/keyboardconfig.cpp:65 src/keyboardconfig.cpp:66
+#: src/keyboardconfig.cpp:67 src/keyboardconfig.cpp:68
+#: src/keyboardconfig.cpp:69 src/keyboardconfig.cpp:70
+#, c-format
+msgid "Item Shortcut %d"
+msgstr "קיצור־דרך לחפץ %d"
+
+#: src/keyboardconfig.cpp:71
+msgid "Help Window"
+msgstr "חלון עזרה"
+
+#: src/keyboardconfig.cpp:72
+msgid "Status Window"
+msgstr "חלון מצב"
+
+#: src/keyboardconfig.cpp:73
+msgid "Inventory Window"
+msgstr "חלון ציוד"
+
+#: src/keyboardconfig.cpp:74
+msgid "Equipment Window"
+msgstr "חלון לבוש"
+
+#: src/keyboardconfig.cpp:75
+msgid "Skill Window"
+msgstr "חלון כישורים"
+
+#: src/keyboardconfig.cpp:76
+msgid "Minimap Window"
+msgstr "חלון מיני מפה"
+
+#: src/keyboardconfig.cpp:77
+msgid "Chat Window"
+msgstr "חלון שיחה"
+
+#: src/keyboardconfig.cpp:78
+msgid "Item Shortcut Window"
+msgstr "חלון קיצור־דרך לחפץ"
+
+#: src/keyboardconfig.cpp:79
+msgid "Setup Window"
+msgstr "חלון הגדרות"
+
+#: src/keyboardconfig.cpp:80
+msgid "Debug Window"
+msgstr "חלון ניפוי"
+
+#: src/keyboardconfig.cpp:81
+msgid "Party Window"
+msgstr "חלון חגיגה"
+
+#: src/keyboardconfig.cpp:82
+msgid "Emote Shortcut Window"
+msgstr "חלון קיצור־דרך לרגישון"
+
+#: src/keyboardconfig.cpp:83 src/keyboardconfig.cpp:84
+#: src/keyboardconfig.cpp:85 src/keyboardconfig.cpp:86
+#: src/keyboardconfig.cpp:87 src/keyboardconfig.cpp:88
+#: src/keyboardconfig.cpp:89 src/keyboardconfig.cpp:90
+#: src/keyboardconfig.cpp:91 src/keyboardconfig.cpp:92
+#: src/keyboardconfig.cpp:93 src/keyboardconfig.cpp:94
+#, c-format
+msgid "Emote Shortcut %d"
+msgstr "קיצור־דרך לריגשון %d"
+
+#: src/keyboardconfig.cpp:95
+msgid "Toggle Chat"
+msgstr "סגירת הצ'אט"
+
+#: src/keyboardconfig.cpp:96
+msgid "Scroll Chat Up"
+msgstr "גלול שיחה למעלה"
+
+#: src/keyboardconfig.cpp:97
+msgid "Scroll Chat Down"
+msgstr "גלול שיחה למטה"
+
+#: src/keyboardconfig.cpp:98
+msgid "Previous Chat Tab"
+msgstr "לשונית השיחה הקודמת"
+
+#: src/keyboardconfig.cpp:99
+msgid "Next Chat Tab"
+msgstr "לשונית השיחה הבאה"
+
+#: src/keyboardconfig.cpp:100
+msgid "Select OK"
+msgstr "בחר אישור"
+
+#: src/keyboardconfig.cpp:102
+msgid "Ignore input 1"
+msgstr "קלט התעלמות 1"
+
+#: src/keyboardconfig.cpp:103
+msgid "Ignore input 2"
+msgstr "קלט התעלמות 2"
+
+#: src/localplayer.cpp:760
+msgid "Unarmed"
+msgstr "ללא תחמושת"
+
+#: src/localplayer.cpp:761
+msgid "Knife"
+msgstr "סכין"
+
+#: src/localplayer.cpp:762
+msgid "Sword"
+msgstr "חרב"
+
+#: src/localplayer.cpp:763
+msgid "Polearm"
+msgstr "נשק מוט"
+
+#: src/localplayer.cpp:764
+msgid "Staff"
+msgstr "מקל"
+
+#: src/localplayer.cpp:765
+msgid "Whip"
+msgstr "שוט"
+
+#: src/localplayer.cpp:766
+msgid "Bow"
+msgstr "קשת"
+
+#: src/localplayer.cpp:767
+msgid "Shooting"
+msgstr "ירייה"
+
+#: src/localplayer.cpp:768
+msgid "Mace"
+msgstr "שרביט"
+
+#: src/localplayer.cpp:769
+msgid "Axe"
+msgstr "גרזן"
+
+#: src/localplayer.cpp:770
+msgid "Thrown"
+msgstr "זריקה"
+
+#: src/localplayer.cpp:772
+msgid "Craft"
+msgstr "מלאכה"
+
+#: src/localplayer.cpp:773
+msgid "Unknown Skill"
+msgstr "כישור לא ידוע"
+
+#: src/main.cpp:263
+msgid "Invalid update host: "
+msgstr "שרת עדכון פגום: "
+
+#: src/main.cpp:296 src/main.cpp:302
+msgid "Error creating updates directory!"
+msgstr "שגיאה ביצירת ספריית העדכונים!"
+
+#: src/main.cpp:339
+msgid " can't be created, but it doesn't exist! Exiting."
+msgstr " can't be created, but it doesn't exist! Exiting."
+
+#: src/main.cpp:492
+msgid "Couldn't set "
+msgstr "לא ניתן להגדיר "
+
+#: src/main.cpp:493
+msgid " video mode: "
+msgstr " מצב וידאו: "
+
+#: src/main.cpp:575
+msgid "mana"
+msgstr "mana"
+
+#: src/main.cpp:576
+msgid "Options:"
+msgstr "אפשרויות:"
+
+#: src/main.cpp:577
+msgid "  -C --config-file : Configuration file to use"
+msgstr "  -C --config-file : Configuration file to use"
+
+#: src/main.cpp:578
+msgid "  -d --data        : Directory to load game data from"
+msgstr "  -d --data        : Directory to load game data from"
+
+#: src/main.cpp:579
+msgid "  -D --default     : Choose default character server and character"
+msgstr "  -D --default     : Choose default character server and character"
+
+#: src/main.cpp:581
+msgid "  -h --help        : Display this help"
+msgstr "  -h --help        : Display this help"
+
+#: src/main.cpp:582
+msgid "  -S --home-dir    : Directory to use as home directory"
+msgstr "  -S --home-dir    : Directory to use as home directory"
+
+#: src/main.cpp:583
+msgid "  -H --update-host : Use this update host"
+msgstr "  -H --update-host : Use this update host"
+
+#: src/main.cpp:584
+msgid "  -P --password    : Login with this password"
+msgstr "  -P --password    : Login with this password"
+
+#: src/main.cpp:585
+msgid "  -c --character   : Login with this character"
+msgstr "  -c --character   : Login with this character"
+
+#: src/main.cpp:586
+msgid "  -p --port        : Login server port"
+msgstr "  -p --port        : Login server port"
+
+#: src/main.cpp:587
+msgid "  -s --server      : Login server name or IP"
+msgstr "  -s --server      : Login server name or IP"
+
+#: src/main.cpp:588
+msgid "  -u --skip-update : Skip the update downloads"
+msgstr "  -u --skip-update : Skip the update downloads"
+
+#: src/main.cpp:589
+msgid "  -U --username    : Login with this username"
+msgstr "  -U --username    : Login with this username"
+
+#: src/main.cpp:591
+msgid "  -O --no-opengl   : Disable OpenGL for this session"
+msgstr "  -O --no-opengl   : Disable OpenGL for this session"
+
+#: src/main.cpp:593
+msgid "  -v --version     : Display the version"
+msgstr "  -v --version     : Display the version"
+
+#: src/main.cpp:1528
+msgid "Connecting to map server..."
+msgstr "מתחבר לשרת המפה..."
+
+#: src/main.cpp:1536
+msgid "Connecting to character server..."
+msgstr "מתחבר לשרת השחקן..."
+
+#: src/main.cpp:1544
+msgid "Connecting to account server..."
+msgstr "מתחבר לשרת החשבון..."
+
+#: src/net/ea/adminhandler.cpp:66
+msgid "Kick failed!"
+msgstr "העפה נכשלה!"
+
+#: src/net/ea/adminhandler.cpp:68
+msgid "Kick succeeded!"
+msgstr "העפה הצליחה!"
+
+#: src/net/ea/buysellhandler.cpp:111
+msgid "Nothing to sell."
+msgstr "אין מה למכור."
+
+#: src/net/ea/buysellhandler.cpp:119
+msgid "Thanks for buying."
+msgstr "תודה על הקנייה."
+
+#: src/net/ea/buysellhandler.cpp:126
+msgid "Unable to buy."
+msgstr "לא ניתן לקנות."
+
+#: src/net/ea/buysellhandler.cpp:132
+msgid "Thanks for selling."
+msgstr "תודה על המכירה."
+
+#: src/net/ea/buysellhandler.cpp:134
+msgid "Unable to sell."
+msgstr "לא ניתן למכור."
+
+#: src/net/ea/charserverhandler.cpp:95
+msgid "Access denied"
+msgstr "הגישה נדחתה"
+
+#: src/net/ea/charserverhandler.cpp:98
+msgid "Cannot use this ID"
+msgstr "לא ניתן להשתמש ב-ID זה."
+
+#: src/net/ea/charserverhandler.cpp:101
+msgid "Unknown failure to select character"
+msgstr "שגיאה לא ידועה בבחירת השחקן"
+
+#: src/net/ea/charserverhandler.cpp:123
+msgid "Failed to create character. Most likely the name is already taken."
+msgstr "נכשל ביצירת השחקן. ייתכן כי שם זה כבר תפוס."
+
+#: src/net/ea/charserverhandler.cpp:135
+msgid "Info"
+msgstr "מידע"
+
+#: src/net/ea/charserverhandler.cpp:135
+msgid "Character deleted."
+msgstr "השחקן נמחק."
+
+#: src/net/ea/charserverhandler.cpp:140
+msgid "Failed to delete character."
+msgstr "נכשל במחיקת השחקן."
+
+#: src/net/ea/charserverhandler.cpp:224
+#: src/net/manaserv/charserverhandler.cpp:253
+msgid "Strength:"
+msgstr "עוצמה:"
+
+#: src/net/ea/charserverhandler.cpp:225
+#: src/net/manaserv/charserverhandler.cpp:254
+msgid "Agility:"
+msgstr "זריזות:"
+
+#: src/net/ea/charserverhandler.cpp:226
+#: src/net/manaserv/charserverhandler.cpp:256
+msgid "Vitality:"
+msgstr "חיוניות:"
+
+#: src/net/ea/charserverhandler.cpp:227
+#: src/net/manaserv/charserverhandler.cpp:257
+msgid "Intelligence:"
+msgstr "תבונה:"
+
+#: src/net/ea/charserverhandler.cpp:228
+#: src/net/manaserv/charserverhandler.cpp:255
+msgid "Dexterity:"
+msgstr "מיומנות:"
+
+#: src/net/ea/charserverhandler.cpp:229
+msgid "Luck:"
+msgstr "מזל:"
+
+#: src/net/ea/chathandler.cpp:78
+msgid "Whisper could not be sent, user is offline."
+msgstr "הלחישה לא יכלה להשלח, המשתמש אינו מחובר."
+
+#: src/net/ea/chathandler.cpp:82
+msgid "Whisper could not be sent, ignored by user."
+msgstr "הלחישה לא יכלה להשלח, מהמשתמש מתעלם."
+
+#: src/net/ea/chathandler.cpp:202 src/net/ea/chathandler.cpp:208
+#: src/net/ea/chathandler.cpp:213 src/net/ea/chathandler.cpp:218
+#: src/net/ea/chathandler.cpp:223 src/net/ea/chathandler.cpp:228
+#: src/net/ea/chathandler.cpp:233 src/net/ea/chathandler.cpp:238
+msgid "Channels are not supported!"
+msgstr "חדרים אינם נתמכים!"
+
+#: src/net/ea/equipmenthandler.cpp:111
+msgid "Unable to equip."
+msgstr "לא ניתן ללבוש."
+
+#: src/net/ea/equipmenthandler.cpp:152
+msgid "Unable to unequip."
+msgstr "לא ניתן להסיר."
+
+#: src/net/ea/generalhandler.cpp:91 src/net/manaserv/generalhandler.cpp:82
+#, c-format
+msgid "Strength %+d"
+msgstr "עוצמה %+d"
+
+#: src/net/ea/generalhandler.cpp:92 src/net/manaserv/generalhandler.cpp:83
+#, c-format
+msgid "Agility %+d"
+msgstr "זריזות %+d"
+
+#: src/net/ea/generalhandler.cpp:93 src/net/manaserv/generalhandler.cpp:85
+#, c-format
+msgid "Vitality %+d"
+msgstr "חיוניות %+d"
+
+#: src/net/ea/generalhandler.cpp:94 src/net/manaserv/generalhandler.cpp:86
+#, c-format
+msgid "Intelligence %+d"
+msgstr "תבונה %+d"
+
+#: src/net/ea/generalhandler.cpp:95 src/net/manaserv/generalhandler.cpp:84
+#, c-format
+msgid "Dexterity %+d"
+msgstr "מיומנות %+d"
+
+#: src/net/ea/generalhandler.cpp:96
+#, c-format
+msgid "Luck %+d"
+msgstr "מזל %+d"
+
+#: src/net/ea/generalhandler.cpp:118
+msgid "Authentication failed"
+msgstr "האימות נכשל"
+
+#: src/net/ea/generalhandler.cpp:121
+msgid "No servers available"
+msgstr "אין שרתים זמינים"
+
+#: src/net/ea/generalhandler.cpp:125
+msgid "Someone else is trying to use this account"
+msgstr "אדם אחר מנסה להשתמש בחשבון זה"
+
+#: src/net/ea/generalhandler.cpp:128
+msgid "This account is already logged in"
+msgstr "חשבון זה כבר מחובר"
+
+#: src/net/ea/generalhandler.cpp:131
+msgid "Speed hack detected"
+msgstr "פריצת מהירות זוהתה"
+
+#: src/net/ea/generalhandler.cpp:134
+msgid "Duplicated login"
+msgstr "התחברות כפולה"
+
+#: src/net/ea/generalhandler.cpp:137
+msgid "Unknown connection error"
+msgstr "שגיאת חיבור לא ידועה"
+
+#: src/net/ea/generalhandler.cpp:194
+msgid "Got disconnected from server!"
+msgstr "נותקת מהשרת!"
+
+#: src/net/ea/gui/partytab.cpp:55
+msgid "/help > Display this help."
+msgstr "/help > מציג עזרה זו."
+
+#: src/net/ea/gui/partytab.cpp:56
+msgid "/create > Create a new party"
+msgstr "/create > יוצר מסיבה חדשה"
+
+#: src/net/ea/gui/partytab.cpp:57
+msgid "/new > Alias of create"
+msgstr "/new > שם נוסף ל-create"
+
+#: src/net/ea/gui/partytab.cpp:58
+msgid "/invite > Invite a player to your party"
+msgstr "/invite > הזמן שחקן לחגיגה שלך"
+
+#: src/net/ea/gui/partytab.cpp:59
+msgid "/leave > Leave the party you are in"
+msgstr "/leave > עזוב את החגיגה בה אתה נמצא"
+
+#: src/net/ea/gui/partytab.cpp:60
+msgid "/kick > Kick some one from the party you are in"
+msgstr "/kick > העף מישהו מהחגיגה בה אתה נמצא"
+
+#: src/net/ea/gui/partytab.cpp:61
+msgid "/item > Show/change party item sharing options"
+msgstr "/item > הצג/שנה את אפשרויות השיתוף של חפץ־חגיגה"
+
+#: src/net/ea/gui/partytab.cpp:62
+msgid "/exp > Show/change party experience sharing options"
+msgstr "/exp > הצג/שנה את אפשרויות שיתוף הנסיון בחגיגה"
+
+#: src/net/ea/gui/partytab.cpp:71
+msgid "Command: /new <party-name>"
+msgstr "פקודה: /new <party-name>"
+
+#: src/net/ea/gui/partytab.cpp:72
+msgid "Command: /create <party-name>"
+msgstr "פקודה: /create <party-name>"
+
+#: src/net/ea/gui/partytab.cpp:73
+msgid "These commands create a new party called <party-name>."
+msgstr "פקודות את יוצרות חגיגה בשם <party-name>."
+
+#: src/net/ea/gui/partytab.cpp:77
+msgid "Command: /invite <nick>"
+msgstr "פקודה: /invite <nick>"
+
+#: src/net/ea/gui/partytab.cpp:84
+msgid "Command: /leave"
+msgstr "פקודה: /leave"
+
+#: src/net/ea/gui/partytab.cpp:85
+msgid "This command causes the player to leave the party."
+msgstr "פקודה זו גורמת לשחקן לעזוב את החגיגה."
+
+#: src/net/ea/gui/partytab.cpp:89
+msgid "Command: /item <policy>"
+msgstr "פקודה: /item <policy>"
+
+#: src/net/ea/gui/partytab.cpp:90
+msgid "This command changes the party's item sharing policy."
+msgstr "הפקודה משנה את מדיניות השיתוף של חפצי החגיגה."
+
+#: src/net/ea/gui/partytab.cpp:91
+msgid ""
+"<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
+"\"0\", \"no\", \"false\" to disable item sharing."
+msgstr ""
+"<policy> יכול להיות אחד מ- \"1\", \"yes\", \"true\" כדי לאפשר שיתוף חפץ, או "
+"\"0\", \"no\", \"false\" כדי לבטל שיתוף חפץ."
+
+#: src/net/ea/gui/partytab.cpp:94
+msgid "Command: /item"
+msgstr "פקודה: /item"
+
+#: src/net/ea/gui/partytab.cpp:95
+msgid "This command displays the party's current item sharing policy."
+msgstr "הפקודה מציגה את מדיניות השיתוף של חפצי החגיגה."
+
+#: src/net/ea/gui/partytab.cpp:99
+msgid "Command: /exp <policy>"
+msgstr "פקודה: /exp <policy>"
+
+#: src/net/ea/gui/partytab.cpp:100
+msgid "This command changes the party's experience sharing policy."
+msgstr "פקודה זו משנה את מדיניות שיתוף הנסיון בחגיגות."
+
+#: src/net/ea/gui/partytab.cpp:101
+msgid ""
+"<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
+"sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
+msgstr ""
+"<policy> יכול להיות  \"1\", \"yes\", \"true\" כדי לאפשר שיתוף נסיון, או \"0"
+"\", \"no\", \"false\" כדי לבטל שיתוף נסיון."
+
+#: src/net/ea/gui/partytab.cpp:104
+msgid "Command: /exp"
+msgstr "פקודה: /exp"
+
+#: src/net/ea/gui/partytab.cpp:105
+msgid "This command displays the party's current experience sharing policy."
+msgstr "פקודה זו מציגה את מדיניות שיתוף הנסיון הנוכחית בחגיגות."
+
+#: src/net/ea/gui/partytab.cpp:113
+msgid "Party name is missing."
+msgstr "שם חגיגה חסר."
+
+#: src/net/ea/gui/partytab.cpp:136 src/net/ea/partyhandler.cpp:194
+msgid "Item sharing enabled."
+msgstr "שיתוף חפצים מאופשר."
+
+#: src/net/ea/gui/partytab.cpp:139 src/net/ea/partyhandler.cpp:200
+msgid "Item sharing disabled."
+msgstr "שיתוף חפצים מבוטל."
+
+#: src/net/ea/gui/partytab.cpp:142 src/net/ea/partyhandler.cpp:206
+msgid "Item sharing not possible."
+msgstr "שיתוף חפצים לא אפשרי."
+
+#: src/net/ea/gui/partytab.cpp:168 src/net/ea/partyhandler.cpp:171
+msgid "Experience sharing enabled."
+msgstr "שיתוף נסיון מאופשר."
+
+#: src/net/ea/gui/partytab.cpp:171 src/net/ea/partyhandler.cpp:177
+msgid "Experience sharing disabled."
+msgstr "שיתוף נסיון מבוטל."
+
+#: src/net/ea/gui/partytab.cpp:174 src/net/ea/partyhandler.cpp:183
+msgid "Experience sharing not possible."
+msgstr "שיתוף נסיון לא אפשרי."
+
+#: src/net/ea/inventoryhandler.cpp:185
+msgid "Unable to pick up item."
+msgstr "לא ניתן להרים את החפץ."
+
+#. TRANSLATORS: Used as in "You picked up a ...", when
+#. picking up only one item.
+#: src/net/ea/inventoryhandler.cpp:195
+msgid "a"
+msgstr "‎"
+
+#: src/net/ea/inventoryhandler.cpp:199
+#, c-format
+msgid "You picked up %s [@@%d|%s@@]."
+msgstr "הרמת %s [@@%d|%s@@]."
+
+#: src/net/ea/inventoryhandler.cpp:245
+msgid "Failed to use item."
+msgstr "נכשל בשימוש בחפץ."
+
+#: src/net/ea/loginhandler.cpp:76
+msgid "Account was not found. Please re-login."
+msgstr "החשבון לא נמצא. אנא נסה להתחבר שנית."
+
+#: src/net/ea/loginhandler.cpp:79 src/net/manaserv/loginhandler.cpp:113
+msgid "Old password incorrect"
+msgstr "הסיסמה הישנה שגויה"
+
+#: src/net/ea/loginhandler.cpp:82
+msgid "New password too short"
+msgstr "הסיסמה החדשה קצרה מדי"
+
+#: src/net/ea/loginhandler.cpp:85 src/net/ea/loginhandler.cpp:169
+#: src/net/manaserv/loginhandler.cpp:89 src/net/manaserv/loginhandler.cpp:119
+#: src/net/manaserv/loginhandler.cpp:152 src/net/manaserv/loginhandler.cpp:188
+#: src/net/manaserv/loginhandler.cpp:220
+msgid "Unknown error"
+msgstr "שגיאה לא ידועה"
+
+#: src/net/ea/loginhandler.cpp:142
+msgid "Unregistered ID"
+msgstr "ID לא רשום"
+
+#: src/net/ea/loginhandler.cpp:145
+msgid "Wrong password"
+msgstr "סיסמה שגויה"
+
+#: src/net/ea/loginhandler.cpp:148
+msgid "Account expired"
+msgstr "המשתמש מושהה"
+
+#: src/net/ea/loginhandler.cpp:151
+msgid "Rejected from server"
+msgstr "הועפת מהשרת"
+
+#: src/net/ea/loginhandler.cpp:155
+msgid ""
+"You have been permanently banned from the game. Please contact the GM Team."
+msgstr "הורחקת לצמיתות מן המשחק. אנא צור קשר עם צוות המנהלים."
+
+#: src/net/ea/loginhandler.cpp:159
+#, c-format
+msgid ""
+"You have been temporarily banned from the game until %s.\n"
+"Please contact the GM team via the forums."
+msgstr ""
+"הורחקת זמנית מן המשחק עד %s.\n"
+"אנא צור קשר עם צוות המנהלים באמצעות מערכת הפורומים."
+
+#: src/net/ea/loginhandler.cpp:166
+msgid "This user name is already taken"
+msgstr "שם המשתמש כבר נלקח"
+
+#: src/net/ea/partyhandler.cpp:77
+msgid "Could not create party."
+msgstr "לא היה ניתן ליצור חגיגה."
+
+#: src/net/ea/partyhandler.cpp:80
+msgid "Party successfully created."
+msgstr "הגיגה נוצרה בהצלחה."
+
+#: src/net/ea/partyhandler.cpp:115
+#, c-format
+msgid "%s is already a member of a party."
+msgstr "%s כבר נמצא בחגיגה."
+
+#: src/net/ea/partyhandler.cpp:119
+#, c-format
+msgid "%s refused your invitation."
+msgstr "%s דחה את הזמנתך."
+
+#: src/net/ea/partyhandler.cpp:123
+#, c-format
+msgid "%s is now a member of your party."
+msgstr "%s הצטרף לחגיגה."
+
+#: src/net/ea/partyhandler.cpp:127
+#, c-format
+msgid "Unknown invite response for %s."
+msgstr "תגובה לא ידועה להזמנה עבור %s."
+
+#: src/net/ea/partyhandler.cpp:234
+msgid "You have left the party."
+msgstr "עזבת את החגיגה."
+
+#: src/net/ea/partyhandler.cpp:238
+#, c-format
+msgid "%s has left your party."
+msgstr "%s עזב את החגיגה שלך."
+
+#: src/net/ea/partyhandler.cpp:273
+#, c-format
+msgid "An unknown member tried to say: %s"
+msgstr "משתמש לא ידוע ניסה לומר: %s"
+
+#: src/net/ea/partyhandler.cpp:299
+msgid "Inviting like this isn't supported at the moment."
+msgstr "הזמנה בדרך זו אינה נתמכת כרגע."
+
+#: src/net/ea/partyhandler.cpp:328
+#, c-format
+msgid "%s is not in your party!"
+msgstr "%s אינו נמצא בחגיגתך!"
+
+#: src/net/ea/playerhandler.cpp:96 src/net/manaserv/beinghandler.cpp:312
+msgid "You are dead."
+msgstr "אתה מת."
+
+#: src/net/ea/playerhandler.cpp:97 src/net/manaserv/beinghandler.cpp:313
+msgid "We regret to inform you that your character was killed in battle."
+msgstr "צר לנו לבשר לכם כי שחקנכם נהרג בקרב."
+
+#: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:314
+msgid "You are not that alive anymore."
+msgstr "אינך חי כל־כך כרגע."
+
+#: src/net/ea/playerhandler.cpp:100 src/net/manaserv/beinghandler.cpp:315
+msgid "The cold hands of the grim reaper are grabbing for your soul."
+msgstr "קור ידיו של המוות הקודר אוחזים בנשמתך."
+
+#: src/net/ea/playerhandler.cpp:101 src/net/manaserv/beinghandler.cpp:316
+msgid "Game Over!"
+msgstr "המשחק נגמר!"
+
+#: src/net/ea/playerhandler.cpp:102
+msgid "Insert coin to continue."
+msgstr "הכנס מטבע כדי להמשיך."
+
+#: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:317
+msgid ""
+"No, kids. Your character did not really die. It... err... went to a better "
+"place."
+msgstr "לא, ילדים. השחקן שלכם לא באמת מת. הוא... אה... הלך למקום טוב יותר."
+
+#: src/net/ea/playerhandler.cpp:105 src/net/manaserv/beinghandler.cpp:318
+msgid ""
+"Your plan of breaking your enemies weapon by bashing it with your throat "
+"failed."
+msgstr "תוכניתך לשבור את נשק האויב באמצות צווארך נכשלה."
+
+#: src/net/ea/playerhandler.cpp:107 src/net/manaserv/beinghandler.cpp:319
+msgid "I guess this did not run too well."
+msgstr "אני מניח שלא הלך לך כל־כך טוב."
+
+#: src/net/ea/playerhandler.cpp:109 src/net/manaserv/beinghandler.cpp:320
+msgid "Do you want your possessions identified?"
+msgstr "האם ברצונך שיאתרו את חלקי גופתך?"
+
+#: src/net/ea/playerhandler.cpp:111 src/net/manaserv/beinghandler.cpp:321
+msgid "Sadly, no trace of you was ever found..."
+msgstr "באופן מצער, מעולם לא נמצא זכר ממך..."
+
+#: src/net/ea/playerhandler.cpp:113 src/net/manaserv/beinghandler.cpp:322
+msgid "Annihilated."
+msgstr "הושמדתך."
+
+#: src/net/ea/playerhandler.cpp:115 src/net/manaserv/beinghandler.cpp:323
+msgid "Looks like you got your head handed to you."
+msgstr "נראה כאילו ראשך נמסר אליך."
+
+#: src/net/ea/playerhandler.cpp:117 src/net/manaserv/beinghandler.cpp:324
+msgid ""
+"You screwed up again, dump your body down the tubes and get you another one."
+msgstr "פישלת שוב, גופתך תיזרק לצינוק ותקבל אחת חדשה."
+
+#: src/net/ea/playerhandler.cpp:120
+msgid "You're not dead yet. You're just resting."
+msgstr "אינך מת עדיין. אתה רק נח."
+
+#: src/net/ea/playerhandler.cpp:121
+msgid "You are no more."
+msgstr "אינך יותר."
+
+#: src/net/ea/playerhandler.cpp:122
+msgid "You have ceased to be."
+msgstr "חדלת מלהתקיים."
+
+#: src/net/ea/playerhandler.cpp:123
+msgid "You've expired and gone to meet your maker."
+msgstr "התפוגגת ועברת לפגוש את הבורא."
+
+#: src/net/ea/playerhandler.cpp:124
+msgid "You're a stiff."
+msgstr "אינך מת עדיין. אתה רק נח."
+
+#: src/net/ea/playerhandler.cpp:125
+msgid "Bereft of life, you rest in peace."
+msgstr "נטול חיים, את נח על משכבך."
+
+#: src/net/ea/playerhandler.cpp:126
+msgid "If you weren't so animated, you'd be pushing up the daisies."
+msgstr "אתה לא מת עדיין! אה.. טוב, עכשיו כן."
+
+#: src/net/ea/playerhandler.cpp:127
+msgid "Your metabolic processes are now history."
+msgstr "חילוף החומרים שלך הפך להיסטוריה."
+
+#: src/net/ea/playerhandler.cpp:128
+msgid "You're off the twig."
+msgstr "אתה מכה כמו גופה."
+
+#: src/net/ea/playerhandler.cpp:129
+msgid "You've kicked the bucket."
+msgstr "חדלת מלהתקיים."
+
+#: src/net/ea/playerhandler.cpp:130
+msgid ""
+"You've shuffled off your mortal coil, run down the curtain and joined the "
+"bleedin' choir invisibile."
+msgstr "התפוגגת ועברת לפגוש את הבורא."
+
+#: src/net/ea/playerhandler.cpp:132
+msgid "You are an ex-player."
+msgstr "הינך שחקן לשעבר."
+
+#: src/net/ea/playerhandler.cpp:133
+msgid "You're pining for the fjords."
+msgstr "אתה מת. טוב שיש חברת ביטוח..."
+
+#: src/net/ea/playerhandler.cpp:246 src/net/ea/playerhandler.cpp:270
+msgid "Message"
+msgstr "הודעה"
+
+#: src/net/ea/playerhandler.cpp:247
+msgid ""
+"You are carrying more than half your weight. You are unable to regain health."
+msgstr "אתה סוחב יותר מחצי ממשקלך. אינך יכול לאחות את החיים."
+
+#: src/net/ea/playerhandler.cpp:290
+msgid "You picked up "
+msgstr "הרמת "
+
+#: src/net/ea/playerhandler.cpp:413
+msgid "Equip arrows first."
+msgstr "הצטייד בחצים תחילה."
+
+#: src/net/ea/skillhandler.cpp:139
+msgid "Trade failed!"
+msgstr "המסחר נכשל!"
+
+#: src/net/ea/skillhandler.cpp:142
+msgid "Emote failed!"
+msgstr "הבעה נכשלה!"
+
+#: src/net/ea/skillhandler.cpp:145
+msgid "Sit failed!"
+msgstr "הישיבה נכשלה!"
+
+#: src/net/ea/skillhandler.cpp:148
+msgid "Chat creating failed!"
+msgstr "יצירת שיחה נכשלה!"
+
+#: src/net/ea/skillhandler.cpp:151
+msgid "Could not join party!"
+msgstr "לא היה ניתן להצטרף לחגיגה!"
+
+#: src/net/ea/skillhandler.cpp:154
+msgid "Cannot shout!"
+msgstr "לא ניתן לצעוק!"
+
+#: src/net/ea/skillhandler.cpp:163
+msgid "You have not yet reached a high enough lvl!"
+msgstr "לא הגעת לרמה גבוהה מספיק!"
+
+#: src/net/ea/skillhandler.cpp:166
+msgid "Insufficient HP!"
+msgstr "לא נותרו נק' חיים!"
+
+#: src/net/ea/skillhandler.cpp:169
+msgid "Insufficient SP!"
+msgstr "לא נותרו נק' קסם!"
+
+#: src/net/ea/skillhandler.cpp:172
+msgid "You have no memos!"
+msgstr "אין תזכירים!"
+
+#: src/net/ea/skillhandler.cpp:175
+msgid "You cannot do that right now!"
+msgstr "אינך יכול לעשות זאת כרגע!"
+
+#: src/net/ea/skillhandler.cpp:178
+msgid "Seems you need more money... ;-)"
+msgstr "נראה שאתה צריך עוד כסף... ;-)"
+
+#: src/net/ea/skillhandler.cpp:181
+msgid "You cannot use this skill with that kind of weapon!"
+msgstr "אינך יכול להשתמש בכישור עם נשק זה!"
+
+#: src/net/ea/skillhandler.cpp:184
+msgid "You need another red gem!"
+msgstr "אתה צריך עוד אבן אדומה!"
+
+#: src/net/ea/skillhandler.cpp:187
+msgid "You need another blue gem!"
+msgstr "אתה צריך עוד אבן כחולה!"
+
+#: src/net/ea/skillhandler.cpp:190
+msgid "You're carrying to much to do this!"
+msgstr "אתה סוחב יותר מדי בכדי לעשות זאת!"
+
+#: src/net/ea/skillhandler.cpp:193
+msgid "Huh? What's that?"
+msgstr "הא? מה זה?"
+
+#: src/net/ea/skillhandler.cpp:202
+msgid "Warp failed..."
+msgstr "הפיתול נכשל...."
+
+#: src/net/ea/skillhandler.cpp:205
+msgid "Could not steal anything..."
+msgstr "לא היה ניתן לגנוב דבר..."
+
+#: src/net/ea/skillhandler.cpp:208
+msgid "Poison had no effect..."
+msgstr "לרעל לא הייתה כל השפעה..."
+
+#: src/net/ea/tradehandler.cpp:103 src/net/manaserv/tradehandler.cpp:114
+msgid "Request for Trade"
+msgstr "בקשה למסחר"
+
+#: src/net/ea/tradehandler.cpp:104 src/net/manaserv/tradehandler.cpp:115
+#, c-format
+msgid "%s wants to trade with you, do you accept?"
+msgstr "%s מעוניין לסחור עימך, האם אתה מסכים?"
+
+#: src/net/ea/tradehandler.cpp:119
+msgid "Trading isn't possible. Trade partner is too far away."
+msgstr "מסחר אינו אפשרי. השותף למסחר רחוק מדי."
+
+#: src/net/ea/tradehandler.cpp:123
+msgid "Trading isn't possible. Character doesn't exist."
+msgstr "מסחר אינו אפשרי. השחקן אינו קיים."
+
+#: src/net/ea/tradehandler.cpp:127
+msgid "Trade cancelled due to an unknown reason."
+msgstr "המסחר בוטל מסיבה לא ידועה."
+
+#: src/net/ea/tradehandler.cpp:132
+#, c-format
+msgid "Trade: You and %s"
+msgstr "מסחר: אתה ו-%s"
+
+#: src/net/ea/tradehandler.cpp:139
+#, c-format
+msgid "Trade with %s cancelled."
+msgstr "המסחר עם %s בוטל."
+
+#: src/net/ea/tradehandler.cpp:148
+msgid "Unhandled trade cancel packet."
+msgstr "המסחר נכשל"
+
+#: src/net/ea/tradehandler.cpp:198
+msgid "Failed adding item. Trade partner is over weighted."
+msgstr "נכשל בהוספת חפץ. השותף למסחר שוקל יותר מדי."
+
+#: src/net/ea/tradehandler.cpp:203
+msgid "Failed adding item. Trade partner has no free slot."
+msgstr "נכשל בהוספת חפץ. לשותף למסחר אין מקומות פנויים."
+
+#: src/net/ea/tradehandler.cpp:207
+msgid "Failed adding item for unknown reason."
+msgstr "נכשל בהוספת חפץ מסיבה לא ידועה."
+
+#: src/net/ea/tradehandler.cpp:220 src/net/manaserv/tradehandler.cpp:147
+msgid "Trade canceled."
+msgstr "המסחר בוטל."
+
+#: src/net/ea/tradehandler.cpp:227 src/net/manaserv/tradehandler.cpp:154
+msgid "Trade completed."
+msgstr "המסחר הושלם."
+
+#: src/net/manaserv/beinghandler.cpp:328
+msgid " Press OK to respawn"
+msgstr " לחץ אישור כדי להשיב"
+
+#: src/net/manaserv/beinghandler.cpp:329
+msgid "You died"
+msgstr "נהרגת"
+
+#: src/net/manaserv/charserverhandler.cpp:219
+msgid "No gameservers are available."
+msgstr "אין שרתי משחק זמינים."
+
+#: src/net/manaserv/charserverhandler.cpp:258
+msgid "Willpower:"
+msgstr "כח רצון:"
+
+#: src/net/manaserv/chathandler.cpp:158 src/net/manaserv/guildhandler.cpp:250
+#, c-format
+msgid "Topic: %s"
+msgstr "כותרת: %s"
+
+#: src/net/manaserv/generalhandler.cpp:87
+#, c-format
+msgid "Willpower %+d"
+msgstr "כח רצון %+d"
+
+#: src/net/manaserv/guildhandler.cpp:74
+msgid "Guild created."
+msgstr "גילדה נוצרה."
+
+#: src/net/manaserv/guildhandler.cpp:79
+msgid "Error creating guild."
+msgstr "שגיאה ביצירת גילדה."
+
+#: src/net/manaserv/guildhandler.cpp:89
+msgid "Invite sent."
+msgstr "הזמנה נשלחה."
+
+#: src/net/manaserv/guildhandler.cpp:194
+msgid "Member was promoted successfully."
+msgstr "החבר קודם בהצלחה."
+
+#: src/net/manaserv/guildhandler.cpp:199
+msgid "Failed to promote member."
+msgstr "נכשל בקידום החבר."
+
+#: src/net/manaserv/loginhandler.cpp:80
+msgid "Wrong magic_token"
+msgstr "magic_token שגוי"
+
+#: src/net/manaserv/loginhandler.cpp:83 src/net/manaserv/loginhandler.cpp:182
+msgid "Already logged in"
+msgstr "כבר מחובר"
+
+#: src/net/manaserv/loginhandler.cpp:86 src/net/manaserv/loginhandler.cpp:185
+msgid "Server is full"
+msgstr "השרת מלא"
+
+#: src/net/manaserv/loginhandler.cpp:110
+msgid "New password incorrect"
+msgstr "הסיסמה החדשה שגויה"
+
+#: src/net/manaserv/loginhandler.cpp:116 src/net/manaserv/loginhandler.cpp:146
+msgid "Account not connected. Please login first."
+msgstr "החשבון אינו מחובר. אנא קודם־כל התחבר."
+
+#: src/net/manaserv/loginhandler.cpp:140
+msgid "New email address incorrect"
+msgstr "כתובת דוא\"ל חדשה שגויה"
+
+#: src/net/manaserv/loginhandler.cpp:143
+msgid "Old email address incorrect"
+msgstr "כתובת דוא\"ל ישנה שגויה"
+
+#: src/net/manaserv/loginhandler.cpp:149
+msgid "The new Email Address already exists."
+msgstr "כתובת הדוא\"ל החדשה כבר בשימוש."
+
+#: src/net/manaserv/loginhandler.cpp:176 src/net/manaserv/loginhandler.cpp:208
+msgid "Client version is too old"
+msgstr "גרסת הקליינט ישנה מדי"
+
+#: src/net/manaserv/loginhandler.cpp:179
+msgid "Wrong username or password"
+msgstr "שם משתמש או סיסמה שגויים"
+
+#: src/net/manaserv/loginhandler.cpp:211
+msgid "Wrong username, password or email address"
+msgstr "שם משתמש, סיסמה או דוא\"ל שגויים"
+
+#: src/net/manaserv/loginhandler.cpp:214
+msgid "Username already exists"
+msgstr "שם המשתמש כבר בשימוש"
+
+#: src/net/manaserv/loginhandler.cpp:217
+msgid "Email address already exists"
+msgstr "כתובת הדוא\"ל כבר בשימוש"
+
+#: src/net/manaserv/partyhandler.cpp:86
+msgid "Joined party."
+msgstr "הצטרפת לחגיגה."
+
+#: src/net/manaserv/partyhandler.cpp:103
+#, c-format
+msgid "%s joined the party."
+msgstr "%s הצטרף לחגיגה."
+
+#: src/net/manaserv/tradehandler.cpp:93
+msgid "Accepting incoming trade requests."
+msgstr "מקבל בקשות מסחר נכנסות."
+
+#: src/net/manaserv/tradehandler.cpp:95
+msgid "Ignoring incoming trade requests."
+msgstr "מתעלם מבקשות סחר נכנסות."
+
+#: src/net/manaserv/tradehandler.cpp:133
+#, c-format
+msgid "Trading with %s"
+msgstr "סוחר עם%s"
+
+#: src/resources/itemdb.cpp:52
+#, c-format
+msgid "Attack %+d"
+msgstr "התקפה %+d"
+
+#: src/resources/itemdb.cpp:53
+#, c-format
+msgid "Defense %+d"
+msgstr "הגנה %+d"
+
+#: src/resources/itemdb.cpp:54
+#, c-format
+msgid "HP %+d"
+msgstr "חיים %+d"
+
+#: src/resources/itemdb.cpp:55
+#, c-format
+msgid "MP %+d"
+msgstr "MP %+d"
+
+#: src/resources/itemdb.cpp:113
+msgid "Unknown item"
+msgstr "חפץ לא ידוע"
+
+#: src/resources/itemdb.cpp:156
+msgid "Unnamed"
+msgstr "ללא שם"
+
+#: src/resources/monsterdb.cpp:45 src/resources/monsterdb.cpp:67
+msgid "unnamed"
+msgstr "ללא שם"
+
+#~ msgid "Select Character"
+#~ msgstr "בחר שחקן"
+
+#~ msgid "Scroll radius"
+#~ msgstr "תווך גלילה"
+
+#~ msgid "Scroll laziness"
+#~ msgstr "עצלנות גלילה"
