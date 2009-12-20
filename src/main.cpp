@@ -82,8 +82,6 @@
 
 #include <SDL_image.h>
 
-#include <guichan/actionlistener.hpp>
-
 #include <libxml/parser.h>
 
 #include <getopt.h>
@@ -128,6 +126,7 @@ Game *game = 0;
 
 State state = STATE_START;
 std::string errorMessage;
+ErrorListener errorListener;
 
 Sound sound;
 Music *bgm;
@@ -628,36 +627,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
     }
 }
 
-/**
- * Reads the file "{Updates Directory}/resources2.txt" and attempts to load
- * each update mentioned in it.
- */
-static void loadUpdates()
-{
-    if (updatesDir.empty()) return;
-    const std::string updatesFile = "/" + updatesDir + "/resources2.txt";
-    ResourceManager *resman = ResourceManager::getInstance();
-    std::vector<std::string> lines = resman->loadTextFile(updatesFile);
-
-    for (unsigned int i = 0; i < lines.size(); ++i)
-    {
-        std::stringstream line(lines[i]);
-        std::string filename;
-        line >> filename;
-        resman->addToSearchPath(homeDir + "/" + updatesDir + "/"
-                                + filename, false);
-    }
-}
-
-class ErrorListener : public gcn::ActionListener
-{
-public:
-    void action(const gcn::ActionEvent &event)
-    {
-        state = STATE_CHOOSE_SERVER;
-    }
-} errorListener;
-
 class AccountListener : public gcn::ActionListener
 {
 public:
@@ -677,6 +646,11 @@ public:
 } loginListener;
 
 } // namespace
+
+void ErrorListener::action(const gcn::ActionEvent &event)
+{
+    state = STATE_CHOOSE_SERVER;
+}
 
 const std::string &getHomeDirectory()
 {
@@ -1035,7 +1009,7 @@ int main(int argc, char *argv[])
                     {
                         logger->log("State: UPDATE");
                         currentDialog = new UpdaterWindow(updateHost,
-                                homeDir + "/" + updatesDir);
+                                homeDir + "/" + updatesDir,options.dataPath.empty());
                     }
                     break;
 
@@ -1046,11 +1020,7 @@ int main(int argc, char *argv[])
                     // we don't load any other files...
                     if (options.dataPath.empty())
                     {
-                        // Load the updates downloaded so far...
-                        loadUpdates();
-
-
-                        // Also add customdata directory
+                        // Add customdata directory
                         ResourceManager::getInstance()->searchAndAddArchives(
                             "customdata/",
                             "zip",
