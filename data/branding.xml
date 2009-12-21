@@ -6,7 +6,6 @@
  <option name="loginMusic" value="godness.ogg"/>
  <option name="defaultServer" value="server.invertika.org"/>
  <option name="defaultPort" value="9601"/>
- <option name="defaultUpdateHost" value="http://updates.invertika.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
 </configuration>
