@@ -1,15 +1,15 @@
 
 iconsdir = $(pkgdatadir)/data/icons
 
-icons_DATA = mana.png \
-	     mana.xpm
+icons_DATA = ivk.png \
+	     ivk.xpm
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datarootdir)/pixmaps
-	$(INSTALL) $(srcdir)/mana.png $(DESTDIR)$(datarootdir)/pixmaps/mana.png
+	$(INSTALL) $(srcdir)/ivk.png $(DESTDIR)$(datarootdir)/pixmaps/ivk.png
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datarootdir)/pixmaps/mana.png
+	rm -f $(DESTDIR)$(datarootdir)/pixmaps/ivk.png
 
 EXTRA_DIST =		\
 	$(icons_DATA)
