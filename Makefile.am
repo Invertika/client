@@ -1,14 +1,14 @@
 # Subdirectories to build
-SUBDIRS = data docs po src
+SUBDIRS = data po src
 
 desktopdir = $(datarootdir)/applications
 
-desktop_DATA = mana.desktop
+desktop_DATA = invertika.desktop
 
 # Extra files to include
 EXTRA_DIST = $(desktop_DATA) \
-	     mana.cbp \
-	     mana.menu
+	     invertika.cbp \
+	     invertika.menu
 
 # Autopoint m4 stuff
 ACLOCAL_AMFLAGS = -I m4
