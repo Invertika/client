@@ -2,8 +2,6 @@
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
 #
-# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
-# Jonathan Raphael Joachim Kolberg, 2009.
 #: src/commandhandler.cpp:149 src/commandhandler.cpp:319
 #: src/commandhandler.cpp:320 src/commandhandler.cpp:344
 #: src/commandhandler.cpp:397 src/engine.cpp:50 src/engine.cpp:57
@@ -54,13 +52,15 @@
 #: src/resources/itemdb.cpp:228 src/resources/itemdb.cpp:229
 #: src/resources/itemdb.cpp:230 src/resources/itemdb.cpp:306
 #: src/resources/monsterdb.cpp:101 src/resources/monsterdb.cpp:133
+# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
+# Jonathan Raphael Joachim Kolberg, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-31 15:55+0100\n"
-"PO-Revision-Date: 2009-12-31 01:01+0000\n"
-"Last-Translator: Jonathan Raphael Joachim Kolberg\n"
+"PO-Revision-Date: 2009-12-31 18:08+0100\n"
+"Last-Translator: \n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,15 +79,15 @@ msgstr "Hilfe"
 
 #: src/commandhandler.cpp:60 src/commandhandler.cpp:195
 msgid "announce"
-msgstr ""
+msgstr "ankündigen"
 
 #: src/commandhandler.cpp:64 src/commandhandler.cpp:284
 msgid "where"
-msgstr ""
+msgstr "Wo"
 
 #: src/commandhandler.cpp:68 src/commandhandler.cpp:289
 msgid "who"
-msgstr ""
+msgstr "Wer"
 
 #: src/commandhandler.cpp:72 src/commandhandler.cpp:229
 msgid "msg"
@@ -516,7 +516,7 @@ msgstr "Gib /help ein, um eine Liste der Befehle zu erhalten."
 
 #: src/commandhandler.cpp:305
 msgid ", coordinates: "
-msgstr ""
+msgstr ", Koordinaten: "
 
 #: src/commandhandler.cpp:306 src/gui/chat.cpp:289
 msgid ", "
@@ -590,11 +590,11 @@ msgstr ""
 
 #: src/commandhandler.cpp:478
 msgid "Player wasn't ignored!"
-msgstr ""
+msgstr "Spieler wurde nicht ignoriert!"
 
 #: src/commandhandler.cpp:483
 msgid "Player no longer ignored!"
-msgstr ""
+msgstr "Spieler wird nicht länger ignoriert!"
 
 #: src/commandhandler.cpp:485
 #, fuzzy
@@ -1070,7 +1070,7 @@ msgstr "Account- und Charakterverwaltung"
 
 #: src/gui/charselectdialog.cpp:127
 msgid "Switch Login"
-msgstr ""
+msgstr "Login wechseln"
 
 #: src/gui/charselectdialog.cpp:127 src/gui/charselectdialog.cpp:187
 msgid "switch"
@@ -1255,15 +1255,13 @@ msgstr ""
 msgid "%d FPS"
 msgstr ""
 
-#: src/gui/debugwindow.cpp:65
-#, fuzzy, c-format
+#: src/gui/debugwindow.cpp:65, c-format
 msgid "Music: %s"
-msgstr "Thema: %s"
+msgstr "Musik: %s"
 
-#: src/gui/debugwindow.cpp:66
-#, fuzzy, c-format
+#: src/gui/debugwindow.cpp:66, c-format
 msgid "Map: %s"
-msgstr "Name : %s"
+msgstr "Karte : %s"
 
 #: src/gui/debugwindow.cpp:67
 #, fuzzy, c-format
@@ -1288,7 +1286,7 @@ msgstr "Lautstärke der Musik"
 #: src/gui/debugwindow.cpp:104 src/gui/setup_audio.cpp:54
 #: src/gui/setup_audio.cpp:140 src/gui/updatewindow.cpp:459
 msgid "music"
-msgstr ""
+msgstr "Musik"
 
 #: src/gui/debugwindow.cpp:108
 #, fuzzy
@@ -1382,11 +1380,11 @@ msgstr ""
 
 #: src/gui/guildwindow.cpp:126
 msgid "Member Invite"
-msgstr ""
+msgstr "Spieler einladen"
 
 #: src/gui/guildwindow.cpp:127
 msgid "Who would you like to invite?"
-msgstr ""
+msgstr "Wen möchtest du einladen?"
 
 #: src/gui/guildwindow.cpp:128 src/gui/guildwindow.cpp:158
 msgid "INVITE_USER_OK"
@@ -1763,15 +1761,15 @@ msgstr "Fortschrittsbalkenbeschriftungen"
 
 #: src/gui/palette.cpp:85
 msgid "Buttons"
-msgstr ""
+msgstr "Buttons"
 
 #: src/gui/palette.cpp:86
 msgid "Disabled Buttons"
-msgstr ""
+msgstr "Deaktivierte Buttons"
 
 #: src/gui/palette.cpp:87
 msgid "Tabs"
-msgstr ""
+msgstr "Tabs"
 
 #: src/gui/palette.cpp:89
 msgid "Background"
@@ -2217,7 +2215,7 @@ msgstr "Aufheben"
 
 #: src/gui/popupmenu.cpp:278
 msgid "look"
-msgstr ""
+msgstr "Schauen "
 
 #: src/gui/popupmenu.cpp:298
 #, fuzzy
@@ -2252,7 +2250,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:349
 #, c-format
 msgid "PopupMenu: Warning, unknown action '%s'"
-msgstr ""
+msgstr "PopupMenu: Warnung, unbekannte Aktion '%s'"
 
 #: src/gui/popupmenu.cpp:370 src/gui/popupmenu.cpp:372
 #: src/gui/popupmenu.cpp:375
@@ -2349,7 +2347,7 @@ msgstr "Benutzen"
 
 #: src/gui/register.cpp:100
 msgid "Email:"
-msgstr "E-Mail:"
+msgstr "eMail:"
 
 #: src/gui/register.cpp:152
 #, c-format
@@ -2382,7 +2380,7 @@ msgstr "Passwörter stimmen nicht überein."
 
 #: src/gui/sdlinput.cpp:79 src/gui/sdlinput.cpp:99
 msgid "The queue is empty."
-msgstr ""
+msgstr "Die Warteschlange ist leer."
 
 #: src/gui/sell.cpp:74 src/gui/sell.cpp:182
 #, fuzzy
@@ -2432,7 +2430,7 @@ msgstr "Verbinde..."
 
 #: src/gui/serverdialog.cpp:129
 msgid "Add Entry"
-msgstr ""
+msgstr "Neuer Eintrag"
 
 #: src/gui/serverdialog.cpp:129 src/gui/serverdialog.cpp:249
 msgid "addEntry"
@@ -2453,7 +2451,7 @@ msgstr ""
 #: src/gui/serverdialog.cpp:296
 #, c-format
 msgid "Downloading server list...%2.2f%%"
-msgstr ""
+msgstr "Lade Serverliste herunter...%2.2f%%"
 
 #: src/gui/serverdialog.cpp:302
 #, fuzzy
@@ -2462,7 +2460,7 @@ msgstr "Warte auf den Server"
 
 #: src/gui/serverdialog.cpp:306
 msgid "Preparing download"
-msgstr ""
+msgstr "Download wird vorbereitet"
 
 #: src/gui/serverdialog.cpp:343
 msgid "onlineServerList"
@@ -2527,7 +2525,7 @@ msgstr "Port:"
 #: src/gui/serverdialog.cpp:448
 #, c-format
 msgid "Error retreiving server list: %s\n"
-msgstr ""
+msgstr "Fehler beim empfangen der Serverliste: %s\n"
 
 #: src/gui/setup_audio.cpp:38 src/gui/setup_audio.cpp:86
 #: src/gui/setup_audio.cpp:130 src/gui/setup_audio.cpp:142 src/main.cpp:324
@@ -2562,7 +2560,7 @@ msgstr "Ton"
 
 #: src/gui/setup_audio.cpp:43
 msgid "Download music"
-msgstr ""
+msgstr "Lade Musik herunter"
 
 #: src/gui/setup_audio.cpp:47
 msgid "Audio"
@@ -2588,10 +2586,12 @@ msgstr "Kein Text"
 #: src/gui/setup_audio.cpp:94
 msgid "You may have to restart your client if you want to download new music"
 msgstr ""
+"Der Client muss neugestartet werden, wenn die neue Musik heruntergeladen "
+"werden soll"
 
 #: src/gui/setup_audio.cpp:106
 msgid "Sound Engine"
-msgstr ""
+msgstr "Soundengine"
 
 #: src/gui/setup_audio.cpp:107 src/main.cpp:474
 #, c-format
@@ -3129,6 +3129,8 @@ msgstr "Starte das Spiel neu um die Änderungen zu übernehmen."
 #: src/gui/setup_video.cpp:462
 msgid "Some windows may be moved to fit the lowered resolution."
 msgstr ""
+"Einige Fenster können verschoben werden um sich an die geänderte Auflösung "
+"anzupassen."
 
 #: src/gui/setup_video.cpp:468 src/main.cpp:435 src/main.cpp:884
 msgid "screenwidth"
@@ -3224,7 +3226,7 @@ msgstr ""
 #: src/gui/specialswindow.cpp:84 src/gui/specialswindow.cpp:86
 #: src/gui/windowmenu.cpp:59 src/gui/windowmenu.cpp:126
 msgid "Specials"
-msgstr ""
+msgstr "Special"
 
 #: src/gui/specialswindow.cpp:157
 msgid "specials"
@@ -3512,12 +3514,12 @@ msgstr "##1 es später erneut zu versuchen."
 #: src/gui/updatewindow.cpp:430
 #, c-format
 msgid "Warning this server does not have a %s file falling back to %s"
-msgstr ""
+msgstr "Dieser Server besitzt keine %s Datei. Benutze stattdessen die Datei %s"
 
 #: src/gui/updatewindow.cpp:482
 #, c-format
 msgid "%s already here"
-msgstr ""
+msgstr "%s ist bereits hier"
 
 #: src/gui/updatewindow.cpp:495
 msgid "Completed"
@@ -3629,7 +3631,7 @@ msgstr ""
 
 #: src/gui/widgets/chattab.cpp:92
 msgid "Welcome"
-msgstr ""
+msgstr "Wilkommen"
 
 #: src/gui/widgets/chattab.cpp:108 src/gui/widgets/chattab.cpp:132
 msgid "##C"
@@ -3728,7 +3730,7 @@ msgstr ""
 
 #: src/gui/windowmenu.cpp:54 src/gui/windowmenu.cpp:89
 msgid ":-)"
-msgstr ""
+msgstr ":-)"
 
 #: src/gui/windowmenu.cpp:60 src/gui/windowmenu.cpp:130
 msgid "Guilds"
@@ -4448,7 +4450,7 @@ msgstr ""
 #: src/main.cpp:396
 #, c-format
 msgid "Can't find Resources directory\n"
-msgstr ""
+msgstr "Kann das Ressourcen Verzeichnis nicht finden\n"
 
 #: src/main.cpp:399
 msgid "/data"
@@ -4469,7 +4471,7 @@ msgstr ""
 #: src/main.cpp:444
 #, c-format
 msgid "Couldn't set %dx%dx%d video mode: %s"
-msgstr ""
+msgstr "Kann Videomodus %dx%dx%d nicht setzten: %s"
 
 #: src/main.cpp:521
 msgid "Options:"
@@ -4751,7 +4753,7 @@ msgstr "Passwort:"
 
 #: src/main.cpp:1155
 msgid "Password changed successfully!"
-msgstr ""
+msgstr "Passwort erfolgreich geändert!"
 
 #: src/main.cpp:1163
 msgid "State: CHANGE EMAIL"
@@ -4794,7 +4796,7 @@ msgstr "Abmelden"
 
 #: src/main.cpp:1196
 msgid "Farewell, come back any time..."
-msgstr ""
+msgstr "Leb wohl und komme jeder Zeit wieder..."
 
 #: src/main.cpp:1204
 msgid "State: SWITCH SERVER"
@@ -5052,7 +5054,7 @@ msgstr "Glück %+d"
 #: src/net/ea/generalhandler.cpp:119
 #, c-format
 msgid "Connection problem: %i"
-msgstr ""
+msgstr "Verbindungsproblem: %i"
 
 #: src/net/ea/generalhandler.cpp:123
 #, fuzzy
@@ -5202,7 +5204,7 @@ msgstr "Dieser Befehl erstellt eine neue Party mit dem Namen <Party-Name>"
 
 #: src/net/ea/gui/partytab.cpp:75 src/net/ea/gui/partytab.cpp:117
 msgid "invite"
-msgstr ""
+msgstr "einladen"
 
 #: src/net/ea/gui/partytab.cpp:77
 msgid "Command: /invite <nick>"
@@ -5210,7 +5212,7 @@ msgstr "Befehl: /invite <Name>"
 
 #: src/net/ea/gui/partytab.cpp:82 src/net/ea/gui/partytab.cpp:121
 msgid "leave"
-msgstr ""
+msgstr "verlassen"
 
 #: src/net/ea/gui/partytab.cpp:84
 msgid "Command: /leave"
@@ -5372,12 +5374,12 @@ msgstr "Unbekannter Fehler"
 #: src/net/ea/loginhandler.cpp:102
 #, c-format
 msgid "Received update host \"%s\" from login server."
-msgstr ""
+msgstr "Empfange Updateserver \"%s\" vom Loginserver"
 
 #: src/net/ea/loginhandler.cpp:131
 #, c-format
 msgid "Network: Server: %s (%s:%d)"
-msgstr ""
+msgstr "Netzwerk: Server: %s (%s:%d)"
 
 #: src/net/ea/loginhandler.cpp:143
 #, c-format
@@ -5555,12 +5557,12 @@ msgstr "Unbekannte Reaktion auf die Einladung von %s."
 #: src/net/ea/partyhandler.cpp:185
 #, c-format
 msgid "Unknown party exp option: %d\n"
-msgstr ""
+msgstr "Unbekannte Party exp Option: %d\n"
 
 #: src/net/ea/partyhandler.cpp:208
 #, c-format
 msgid "Unknown party item option: %d\n"
-msgstr ""
+msgstr "Unbekannte Party Item Option: %d\n"
 
 #: src/net/ea/partyhandler.cpp:234
 msgid "You have left the party."
@@ -5719,7 +5721,7 @@ msgstr "Flüsternd zu %s: %s"
 #: src/net/ea/playerhandler.cpp:214
 #, c-format
 msgid "Adjust scrolling by %d:%d"
-msgstr ""
+msgstr "Justiere Scrolling %d:%d"
 
 #: src/net/ea/playerhandler.cpp:242 src/net/ea/playerhandler.cpp:303
 msgid "Message"
@@ -5739,7 +5741,7 @@ msgstr "Aufgehoben "
 
 #: src/net/ea/playerhandler.cpp:360
 msgid "Cannot raise skill!"
-msgstr ""
+msgstr "Kann Skill nicht erhöhen!"
 
 #: src/net/ea/playerhandler.cpp:521
 msgid "Equip arrows first."
@@ -5920,11 +5922,11 @@ msgstr "Wähle aus, wie viele Gegenstände Du tauschen möchtest."
 
 #: src/net/manaserv/charhandler.cpp:199
 msgid "No empty slot."
-msgstr ""
+msgstr "Kein freier Slot."
 
 #: src/net/manaserv/charhandler.cpp:202
 msgid "Invalid name."
-msgstr ""
+msgstr "Ungültiger Name."
 
 #: src/net/manaserv/charhandler.cpp:205
 #, fuzzy
@@ -5933,15 +5935,15 @@ msgstr "Benutzername bereits vorhanden"
 
 #: src/net/manaserv/charhandler.cpp:208
 msgid "Invalid hairstyle."
-msgstr ""
+msgstr "Ungültiger Haarstil."
 
 #: src/net/manaserv/charhandler.cpp:211
 msgid "Invalid hair color."
-msgstr ""
+msgstr "Ungültige Haarfarbe."
 
 #: src/net/manaserv/charhandler.cpp:214
 msgid "Invalid gender."
-msgstr ""
+msgstr "Ungültiges Geschlecht."
 
 #: src/net/manaserv/charhandler.cpp:217
 #, fuzzy
