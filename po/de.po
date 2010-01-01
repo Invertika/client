@@ -59,7 +59,7 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-31 15:55+0100\n"
-"PO-Revision-Date: 2010-01-01 17:25+0000\n"
+"PO-Revision-Date: 2010-01-01 18:02+0000\n"
 "Last-Translator: Jonathan Raphael Joachim Kolberg\n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -5088,17 +5088,17 @@ msgstr "M.Verteidigung:"
 #: src/net/ea/generalhandler.cpp:220
 #, c-format
 msgid "% Accuracy"
-msgstr "% Genauigkeit"
+msgstr "% Accuracy"
 
 #: src/net/ea/generalhandler.cpp:221
 #, c-format
 msgid "% Evade"
-msgstr "% Ausweichen:"
+msgstr "% Evade"
 
 #: src/net/ea/generalhandler.cpp:222
 #, c-format
 msgid "% Critical"
-msgstr "% Kritischer Treffer"
+msgstr "% Critical"
 
 #: src/net/ea/gui/partytab.cpp:55
 msgid "/help > Display this help."
