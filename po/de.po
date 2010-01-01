@@ -53,14 +53,14 @@
 #: src/resources/itemdb.cpp:230 src/resources/itemdb.cpp:306
 #: src/resources/monsterdb.cpp:101 src/resources/monsterdb.cpp:133
 # Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
-# Jonathan Raphael Joachim Kolberg, 2009.
+# Jonathan Raphael Joachim Kolberg, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-31 15:55+0100\n"
-"PO-Revision-Date: 2009-12-31 18:08+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2010-01-01 17:25+0000\n"
+"Last-Translator: Jonathan Raphael Joachim Kolberg\n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,7 +73,6 @@ msgstr ""
 #: src/commandhandler.cpp:191 src/gui/widgets/channeltab.cpp:59
 #: src/gui/widgets/whispertab.cpp:77 src/main.cpp:557
 #: src/net/ea/gui/partytab.cpp:67
-#, fuzzy
 msgid "help"
 msgstr "Hilfe"
 
@@ -95,7 +94,6 @@ msgstr ""
 
 #: src/commandhandler.cpp:72 src/commandhandler.cpp:229
 #: src/gui/popupmenu.cpp:227
-#, fuzzy
 msgid "whisper"
 msgstr "geflüsterte Nachricht"
 
@@ -114,16 +112,14 @@ msgstr ""
 #: src/commandhandler.cpp:80 src/commandhandler.cpp:207
 #: src/gui/popupmenu.cpp:238 src/gui/widgets/whispertab.cpp:84
 #: src/gui/widgets/whispertab.cpp:103
-#, fuzzy
 msgid "ignore"
-msgstr "Ignoriert"
+msgstr "Ignoriere"
 
 #: src/commandhandler.cpp:84 src/commandhandler.cpp:278
 #: src/gui/popupmenu.cpp:231 src/gui/widgets/whispertab.cpp:90
 #: src/gui/widgets/whispertab.cpp:107
-#, fuzzy
 msgid "unignore"
-msgstr "Ignoriert"
+msgstr "nicht ignorieren"
 
 #: src/commandhandler.cpp:88 src/commandhandler.cpp:213
 #, fuzzy
@@ -142,19 +138,16 @@ msgstr "Waffenarm"
 
 #: src/commandhandler.cpp:100 src/commandhandler.cpp:245
 #: src/gui/popupmenu.cpp:327
-#, fuzzy
 msgid "party"
 msgstr "Party"
 
 #: src/commandhandler.cpp:104 src/commandhandler.cpp:224
-#, fuzzy
 msgid "me"
-msgstr "Name"
+msgstr "ich"
 
 #: src/commandhandler.cpp:108 src/commandhandler.cpp:259
-#, fuzzy
 msgid "record"
-msgstr "Stoppe Aufzeichnung"
+msgstr "nehme auf"
 
 #: src/commandhandler.cpp:112 src/commandhandler.cpp:267
 #: src/commandhandler.cpp:435
@@ -163,7 +156,6 @@ msgid "toggle"
 msgstr "Logger"
 
 #: src/commandhandler.cpp:116 src/commandhandler.cpp:252
-#, fuzzy
 msgid "present"
 msgstr "Anwesend: "
 
@@ -199,12 +191,10 @@ msgid "0"
 msgstr ""
 
 #: src/commandhandler.cpp:135
-#, fuzzy
 msgid "n"
 msgstr "Nein"
 
 #: src/commandhandler.cpp:135
-#, fuzzy
 msgid "N"
 msgstr "Nein"
 
@@ -342,12 +332,10 @@ msgid "This command clears the chat log of previous chat."
 msgstr "Dieser Befehl bereinigt den Chatlog des vorherigen Chats."
 
 #: src/commandhandler.cpp:209
-#, fuzzy
 msgid "Command: /ignore <player>"
 msgstr "Befehl: /item <Wert>"
 
 #: src/commandhandler.cpp:210
-#, fuzzy
 msgid "This command ignores the given player regardless of current relations."
 msgstr "Dieser Befehl zeigt die Anzahl der Spieler an, die gerade online sind."
 
@@ -4478,79 +4466,64 @@ msgid "Options:"
 msgstr "Optionen:"
 
 #: src/main.cpp:522
-#, fuzzy
 msgid "  -C --config-file    : Configuration file to use"
 msgstr "  -C --config-file : zu benutzende Konfigurationsdatei"
 
 #: src/main.cpp:523
-#, fuzzy
 msgid "  -d --data           : Directory to load game data from"
 msgstr "  -d --data : Datenverzeichnis, aus dem das Spiel geladen werden soll"
 
 #: src/main.cpp:524
-#, fuzzy
 msgid "  -D --default        : Choose default character server and character"
 msgstr "  -D --default : Wähle zuletzt benutzten Server und Spieler aus"
 
 #: src/main.cpp:526
-#, fuzzy
 msgid "  -h --help           : Display this help"
 msgstr "  - --help : Zeigt diesen Hilfstext an"
 
 #: src/main.cpp:527
-#, fuzzy
 msgid "  -S --home-dir       : Directory to use as home directory"
 msgstr ""
 "  -S --home-dir : Verzeichnis, das als Heimatverzeichnis benutzt werden soll"
 
 #: src/main.cpp:528
-#, fuzzy
 msgid "  -i --screenshot-dir : Directory to store screenshots"
 msgstr ""
 "  -S --home-dir : Verzeichnis, das als Heimatverzeichnis benutzt werden soll"
 
 #: src/main.cpp:529
-#, fuzzy
 msgid "  -H --update-host    : Use this update host"
 msgstr "  -H --update-host : Benutze angegebenen Updateserver"
 
 #: src/main.cpp:530
-#, fuzzy
 msgid "  -P --password       : Login with this password"
 msgstr "  -P --password : Angegebenes Passwort benutzen"
 
 #: src/main.cpp:531
-#, fuzzy
 msgid "  -c --character      : Login with this character"
 msgstr "  -c --charakter : Mit angegebenem Spieler anmelden"
 
 #: src/main.cpp:532
-#, fuzzy
 msgid "  -p --port           : Login server port"
 msgstr "  -p --port : Port des Loginservers"
 
 #: src/main.cpp:533
-#, fuzzy
 msgid "  -s --server         : Login server name or IP"
 msgstr "  -s --server : Name oder IP-Adresse des Loginservers"
 
 #: src/main.cpp:534
-#, fuzzy
 msgid "  -u --skip-update    : Skip the update downloads"
 msgstr "  -u --skip-update : Überspringe das Herunterladen von Updates"
 
 #: src/main.cpp:535
-#, fuzzy
 msgid "  -U --username       : Login with this username"
 msgstr "  -U --username : Mit angegebenem Benutzernamen anmelden"
 
 #: src/main.cpp:537
-#, fuzzy
 msgid "  -O --no-opengl      : Disable OpenGL for this session"
 msgstr "  -O --no-opengl : OpenGL-Erweiterungen deaktivieren"
 
 #: src/main.cpp:539
-#, fuzzy
 msgid "  -v --version        : Display the version"
 msgstr "  -v --version : Die Version des Spieles anzeigen"
 
@@ -4568,51 +4541,45 @@ msgid "config-file"
 msgstr ""
 
 #: src/main.cpp:554
-#, fuzzy
 msgid "default"
 msgstr "Standard"
 
 #: src/main.cpp:555
-#, fuzzy
 msgid "password"
 msgstr "Passwort:"
 
 #: src/main.cpp:556
-#, fuzzy
 msgid "character"
-msgstr "Spielfigur wechseln"
+msgstr "Spielfigur"
 
 #: src/main.cpp:558
 msgid "home-dir"
 msgstr ""
 
 #: src/main.cpp:559
-#, fuzzy
 msgid "update-host"
-msgstr "Ungültiger Updateserver: "
+msgstr "Updateserver: "
 
 #: src/main.cpp:562
 msgid "skip-update"
 msgstr ""
 
 #: src/main.cpp:563 src/main.cpp:681 src/main.cpp:795
-#, fuzzy
 msgid "username"
-msgstr "unbenannt"
+msgstr "Benutztername"
 
 #: src/main.cpp:564
 msgid "no-opengl"
 msgstr ""
 
 #: src/main.cpp:566
-#, fuzzy
 msgid "screenshot-dir"
-msgstr "Bildschirmfoto"
+msgstr "Bildschirmfotoordner"
 
 #: src/main.cpp:663 src/main.cpp:1134
-#, fuzzy, c-format
+#, c-format
 msgid "Username is %s"
-msgstr "Benutzername bereits vorhanden"
+msgstr "Benutzername ist %s"
 
 #: src/main.cpp:692
 msgid "LANG="
@@ -4631,14 +4598,13 @@ msgid "data/branding.xml"
 msgstr ""
 
 #: src/main.cpp:753
-#, fuzzy
 msgid "/mana.log"
-msgstr "mana"
+msgstr "/mana.log"
 
 #: src/main.cpp:756
-#, fuzzy, c-format
+#, c-format
 msgid "Mana %s"
-msgstr "Geld: %s"
+msgstr "Mana: %s"
 
 #: src/main.cpp:759
 msgid "logToStandardOut"
@@ -4646,7 +4612,7 @@ msgstr ""
 
 #: src/main.cpp:775
 msgid "loginMusic"
-msgstr ""
+msgstr "Loginmusik"
 
 #: src/main.cpp:775
 msgid "Magick - Real.ogg"
@@ -4701,18 +4667,17 @@ msgid "State: CHAR SELECT"
 msgstr ""
 
 #: src/main.cpp:1064 src/main.cpp:1079
-#, fuzzy
 msgid "lastCharacter"
-msgstr "Charakter erstellen"
+msgstr "letzter Charakter"
 
 #: src/main.cpp:1070
 msgid "State: CONNECT GAME"
 msgstr ""
 
 #: src/main.cpp:1077
-#, fuzzy, c-format
+#, c-format
 msgid "Memorizing selected character %s"
-msgstr "Spieler konnte nicht gelöscht werden."
+msgstr "Speichere den gewählten Charakter %s"
 
 #: src/main.cpp:1097
 msgid "State: GAME"
@@ -4747,9 +4712,8 @@ msgid "State: CHANGE PASSWORD SUCCESS"
 msgstr ""
 
 #: src/main.cpp:1154
-#, fuzzy
 msgid "Password Change"
-msgstr "Passwort:"
+msgstr "Passwort ändern:"
 
 #: src/main.cpp:1155
 msgid "Password changed successfully!"
@@ -4768,9 +4732,8 @@ msgid "State: CHANGE EMAIL SUCCESS"
 msgstr ""
 
 #: src/main.cpp:1174
-#, fuzzy
 msgid "Email Change"
-msgstr "Ändern"
+msgstr "E-Mail ändern"
 
 #: src/main.cpp:1175
 #, fuzzy
@@ -4831,7 +4794,6 @@ msgid "State: ERROR"
 msgstr ""
 
 #: src/main.cpp:1275
-#, fuzzy
 msgid "Quitting"
 msgstr "Beenden"
 
@@ -4886,17 +4848,14 @@ msgid "CharServer: Player: %s (%d)"
 msgstr ""
 
 #: src/net/ea/charserverhandler.cpp:101
-#, fuzzy
 msgid "Access denied."
 msgstr "Zugang verweigert"
 
 #: src/net/ea/charserverhandler.cpp:104
-#, fuzzy
 msgid "Cannot use this ID."
 msgstr "Kann diese ID nicht benutzen"
 
 #: src/net/ea/charserverhandler.cpp:107
-#, fuzzy
 msgid "Unknown failure to select character."
 msgstr "Unbekannter Fehler bei Auswahl des Charakters"
 
@@ -4952,7 +4911,6 @@ msgstr ""
 "Nachricht konnte nicht gesendet werden, sie wurde vom Spieler ignoriert."
 
 #: src/net/ea/chathandler.cpp:169
-#, fuzzy
 msgid "MVP player."
 msgstr "Spieler"
 
@@ -4976,12 +4934,11 @@ msgstr ""
 #: src/net/ea/gamehandler.cpp:87
 #, c-format
 msgid "Online users: %d"
-msgstr ""
+msgstr "Benutzer online: %d"
 
 #: src/net/ea/gamehandler.cpp:101
-#, fuzzy
 msgid "Game"
-msgstr "Name"
+msgstr "Spiel"
 
 #: src/net/ea/gamehandler.cpp:101
 #, fuzzy
@@ -5042,7 +4999,6 @@ msgid "Dexterity %+d"
 msgstr "Ausdauer %+d"
 
 #: src/net/ea/generalhandler.cpp:101
-#, fuzzy
 msgid "luck"
 msgstr "Glück"
 
@@ -5057,37 +5013,30 @@ msgid "Connection problem: %i"
 msgstr "Verbindungsproblem: %i"
 
 #: src/net/ea/generalhandler.cpp:123
-#, fuzzy
 msgid "Authentication failed."
 msgstr "Authentifizierung verweigert"
 
 #: src/net/ea/generalhandler.cpp:126
-#, fuzzy
 msgid "No servers available."
 msgstr "Keine Server verfügbar"
 
 #: src/net/ea/generalhandler.cpp:130
-#, fuzzy
 msgid "Someone else is trying to use this account."
 msgstr "Jemand anderes versucht diesen Account zu benutzen"
 
 #: src/net/ea/generalhandler.cpp:133
-#, fuzzy
 msgid "This account is already logged in."
 msgstr "Dieser Account ist bereits angemeldet"
 
 #: src/net/ea/generalhandler.cpp:136
-#, fuzzy
 msgid "Speed hack detected."
 msgstr "Geschwindigkeitsproblem festgestellt"
 
 #: src/net/ea/generalhandler.cpp:139
-#, fuzzy
 msgid "Duplicated login."
 msgstr "Mehrfache Anmeldung"
 
 #: src/net/ea/generalhandler.cpp:142
-#, fuzzy
 msgid "Unknown connection error."
 msgstr "Unbekannter Verbindungsfehler"
 
@@ -5125,34 +5074,31 @@ msgid "Luck"
 msgstr "Glück"
 
 #: src/net/ea/generalhandler.cpp:217
-#, fuzzy
 msgid "Defense"
 msgstr "Verteidigung:"
 
 #: src/net/ea/generalhandler.cpp:218
-#, fuzzy
 msgid "M.Attack"
 msgstr "M.Angriff:"
 
 #: src/net/ea/generalhandler.cpp:219
-#, fuzzy
 msgid "M.Defense"
 msgstr "M.Verteidigung:"
 
 #: src/net/ea/generalhandler.cpp:220
-#, fuzzy, c-format
+#, c-format
 msgid "% Accuracy"
 msgstr "% Genauigkeit"
 
 #: src/net/ea/generalhandler.cpp:221
-#, fuzzy, c-format
+#, c-format
 msgid "% Evade"
 msgstr "% Ausweichen:"
 
 #: src/net/ea/generalhandler.cpp:222
-#, fuzzy, c-format
+#, c-format
 msgid "% Critical"
-msgstr "Kritischer Treffer"
+msgstr "% Kritischer Treffer"
 
 #: src/net/ea/gui/partytab.cpp:55
 msgid "/help > Display this help."
@@ -5346,19 +5292,17 @@ msgstr "Kann Gegenstand nicht ablegen."
 #: src/net/ea/inventoryhandler.cpp:392
 #, c-format
 msgid "Arrows equipped: %i"
-msgstr ""
+msgstr "Pfeile ausgerüstet: %i"
 
 #: src/net/ea/loginhandler.cpp:78
 msgid "Account was not found. Please re-login."
 msgstr "Account konnte nicht gefunden werden. Bitte melde dich erneut an."
 
 #: src/net/ea/loginhandler.cpp:81 src/net/manaserv/loginhandler.cpp:116
-#, fuzzy
 msgid "Old password incorrect."
 msgstr "Altes Passwort fehlerhaft"
 
 #: src/net/ea/loginhandler.cpp:84
-#, fuzzy
 msgid "New password too short."
 msgstr "Das neue Passwort ist zu kurz"
 
@@ -5367,7 +5311,6 @@ msgstr "Das neue Passwort ist zu kurz"
 #: src/net/manaserv/loginhandler.cpp:92 src/net/manaserv/loginhandler.cpp:122
 #: src/net/manaserv/loginhandler.cpp:155 src/net/manaserv/loginhandler.cpp:270
 #: src/net/manaserv/loginhandler.cpp:306
-#, fuzzy
 msgid "Unknown error."
 msgstr "Unbekannter Fehler"
 
@@ -5387,27 +5330,22 @@ msgid "Login::error code: %i"
 msgstr ""
 
 #: src/net/ea/loginhandler.cpp:147
-#, fuzzy
 msgid "Unregistered ID."
 msgstr "Unbekannte ID"
 
 #: src/net/ea/loginhandler.cpp:150
-#, fuzzy
 msgid "Wrong password."
 msgstr "Falsches Passwort"
 
 #: src/net/ea/loginhandler.cpp:153
-#, fuzzy
 msgid "Account expired."
 msgstr "Account abgelaufen"
 
 #: src/net/ea/loginhandler.cpp:156
-#, fuzzy
 msgid "Rejected from server."
 msgstr "Vom Server zurückgewiesen"
 
 #: src/net/ea/loginhandler.cpp:159
-#, fuzzy
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
 msgstr ""
@@ -5424,7 +5362,6 @@ msgstr ""
 "Bitte wende dich mittels des Forums an das GM Team."
 
 #: src/net/ea/loginhandler.cpp:170
-#, fuzzy
 msgid "This user name is already taken."
 msgstr "Dieser Spielername ist bereits vergeben"
 
@@ -5454,9 +5391,9 @@ msgid "Unable to create network worker thread"
 msgstr ""
 
 #: src/net/ea/network.cpp:232
-#, fuzzy, c-format
+#, c-format
 msgid "Unhandled packet: %x"
-msgstr "Übergangenes Handelsabbruchspaket."
+msgstr "Nicht behandeltes Paket : %x"
 
 #: src/net/ea/network.cpp:251
 msgid "Error in SDLNet_TCP_Send(): "
@@ -5468,9 +5405,8 @@ msgid "Received packet 0x%x of length %d\n"
 msgstr ""
 
 #: src/net/ea/network.cpp:342
-#, fuzzy
 msgid "Unable to resolve host \""
-msgstr "Verkauf fehlgeschlagen."
+msgstr "Nicht möglich den host \" aufzulösen"
 
 #: src/net/ea/network.cpp:345
 #, c-format
@@ -5504,9 +5440,8 @@ msgid "Disconnected."
 msgstr ""
 
 #: src/net/ea/network.cpp:411
-#, fuzzy
 msgid "Connection to server terminated. "
-msgstr "Verbinde mit [Kartenserver]..."
+msgstr "Verbindung mit Server abgebrochen. "
 
 #: src/net/ea/network.cpp:438
 msgid "Error in SDLNet_TCP_Recv(), "
@@ -5522,9 +5457,9 @@ msgid "Error in SDLNet_DelSocket(): %s"
 msgstr ""
 
 #: src/net/ea/network.cpp:460
-#, fuzzy, c-format
+#, c-format
 msgid "Network error: %s"
-msgstr "Netzwerkfehler"
+msgstr "Netzwerkfehler: %s"
 
 #: src/net/ea/partyhandler.cpp:78
 msgid "Could not create party."
@@ -5714,9 +5649,9 @@ msgid "You're pining for the fjords."
 msgstr "Du schmachtest nach den Fjorden."
 
 #: src/net/ea/playerhandler.cpp:184
-#, fuzzy, c-format
+#, c-format
 msgid "Warping to %s (%d, %d)"
-msgstr "Flüsternd zu %s: %s"
+msgstr "Flüsternd zu %s: (%d ,%d)"
 
 #: src/net/ea/playerhandler.cpp:214
 #, c-format
@@ -5735,9 +5670,9 @@ msgstr ""
 "heilen."
 
 #: src/net/ea/playerhandler.cpp:324
-#, fuzzy, c-format
+#, c-format
 msgid "You picked up %s."
-msgstr "Aufgehoben "
+msgstr "Du hast %s aufgehoben "
 
 #: src/net/ea/playerhandler.cpp:360
 msgid "Cannot raise skill!"
@@ -5896,24 +5831,20 @@ msgid "Trade completed."
 msgstr "Handel abgeschlossen."
 
 #: src/net/manaserv/beinghandler.cpp:288
-#, fuzzy
 msgid "Press OK to respawn."
-msgstr " Drücke \"OK\" um neu anzufangen."
+msgstr "Drücke \"OK\" um neu anzufangen."
 
 #: src/net/manaserv/beinghandler.cpp:289
-#, fuzzy
 msgid "You Died"
 msgstr "Du bist tot."
 
 #: src/net/manaserv/charhandler.cpp:108
-#, fuzzy
 msgid "Player deleted."
 msgstr "Spieler gelöscht"
 
 #: src/net/manaserv/charhandler.cpp:118 src/net/manaserv/charhandler.cpp:196
-#, fuzzy
 msgid "Not logged in."
-msgstr "Bereits angemeldet"
+msgstr "nicht angemeldet"
 
 #: src/net/manaserv/charhandler.cpp:121
 #, fuzzy
@@ -5929,7 +5860,6 @@ msgid "Invalid name."
 msgstr "Ungültiger Name."
 
 #: src/net/manaserv/charhandler.cpp:205
-#, fuzzy
 msgid "Character's name already exists."
 msgstr "Benutzername bereits vorhanden"
 
@@ -5946,14 +5876,12 @@ msgid "Invalid gender."
 msgstr "Ungültiges Geschlecht."
 
 #: src/net/manaserv/charhandler.cpp:217
-#, fuzzy
 msgid "Character's stats are too high."
-msgstr "Spielfigurattribute OK"
+msgstr "Spielfigurattribute sind zu groß."
 
 #: src/net/manaserv/charhandler.cpp:220
-#, fuzzy
 msgid "Character's stats are too low."
-msgstr "Spielfigurattribute OK"
+msgstr "Spielfigurattribute sind zu klein"
 
 #: src/net/manaserv/charhandler.cpp:223
 msgid "One stat is zero."
@@ -5982,14 +5910,12 @@ msgid "Chatserver: Not logged in"
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:135
-#, fuzzy
 msgid "Chatserver: Unknown error"
 msgstr "Unbekannter Fehler"
 
 #: src/net/manaserv/chathandler.cpp:165
-#, fuzzy
 msgid "Unknown : "
-msgstr "Unbekannter Gegenstand"
+msgstr "Unbekannt: "
 
 #: src/net/manaserv/chathandler.cpp:180 src/net/manaserv/chathandler.cpp:301
 #: src/net/manaserv/guildhandler.cpp:265
@@ -5998,23 +5924,20 @@ msgid "Topic: %s"
 msgstr "Thema: %s"
 
 #: src/net/manaserv/chathandler.cpp:184 src/net/manaserv/chathandler.cpp:262
-#, fuzzy
 msgid "Players in this channel:"
-msgstr "Spieler trifft Monster"
+msgstr "Spieler im Kanal:"
 
 #: src/net/manaserv/chathandler.cpp:193 src/net/manaserv/chathandler.cpp:273
 msgid "@"
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:201
-#, fuzzy
 msgid "Error joining channel."
-msgstr "Befehl: /join <Kanal>"
+msgstr "Fehler beim Betreten des Kanals."
 
 #: src/net/manaserv/chathandler.cpp:207
-#, fuzzy
 msgid "Listing channels."
-msgstr "Erbitte Erlaubnis, Kanal %s betreten zu dürfen."
+msgstr "Liste Kanäle"
 
 #: src/net/manaserv/chathandler.cpp:215
 msgid " - "
@@ -6025,9 +5948,9 @@ msgid "End of channel list."
 msgstr ""
 
 #: src/net/manaserv/chathandler.cpp:291
-#, fuzzy, c-format
+#, c-format
 msgid "%s entered the channel."
-msgstr "%s ist der Party beigetreten."
+msgstr "%s ist dem Kanal beigetreten."
 
 #: src/net/manaserv/chathandler.cpp:296
 #, c-format
@@ -6070,7 +5993,6 @@ msgid "specials.xml"
 msgstr "skills.xml"
 
 #: src/net/manaserv/generalhandler.cpp:174
-#, fuzzy
 msgid "Willpower"
 msgstr "Willenskraft:"
 
@@ -6136,22 +6058,18 @@ msgid "Received CPMSG_GUILD_QUIT_RESPONSE"
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:83
-#, fuzzy
 msgid "Wrong magic_token."
 msgstr "Fehlerhaftes Magiemerkmal"
 
 #: src/net/manaserv/loginhandler.cpp:86 src/net/manaserv/loginhandler.cpp:260
-#, fuzzy
 msgid "Already logged in."
 msgstr "Bereits angemeldet"
 
 #: src/net/manaserv/loginhandler.cpp:89 src/net/manaserv/loginhandler.cpp:263
-#, fuzzy
 msgid "Server is full."
 msgstr "Server ist voll"
 
 #: src/net/manaserv/loginhandler.cpp:113
-#, fuzzy
 msgid "New password incorrect."
 msgstr "Neues Passwort fehlerhaft"
 
@@ -6160,39 +6078,33 @@ msgid "Account not connected. Please login first."
 msgstr "Account nicht verbunden. Bitte melde Dich zuerst an."
 
 #: src/net/manaserv/loginhandler.cpp:143
-#, fuzzy
 msgid "New email address incorrect."
-msgstr "Neue Emailadresse ist fehlerhaft"
+msgstr "Neue E-Mailadresse ist fehlerhaft"
 
 #: src/net/manaserv/loginhandler.cpp:146
-#, fuzzy
 msgid "Old email address incorrect."
-msgstr "Alte Emailadresse ist fehlerhaft"
+msgstr "Alte E-Mailadresse ist fehlerhaft"
 
 #: src/net/manaserv/loginhandler.cpp:152
-#, fuzzy
 msgid "The new email address already exists."
-msgstr "Die neue Emailadresse ist bereits vorhanden."
+msgstr "Die neue E-Mailadresse ist bereits vorhanden."
 
 #: src/net/manaserv/loginhandler.cpp:176
-#, fuzzy
 msgid "Accountserver: Not logged in"
-msgstr "Dieser Account ist bereits angemeldet"
+msgstr "nicht angemeldet"
 
 #: src/net/manaserv/loginhandler.cpp:179 src/net/manaserv/loginhandler.cpp:203
-#, fuzzy
 msgid "Accountserver: Unknown error"
 msgstr "Unbekannter Fehler"
 
 #: src/net/manaserv/loginhandler.cpp:200
-#, fuzzy
 msgid "Accountserver: Wrong username or password"
 msgstr "Benutzername oder Passwort falsch"
 
 #: src/net/manaserv/loginhandler.cpp:222
-#, fuzzy, c-format
+#, c-format
 msgid "%s: %s\n"
-msgstr "%s: %s"
+msgstr "%s: %s\n"
 
 #: src/net/manaserv/loginhandler.cpp:231
 msgid ""
@@ -6200,12 +6112,10 @@ msgid ""
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:254 src/net/manaserv/loginhandler.cpp:290
-#, fuzzy
 msgid "Client version is too old."
 msgstr "Die Version des Spiels ist zu alt"
 
 #: src/net/manaserv/loginhandler.cpp:257
-#, fuzzy
 msgid "Wrong username or password."
 msgstr "Benutzername oder Passwort falsch"
 
@@ -6214,19 +6124,16 @@ msgid "Login attempt too soon after previous attempt."
 msgstr ""
 
 #: src/net/manaserv/loginhandler.cpp:293
-#, fuzzy
 msgid "Wrong username, password or email address."
-msgstr "Benutzername, Passwort oder Emailadresse falsch"
+msgstr "Benutzername, Passwort oder E-Mailadresse falsch"
 
 #: src/net/manaserv/loginhandler.cpp:296
-#, fuzzy
 msgid "Username already exists."
 msgstr "Benutzername bereits vorhanden"
 
 #: src/net/manaserv/loginhandler.cpp:299
-#, fuzzy
 msgid "Email address already exists."
-msgstr "Emailadresse bereits vorhanden"
+msgstr "E-Mailadresse bereits vorhanden"
 
 #: src/net/manaserv/loginhandler.cpp:302
 msgid "You took too long with the captcha or your response was incorrect."
@@ -6242,7 +6149,7 @@ msgid "%s joined the party."
 msgstr "%s ist der Party beigetreten."
 
 #: src/net/manaserv/partyhandler.cpp:120
-#, fuzzy, c-format
+#, c-format
 msgid "%s rejected your invite."
 msgstr "%s hat Deine Einladung zurückgewiesen."
 
@@ -6270,7 +6177,7 @@ msgstr ""
 
 #: src/net/manaserv/playerhandler.cpp:183
 msgid "Level Progress Update"
-msgstr ""
+msgstr "Levelaufstiegsfortschritt"
 
 #: src/net/manaserv/playerhandler.cpp:200
 #, c-format
@@ -6326,9 +6233,8 @@ msgid "Trading with %s"
 msgstr "Handele mit %s"
 
 #: src/playerrelations.cpp:34
-#, fuzzy
 msgid "nop"
-msgstr "Nein"
+msgstr "Nö"
 
 #: src/playerrelations.cpp:35
 #, fuzzy
@@ -6336,7 +6242,6 @@ msgid "emote0"
 msgstr "Gefühle"
 
 #: src/playerrelations.cpp:39
-#, fuzzy
 msgid "relation"
 msgstr "Beziehung"
 
@@ -6353,12 +6258,10 @@ msgid "default-player-permissions"
 msgstr ""
 
 #: src/playerrelations.cpp:138 src/playerrelations.cpp:155
-#, fuzzy
 msgid "player"
 msgstr "Spieler"
 
 #: src/playerrelations.cpp:296
-#, fuzzy
 msgid "Completely ignore"
 msgstr "@@ignore|Ignoriere %s komplett@@"
 
@@ -6402,7 +6305,6 @@ msgid "Attack %+d"
 msgstr "Angriff %+d"
 
 #: src/resources/itemdb.cpp:53
-#, fuzzy
 msgid "defense"
 msgstr "Verteidigung:"
 
@@ -6431,22 +6333,20 @@ msgid "MP %+d"
 msgstr "MP %+d"
 
 #: src/resources/itemdb.cpp:67
-#, fuzzy
 msgid "generic"
 msgstr "Allgemeiner Gegenstand"
 
 #: src/resources/itemdb.cpp:68
-#, fuzzy
 msgid "usable"
 msgstr "Benutzbare Gegenstände"
 
 #: src/resources/itemdb.cpp:69
 msgid "equip-1hand"
-msgstr ""
+msgstr "Einhänder"
 
 #: src/resources/itemdb.cpp:70
 msgid "equip-2hand"
-msgstr ""
+msgstr "Zweihänder"
 
 #: src/resources/itemdb.cpp:71
 msgid "equip-torso"
@@ -6454,87 +6354,75 @@ msgstr ""
 
 #: src/resources/itemdb.cpp:72
 msgid "equip-arms"
-msgstr ""
+msgstr "Armausrüstung"
 
 #: src/resources/itemdb.cpp:73
 msgid "equip-head"
-msgstr ""
+msgstr "Kopfbedeckung"
 
 #: src/resources/itemdb.cpp:74
 msgid "equip-legs"
-msgstr ""
+msgstr "Beinausrüstung"
 
 #: src/resources/itemdb.cpp:75
 msgid "equip-shield"
-msgstr ""
+msgstr "Schilde"
 
 #: src/resources/itemdb.cpp:76
 msgid "equip-ring"
-msgstr ""
+msgstr "Ring"
 
 #: src/resources/itemdb.cpp:77
-#, fuzzy
 msgid "equip-necklace"
 msgstr "Halsketten"
 
 #: src/resources/itemdb.cpp:78
-#, fuzzy
 msgid "equip-feet"
-msgstr "Ausrüstung"
+msgstr "Schuhe & Stiefel"
 
 #: src/resources/itemdb.cpp:79
 msgid "equip-ammo"
-msgstr ""
+msgstr "Waffe"
 
 #: src/resources/itemdb.cpp:85
-#, fuzzy
 msgid "knife"
 msgstr "Messer"
 
 #: src/resources/itemdb.cpp:86
-#, fuzzy
 msgid "sword"
-msgstr "Schwertpolarm"
+msgstr "Schwert"
 
 #: src/resources/itemdb.cpp:87
-#, fuzzy
 msgid "polearm"
 msgstr "Waffenarm"
 
 #: src/resources/itemdb.cpp:88
-#, fuzzy
 msgid "staff"
 msgstr "Stab"
 
 #: src/resources/itemdb.cpp:89
-#, fuzzy
 msgid "whip"
 msgstr "Peitsche"
 
 #: src/resources/itemdb.cpp:90
-#, fuzzy
 msgid "bow"
-msgstr "Niedrig"
+msgstr "Bogen"
 
 #: src/resources/itemdb.cpp:91
-#, fuzzy
 msgid "shooting"
-msgstr "Schießen"
+msgstr "schießen"
 
 #: src/resources/itemdb.cpp:92
-#, fuzzy
 msgid "mace"
 msgstr "Irrgarten"
 
 #: src/resources/itemdb.cpp:93
-#, fuzzy
 msgid "axe"
-msgstr "Max"
+msgstr "Axt"
 
 #: src/resources/itemdb.cpp:94
-#, fuzzy
 msgid "thrown"
-msgstr "Geworfen"
+msgstr "geworfen"
 
 #: src/resources/itemdb.cpp:110
 msgid "Initializing item database..."
@@ -6559,9 +6447,8 @@ msgid "items"
 msgstr "items.xml"
 
 #: src/resources/itemdb.cpp:123
-#, fuzzy
 msgid "ItemDB: Error while loading items.xml!"
-msgstr "Fehler beim Laden von %s"
+msgstr "Fehler beim Laden von item.xml!"
 
 #: src/resources/itemdb.cpp:135
 msgid "ItemDB: Invalid or missing item ID in items.xml!"
@@ -6573,31 +6460,28 @@ msgid "ItemDB: Redefinition of item ID %d"
 msgstr ""
 
 #: src/resources/itemdb.cpp:143
-#, fuzzy
 msgid "other"
-msgstr "Monster"
+msgstr "andere"
 
 #: src/resources/itemdb.cpp:144
-#, fuzzy
 msgid "weight"
 msgstr "Gewicht:"
 
 #: src/resources/itemdb.cpp:145
 msgid "view"
-msgstr ""
+msgstr "Ansicht"
 
 #: src/resources/itemdb.cpp:148
-#, fuzzy
 msgid "image"
-msgstr "Groß"
+msgstr "Bild"
 
 #: src/resources/itemdb.cpp:150
 msgid "weapon-type"
-msgstr ""
+msgstr "Waffentyp"
 
 #: src/resources/itemdb.cpp:151
 msgid "attack-range"
-msgstr ""
+msgstr "Angriffsreichweite"
 
 #: src/resources/itemdb.cpp:156 src/resources/monsterdb.cpp:45
 #: src/resources/monsterdb.cpp:67
@@ -6605,16 +6489,14 @@ msgid "unnamed"
 msgstr "unbenannt"
 
 #: src/resources/itemdb.cpp:180
-#, fuzzy
 msgid "effect"
-msgstr "Effekt: %s"
+msgstr "Effekt:"
 
 #: src/resources/itemdb.cpp:188 src/resources/monsterdb.cpp:94
 msgid "sprite"
 msgstr ""
 
 #: src/resources/itemdb.cpp:191 src/resources/monsterdb.cpp:133
-#, fuzzy
 msgid "particle-effect"
 msgstr "Partikeleffekte"
 
@@ -6658,12 +6540,10 @@ msgid "unisex"
 msgstr "benutze"
 
 #: src/resources/itemdb.cpp:294
-#, fuzzy
 msgid "male"
-msgstr "Weiblich"
+msgstr "Männlich"
 
 #: src/resources/itemdb.cpp:298
-#, fuzzy
 msgid "female"
 msgstr "Weiblich"
 
@@ -6673,9 +6553,8 @@ msgid "event"
 msgstr "Letzter Server:"
 
 #: src/resources/itemdb.cpp:309 src/resources/monsterdb.cpp:105
-#, fuzzy
 msgid "hit"
-msgstr "Hemden"
+msgstr "getroffen"
 
 #: src/resources/itemdb.cpp:313
 msgid "strike"
@@ -6695,7 +6574,6 @@ msgid "monsters.xml"
 msgstr "monsters.xml"
 
 #: src/resources/monsterdb.cpp:52
-#, fuzzy
 msgid "monsters"
 msgstr "Monster"
 
@@ -6704,7 +6582,6 @@ msgid "Monster Database: Error while loading monster.xml!"
 msgstr ""
 
 #: src/resources/monsterdb.cpp:60
-#, fuzzy
 msgid "monster"
 msgstr "Monster"
 
@@ -6713,14 +6590,12 @@ msgid "targetCursor"
 msgstr ""
 
 #: src/resources/monsterdb.cpp:71
-#, fuzzy
 msgid "small"
-msgstr "Klein"
+msgstr "klein"
 
 #: src/resources/monsterdb.cpp:79
-#, fuzzy
 msgid "large"
-msgstr "Groß"
+msgstr "groß"
 
 #: src/resources/monsterdb.cpp:85
 #, c-format
@@ -6729,14 +6604,12 @@ msgid ""
 msgstr ""
 
 #: src/resources/monsterdb.cpp:109
-#, fuzzy
 msgid "miss"
-msgstr "Verfehlt"
+msgstr "verfehlt"
 
 #: src/resources/monsterdb.cpp:113
-#, fuzzy
 msgid "hurt"
-msgstr "Hemden"
+msgstr "verletzten"
 
 #: src/resources/monsterdb.cpp:117
 msgid "die"
@@ -6753,7 +6626,6 @@ msgid "action"
 msgstr "Beziehung"
 
 #: src/resources/monsterdb.cpp:138
-#, fuzzy
 msgid "particlefx"
 msgstr "als Partikeleffekt"
 
