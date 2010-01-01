@@ -1,0 +1,28 @@
+Source: invertika-client
+Section: games
+Priority: extra
+Maintainer: Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>
+Build-Depends: debhelper (>= 7), cvs-buildpackage, autoconf, automake, build-essential, libcurl4-openssl-dev, libguichan-dev, libphysfs-dev, libpng12-dev, libpthread-stubs0-dev, libsdl-image1.2-dev, libsdl-mixer1.2-dev, libsdl-net1.2-dev, libsdl-ttf2.0-dev, libxml2-dev, zlib1g-dev, libtool, libenet-dev,
+Standards-Version: 3.8.3
+Homepage: http://invertika.org
+
+Package: invertika-client
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, invertika-client-data (= ${source:Version})
+Description: invertika is an German 2D MMPORG client
+
+Package: invertika-client-dbg
+Architecture: any
+Priority: extra
+Depends: invertika-client (= ${binary:Version})
+Description: invertika is an German 2D MMORPG client (debugging symbols)
+ .
+  This package provides debugging symbols for the invertika-client package.
+
+Package: invertika-client-data
+Architecture: all
+Recommends: invertika-client
+Description: invertika is an German 2D MMORPG client
+ .
+  This package contains the data files.
+  

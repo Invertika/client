@@ -1,0 +1,26 @@
+invertika-client (0.1.001-0ubuntu1~ppa7) karmic; urgency=low
+
+  * splitted package in two
+  * added dbg package
+  * Translation updated
+  
+ -- Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>  Wed, 30 Dec 2009 19:40:37 +0100
+
+invertika-client (0.1-0ubuntu1~ppa11) karmic; urgency=low
+
+  * changed pixmap for .desktopfile
+  
+ -- Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>  Wed, 30 Dec 2009 15:24:35 +0100
+
+
+invertika-client (0.1-0ubuntu1~ppa10) karmic; urgency=low
+
+  * moved installdir to /usr
+  
+ -- Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>  Tue, 29 Dec 2009 15:44:22 +0100
+
+invertika-client (0.1-0ubuntu1~ppa6) karmic; urgency=low
+
+  * Initial release
+
+ -- Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>  Tue, 29 Dec 2009 15:44:22 +0100
