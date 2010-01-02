@@ -1885,19 +1885,9 @@ msgstr ""
 msgid "PopupMenu"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:83
-#, c-format
-msgid "@@trade|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:84
 #, c-format
 msgid "Trade with %s..."
-msgstr ""
-
-#: src/gui/popupmenu.cpp:87 src/gui/popupmenu.cpp:159
-#, c-format
-msgid "@@attack|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:160
@@ -1905,25 +1895,9 @@ msgstr ""
 msgid "Attack %s"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:91
-#, c-format
-msgid "@@whisper|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:92
 #, c-format
 msgid "Whisper %s"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:95 src/gui/popupmenu.cpp:141
-#: src/gui/popupmenu.cpp:176 src/gui/popupmenu.cpp:195
-#: src/gui/popupmenu.cpp:399
-msgid "##3---"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:99
-#, c-format
-msgid "@@friend|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:100
@@ -1931,29 +1905,14 @@ msgstr ""
 msgid "Befriend %s"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:104
-#, c-format
-msgid "@@disregard|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:105
 #, c-format
 msgid "Disregard %s"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:107 src/gui/popupmenu.cpp:116
-#, c-format
-msgid "@@ignore|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:108
 #, c-format
 msgid "Ignore %s"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:113 src/gui/popupmenu.cpp:122
-#, c-format
-msgid "@@unignore|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:114 src/gui/popupmenu.cpp:123
@@ -1966,19 +1925,9 @@ msgstr ""
 msgid "Completely ignore %s"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:131
-#, c-format
-msgid "@@guild|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:132
 #, c-format
 msgid "Invite %s to join your guild"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:135
-#, c-format
-msgid "@@party|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:136
@@ -1986,18 +1935,8 @@ msgstr ""
 msgid "Invite %s to join your party"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:142 src/gui/popupmenu.cpp:164
-#, c-format
-msgid "@@admin-kick|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:143
 msgid "Kick player"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:151
-#, c-format
-msgid "@@talk|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:152
@@ -2010,33 +1949,12 @@ msgid "Kick monster"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:173
-#, c-format
-msgid "@@name|%s@@"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:173
 msgid "Add name to chat"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:177 src/gui/popupmenu.cpp:196
-#: src/gui/popupmenu.cpp:400
-#, c-format
-msgid "@@cancel|%s@@"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:190
-#, c-format
-msgid "@@pickup|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:190
 #, c-format
 msgid "Pick up %s"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:192 src/gui/popupmenu.cpp:398
-#, c-format
-msgid "@@chat|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:192 src/gui/popupmenu.cpp:398
@@ -2058,10 +1976,6 @@ msgstr ""
 
 #: src/gui/popupmenu.cpp:229
 msgid "/w \""
-msgstr ""
-
-#: src/gui/popupmenu.cpp:229
-msgid "\" "
 msgstr ""
 
 #: src/gui/popupmenu.cpp:245
@@ -2115,34 +2029,8 @@ msgstr ""
 msgid "PopupMenu: Warning, unknown action '%s'"
 msgstr ""
 
-#: src/gui/popupmenu.cpp:370 src/gui/popupmenu.cpp:372
-#: src/gui/popupmenu.cpp:375
-#, c-format
-msgid "@@use|%s@@"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:378 src/gui/popupmenu.cpp:380
-#, c-format
-msgid "@@drop|%s@@"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:384
-#, c-format
-msgid "@@split|%s@@"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:389
-#, c-format
-msgid "@@store|%s@@"
-msgstr ""
-
 #: src/gui/popupmenu.cpp:389 src/gui/storagewindow.cpp:67
 msgid "Store"
-msgstr ""
-
-#: src/gui/popupmenu.cpp:396
-#, c-format
-msgid "@@retrieve|%s@@"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:396 src/gui/storagewindow.cpp:68
@@ -2247,15 +2135,6 @@ msgstr ""
 msgid "sell"
 msgstr ""
 
-#: src/gui/serverdialog.cpp:76 src/gui/updatewindow.cpp:301
-#: src/gui/worldselectdialog.cpp:64
-msgid " ("
-msgstr ""
-
-#: src/gui/serverdialog.cpp:80 src/gui/worldselectdialog.cpp:64
-msgid ")"
-msgstr ""
-
 #: src/gui/serverdialog.cpp:87
 msgid "Choose Your Server"
 msgstr ""
@@ -2324,14 +2203,6 @@ msgstr ""
 
 #: src/gui/serverdialog.cpp:343 src/gui/serverdialog.cpp:345
 msgid "void"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:346
-msgid "http://manasource.org/serverlist.xml"
-msgstr ""
-
-#: src/gui/serverdialog.cpp:349 src/gui/serverdialog.cpp:357
-msgid "/serverlist.xml"
 msgstr ""
 
 #: src/gui/serverdialog.cpp:362 src/main.cpp:565
@@ -2506,19 +2377,6 @@ msgstr ""
 
 #: src/gui/setup_colors.cpp:149 src/gui/setup_colors.cpp:220
 msgid "slider_blue"
-msgstr ""
-
-#: src/gui/setup_colors.cpp:311
-msgid "@@|"
-msgstr ""
-
-#: src/gui/setup_colors.cpp:311 src/gui/widgets/chattab.cpp:234
-#: src/gui/widgets/chattab.cpp:237
-msgid "@@"
-msgstr ""
-
-#: src/gui/setup_colors.cpp:313
-msgid "##"
 msgstr ""
 
 #: src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62 src/gui/windowmenu.cpp:138
@@ -3265,22 +3123,6 @@ msgstr ""
 
 #: src/gui/updatewindow.cpp:254
 msgid "Couldn't load news"
-msgstr ""
-
-#: src/gui/updatewindow.cpp:301
-msgid "%)"
-msgstr ""
-
-#: src/gui/updatewindow.cpp:354
-msgid " (0%)"
-msgstr ""
-
-#: src/gui/updatewindow.cpp:373
-msgid "resources.xml"
-msgstr ""
-
-#: src/gui/updatewindow.cpp:374
-msgid "resources2.txt"
 msgstr ""
 
 #: src/gui/updatewindow.cpp:399
@@ -4122,9 +3964,6 @@ msgstr ""
 msgid "http://updates.themanaworld.org"
 msgstr ""
 
-#: src/main.cpp:338
-msgid "/config.xml"
-msgstr ""
 
 #: src/main.cpp:340
 msgid "r"
@@ -4305,20 +4144,8 @@ msgstr ""
 msgid "LANG="
 msgstr ""
 
-#: src/main.cpp:694
-msgid "translations/"
-msgstr ""
-
 #: src/main.cpp:699
 msgid "UTF-8"
-msgstr ""
-
-#: src/main.cpp:745
-msgid "data/branding.xml"
-msgstr ""
-
-#: src/main.cpp:753
-msgid "/mana.log"
 msgstr ""
 
 #: src/main.cpp:756
@@ -4752,10 +4579,6 @@ msgstr ""
 
 #: src/net/ea/generalhandler.cpp:197
 msgid "Got disconnected from server!"
-msgstr ""
-
-#: src/net/ea/generalhandler.cpp:207
-msgid "ea-skills.xml"
 msgstr ""
 
 #: src/net/ea/generalhandler.cpp:209 src/net/manaserv/generalhandler.cpp:169
@@ -5651,14 +5474,6 @@ msgstr ""
 msgid "Willpower %+d"
 msgstr ""
 
-#: src/net/manaserv/generalhandler.cpp:164
-msgid "mana-skills.xml"
-msgstr ""
-
-#: src/net/manaserv/generalhandler.cpp:165
-msgid "specials.xml"
-msgstr ""
-
 #: src/net/manaserv/generalhandler.cpp:174
 msgid "Willpower"
 msgstr ""
@@ -5835,10 +5650,6 @@ msgstr ""
 
 #: src/net/manaserv/playerhandler.cpp:160
 msgid "EXP Update"
-msgstr ""
-
-#: src/net/manaserv/playerhandler.cpp:176
-msgid "graphics/particles/levelup.particle.xml"
 msgstr ""
 
 #: src/net/manaserv/playerhandler.cpp:183
@@ -6094,15 +5905,6 @@ msgstr ""
 msgid "Unknown item"
 msgstr ""
 
-#: src/resources/itemdb.cpp:115 src/resources/itemdb.cpp:116
-#: src/resources/monsterdb.cpp:44
-msgid "error.xml"
-msgstr ""
-
-#: src/resources/itemdb.cpp:118
-msgid "items.xml"
-msgstr ""
-
 #: src/resources/itemdb.cpp:121
 msgid "items"
 msgstr ""
@@ -6226,10 +6028,6 @@ msgstr ""
 
 #: src/resources/monsterdb.cpp:47
 msgid "Initializing monster database..."
-msgstr ""
-
-#: src/resources/monsterdb.cpp:49
-msgid "monsters.xml"
 msgstr ""
 
 #: src/resources/monsterdb.cpp:52
