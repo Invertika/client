@@ -6,7 +6,7 @@ icons_DATA = ivk.png \
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(datarootdir)/pixmaps
-	$(INSTALL) $(srcdir)/invertika.png $(DESTDIR)$(datarootdir)/pixmaps/ivk.png
+	$(INSTALL) $(srcdir)/ivk.png $(DESTDIR)$(datarootdir)/pixmaps/ivk.png
 
 uninstall-local:
 	rm -f $(DESTDIR)$(datarootdir)/pixmaps/ivk.png
