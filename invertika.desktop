@@ -12,5 +12,5 @@ Exec=mana
 StartupNotify=false
 Terminal=false
 Type=Application
-Icon=mana
+Icon=ivk
 Categories=Application;Game;
