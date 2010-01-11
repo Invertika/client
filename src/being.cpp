@@ -94,6 +94,7 @@ Being::Being(int id, int job, Map *map):
 #endif
     mPx(0), mPy(0),
     mX(0), mY(0),
+    mTakedDamage(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -180,7 +181,7 @@ void Being::setDestination(int dstX, int dstY)
     // And add interpolation between the starting and ending offsets
     Path::iterator it = thisPath.begin();
     int i = 0;
-    while(it != thisPath.end())
+    while (it != thisPath.end())
     {
        it->x = (it->x * 32) + startX + (changeX * i);
        it->y = (it->y * 32) + startY + (changeY * i);
@@ -314,6 +315,12 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     if (amount > 0)
     {
+        if (getType() == MONSTER)
+        {
+            mTakedDamage += amount;
+            updateName();
+        }
+
         if (type != CRITICAL)
         {
             effectManager->trigger(26, this);
@@ -617,10 +624,12 @@ void Being::logic()
             (*it)->update(tick_time * MILLISECONDS_IN_A_TICK);
 
     // Restart status/particle effects, if needed
-    if (mMustResetParticles) {
+    if (mMustResetParticles)
+    {
         mMustResetParticles = false;
         for (std::set<int>::iterator it = mStatusEffects.begin();
-             it != mStatusEffects.end(); it++) {
+             it != mStatusEffects.end(); it++)
+        {
             const StatusEffect *effect = StatusEffect::getStatusEffect(*it, true);
             if (effect && effect->particleEffectIsPersistent())
                 updateStatusEffect(*it, true);
@@ -702,7 +711,8 @@ void Being::drawSpeech(int offsetX, int offsetY)
     {
         mSpeechBubble->setVisible(false);
 
-        if (! mText) {
+        if (! mText)
+        {
             mText = new Text(mSpeech,
                              mPx, mPy - getHeight(),
                              gcn::Graphics::CENTER,
@@ -723,7 +733,8 @@ void Being::drawSpeech(int offsetX, int offsetY)
 
 void Being::setStatusEffectBlock(int offset, Uint16 newEffects)
 {
-    for (int i = 0; i < STATUS_EFFECTS; i++) {
+    for (int i = 0; i < STATUS_EFFECTS; i++)
+    {
         int index = StatusEffect::blockEffectIndexToEffectIndex(offset + i);
 
         if (index != -1)
@@ -745,8 +756,11 @@ void Being::handleStatusEffect(StatusEffect *effect, int effectId)
     Particle *particle = effect->getParticle();
 
     if (effectId >= 0)
+    {
         mStatusParticleEffects.setLocally(effectId, particle);
-    else {
+    }
+    else
+    {
         mStunParticleEffects.clearLocally();
         if (particle)
             mStunParticleEffects.addLocally(particle);
@@ -768,7 +782,8 @@ void Being::setStatusEffect(int index, bool active)
 {
     const bool wasActive = mStatusEffects.find(index) != mStatusEffects.end();
 
-    if (active != wasActive) {
+    if (active != wasActive)
+    {
         updateStatusEffect(index, active);
         if (active)
             mStatusEffects.insert(index);
@@ -876,7 +891,8 @@ static EffectDescription *getEffectDescription(int effectId)
                 EffectDescription *EffectDescription =
                     getEffectDescription(node, &id);
                 effects[id] = EffectDescription;
-            } else if (xmlStrEqual(node->name, BAD_CAST "default"))
+            }
+            else if (xmlStrEqual(node->name, BAD_CAST "default"))
             {
                 EffectDescription *EffectDescription =
                     getEffectDescription(node, &id);
@@ -906,21 +922,22 @@ void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
 
     EffectDescription *ed = getEffectDescription(effectId);
 
-    if (!ed) {
+    if (!ed)
+    {
         logger->log("Unknown special effect and no default recorded");
         return;
     }
 
-    if (gfx && !ed->mGFXEffect.empty()) {
+    if (gfx && !ed->mGFXEffect.empty())
+    {
         Particle *selfFX;
 
         selfFX = particleEngine->addEffect(ed->mGFXEffect, 0, 0);
         controlParticle(selfFX);
     }
 
-    if (sfx && !ed->mSFXEffect.empty()) {
+    if (sfx && !ed->mSFXEffect.empty())
         sound.playSfx(ed->mSFXEffect);
-    }
 }
 
 void Being::updateCoords()
@@ -941,9 +958,19 @@ void Being::showName()
 {
     delete mDispName;
     mDispName = 0;
+    std::string mDisplayName(mName);
 
-    mDispName = new FlashText(mName, getPixelX(), getPixelY(),
+    if (getType() == MONSTER)
+    {
+        if (config.getValue("showMonstersTakedDamage", false))
+        {
+            mDisplayName += ", " + toString(getTakedDamage());
+        }
+    }
+
+    mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                              gcn::Graphics::CENTER, mNameColor);
+
 }
 
 int Being::getNumberOfLayers() const
@@ -961,4 +988,12 @@ void Being::load()
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
+}
+
+void Being::updateName()
+{
+    if (mShowName)
+    {
+        showName();
+    }
 }

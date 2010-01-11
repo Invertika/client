@@ -21,6 +21,12 @@
 
 #include "gui/statuswindow.h"
 
+#include "localplayer.h"
+#include "units.h"
+
+#include "gui/ministatus.h"
+#include "gui/setup.h"
+
 #include "gui/widgets/button.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layouthelper.h"
@@ -28,12 +34,6 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/vertcontainer.h"
 #include "gui/widgets/windowcontainer.h"
-
-#include "gui/ministatus.h"
-#include "gui/setup.h"
-
-#include "localplayer.h"
-#include "units.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
@@ -543,7 +543,8 @@ void ChangeDisplay::action(const gcn::ActionEvent &event)
         int newmod = player_node->getAttributeEffective(mId) - 1;
         player_node->setAttributeEffective(mId, newmod);
         Net::getPlayerHandler()->decreaseAttribute(mId);
-    } else if (event.getSource() == mInc)
+    }
+    else if (event.getSource() == mInc)
     {
         int newpoints = player_node->getCharacterPoints() - 1;
         player_node->setCharacterPoints(newpoints);

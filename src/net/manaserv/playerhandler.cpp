@@ -180,8 +180,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case GPMSG_LEVEL_PROGRESS:
         {
-            logger->log("Level Progress Update");
-            player_node->setExp(msg.readInt8());
+            player_node->setExp(msg.readInt8(), false);
         } break;
 
 
@@ -278,7 +277,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
             {
                 Sint16 type = msg.readInt16();
 
-                switch (type) {
+                switch (type)
+                {
                     case 0:
                         localChatTab->chatLog(_("Equip arrows first."),
                                              BY_SERVER);
@@ -314,7 +314,8 @@ void PlayerHandler::handleMapChangeMessage(Net::MessageIn &msg)
     /* Scroll if neccessary */
     if (!nearby
             || (abs(x - (int) playerPos.x) > MAP_TELEPORT_SCROLL_DISTANCE)
-            || (abs(y - (int) playerPos.y) > MAP_TELEPORT_SCROLL_DISTANCE)) {
+            || (abs(y - (int) playerPos.y) > MAP_TELEPORT_SCROLL_DISTANCE))
+    {
         scrollOffsetX = x - (int) playerPos.x;
         scrollOffsetY = y - (int) playerPos.y;
     }

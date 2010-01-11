@@ -27,6 +27,8 @@
 
 #include "utils/gettext.h"
 
+int TextDialog::instances = 0;
+
 TextDialog::TextDialog(const std::string &title, const std::string &msg,
                        Window *parent):
     Window(title, true, parent),
@@ -57,12 +59,20 @@ TextDialog::TextDialog(const std::string &title, const std::string &msg,
     add(mOkButton);
     add(cancelButton);
 
-    if (getParent()) {
+    if (getParent())
+    {
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
     }
     setVisible(true);
     mTextField->requestFocus();
+    
+    instances++;
+}
+
+TextDialog::~TextDialog()
+{
+    instances--;
 }
 
 void TextDialog::action(const gcn::ActionEvent &event)

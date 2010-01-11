@@ -26,6 +26,7 @@
 #include "npc.h"
 #include "player.h"
 
+#include "utils/stringutils.h"
 #include "utils/dtor.h"
 
 #include <cassert>
@@ -297,4 +298,23 @@ bool BeingManager::hasBeing(Being *being) const
     }
 
     return false;
+}
+
+void BeingManager::getPlayerNames(std::vector<std::string> &names,
+                                  bool npcNames)
+{
+    Beings::iterator i = mBeings.begin();
+    names.clear();
+
+    while (i != mBeings.end())
+    {
+        Being *being = (*i);
+        if ((being->getType() == Being::PLAYER
+             || (being->getType() == Being::NPC && npcNames))
+            && being->getName() != "")
+        {
+            names.push_back(being->getName());
+        }
+        ++i;
+    }
 }

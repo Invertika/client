@@ -21,12 +21,12 @@
 
 #include "gui/widgets/tab.h"
 
-#include "gui/widgets/tabbedarea.h"
+#include "configuration.h"
+#include "graphics.h"
 
 #include "gui/palette.h"
 
-#include "configuration.h"
-#include "graphics.h"
+#include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -150,7 +150,8 @@ void Tab::draw(gcn::Graphics *graphics)
             mode = TAB_SELECTED;
             // if tab is selected, it doesnt need to highlight activity
             mHighlighted = false;
-        } else if (mHasMouse)
+        }
+        else if (mHasMouse)
         {
             mode = TAB_HIGHLIGHTED;
         }

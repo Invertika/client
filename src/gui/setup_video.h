@@ -25,7 +25,7 @@
 #include "being.h"
 #include "guichanfwd.h"
 
-#include "gui/setuptab.h"
+#include "gui/widgets/setuptab.h"
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -52,6 +52,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
+        bool mShowMonsterDamageEnabled;
         bool mVisibleNamesEnabled;
         bool mParticleEffectsEnabled;
         bool mNameEnabled;
@@ -75,6 +76,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::CheckBox *mShowMonsterDamageCheckBox;
         gcn::CheckBox *mVisibleNamesCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;
         gcn::CheckBox *mNameCheckBox;

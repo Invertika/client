@@ -21,8 +21,9 @@
 
 #include "gui/widgets/browserbox.h"
 
-#include "gui/linkhandler.h"
 #include "gui/palette.h"
+
+#include "gui/widgets/linkhandler.h"
 
 #include <guichan/graphics.hpp>
 #include <guichan/font.hpp>
@@ -233,9 +234,8 @@ void BrowserBox::mousePressed(gcn::MouseEvent &event)
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
             MouseOverLink(event.getX(), event.getY()));
 
-    if (i != mLinks.end()) {
+    if (i != mLinks.end())
         mLinkHandler->handleLink(i->link);
-    }
 }
 
 void BrowserBox::mouseMoved(gcn::MouseEvent &event)

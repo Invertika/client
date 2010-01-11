@@ -21,11 +21,12 @@
 
 #include "gui/partywindow.h"
 
-#include "gui/widgets/chattab.h"
-#include "gui/setup.h"
-
 #include "beingmanager.h"
 #include "player.h"
+
+#include "gui/setup.h"
+
+#include "gui/widgets/chattab.h"
 
 #include "net/net.h"
 #include "net/partyhandler.h"
@@ -46,7 +47,8 @@ PartyMember::~PartyMember()
 
 void PartyMember::setLeader(bool leader)
 {
-    if (mLeader != leader) {
+    if (mLeader != leader)
+    {
         mLeader = leader;
         mAvatar->setDisplayBold(leader);
     }
@@ -251,5 +253,22 @@ void PartyWindow::buildLayout()
         member = (*it).second;
         add(member->mAvatar, 0, lastPos);
         lastPos += member->mAvatar->getHeight() + 2;
+    }
+}
+
+void PartyWindow::getNames(std::vector<std::string> &names)
+{
+    PartyList::iterator i = mMembers.begin();
+    names.clear();
+
+    while (i != mMembers.end())
+    {
+        PartyMember *member = (*i).second;
+        if (member->getAvatar() && member->getAvatar()->getName() != "")
+        {
+            std::string name = member->getAvatar()->getName();
+            names.push_back(name);
+        }
+        ++i;
     }
 }

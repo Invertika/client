@@ -25,11 +25,11 @@
 #include "configuration.h"
 #include "localplayer.h"
 
+#include "gui/recorder.h"
+
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "gui/itemlinkhandler.h"
-#include "gui/recorder.h"
+#include "gui/widgets/itemlinkhandler.h"
 
 #include "net/chathandler.h"
 #include "net/net.h"
@@ -269,4 +269,9 @@ void ChatTab::handleInput(const std::string &msg)
 void ChatTab::handleCommand(const std::string &msg)
 {
     commandHandler->handleCommand(msg, this);
+}
+
+int ChatTab::getType() const
+{
+    return INPUT;
 }

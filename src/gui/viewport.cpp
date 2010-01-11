@@ -21,10 +21,6 @@
 
 #include "gui/viewport.h"
 
-#include "gui/gui.h"
-#include "gui/ministatus.h"
-#include "gui/popupmenu.h"
-
 #include "beingmanager.h"
 #include "configuration.h"
 #include "flooritemmanager.h"
@@ -36,6 +32,10 @@
 #include "monster.h"
 #include "npc.h"
 #include "textmanager.h"
+
+#include "gui/gui.h"
+#include "gui/ministatus.h"
+#include "gui/popupmenu.h"
 
 #include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"
@@ -86,6 +86,10 @@ Viewport::~Viewport()
 
 void Viewport::setMap(Map *map)
 {
+    if (mMap && map)
+    {
+        map->setDebugFlags(mMap->getDebugFlags());
+    }
     mMap = map;
 }
 
@@ -188,11 +192,14 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     {
         mMap->draw(graphics, (int) mPixelViewX, (int) mPixelViewY);
 
-        if (mShowDebugPath) {
+        if (mShowDebugPath)
+        {
             mMap->drawCollision(graphics,
                                 (int) mPixelViewX,
-                                (int) mPixelViewY);
-            _drawDebugPath(graphics);
+                                (int) mPixelViewY,
+                                mShowDebugPath);
+            if (mShowDebugPath == Map::MAP_DEBUG)
+                _drawDebugPath(graphics);
         }
     }
 
@@ -370,7 +377,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
                     break;
              }
         // Picks up a item if we clicked on one
-        } else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
+        }
+        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
             player_node->pickUp(item);
         }
@@ -446,9 +454,8 @@ void Viewport::optionChanged(const std::string &name)
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
 
-    if (name == "visiblenames") {
+    if (name == "visiblenames")
         mVisibleNames = config.getValue("visiblenames", 1);
-    }
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)
@@ -462,3 +469,15 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
 
     mSelectedBeing = beingManager->findBeing(tilex, tiley);
 }
+
+void Viewport::toggleDebugPath()
+{
+    mShowDebugPath++;
+    if (mShowDebugPath > Map::MAP_SPECIAL)
+        mShowDebugPath = Map::MAP_NORMAL;
+    if (mMap)
+    {
+        mMap->setDebugFlags(mShowDebugPath);
+    }
+}
+

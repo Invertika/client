@@ -26,6 +26,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
+#include "localplayer.h"
 #include "main.h"
 
 extern Net::GameHandler *gameHandler;
@@ -72,7 +73,8 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             // Logout failed
             else
             {
-                switch (errMsg) {
+                switch (errMsg)
+                {
                     case ERRMSG_NO_LOGIN:
                         errorMessage = "Gameserver: Not logged in";
                         break;
@@ -112,6 +114,9 @@ void GameHandler::inGame()
     gameServerConnection->send(msg);
 
     chatHandler->connect();
+    
+    // Attack range from item DB
+    player_node->setAttackRange(-1);
 }
 
 void GameHandler::mapLoaded(const std::string &mapName)

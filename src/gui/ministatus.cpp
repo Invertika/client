@@ -21,15 +21,15 @@
 
 #include "gui/ministatus.h"
 
-#include "gui/gui.h"
-#include "gui/statuswindow.h"
-
-#include "gui/widgets/progressbar.h"
-
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
+
+#include "gui/gui.h"
+#include "gui/statuswindow.h"
+
+#include "gui/widgets/progressbar.h"
 
 #include "utils/stringutils.h"
 
@@ -82,8 +82,10 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
 {
     // Draw icons
     int icon_x = mXpBar->getX() + mXpBar->getWidth() + 4;
-    for (unsigned int i = 0; i < mIcons.size(); i++) {
-        if (mIcons[i]) {
+    for (unsigned int i = 0; i < mIcons.size(); i++)
+    {
+        if (mIcons[i])
+        {
             mIcons[i]->draw(graphics, icon_x, 3);
             icon_x += 2 + mIcons[i]->getWidth();
         }

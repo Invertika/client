@@ -22,21 +22,21 @@
 
 #include "gui/guildwindow.h"
 
+#include "guild.h"
+#include "log.h"
+#include "localplayer.h"
+
 #include "gui/confirmdialog.h"
-#include "gui/guildlistbox.h"
 #include "gui/setup.h"
 #include "gui/textdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/guildlistbox.h"
 #include "gui/widgets/layout.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tabbedarea.h"
 #include "gui/widgets/windowcontainer.h"
-
-#include "guild.h"
-#include "log.h"
-#include "localplayer.h"
 
 #include "net/guildhandler.h"
 #include "net/net.h"
@@ -141,7 +141,7 @@ void GuildWindow::action(const gcn::ActionEvent &event)
     else if (eventId == "CREATE_GUILD_OK")
     {
         std::string name = guildDialog->getText();
-        if(name.size() > 16)
+        if (name.size() > 16)
         {
             // TODO : State too many characters in input.
             return;
@@ -205,7 +205,7 @@ void GuildWindow::updateTab()
 void GuildWindow::setTab(const std::string &guildName)
 {
     // Only enable invite button if user has rights
-    if(player_node->checkInviteRights(guildName))
+    if (player_node->checkInviteRights(guildName))
     {
         mGuildButton[1]->setEnabled(true);
     }

@@ -42,18 +42,18 @@
 #include "sound.h"
 
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/emoteshortcutcontainer.h"
+#include "gui/widgets/itemshortcutcontainer.h"
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/chat.h"
 #include "gui/confirmdialog.h"
 #include "gui/debugwindow.h"
-#include "gui/emoteshortcutcontainer.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/shortcutwindow.h"
-#include "gui/itemshortcutcontainer.h"
 #include "gui/minimap.h"
 #include "gui/ministatus.h"
 #include "gui/npcdialog.h"
@@ -64,6 +64,7 @@
 #include "gui/setup.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
+#include "gui/textdialog.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
 #include "gui/windowmenu.h"
@@ -76,6 +77,7 @@
 
 #include "net/gamehandler.h"
 #include "net/generalhandler.h"
+#include "net/playerhandler.h"
 #include "net/net.h"
 
 #include "resources/imagewriter.h"
@@ -522,7 +524,8 @@ void Game::handleInput()
             }
 
             // send straight to gui for certain windows
-            if (quitDialog || npcPostDialog->isVisible())
+            if (quitDialog || TextDialog::isActive() ||
+                npcPostDialog->isVisible())
             {
                 try
                 {
@@ -947,7 +950,19 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        player_node->setWalkingDir(direction);
+        if (keyboard.isKeyActive(keyboard.KEY_EMOTE) && direction != 0)
+        {
+            if (player_node->getDirection() != direction)
+            {
+                player_node->setDirection(direction);
+                Net::getPlayerHandler()->setDirection(direction);
+            }
+            direction = 0;
+        }
+        else
+        {
+            player_node->setWalkingDir(direction);
+        }
 
         // Attacking monsters
         if (keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
@@ -1002,7 +1017,11 @@ void Game::handleInput()
                 player_node->setTarget(target);
                 mLastTarget = currentTarget;
             }
-        } else mLastTarget = Being::UNKNOWN; // Reset last target
+        }
+        else
+        {
+            mLastTarget = Being::UNKNOWN; // Reset last target
+        }
 
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )

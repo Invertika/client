@@ -32,6 +32,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 class PartyWindow;
 
@@ -126,6 +127,8 @@ class PartyWindow : public Window, gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         void clearMembers();
+
+        void getNames(std::vector<std::string> &names);
 
     private:
         /**

@@ -46,7 +46,8 @@ WhisperTab::~WhisperTab()
 
 void WhisperTab::handleInput(const std::string &msg)
 {
-    if (msg.empty()) {
+    if (msg.empty())
+    {
         chatLog(_("Cannot send empty chat!"), BY_SERVER, false);
         return;
     }
@@ -112,4 +113,9 @@ bool WhisperTab::handleCommand(const std::string &type,
         return false;
 
     return true;
+}
+
+int WhisperTab::getType() const
+{
+    return ChatTab::WHISPER;
 }

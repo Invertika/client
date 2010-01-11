@@ -23,8 +23,9 @@
 
 #include "npc.h"
 
-#include "gui/widgets/button.h"
 #include "gui/setup.h"
+
+#include "gui/widgets/button.h"
 
 #include "net/net.h"
 #include "net/npchandler.h"
@@ -80,8 +81,6 @@ void BuySellDialog::setVisible(bool visible)
 void BuySellDialog::action(const gcn::ActionEvent &event)
 {
     setVisible(false);
-
-    NPC::isTalking = false;
 
     if (event.getId() == "Buy")
     {

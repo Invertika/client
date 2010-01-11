@@ -21,26 +21,26 @@
 
 #include "gui/charselectdialog.h"
 
-#include "gui/widgets/button.h"
-#include "gui/widgets/container.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/layout.h"
-#include "gui/widgets/layouthelper.h"
-#include "gui/widgets/textfield.h"
+#include "game.h"
+#include "localplayer.h"
+#include "main.h"
+#include "units.h"
 
 #include "gui/changeemaildialog.h"
 #include "gui/changepassworddialog.h"
 #include "gui/charcreatedialog.h"
 #include "gui/confirmdialog.h"
 #include "gui/okdialog.h"
-#include "gui/playerbox.h"
 #include "gui/sdlinput.h"
 #include "gui/unregisterdialog.h"
 
-#include "game.h"
-#include "localplayer.h"
-#include "main.h"
-#include "units.h"
+#include "gui/widgets/button.h"
+#include "gui/widgets/container.h"
+#include "gui/widgets/label.h"
+#include "gui/widgets/layout.h"
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/playerbox.h"
+#include "gui/widgets/textfield.h"
 
 #include "net/charhandler.h"
 #include "net/logindata.h"
@@ -142,7 +142,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place(0, 0, mAccountNameLabel, 2);
     place(0, 1, mSwitchLoginButton);
 
-    if (optionalActions & Net::LoginHandler::Unregister) {
+    if (optionalActions & Net::LoginHandler::Unregister)
+    {
         gcn::Button *unregisterButton = new Button(_("Unregister"),
                                                    "unregister", this);
         place(3, 1, unregisterButton);
@@ -150,7 +151,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
     place(0, 2, mChangePasswordButton);
 
-    if (optionalActions & Net::LoginHandler::ChangeEmail) {
+    if (optionalActions & Net::LoginHandler::ChangeEmail)
+    {
         gcn::Button *changeEmailButton = new Button(_("Change Email"),
                                                     "change_email", this);
         place(3, 2, changeEmailButton);

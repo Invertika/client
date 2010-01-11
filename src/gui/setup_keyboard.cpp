@@ -22,14 +22,14 @@
 
 #include "gui/setup_keyboard.h"
 
+#include "keyboardconfig.h"
+
 #include "gui/okdialog.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/layouthelper.h"
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "keyboardconfig.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -116,9 +116,8 @@ void Setup_Keyboard::apply()
 
     if (keyboard.hasConflicts())
     {
-        new OkDialog(_("Key Conflict(s) Detected"),
-                     _("Resolve them, or gameplay may result in strange "
-                       "behaviour."));
+        new OkDialog(_("Key Conflict(s) Detected."),
+                     keyboard.getBindError());
     }
     keyboard.setEnabled(true);
     keyboard.store();

@@ -26,12 +26,13 @@
 
 #include "configuration.h"
 #include "textmanager.h"
-#include "resources/resourcemanager.h"
-#include "resources/image.h"
+#include "textrenderer.h"
 
 #include "gui/gui.h"
 #include "gui/palette.h"
-#include "gui/textrenderer.h"
+
+#include "resources/resourcemanager.h"
+#include "resources/image.h"
 
 int Text::mInstances = 0;
 ImageRect Text::mBubble;
@@ -122,12 +123,14 @@ void Text::adviseXY(int x, int y)
 
 void Text::draw(gcn::Graphics *graphics, int xOff, int yOff)
 {
-    if (mIsSpeech) {
+    if (mIsSpeech)
+    {
         static_cast<Graphics*>(graphics)->drawImageRect(
                 mX - xOff - 5, mY - yOff - 5, mWidth + 10, mHeight + 10,
                 mBubble);
         /*
-        if (mWidth >= 15) {
+        if (mWidth >= 15)
+        {
             static_cast<Graphics*>(graphics)->drawImage(
                     mBubbleArrow, mX - xOff - 7 + mWidth / 2,
                     mY - yOff + mHeight + 4);

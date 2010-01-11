@@ -32,6 +32,7 @@
 #include <list>
 #include <string>
 #include <map>
+#include <vector>
 
 class BrowserBox;
 class Channel;
@@ -186,6 +187,13 @@ class ChatWindow : public Window,
         void addTab(ChatTab *tab);
 
         void removeWhisper(const std::string &nick);
+
+        void autoComplete();
+
+        std::string autoCompleteHistory(std::string partName);
+
+        std::string autoComplete(std::vector<std::string> &names,
+                                 std::string partName) const;
 
         /** Used for showing item popup on clicking links **/
         ItemLinkHandler *mItemLinkHandler;

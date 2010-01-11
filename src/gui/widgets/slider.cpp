@@ -24,9 +24,10 @@
 #include "configuration.h"
 #include "graphics.h"
 
+#include "gui/skin.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "gui/skin.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
@@ -175,7 +176,8 @@ void Slider::draw(gcn::Graphics *graphics)
 
         x += w;
             static_cast<Graphics*>(graphics)->drawImage(hEnd, x, y);
-    } else
+    }
+    else
     {
         static_cast<Graphics*>(graphics)->drawImage(hStartHi, x, y);
 
