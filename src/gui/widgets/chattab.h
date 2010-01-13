@@ -22,8 +22,9 @@
 #ifndef CHATTAB_H
 #define CHATTAB_H
 
-#include "gui/widgets/tab.h"
 #include "gui/chat.h"
+
+#include "gui/widgets/tab.h"
 
 class BrowserBox;
 class Recorder;
@@ -132,6 +133,8 @@ class ChatTab : public Tab
         virtual void handleInput(const std::string &msg);
 
         virtual void handleCommand(const std::string &msg);
+
+        void addRow(std::string &line);
 
         ScrollArea *mScrollArea;
         BrowserBox *mTextOutput;
