@@ -93,7 +93,9 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mTotalWeight(1), mMaxWeight(1),
     mHp(1), mMaxHp(1),
     mSkillPoints(0),
-    mTarget(NULL), mPickUpTarget(NULL),
+    mTarget(NULL),
+    mPlayerFollowed(""),
+    mPickUpTarget(NULL),
     mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
@@ -106,8 +108,7 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 #endif
     mStorage(new Inventory(Net::getInventoryHandler()
                            ->getSize(Net::InventoryHandler::STORAGE))),
-    mMessageTime(0),
-    mPlayerFollowed("")
+    mMessageTime(0)
 {
     // Variable to keep the local player from doing certain actions before a map
     // is initialized. e.g. drawing a player's name using the TextManager, since
@@ -816,7 +817,7 @@ void LocalPlayer::lowerAttribute(size_t attr)
     Net::getPlayerHandler()->decreaseAttribute(attr);
 }
 
-void LocalPlayer::setAttributeBase(int num, int value)
+void LocalPlayer::setAttributeBase(int num, int value, bool notify)
 {
     int old = mAttributeBase[num];
 
@@ -826,7 +827,8 @@ void LocalPlayer::setAttributeBase(int num, int value)
         if (skillDialog->update(num).empty() || !(value > old))
             return;
 
-        effectManager->trigger(1, this);
+        if (old != 0 && notify)
+            effectManager->trigger(1, this);
     }
 
     if (statusWindow)
@@ -866,7 +868,7 @@ void LocalPlayer::setSkillPoints(int points)
         skillDialog->update();
 }
 
-void LocalPlayer::setExperience(int skill, int current, int next)
+void LocalPlayer::setExperience(int skill, int current, int next, bool notify)
 {
     std::pair<int, int> cur = getExperience(skill);
     int diff = current - cur.first;
@@ -874,11 +876,12 @@ void LocalPlayer::setExperience(int skill, int current, int next)
     cur = std::pair<int, int>(current, next);
 
     mSkillExp[skill] = cur;
+
     std::string name;
     if (skillDialog)
         name = skillDialog->update(skill);
 
-    if (mMap && cur.first != -1 && diff > 0 && !name.empty())
+    if (mMap && notify && cur.first != -1 && diff > 0 && !name.empty())
     {
         addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
     }
