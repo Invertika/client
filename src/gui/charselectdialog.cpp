@@ -270,13 +270,15 @@ bool CharSelectDialog::selectByName(const std::string &name)
     return false;
 }
 
-void CharSelectDialog::chooseSelected()
+bool CharSelectDialog::chooseSelected()
 {
     if (!mCharInfo->getSize())
-        return;
+        return false;
 
     setVisible(false);
     attemptCharSelect();
+    
+    return true;
 }
 
 void CharSelectDialog::update(int slot)
