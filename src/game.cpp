@@ -748,14 +748,10 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-#ifdef MANASERV_SUPPORT
                             const Vector &pos = player_node->getPosition();
                             Uint16 x = (int) pos.x / 32;
                             Uint16 y = (int) pos.y / 32;
-#else
-                            Uint16 x = player_node->getTileX();
-                            Uint16 y = player_node->getTileY();
-#endif
+
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);
 
@@ -909,7 +905,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->mAction != Being::DEAD && current_npc == 0 &&
+    if (player_node->isAlive() && current_npc == 0 &&
         !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys

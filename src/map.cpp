@@ -542,7 +542,8 @@ bool Map::occupied(int x, int y) const
         const Being *being = *i;
 
         // job 45 is a portal, they don't collide
-        if (being->getTileX() == x && being->getTileY() == y && being->mJob != 45)
+        if (being->getTileX() == x && being->getTileY() == y
+            && being->getJob() != 45)
             return true;
     }
 
@@ -583,7 +584,7 @@ const std::string &Map::getName() const
     return getProperty("mapname");
 }
 
-const std::string *Map::getMapId() const
+const std::string *Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
     int lastSlash = fileName.rfind("/") + 1;

@@ -112,7 +112,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     Player *player;
     int hairStyle, hairColor, flag;
     std::string player_followed;
-    
+
     switch (msg.getId())
     {
         case SMSG_BEING_VISIBLE:
@@ -153,8 +153,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.getId() == 0x0078)
             {
                 dstBeing->clearPath();
-                dstBeing->mFrame = 0;
-                dstBeing->mWalkTime = tick_time;
+                dstBeing->setFrame(0);
+                dstBeing->setWalkTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
@@ -163,7 +163,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (speed == 0) { speed = 150; }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->mJob = job;
+            dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             headBottom = msg.readInt16();
@@ -192,14 +192,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 player->setGender((gender == 0)
                                   ? GENDER_FEMALE : GENDER_MALE);
                 // Set these after the gender, as the sprites may be gender-specific
-                player->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(hairColor));
-                player->setSprite(Player::BOTTOMCLOTHES_SPRITE, headBottom);
-                player->setSprite(Player::TOPCLOTHES_SPRITE, headMid);
-                player->setSprite(Player::HAT_SPRITE, headTop);
-                player->setSprite(Player::SHOE_SPRITE, shoes);
-                player->setSprite(Player::GLOVES_SPRITE, gloves);
-                player->setSprite(Player::WEAPON_SPRITE, weapon);
-                player->setSprite(Player::SHIELD_SPRITE, shield);
+                player->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
+                player->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
+                player->setSprite(SPRITE_TOPCLOTHES, headMid);
+                player->setSprite(SPRITE_HAT, headTop);
+                player->setSprite(SPRITE_SHOE, shoes);
+                player->setSprite(SPRITE_GLOVES, gloves);
+                player->setSprite(SPRITE_WEAPON, weapon, "", true);
+                player->setSprite(SPRITE_SHIELD, shield);
             }
 
             if (msg.getId() == SMSG_BEING_MOVE)
@@ -263,9 +263,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             if (!dstBeing)
                 break;
-            
+
             player_followed = player_node->getFollow();
-            
+
             if (!player_followed.empty())
             {
                 if (dstBeing->getName() == player_followed)
@@ -349,7 +349,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x02: // Sit
                     if (srcBeing)
                     {
-                        srcBeing->mFrame = 0;
+                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
@@ -357,7 +357,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x03: // Stand up
                     if (srcBeing)
                     {
-                        srcBeing->mFrame = 0;
+                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::STAND);
                     }
                     break;
@@ -386,7 +386,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (player_relations.hasPermission(dstBeing, PlayerRelation::EMOTE))
             {
                 // only set emote if one doesnt already exist
-                if (!dstBeing->mEmotion)
+                if (!dstBeing->getEmotion())
                     dstBeing->setEmote(msg.readInt8(), EMOTION_TIME);
             }
 
@@ -431,41 +431,41 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             switch (type)
             {
                 case 1:     // eAthena LOOK_HAIR
-                    player->setSpriteID(Player::HAIR_SPRITE, id *-1);
+                    player->setSpriteID(SPRITE_HAIR, id *-1);
                     break;
                 case 2:     // Weapon ID in id, Shield ID in id2
-                    player->setSprite(Player::WEAPON_SPRITE, id);
-                    player->setSprite(Player::SHIELD_SPRITE, id2);
+                    player->setSprite(SPRITE_WEAPON, id, "", true);
+                    player->setSprite(SPRITE_SHIELD, id2);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
-                    player->setSprite(Player::BOTTOMCLOTHES_SPRITE, id);
+                    player->setSprite(SPRITE_BOTTOMCLOTHES, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
-                    player->setSprite(Player::HAT_SPRITE, id);
+                    player->setSprite(SPRITE_HAT, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
-                    player->setSprite(Player::TOPCLOTHES_SPRITE, id);
+                    player->setSprite(SPRITE_TOPCLOTHES, id);
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
-                    player->setSpriteColor(Player::HAIR_SPRITE, ColorDB::get(id));
+                    player->setSpriteColor(SPRITE_HAIR, ColorDB::get(id));
                     break;
                 case 8:     // eAthena LOOK_SHIELD
-                    player->setSprite(Player::SHIELD_SPRITE, id);
+                    player->setSprite(SPRITE_SHIELD, id);
                     break;
                 case 9:     // eAthena LOOK_SHOES
-                    player->setSprite(Player::SHOE_SPRITE, id);
+                    player->setSprite(SPRITE_SHOE, id);
                     break;
                 case 10:   // LOOK_GLOVES
-                    player->setSprite(Player::GLOVES_SPRITE, id);
+                    player->setSprite(SPRITE_GLOVES, id);
                     break;
                 case 11:  // LOOK_CAPE
-                    player->setSprite(Player::CAPE_SPRITE, id);
+                    player->setSprite(SPRITE_CAPE, id);
                     break;
                 case 12:
-                    player->setSprite(Player::MISC1_SPRITE, id);
+                    player->setSprite(SPRITE_MISC1, id);
                     break;
                 case 13:
-                    player->setSprite(Player::MISC2_SPRITE, id);
+                    player->setSprite(SPRITE_MISC2, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
@@ -524,7 +524,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->mJob = job;
+            dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
             shield = msg.readInt16();
@@ -538,8 +538,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             headTop = msg.readInt16();
             headMid = msg.readInt16();
             hairColor = msg.readInt16();
-            msg.readInt16();  // clothes color - Aethyra-"abused" as shoes, we ignore it
-            msg.readInt16();  // head dir - Aethyra-"abused" as gloves, we ignore it
+            shoes = msg.readInt16();
+            gloves = msg.readInt16();
             msg.readInt32();  // guild
             msg.readInt16();  // emblem
             msg.readInt16();  // manner
@@ -549,15 +549,17 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                               ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
-            player->setSprite(Player::WEAPON_SPRITE, weapon);
-            player->setSprite(Player::SHIELD_SPRITE, shield);
-            player->setSprite(Player::BOTTOMCLOTHES_SPRITE, headBottom);
-            player->setSprite(Player::TOPCLOTHES_SPRITE, headMid);
-            player->setSprite(Player::HAT_SPRITE, headTop);
-            //player->setSprite(Player::CAPE_SPRITE, cape);
-            //player->setSprite(Player::MISC1_SPRITE, misc1);
-            //player->setSprite(Player::MISC2_SPRITE, misc2);
-            player->setSprite(Player::HAIR_SPRITE, hairStyle * -1, ColorDB::get(hairColor));
+            player->setSprite(SPRITE_WEAPON, weapon, "", true);
+            player->setSprite(SPRITE_SHIELD, shield);
+            //player->setSprite(SPRITE_SHOE, shoes);
+            player->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
+            player->setSprite(SPRITE_TOPCLOTHES, headMid);
+            player->setSprite(SPRITE_HAT, headTop);
+            //player->setSprite(SPRITE_GLOVES, gloves);
+            //player->setSprite(SPRITE_CAPE, cape);
+            //player->setSprite(SPRITE_MISC1, misc1);
+            //player->setSprite(SPRITE_MISC2, misc2);
+            player->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
@@ -565,7 +567,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 msg.readCoordinatePair(srcX, srcY, dstX, dstY);
                 dstBeing->setTileCoords(srcX, srcY);
                 dstBeing->setDestination(dstX, dstY);
-                
+
                 player_followed = player_node->getFollow();
                 if (!player_followed.empty())
                 {
@@ -610,8 +612,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
 
-            dstBeing->mWalkTime = tick_time;
-            dstBeing->mFrame = 0;
+            dstBeing->setWalkTime(tick_time);
+            dstBeing->setFrame(0);
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
@@ -641,9 +643,9 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     x = msg.readInt16();
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
-                    if (dstBeing->mAction == Being::WALK)
+                    if (dstBeing->getCurrentAction() == Being::WALK)
                     {
-                        dstBeing->mFrame = 0;
+                        dstBeing->setFrame(0);
                         dstBeing->setAction(Being::STAND);
                     }
                 }

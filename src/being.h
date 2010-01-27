@@ -115,18 +115,6 @@ class Being : public Sprite, public ConfigListener
          */
         enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
-#ifdef EATHENA_SUPPORT
-        int mFrame;
-        int mWalkTime;
-#endif
-        int mEmotion;         /**< Currently showing emotion */
-        int mEmotionTime;     /**< Time until emotion disappears */
-        int mSpeechTime;
-
-        int mAttackSpeed;     /**< Attack speed */
-        Action mAction;       /**< Action the being is performing */
-        Uint16 mJob;          /**< Job (player job, npc, monster, creature ) */
-
         /**
          * Constructor.
          *
@@ -143,12 +131,42 @@ class Being : public Sprite, public ConfigListener
          */
         void clearPath();
 
+#ifdef EATHENA_SUPPORT
+        /**
+         * Returns the walk time.
+         * Used to know which frame to display and trigger
+         * the next Tile step.
+         */
+        int getWalkTime() const { return mWalkTime; }
+
+        /**
+         * Set the current WalkTime value.
+         * @see Ea::BeingHandler that set it to tick time.
+         */
+        void setWalkTime(int walkTime) { mWalkTime = walkTime; }
+
+        /**
+         * Makes this being take the next step (tile) of its path.
+         */
+        virtual void nextStep();
+
+        /**
+         * Get the current X pixel offset.
+         */
+        int getXOffset() const
+        { return getOffset(LEFT, RIGHT); }
+
+        /**
+         * Get the current Y pixel offset.
+         */
+        int getYOffset() const
+        { return getOffset(UP, DOWN); }
+
         /**
          * Sets a new destination for this being to walk to.
          */
-#ifdef EATHENA_SUPPORT
         virtual void setDestination(int destX, int destY);
-#else
+#elif MANASERV_SUPPORT
         /**
          * Creates a path for the being from current position to ex and ey
          */
@@ -161,16 +179,19 @@ class Being : public Sprite, public ConfigListener
 #endif
 
         /**
-         * Returns the tile x or y coord
+         * Returns the tile x coord
          */
         int getTileX() const
         { return mX; }
 
+        /**
+         * Returns the tile y coord
+         */
         int getTileY() const
         { return mY; }
 
         /**
-         * Sets the tile x or y coord
+         * Sets the tile x and y coord
          */
         void setTileCoords(int x, int y)
         { mX = x; mY = y; }
@@ -231,13 +252,6 @@ class Being : public Sprite, public ConfigListener
          */
         int getNumberOfLayers() const;
 
-#ifdef EATHENA_SUPPORT
-        /**
-         * Makes this being take the next step of his path.
-         */
-        virtual void nextStep();
-#endif
-
         /**
          * Performs being logic.
          */
@@ -258,6 +272,16 @@ class Being : public Sprite, public ConfigListener
          */
         virtual Type getType() const { return UNKNOWN; }
 
+         /**
+          * Return Being's current Job (player job, npc, monster, creature )
+          */
+        Uint16 getJob() const { return mJob; }
+
+         /**
+          * Set Being's current Job (player job, npc, monster, creature )
+          */
+        void setJob(Uint16 job) { mJob = job; }
+
         /**
          * Sets the walk speed.
          * in pixels per second for eAthena,
@@ -271,6 +295,18 @@ class Being : public Sprite, public ConfigListener
          * in tiles per second for Manaserv (0.1 precision).
          */
         float getWalkSpeed() const { return mWalkSpeed; }
+
+        /**
+         * Sets the attack speed.
+         * @todo In what unit?
+         */
+        void setAttackSpeed(int speed) { mAttackSpeed = speed; }
+
+        /**
+         * Gets the attack speed.
+         * @todo In what unit?
+         */
+        int getAttackSpeed() const { return mAttackSpeed; }
 
         /**
          * Sets the sprite id.
@@ -290,6 +326,11 @@ class Being : public Sprite, public ConfigListener
         virtual void setAction(Action action, int attackType = 0);
 
         /**
+         * Get the being's action currently performed.
+         */
+        Action getCurrentAction() const { return mAction; }
+
+        /**
          * Returns whether this being is still alive.
          */
         bool isAlive() const { return mAction != DEAD; }
@@ -304,12 +345,15 @@ class Being : public Sprite, public ConfigListener
          */
         void setDirection(Uint8 direction);
 
-#ifdef EATHENA_SUPPORT
         /**
-         * Returns the walk time.
+         * Returns the being's current sprite frame number.
          */
-        int getWalkTime() const { return mWalkTime; }
-#endif
+        int getCurrentFrame() const { return mFrame; }
+
+        /**
+         * Set the being's current sprite frame number.
+         */
+        void setFrame(int frame) { mFrame = frame; }
 
         /**
          * Returns the direction the being is facing.
@@ -348,7 +392,7 @@ class Being : public Sprite, public ConfigListener
          * Returns the X coordinate in pixels.
          */
         int getPixelX() const
-        { return mPx; }
+        { return mPos.x; }
 
         /**
          * Returns the Y coordinate in pixels.
@@ -356,21 +400,7 @@ class Being : public Sprite, public ConfigListener
          * @see Sprite::getPixelY()
          */
         int getPixelY() const
-        { return mPy; }
-
-#ifdef EATHENA_SUPPORT
-        /**
-         * Get the current X pixel offset.
-         */
-        int getXOffset() const
-        { return getOffset(LEFT, RIGHT); }
-
-        /**
-         * Get the current Y pixel offset.
-         */
-        int getYOffset() const
-        { return getOffset(UP, DOWN); }
-#endif
+        { return mPos.y; }
 
         /**
          * Sets the position of this being.
@@ -435,11 +465,22 @@ class Being : public Sprite, public ConfigListener
          */
         void untarget() { mUsedTargetCursor = NULL; }
 
+
+        /**
+         * Set the Emoticon type and time displayed above
+         * the being.
+         */
         void setEmote(Uint8 emotion, Uint8 emote_time)
         {
             mEmotion = emotion;
             mEmotionTime = emote_time;
         }
+
+        /**
+         * Get the current Emoticon type displayed above
+         * the being.
+         */
+        Uint8 getEmotion() const { return mEmotion; }
 
         /**
          * Sets the being's stun mode.  If zero, the being is `normal',
@@ -536,6 +577,22 @@ class Being : public Sprite, public ConfigListener
 
         virtual void showName();
 
+        /** The current sprite Frame number to be displayed */
+        int mFrame;
+
+#ifdef EATHENA_SUPPORT
+        /** Used to trigger the nextStep (walking on next Tile) */
+        int mWalkTime;
+#endif
+        int mEmotion;         /**< Currently showing emotion */
+        int mEmotionTime;     /**< Time until emotion disappears */
+        /** Time until the last speech sentence disappears */
+        int mSpeechTime;
+
+        int mAttackSpeed;     /**< Attack speed */
+        Action mAction;       /**< Action the being is performing */
+        Uint16 mJob;          /**< Job (player job, npc, monster, creature ) */
+
         int mId;                        /**< Unique sprite id */
         Uint8 mDirection;               /**< Facing direction */
         Uint8 mSpriteDirection;         /**< Facing direction */
@@ -596,7 +653,6 @@ class Being : public Sprite, public ConfigListener
 
         Vector mPos;
         Vector mDest;
-        int mPx, mPy;                   /**< Position in pixels */
         int mX, mY;                     /**< Position on tile */
 
         int mTakedDamage;
