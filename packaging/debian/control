@@ -9,20 +9,20 @@ Homepage: http://invertika.org
 Package: invertika-client
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, invertika-client-data (= ${source:Version})
-Description: invertika is an German 2D MMPORG client
+Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german.
 
 Package: invertika-client-dbg
 Architecture: any
 Priority: extra
 Depends: invertika-client (= ${binary:Version})
-Description: invertika is an German 2D MMORPG client (debugging symbols)
+Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german. (debugging symbols)
  .
   This package provides debugging symbols for the invertika-client package.
 
 Package: invertika-client-data
 Architecture: all
 Recommends: invertika-client
-Description: invertika is an German 2D MMORPG client
+Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german. (data files)
  .
   This package contains the data files.
   

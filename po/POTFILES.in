@@ -1,5 +1,5 @@
 # List of source files which contain translatable strings.
-# Generated using: grep "_(" -Irl src | sort
+# Generated using: grep "_(" -Irl src | sort|grep -v .svn
 
 src/commandhandler.cpp
 src/commandhandler.h
@@ -68,6 +68,7 @@ src/net/ea/charserverhandler.cpp
 src/net/ea/chathandler.cpp
 src/net/ea/gamehandler.cpp
 src/net/ea/generalhandler.cpp
+src/net/ea/guildhandler.cpp
 src/net/ea/gui/partytab.cpp
 src/net/ea/inventoryhandler.cpp
 src/net/ea/loginhandler.cpp
