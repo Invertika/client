@@ -66,10 +66,9 @@ FunctionEnd
 !define MUI_FINISHPAGE_TITLE_3LINES
 !insertmacro MUI_UNPAGE_FINISH
 
-;Languages
-!insertmacro MUI_LANGUAGE "English" # first language is the default language
+!insertmacro MUI_LANGUAGE "German" # first language is the default language
+!insertmacro MUI_LANGUAGE "English" 
 !insertmacro MUI_LANGUAGE "French"
-!insertmacro MUI_LANGUAGE "German"
 !insertmacro MUI_LANGUAGE "Spanish"
 !insertmacro MUI_LANGUAGE "SimpChinese"
 !insertmacro MUI_LANGUAGE "TradChinese"

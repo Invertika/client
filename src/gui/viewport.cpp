@@ -37,6 +37,8 @@
 #include "gui/ministatus.h"
 #include "gui/popupmenu.h"
 
+#include "net/net.h"
+
 #include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"
 
@@ -107,7 +109,7 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
 
     // Ensure the client doesn't freak out if a feature localplayer uses
     // is dependent on a map.
-    player_node->mMapInitialized = true;
+    player_node->setMapInitialized(true);
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -199,9 +201,9 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         }
     }
 
-    if (player_node->mUpdateName)
+    if (player_node->getCheckNameSetting())
     {
-        player_node->mUpdateName = false;
+        player_node->setCheckNameSetting(false);
         player_node->setName(player_node->getName());
     }
 
@@ -411,7 +413,8 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
 
     if (mPlayerFollowMouse && !event.isShiftPressed())
     {
-#ifdef MANASERV_SUPPORT
+        if (Net::getNetworkType() == ServerInfo::MANASERV)
+        {
           if (get_elapsed_time(mLocalWalkTime) >= walkingMouseDelay)
           {
               mLocalWalkTime = tick_time;
@@ -419,7 +422,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
                                           event.getY() + (int) mPixelViewY);
               player_node->pathSetByMouse();
           }
-#else
+        }
+        else
+        {
           if (mLocalWalkTime != player_node->getWalkTime())
           {
               mLocalWalkTime = player_node->getWalkTime();
@@ -427,7 +432,7 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
               int destY = event.getY() / 32 + mTileViewY;
               player_node->setDestination(destX, destY);
           }
-#endif
+        }
     }
 }
 

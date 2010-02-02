@@ -60,6 +60,10 @@ class PlayerHandler
         virtual bool canCorrectAttributes() = 0;
 
         virtual int getJobLocation() = 0;
+
+        virtual float getDefaultWalkSpeed() = 0;
+
+        virtual ~PlayerHandler() {}
 };
 
 } // namespace Net

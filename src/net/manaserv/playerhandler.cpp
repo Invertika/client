@@ -42,13 +42,14 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
 
-// TODO Move somewhere else
-OkDialog *weightNotice = NULL;
-OkDialog *deathNotice = NULL;
+extern OkDialog *weightNotice;
+extern OkDialog *deathNotice;
 
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern Window *buySellDialog;
+
+extern const int MILLISECONDS_IN_A_TICK;
 
 /* Max. distance we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
@@ -422,6 +423,13 @@ bool PlayerHandler::canCorrectAttributes()
 int PlayerHandler::getJobLocation()
 {
     return -1;
+}
+
+float PlayerHandler::getDefaultWalkSpeed()
+{
+    // Return translation in pixels per ticks.
+    return (6.0f * (float)DEFAULT_TILE_SIDE_LENGTH)
+    / 1000 * (float)MILLISECONDS_IN_A_TICK;
 }
 
 } // namespace ManaServ

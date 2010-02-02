@@ -274,8 +274,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
 	      resources/resourcemanager.h \
-	      resources/sdlrescalefacility.cpp \
-	      resources/sdlrescalefacility.h \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
@@ -394,8 +392,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      vector.cpp \
 	      vector.h
 
-if SERVER_MANASERV
-mana_CXXFLAGS += -DMANASERV_SUPPORT
 mana_SOURCES += \
 	      net/manaserv/adminhandler.cpp \
 	      net/manaserv/adminhandler.h \
@@ -444,10 +440,7 @@ mana_SOURCES += \
 	      net/manaserv/specialhandler.h \
 	      net/manaserv/tradehandler.cpp \
 	      net/manaserv/tradehandler.h
-endif
 
-if SERVER_EATHENA
-mana_CXXFLAGS += -DEATHENA_SUPPORT
 mana_SOURCES += \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
@@ -492,7 +485,6 @@ mana_SOURCES += \
 	      net/ea/specialhandler.h \
 	      net/ea/tradehandler.cpp \
 	      net/ea/tradehandler.h
-endif
 
 # set the include path found by configure
 INCLUDES = $(all_includes)

@@ -88,6 +88,10 @@ AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/proje
 AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
 AC_MSG_ERROR([ *** Unable to find Guichan SDL library (http://guichan.sf.net/)]))
 
+AC_CHECK_LIB(SDL_gfx, rotozoomSurfaceXY, ,
+AC_MSG_ERROR([ *** Unable to find SDL_gfx library (http://www.ferzkopp.net/joomla/software-mainmenu-14/4-ferzkopps-linux-software/19-sdlgfx)]))
+AC_CHECK_HEADERS(SDL_rotozoom.h, ,)
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
@@ -103,39 +107,10 @@ else
     AC_DEFINE(USE_OPENGL, 1, [Defines if Mana should have OpenGL support])
 fi
 
-# Enable either Manaserv or eAthena
-AC_ARG_WITH(
-    [server],
-    AS_HELP_STRING(
-        [--with-server=ARG],
-        [which server to use [[ARG=manaserv,eathena]]
-        [(default=manaserv)]]
-    ),
-    [if test "$withval" = "yes"; then
-        # default is manaserv
-        with_server="manaserv"
-     elif test "$withval" = "no"; then
-        AC_MSG_ERROR([$PACKAGE_NAME cannot run without a server.])
-     else
-         with_server="$withval"
-     fi],
-    [with_server="manaserv"]
-)
-
-if test "$with_server" = "manaserv"; then
-    AC_CHECK_LIB([enet], [enet_initialize], ,
-    AC_MSG_ERROR([ *** Unable to find enet library (http://enet.bespin.org/)]))
-    AC_DEFINE(MANASERV_SUPPORT, 1, [Defines if manaserv support is enabled])
-elif test "$with_server" = "eathena"; then
-    AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
-    AC_MSG_ERROR([ *** Unable to find SDL_net library]))
-    AC_DEFINE(EATHENA_SUPPORT, 1, [Defines if eAthena support is enabled])
-else
-    AC_MSG_ERROR([unknown server: $with_server])
-fi
-
-AM_CONDITIONAL(SERVER_MANASERV, test "$with_server" = "manaserv")
-AM_CONDITIONAL(SERVER_EATHENA, test "$with_server" = "eathena")
+AC_CHECK_LIB([enet], [enet_initialize], ,
+AC_MSG_ERROR([ *** Unable to find enet library (http://enet.bespin.org/)]))
+AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
+AC_MSG_ERROR([ *** Unable to find SDL_net library]))
 
 AC_CONFIG_FILES([
 Makefile
@@ -147,6 +122,7 @@ data/graphics/gui/Makefile
 data/graphics/images/Makefile
 data/help/Makefile
 data/icons/Makefile
+docs/Makefile
 po/Makefile.in
 ])
 
@@ -154,7 +130,6 @@ AC_OUTPUT
 
 echo
 echo "Build with OpenGL: $with_opengl"
-echo "Supported server:  $with_server"
 echo
 echo "configure complete, now type \"make\""
 echo

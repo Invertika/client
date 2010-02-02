@@ -29,6 +29,8 @@
 
 #include "gui/palette.h"
 
+#include "net/net.h"
+
 #include "resources/monsterdb.h"
 #include "resources/monsterinfo.h"
 
@@ -71,15 +73,13 @@ Monster::Monster(int id, int job, Map *map):
 
 void Monster::logic()
 {
-#ifdef EATHENA_SUPPORT
-    if (mAction != STAND)
+    if ((Net::getNetworkType() == ServerInfo::EATHENA) && (mAction != STAND))
     {
-        mFrame = (get_elapsed_time(mWalkTime) * 4) / getWalkSpeed();
+        mFrame = (int) ((get_elapsed_time(mWalkTime) * 4) / getWalkSpeed());
 
         if (mFrame >= 4 && mAction != DEAD)
-            nextStep();
+            nextTile();
     }
-#endif
 
     Being::logic();
 }
