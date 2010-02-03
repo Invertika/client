@@ -2,6 +2,9 @@
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
 #
+# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
+# Jonathan Raphael Joachim Kolberg, 2009, 2010.
+# seeseekey <seeseekey@googlemail.com>, 2009.
 #: src/commandhandler.cpp:149 src/commandhandler.cpp:319
 #: src/commandhandler.cpp:320 src/commandhandler.cpp:344
 #: src/commandhandler.cpp:397 src/engine.cpp:50 src/engine.cpp:57
@@ -52,17 +55,13 @@
 #: src/resources/itemdb.cpp:228 src/resources/itemdb.cpp:229
 #: src/resources/itemdb.cpp:230 src/resources/itemdb.cpp:306
 #: src/resources/monsterdb.cpp:101 src/resources/monsterdb.cpp:133
-# Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
-# Jonathan Raphael Joachim Kolberg, 2009, 2010.
-# seeseekey <seeseekey@googlemail.com>, 2009.
-# Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-12-31 15:55+0100\n"
-"PO-Revision-Date: 2010-02-02 21:45+0100\n"
-"Last-Translator: Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>\n"
+"PO-Revision-Date: 2010-01-02 15:26+0000\n"
+"Last-Translator: Jonathan Raphael Joachim Kolberg\n"
 "Language-Team: Deutsch <kde-i18n-de@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -568,12 +567,15 @@ msgid "Player already ignored!"
 msgstr ""
 
 #: src/commandhandler.cpp:461
+#, fuzzy
 msgid "Player successfully ignored!"
-msgstr "Party erfolgreich ignoriert."
+msgstr "Party erfolgreich erstellt."
 
 #: src/commandhandler.cpp:463
+#, fuzzy
 msgid "Player could not be ignored!"
-msgstr "Spieler konnte nicht ignoriert werden."
+msgstr ""
+"Nachricht konnte nicht gesendet werden, sie wurde vom Spieler ignoriert."
 
 #: src/commandhandler.cpp:478
 msgid "Player wasn't ignored!"
@@ -584,8 +586,10 @@ msgid "Player no longer ignored!"
 msgstr "Spieler wird nicht länger ignoriert!"
 
 #: src/commandhandler.cpp:485
+#, fuzzy
 msgid "Player could not be unignored!"
-msgstr "Spieler konnte nicht  nicht ignoriert werden."
+msgstr ""
+"Nachricht konnte nicht gesendet werden, sie wurde vom Spieler ignoriert."
 
 #: src/commandhandler.h:31
 #, c-format
@@ -611,6 +615,7 @@ msgid "Error while loading %s"
 msgstr "Fehler beim Laden von %s"
 
 #: src/engine.cpp:91
+#, fuzzy
 msgid "Could Not Load Map"
 msgstr "Karte konnte nicht geladen werden"
 
@@ -658,6 +663,7 @@ msgid "/"
 msgstr ""
 
 #: src/game.cpp:392
+#, fuzzy
 msgid "Mana_Screenshot_"
 msgstr "Bildschirmfoto"
 
@@ -666,6 +672,7 @@ msgid ".png"
 msgstr ""
 
 #: src/game.cpp:405
+#, fuzzy
 msgid "Screenshot saved as "
 msgstr "Bildschirmfoto wurde nach ~/ gespeichert."
 
@@ -678,6 +685,7 @@ msgid "Error: could not save screenshot."
 msgstr ""
 
 #: src/game.cpp:486
+#, fuzzy
 msgid "The connection to the server was lost."
 msgstr ""
 "Die Verbindung zum Server wurde getrennt, das Programm wird jetzt beendet"
@@ -701,6 +709,7 @@ msgstr ""
 #: src/gui/trade.cpp:287 src/gui/unregisterdialog.cpp:56
 #: src/gui/unregisterdialog.cpp:86 src/gui/unregisterdialog.cpp:97
 #: src/gui/updatewindow.cpp:144 src/gui/updatewindow.cpp:210
+#, fuzzy
 msgid "cancel"
 msgstr "Abbrechen"
 
@@ -770,6 +779,7 @@ msgid "dec"
 msgstr ""
 
 #: src/gui/buy.cpp:76 src/gui/buy.cpp:190
+#, fuzzy
 msgid "buy"
 msgstr "Kaufen"
 
@@ -783,6 +793,7 @@ msgstr "Beenden"
 #: src/gui/sell.cpp:144 src/gui/serverdialog.cpp:127
 #: src/gui/serverdialog.cpp:244 src/gui/widgets/channeltab.cpp:71
 #: src/gui/widgets/channeltab.cpp:109
+#, fuzzy
 msgid "quit"
 msgstr "Beenden"
 
@@ -818,6 +829,7 @@ msgid "Shop"
 msgstr "Geschäft"
 
 #: src/gui/buysell.cpp:38
+#, fuzzy
 msgid "BuySell"
 msgstr "Verkaufen"
 
@@ -1051,6 +1063,7 @@ msgstr "Abmelden"
 
 #: src/gui/charselectdialog.cpp:147 src/gui/charselectdialog.cpp:217
 #: src/gui/unregisterdialog.cpp:55 src/gui/unregisterdialog.cpp:101
+#, fuzzy
 msgid "unregister"
 msgstr "Abmelden"
 
@@ -1122,6 +1135,7 @@ msgid "chatinput"
 msgstr ""
 
 #: src/gui/chat.cpp:110 src/gui/chat.cpp:117
+#, fuzzy
 msgid "ReturnToggles"
 msgstr "Enter-Taste schließt Chatzeile."
 
@@ -1930,14 +1944,14 @@ msgid "PopupMenu"
 msgstr ""
 
 #: src/gui/popupmenu.cpp:84
-#, c-format
+#, fuzzy, c-format
 msgid "Trade with %s..."
 msgstr "Handele mit %s"
 
 #: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:160
-#, c-format
+#, fuzzy, c-format
 msgid "Attack %s"
-msgstr "Angriff %s"
+msgstr "Angriff %+d"
 
 #: src/gui/popupmenu.cpp:92
 #, c-format
@@ -2264,6 +2278,7 @@ msgid "type"
 msgstr "Typ: "
 
 #: src/gui/serverdialog.cpp:376
+#, fuzzy
 msgid "unknown"
 msgstr "Unbekannter Gegenstand"
 
@@ -2725,8 +2740,9 @@ msgid "Particle effects"
 msgstr "Partikeleffekte"
 
 #: src/gui/setup_video.cpp:201
+#, fuzzy
 msgid "Show own name"
-msgstr "Eigenen Namen anzeigen"
+msgstr "Eigener Name"
 
 #: src/gui/setup_video.cpp:202
 msgid "Show pickup notification"
@@ -2741,10 +2757,12 @@ msgid "as particle"
 msgstr "als Partikeleffekt"
 
 #: src/gui/setup_video.cpp:211
+#, fuzzy
 msgid "FPS limit:"
 msgstr "FPS-Limit:"
 
 #: src/gui/setup_video.cpp:220 src/gui/setup_video.cpp:403
+#, fuzzy
 msgid "fontSize"
 msgstr "Schriftgröße"
 
@@ -2765,6 +2783,7 @@ msgid "Ambient FX"
 msgstr "Hintergrundeffekte"
 
 #: src/gui/setup_video.cpp:230
+#, fuzzy
 msgid "Particle detail"
 msgstr "Partikeldetail"
 
@@ -2814,11 +2833,10 @@ msgid "particledetailfield"
 msgstr "Partikeldetail"
 
 #: src/gui/setup_video.cpp:366
+#, fuzzy
 msgid ""
 "Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr ""
-"Wechsel des Fenstermodus fehlgeschlagen und Wiederherstellung der alten "
-"Auflösung schlug ebenso fehl!"
+msgstr "und Wiederherstellung der alten Auflösung schlug fehl!"
 
 #: src/gui/setup_video.cpp:372
 #, fuzzy
@@ -2827,6 +2845,7 @@ msgid ""
 msgstr "und Wiederherstellung der alten Auflösung schlug fehl!"
 
 #: src/gui/setup_video.cpp:383
+#, fuzzy
 msgid "Switching to Full Screen"
 msgstr "Wechsle zum Vollbildmodus"
 
@@ -2835,8 +2854,9 @@ msgid "Restart needed for changes to take effect."
 msgstr "Änderungen treten erst nach einem Neustart des Programms in Kraft."
 
 #: src/gui/setup_video.cpp:396
+#, fuzzy
 msgid "Changing to OpenGL"
-msgstr "Wechsle zu OpenGL"
+msgstr "Ändere OpenGL"
 
 #: src/gui/setup_video.cpp:397
 msgid "Applying change to OpenGL requires restart."
@@ -2845,6 +2865,7 @@ msgstr ""
 "übernommen."
 
 #: src/gui/setup_video.cpp:459 src/gui/setup_video.cpp:464
+#, fuzzy
 msgid "Screen Resolution Changed"
 msgstr "Auflösung geändert"
 
@@ -2863,10 +2884,12 @@ msgid "screenwidth"
 msgstr ""
 
 #: src/gui/setup_video.cpp:469 src/main.cpp:436 src/main.cpp:886
+#, fuzzy
 msgid "screenheight"
-msgstr "Bildschirmhöhe"
+msgstr "Bildschirmfoto"
 
 #: src/gui/setup_video.cpp:491
+#, fuzzy
 msgid "Particle Effect Settings Changed."
 msgstr "Partikeleffekteinstellungen geändert."
 
@@ -2880,29 +2903,32 @@ msgid "Skills"
 msgstr "Fertigkeiten"
 
 #: src/gui/skilldialog.cpp:141
-#, c-format
+#, fuzzy, c-format
 msgid "Skill points available: %d"
 msgstr "Fähigkeitspunkte: %d"
 
 #: src/gui/skilldialog.cpp:173
+#, fuzzy
 msgid "skills"
 msgstr "Fertigkeiten"
 
 #: src/gui/skilldialog.cpp:175
-#, c-format
+#, fuzzy, c-format
 msgid "Error loading skills file: %s"
 msgstr "Fehler beim Laden von %s"
 
 #: src/gui/skilldialog.cpp:186 src/gui/specialswindow.cpp:170
+#, fuzzy
 msgid "set"
 msgstr "Zurücksetzten"
 
 #: src/gui/skilldialog.cpp:189
-#, c-format
+#, fuzzy, c-format
 msgid "Skill Set %d"
 msgstr "Fähigkeitspunkte: %d"
 
 #: src/gui/skilldialog.cpp:201
+#, fuzzy
 msgid "skill"
 msgstr "Fertigkeiten"
 
@@ -2913,9 +2939,9 @@ msgid "id"
 msgstr ""
 
 #: src/gui/skilldialog.cpp:204
-#, c-format
+#, fuzzy, c-format
 msgid "Skill %d"
-msgstr "Fertigkeit %d"
+msgstr "Fertigkeiten"
 
 #: src/gui/skilldialog.cpp:205 src/gui/specialswindow.cpp:191
 msgid "icon"
@@ -2930,12 +2956,12 @@ msgid "graphics/gui/unknown-item.png"
 msgstr ""
 
 #: src/gui/skilldialog.cpp:315
-#, c-format
+#, fuzzy, c-format
 msgid "Lvl: %d (%+d)"
-msgstr "Stufe: %d (%+d)"
+msgstr "Stufe: %d"
 
 #: src/gui/skilldialog.cpp:320
-#, c-format
+#, fuzzy, c-format
 msgid "Lvl: %d"
 msgstr "Stufe: %d"
 
@@ -2954,7 +2980,7 @@ msgid "specials"
 msgstr ""
 
 #: src/gui/specialswindow.cpp:159
-#, c-format
+#, fuzzy, c-format
 msgid "Error loading specials file: %s"
 msgstr "Fehler beim Laden von %s"
 
@@ -3013,38 +3039,44 @@ msgid "C"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:194
+#, fuzzy
 msgid "HP"
-msgstr "HP"
+msgstr "HP:"
 
 #: src/gui/statuswindow.cpp:200
+#, fuzzy
 msgid "MP"
-msgstr "MP"
+msgstr "MP:"
 
 #: src/gui/statuswindow.cpp:206
+#, fuzzy
 msgid "Exp"
-msgstr "Exp"
+msgstr "Exp:"
 
 #: src/gui/statuswindow.cpp:215
+#, fuzzy
 msgid "Money"
-msgstr "Geld"
+msgstr "Geld: %d"
 
 #: src/gui/statuswindow.cpp:225
+#, fuzzy
 msgid "Job"
 msgstr "Job:"
 
 #: src/gui/statuswindow.cpp:229
-#, c-format
+#, fuzzy, c-format
 msgid "Character points: %d"
-msgstr "Spielfigurattributepunkte: %d"
+msgstr "Spielfigurattribute OK"
 
 #: src/gui/statuswindow.cpp:235
-#, c-format
+#, fuzzy, c-format
 msgid "Correction points: %d"
-msgstr "Berichtigungspunkte: %d"
+msgstr "Fähigkeitspunkte: %d"
 
 #: src/gui/statuswindow.cpp:251
+#, fuzzy
 msgid "Level"
-msgstr "Stufe"
+msgstr "Stufe: %d"
 
 #: src/gui/statuswindow.cpp:416
 #, c-format
@@ -3056,9 +3088,9 @@ msgid "%"
 msgstr ""
 
 #: src/gui/statuswindow.cpp:456
-#, c-format
+#, fuzzy, c-format
 msgid " (%+d)"
-msgstr " (%+d)"
+msgstr "HP %+d"
 
 #: src/gui/storagewindow.cpp:55 src/gui/storagewindow.cpp:59
 msgid "Storage"
@@ -3097,11 +3129,12 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: src/gui/trade.cpp:78 src/gui/trade.cpp:257
+#, fuzzy
 msgid "add"
 msgstr "Hinzufügen"
 
 #: src/gui/trade.cpp:100 src/gui/trade.cpp:136
-#, c-format
+#, fuzzy, c-format
 msgid "You get %s"
 msgstr "Du erhältst %s."
 
@@ -3114,8 +3147,9 @@ msgid "Change"
 msgstr "Ändern"
 
 #: src/gui/trade.cpp:105 src/gui/trade.cpp:310
+#, fuzzy
 msgid "money"
-msgstr "Geld"
+msgstr "Gefühle"
 
 #: src/gui/trade.cpp:276
 msgid "Failed adding item. You can not overlap one kind of item on the window."
@@ -3142,17 +3176,18 @@ msgid "updates"
 msgstr ""
 
 #: src/gui/updatewindow.cpp:59 src/gui/updatewindow.cpp:114
-#, c-format
+#, fuzzy, c-format
 msgid "Error loading update file: %s"
-msgstr "Fehler beim Erstellen des Verzeichnisses für Updates! (%s)"
+msgstr "Fehler beim Erstellen des Verzeichnisses für Updates!"
 
 #: src/gui/updatewindow.cpp:66
 msgid "update"
 msgstr ""
 
 #: src/gui/updatewindow.cpp:70
+#, fuzzy
 msgid "file"
-msgstr "Datei"
+msgstr "Grinsen"
 
 #: src/gui/updatewindow.cpp:71
 msgid "hash"
@@ -3164,8 +3199,9 @@ msgid "data"
 msgstr ""
 
 #: src/gui/updatewindow.cpp:73 src/resources/itemdb.cpp:149
+#, fuzzy
 msgid "description"
-msgstr "Beschreibung"
+msgstr "Beschreibung: %s"
 
 #: src/gui/updatewindow.cpp:74
 msgid "required"
@@ -3184,12 +3220,14 @@ msgid "Play"
 msgstr "Los!"
 
 #: src/gui/updatewindow.cpp:145 src/gui/updatewindow.cpp:221
+#, fuzzy
 msgid "play"
 msgstr "Los!"
 
 #: src/gui/updatewindow.cpp:254
+#, fuzzy
 msgid "Couldn't load news"
-msgstr "Neuigkeiten konnten nicht geladen werden"
+msgstr "Karte konnte nicht geladen werden"
 
 #: src/gui/updatewindow.cpp:399
 msgid "##1  The update process is incomplete."
@@ -3239,8 +3277,9 @@ msgid "/kick > Kick a user from the channel"
 msgstr "/kick > Werfe einen Spieler aus dem Kanal"
 
 #: src/gui/widgets/channeltab.cpp:61 src/gui/widgets/channeltab.cpp:97
+#, fuzzy
 msgid "users"
-msgstr "Benutzer"
+msgstr "benutze"
 
 #: src/gui/widgets/channeltab.cpp:63
 msgid "Command: /users"
@@ -3252,8 +3291,9 @@ msgstr "Dieser Befehl zeit eine Liste der Spieler im aktuellen Kanal."
 
 #: src/gui/widgets/channeltab.cpp:66 src/gui/widgets/channeltab.cpp:101
 #: src/gui/widgets/channeltab.cpp:105
+#, fuzzy
 msgid "topic"
-msgstr "Thema"
+msgstr "Stopp"
 
 #: src/gui/widgets/channeltab.cpp:68
 msgid "Command: /topic <message>"
@@ -3296,8 +3336,9 @@ msgstr ""
 
 #: src/gui/widgets/channeltab.cpp:87 src/gui/widgets/channeltab.cpp:121
 #: src/net/ea/gui/partytab.cpp:125
+#, fuzzy
 msgid "kick"
-msgstr ""
+msgstr "Aufheben"
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "Command: /kick <nick>"
@@ -3357,9 +3398,9 @@ msgid "##2"
 msgstr ""
 
 #: src/gui/widgets/chattab.cpp:146
-#, c-format
+#, fuzzy, c-format
 msgid "%s whispers: %s"
-msgstr "%s flüstert: %s"
+msgstr "%s flüstert: "
 
 #: src/gui/widgets/chattab.cpp:147
 msgid "##W"
@@ -3407,8 +3448,9 @@ msgid "Command: /ignore"
 msgstr "Befehl: /item"
 
 #: src/gui/widgets/whispertab.cpp:87
+#, fuzzy
 msgid "This command ignores the other player regardless of current relations."
-msgstr ""
+msgstr "Dieser Befehl zeigt die Anzahl der Spieler an, die gerade online sind."
 
 #: src/gui/widgets/whispertab.cpp:93
 #, fuzzy
@@ -3430,22 +3472,27 @@ msgid "Shortcut"
 msgstr "Tastenkürzel"
 
 #: src/gui/worldselectdialog.cpp:71
+#, fuzzy
 msgid "Select World"
-msgstr "Welt auswählen"
+msgstr "OK auswählen"
 
 #: src/gui/worldselectdialog.cpp:76
+#, fuzzy
 msgid "Change Login"
-msgstr "Login ändern"
+msgstr "Ändern"
 
 #: src/gui/worldselectdialog.cpp:77
+#, fuzzy
 msgid "Choose World"
-msgstr "Wähle deine Welt"
+msgstr "Wähle deinen Server"
 
 #: src/gui/worldselectdialog.cpp:77 src/gui/worldselectdialog.cpp:111
+#, fuzzy
 msgid "world"
-msgstr "Welt"
+msgstr "Schwertpolarm"
 
 #: src/keyboardconfig.cpp:41
+#, fuzzy
 msgid "keyMoveUp"
 msgstr "Laufe Hoch"
 
@@ -3454,6 +3501,7 @@ msgid "Move Up"
 msgstr "Laufe Hoch"
 
 #: src/keyboardconfig.cpp:42
+#, fuzzy
 msgid "keyMoveDown"
 msgstr "Laufe Runter"
 
@@ -3462,6 +3510,7 @@ msgid "Move Down"
 msgstr "Laufe Runter"
 
 #: src/keyboardconfig.cpp:43
+#, fuzzy
 msgid "keyMoveLeft"
 msgstr "Laufe nach Links"
 
@@ -3470,6 +3519,7 @@ msgid "Move Left"
 msgstr "Laufe nach Links"
 
 #: src/keyboardconfig.cpp:44
+#, fuzzy
 msgid "keyMoveRight"
 msgstr "Laufe nach Rechts"
 
@@ -3478,6 +3528,7 @@ msgid "Move Right"
 msgstr "Laufe nach Rechts"
 
 #: src/keyboardconfig.cpp:45
+#, fuzzy
 msgid "keyAttack"
 msgstr "Angriff"
 
@@ -3486,6 +3537,7 @@ msgid "Attack"
 msgstr "Angriff"
 
 #: src/keyboardconfig.cpp:46
+#, fuzzy
 msgid "keyTargetAttack"
 msgstr "Zielen & Angreifen"
 
@@ -3494,6 +3546,7 @@ msgid "Target & Attack"
 msgstr "Zielen & Angreifen"
 
 #: src/keyboardconfig.cpp:47
+#, fuzzy
 msgid "keySmilie"
 msgstr "Grinsen"
 
@@ -3502,6 +3555,7 @@ msgid "Smilie"
 msgstr "Grinsen"
 
 #: src/keyboardconfig.cpp:48
+#, fuzzy
 msgid "keyTalk"
 msgstr "Sprechen"
 
@@ -3510,14 +3564,16 @@ msgid "Talk"
 msgstr "Sprechen"
 
 #: src/keyboardconfig.cpp:49
+#, fuzzy
 msgid "keyTarget"
-msgstr "Monster anvisieren"
+msgstr "NPC anvisieren"
 
 #: src/keyboardconfig.cpp:49
 msgid "Stop Attack"
 msgstr "Angriff abbrechen"
 
 #: src/keyboardconfig.cpp:50
+#, fuzzy
 msgid "keyTargetClosest"
 msgstr "Nächstes Ziel anvisieren"
 
@@ -3526,6 +3582,7 @@ msgid "Target Closest"
 msgstr "Nächstes Ziel anvisieren"
 
 #: src/keyboardconfig.cpp:51
+#, fuzzy
 msgid "keyTargetNPC"
 msgstr "NPC anvisieren"
 
@@ -3534,6 +3591,7 @@ msgid "Target NPC"
 msgstr "NPC anvisieren"
 
 #: src/keyboardconfig.cpp:52
+#, fuzzy
 msgid "keyTargetPlayer"
 msgstr "Spieler anvisieren"
 
@@ -3542,6 +3600,7 @@ msgid "Target Player"
 msgstr "Spieler anvisieren"
 
 #: src/keyboardconfig.cpp:53
+#, fuzzy
 msgid "keyPickup"
 msgstr "Aufheben"
 
@@ -3550,6 +3609,7 @@ msgid "Pickup"
 msgstr "Aufheben"
 
 #: src/keyboardconfig.cpp:54
+#, fuzzy
 msgid "keyHideWindows"
 msgstr "Fenster ausblenden"
 
@@ -3558,14 +3618,16 @@ msgid "Hide Windows"
 msgstr "Fenster ausblenden"
 
 #: src/keyboardconfig.cpp:55
+#, fuzzy
 msgid "keyBeingSit"
-msgstr "Setzen"
+msgstr "Aktionen"
 
 #: src/keyboardconfig.cpp:55
 msgid "Sit"
 msgstr "Sitzen"
 
 #: src/keyboardconfig.cpp:56
+#, fuzzy
 msgid "keyScreenshot"
 msgstr "Bildschirmfoto"
 
@@ -3574,6 +3636,7 @@ msgid "Screenshot"
 msgstr "Bildschirmfoto"
 
 #: src/keyboardconfig.cpp:57
+#, fuzzy
 msgid "keyTrade"
 msgstr "Handeln"
 
@@ -3590,8 +3653,9 @@ msgid "Find Path to Mouse"
 msgstr "Finde Weg zum Mauszeiger"
 
 #: src/keyboardconfig.cpp:59
+#, fuzzy
 msgid "keyShortcut1"
-msgstr "Tastenkürzel 1"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:59 src/keyboardconfig.cpp:60
 #: src/keyboardconfig.cpp:61 src/keyboardconfig.cpp:62
@@ -3604,32 +3668,39 @@ msgid "Item Shortcut %d"
 msgstr "Kurztaste %d"
 
 #: src/keyboardconfig.cpp:60
+#, fuzzy
 msgid "keyShortcut2"
-msgstr "Tastenkürzel 2"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:61
+#, fuzzy
 msgid "keyShortcut3"
-msgstr "Tastenkürzel 3"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:62
+#, fuzzy
 msgid "keyShortcut4"
-msgstr "Tastenkürzel 4"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:63
+#, fuzzy
 msgid "keyShortcut5"
-msgstr "Tastenkürzel 5"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:64
+#, fuzzy
 msgid "keyShortcut6"
-msgstr "Tastenkürzel 6"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:65
+#, fuzzy
 msgid "keyShortcut7"
-msgstr "Tastenkürzel 7"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:66
+#, fuzzy
 msgid "keyShortcut8"
-msgstr "Tastenkürzel 8"
+msgstr "Tastenkürzel"
 
 #: src/keyboardconfig.cpp:67
 #, fuzzy
