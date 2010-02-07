@@ -56,6 +56,7 @@ install: build
 
 	# Add here commands to install the package into debian/invertika-client.
 	$(MAKE) DESTDIR=$(CURDIR)/debian/invertika-client install
+	mv $(DESTDIR)/src/mana $(DESTDIR)/src/invertika-client
 
 
 # Build architecture-independent files here.
