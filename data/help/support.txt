@@ -1,4 +1,4 @@
- <- @@index|Zurück zum Index@@
+ <- @@index|ZurÃ¼ck zum Index@@
  
  
 ##3                            === SUPPORT ===
@@ -7,4 +7,4 @@
  
 ##2     http://forum.invertika.de
 
-  Außerdem sind wir im  IRC (irc.freenode.net) im Channel #Invertika zu finden.
+  AuÃŸerdem sind wir im  IRC (irc.freenode.net) im Channel #Invertika zu finden.

@@ -1,6 +1,6 @@
 ##3                             === INDEX ===
 
- -> @@about|Über Invertika@@
+ -> @@about|Ãœber Invertika@@
  -> @@team|Entwickler Team@@
 
  -> @@commands|Tastenbelegung@@

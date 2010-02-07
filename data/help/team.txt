@@ -1,8 +1,8 @@
- <- @@index|Zurück zum Index@@
+ <- @@index|ZurÃ¼ck zum Index@@
  
 ##3                        === DEVELOPMENT TEAM - INVERTIKA ===
  
-##2 Projektgründer:
+##2 ProjektgrÃ¼nder:
 seeseekey <seeseekey googlemail.com>
 
 ##2 Entwicklung von Inhalten:
@@ -18,13 +18,17 @@ DJh2o2 <djh2o2 web.de>
 Nikola Whallon "saturn" <6.saturn.6 gmail.com>
 
 ##2 Design:
-Frank Bürger <frank notizn.de>
+Frank BÃ¼rger <frank notizn.de>
 
-##2 Übersetzungen:
+##2 Ãœbersetzungen:
 seeseekey <seeseekey googlemail.com>
 MasterSam <mustersam web.de>
+Jonathan Kolberg <bulldog98 freenet.de>
 
-##2 Andere Beiträge:
+##2 Packaging:
+Jonathan Kolberg <bulldog98 freenet.de>
+
+##2 Andere BeitrÃ¤ge:
 -
 
 ##3                        === DEVELOPMENT TEAM - THE MANA WORLD  ===
@@ -41,7 +45,7 @@ MasterSam <mustersam web.de>
          b_lindeijer@users.sourceforge.net
              (various parts, GUI, graphics, A* and map rewrites)
  
-     ##9Björn Steinbrink  (aka Doener)
+     ##9BjÃ¶rn Steinbrink  (aka Doener)
          der_doener@users.sourceforge.net
              (various parts)
  

@@ -1,7 +1,7 @@
- <- @@index|Zurück zum Index@@
+ <- @@index|ZurÃ¼ck zum Index@@
  
  
-##3                      === ÜBER INVERTIKA ===
+##3                      === ÃœBER INVERTIKA ===
  
  Invertika ist ein auf der Technik von The Mana World basierendes MMORPG. 
  Die Spielmechanik ist entspricht der von The Mana World, nur die Inhalte 
@@ -13,8 +13,8 @@
  schon sehr ausgereift.
  
  Die The Mana World Seite ist unter www.themanaworld.org zu finden. 
- Der Server arbeitet zur Zeit im Alphabetrieb und ist auch öfters mal nicht erreichbar.
+ Der Server arbeitet zur Zeit im Alphabetrieb und ist auch Ã¶fters mal nicht erreichbar.
  
  Im IRC findet ihr uns im Channel #invertika im Freenode (irc.freenode.net) Netzwerk. 
- Ihr könnt dazu auch unseren Web basierenden IRC Client unter irc.invertika.org benutzen.
+ Ihr kÃ¶nnt dazu auch unseren Web basierenden IRC Client unter irc.invertika.org benutzen.
  
