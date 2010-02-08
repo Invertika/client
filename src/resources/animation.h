@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -51,8 +51,7 @@ class Animation
         /**
          * Appends a new animation at the end of the sequence.
          */
-        void addFrame(Image *image, unsigned int delay,
-                      int offsetX, int offsetY);
+        void addFrame(Image *image, int delay, int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation

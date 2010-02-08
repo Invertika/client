@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -142,8 +142,8 @@ void flush()
 {
     ENetEvent event;
 
-    // Wait up to 10 milliseconds for an event.
-    while (enet_host_service(client, &event, 10) > 0)
+    // Check if there are any new events
+    while (enet_host_service(client, &event, 0) > 0)
     {
         switch (event.type)
         {
@@ -164,11 +164,7 @@ void flush()
                 break;
 
             case ENET_EVENT_TYPE_NONE:
-                logger->log("No event during 10 milliseconds.");
-                break;
-
             default:
-                logger->log("Unhandled enet event.");
                 break;
         }
     }

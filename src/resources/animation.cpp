@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -28,8 +28,7 @@ Animation::Animation():
 {
 }
 
-void Animation::addFrame(Image *image, unsigned int delay,
-                         int offsetX, int offsetY)
+void Animation::addFrame(Image *image, int delay, int offsetX, int offsetY)
 {
     Frame frame = { image, delay, offsetX, offsetY };
     mFrames.push_back(frame);

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -34,9 +34,18 @@
 
 float ListBox::mAlpha = 1.0;
 
-ListBox::ListBox(gcn::ListModel *listModel):
-    gcn::ListBox(listModel)
+ListBox::ListBox(gcn::ListModel *listModel, bool deleteModel):
+    gcn::ListBox(listModel),
+    mDeleteModel(deleteModel)
 {
+}
+
+ListBox::~ListBox()
+{
+    if (mDeleteModel)
+    {
+        delete mListModel;
+    }
 }
 
 void ListBox::updateAlpha()

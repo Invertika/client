@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -37,7 +37,8 @@ class SimpleAnimation
 {
     public:
         /**
-         * Creates a simple animation with an already created animation.
+         * Creates a simple animation with an already created \a animation.
+         * Takes ownership over the given animation.
          */
         SimpleAnimation(Animation *animation);
 
@@ -54,7 +55,7 @@ class SimpleAnimation
 
         void update(int timePassed);
 
-        bool draw(Graphics* graphics, int posX, int posY) const;
+        bool draw(Graphics *graphics, int posX, int posY) const;
 
         /**
          * Resets the animation.
@@ -64,6 +65,8 @@ class SimpleAnimation
         Image *getCurrentImage() const;
 
     private:
+        void initializeAnimation(xmlNodePtr animationNode);
+
         /** The hosted animation. */
         Animation *mAnimation;
 

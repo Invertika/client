@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -90,7 +90,7 @@ Being::Being(int id, int job, Map *map):
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
     mX(0), mY(0),
-    mTakedDamage(0),
+    mDamageTaken(0),
     mUsedTargetCursor(NULL)
 {
     setMap(map);
@@ -306,7 +306,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     {
         if (getType() == MONSTER)
         {
-            mTakedDamage += amount;
+            mDamageTaken += amount;
             updateName();
         }
 
@@ -638,12 +638,14 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY) const
         mUsedTargetCursor->draw(graphics, px, py);
 
     for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+    {
         if (*it)
         {
             if ((*it)->getAlpha() != mAlpha)
                 (*it)->setAlpha(mAlpha);
             (*it)->draw(graphics, px, py);
         }
+    }
 }
 
 void Being::drawSpriteAt(Graphics *graphics, int x, int y) const
@@ -652,12 +654,14 @@ void Being::drawSpriteAt(Graphics *graphics, int x, int y) const
     const int py = y - 32;
 
     for (SpriteConstIterator it = mSprites.begin(); it != mSprites.end(); it++)
+    {
         if (*it)
         {
             if ((*it)->getAlpha() != mAlpha)
                 (*it)->setAlpha(mAlpha);
             (*it)->draw(graphics, px, py);
         }
+    }
 }
 
 void Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
@@ -819,8 +823,8 @@ int Being::getWidth() const
 
     if (base)
         return std::max(base->getWidth(), DEFAULT_BEING_WIDTH);
-    else
-        return DEFAULT_BEING_WIDTH;
+
+    return DEFAULT_BEING_WIDTH;
 }
 
 int Being::getHeight() const
@@ -833,11 +837,11 @@ int Being::getHeight() const
 
     if (base)
         return std::max(base->getHeight(), DEFAULT_BEING_HEIGHT);
-    else
-        return DEFAULT_BEING_HEIGHT;
+
+    return DEFAULT_BEING_HEIGHT;
 }
 
-void Being::setTargetAnimation(SimpleAnimation* animation)
+void Being::setTargetAnimation(SimpleAnimation *animation)
 {
     mUsedTargetCursor = animation;
     mUsedTargetCursor->reset();
@@ -889,13 +893,13 @@ static EffectDescription *getEffectDescription(int effectId)
             }
             else if (xmlStrEqual(node->name, BAD_CAST "default"))
             {
-                EffectDescription *EffectDescription =
+                EffectDescription *effectDescription =
                     getEffectDescription(node, &id);
 
                 if (default_effect)
                     delete default_effect;
 
-                default_effect = EffectDescription;
+                default_effect = effectDescription;
             }
         }
 
@@ -904,10 +908,7 @@ static EffectDescription *getEffectDescription(int effectId)
 
     EffectDescription *ed = effects[effectId];
 
-    if (!ed)
-        return default_effect;
-    else
-        return ed;
+    return ed ? ed : default_effect;
 }
 
 void Being::internalTriggerEffect(int effectId, bool sfx, bool gfx)
@@ -959,13 +960,12 @@ void Being::showName()
     {
         if (config.getValue("showMonstersTakedDamage", false))
         {
-            mDisplayName += ", " + toString(getTakedDamage());
+            mDisplayName += ", " + toString(getDamageTaken());
         }
     }
 
     mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
                              gcn::Graphics::CENTER, mNameColor);
-
 }
 
 int Being::getNumberOfLayers() const
@@ -988,7 +988,5 @@ void Being::load()
 void Being::updateName()
 {
     if (mShowName)
-    {
         showName();
-    }
 }

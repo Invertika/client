@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -39,7 +39,9 @@ class ListBox : public gcn::ListBox
         /**
          * Constructor.
          */
-        ListBox(gcn::ListModel *listModel);
+        ListBox(gcn::ListModel *listModel, bool deleteModel = false);
+
+        ~ListBox();
 
         /**
          * Draws the list box.
@@ -65,6 +67,8 @@ class ListBox : public gcn::ListBox
 
     private:
         static float mAlpha;
+
+        bool mDeleteModel;
 };
 
 #endif

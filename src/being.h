@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -456,7 +456,7 @@ class Being : public Sprite, public ConfigListener
         /**
          * Sets the target animation for this being.
          */
-        void setTargetAnimation(SimpleAnimation* animation);
+        void setTargetAnimation(SimpleAnimation *animation);
 
         /**
          * Untargets the being
@@ -522,8 +522,8 @@ class Being : public Sprite, public ConfigListener
 
         void flashName(int time);
 
-        int getTakedDamage() const
-        { return mTakedDamage; }
+        int getDamageTaken() const
+        { return mDamageTaken; }
 
         void updateName();
 
@@ -655,10 +655,10 @@ class Being : public Sprite, public ConfigListener
         Vector mDest;
         int mX, mY;                     /**< Position on tile */
 
-        int mTakedDamage;
+        int mDamageTaken;
 
         /** Target cursor being used */
-        SimpleAnimation* mUsedTargetCursor;
+        SimpleAnimation *mUsedTargetCursor;
 };
 
 #endif

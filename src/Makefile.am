@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
-bin_PROGRAMS = invertika-client
+bin_PROGRAMS = mana
 
 mana_CXXFLAGS = -DPKG_DATADIR=\""$(pkgdatadir)/"\"      \
 		-DLOCALEDIR=\""$(localedir)"\"           \
@@ -57,6 +57,8 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      gui/widgets/popup.h \
 	      gui/widgets/progressbar.cpp \
 	      gui/widgets/progressbar.h \
+	      gui/widgets/progressindicator.cpp \
+	      gui/widgets/progressindicator.h \
 	      gui/widgets/radiobutton.cpp \
 	      gui/widgets/radiobutton.h \
 	      gui/widgets/resizegrip.cpp \
@@ -313,8 +315,6 @@ mana_SOURCES = gui/widgets/avatar.cpp \
 	      effectmanager.h \
 	      emoteshortcut.cpp \
 	      emoteshortcut.h \
-	      engine.cpp \
-	      engine.h \
 	      equipment.h \
 	      flooritem.cpp \
 	      flooritem.h \

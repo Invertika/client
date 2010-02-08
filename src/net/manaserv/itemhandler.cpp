@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,11 +21,9 @@
 
 #include "net/manaserv/itemhandler.h"
 
-#include "engine.h"
 #include "flooritemmanager.h"
 
 #include "net/manaserv/protocol.h"
-
 #include "net/manaserv/messagein.h"
 
 namespace ManaServ {
@@ -56,7 +54,7 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
 
                 if (itemId)
                 {
-                    floorItemManager->create(id, itemId, x / 32, y / 32, engine->getCurrentMap());
+                    floorItemManager->create(id, itemId, x / 32, y / 32);
                 }
                 else if (FloorItem *item = floorItemManager->findById(id))
                 {

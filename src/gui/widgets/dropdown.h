@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2006  The Mana World Development Team
+ *  Copyright (C) 2006-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -45,7 +45,7 @@ class DropDown : public gcn::DropDown
          * @param listBox the listBox to use.
          * @see ListModel, ScrollArea, ListBox.
          */
-        DropDown(gcn::ListModel *listModel = NULL);
+        DropDown(gcn::ListModel *listModel = NULL, bool deleteModel = false);
 
         ~DropDown();
 

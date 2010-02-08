@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2004  The Mana World Development Team
+ *  Copyright (C) 2004-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -58,8 +58,6 @@
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/desktop.h"
-#include "gui/widgets/label.h"
-#include "gui/widgets/progressbar.h"
 
 #include "net/charhandler.h"
 #include "net/gamehandler.h"
@@ -574,7 +572,6 @@ static void parseOptions(int argc, char *argv[], Options &options)
 
     while (optind < argc)
     {
-
         int result = getopt_long(argc, argv, optstring, long_options, NULL);
 
         if (result == -1)
@@ -769,13 +766,12 @@ int main(int argc, char *argv[])
     // Needs to be created in main, as the updater uses it
     guiPalette = new Palette;
 
-    Window *currentDialog = NULL;
-    QuitDialog* quitDialog = NULL;
+    Window *currentDialog = 0;
+    QuitDialog *quitDialog = 0;
     setupWindow = new Setup;
 
     gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
     Desktop *desktop = 0;
-    ProgressBar *progressBar = 0;
     Button *setupButton = 0;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
@@ -831,18 +827,9 @@ int main(int argc, char *argv[])
         }
 
         if (Net::getGeneralHandler())
-        {
             Net::getGeneralHandler()->flushNetwork();
-        }
+
         gui->logic();
-
-        if (progressBar && progressBar->isVisible())
-        {
-            progressBar->setProgress(progressBar->getProgress() + 0.005f);
-            if (progressBar->getProgress() == 1.0f)
-                progressBar->setProgress(0.0f);
-        }
-
         gui->draw();
         graphics->updateScreen();
 
@@ -874,15 +861,6 @@ int main(int argc, char *argv[])
         {
             desktop = new Desktop;
             top->add(desktop);
-            progressBar = new ProgressBar(0.0f, 100, 20,
-                                          gcn::Color(168, 116, 31));
-            progressBar->setSmoothProgress(false);
-            Label *progressLabel = new Label;
-            top->add(progressBar, 5, top->getHeight() - 5 -
-                     progressBar->getHeight());
-            top->add(progressLabel, 15 + progressBar->getWidth(),
-                     progressBar->getY() + 4);
-            progressBar->setVisible(false);
             setupButton = new Button(_("Setup"), "Setup", &listener);
             setupButton->setPosition(top->getWidth() - setupButton->getWidth()
                                      - 3, 3);
@@ -946,7 +924,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CONNECT_SERVER:
                     logger->log("State: CONNECT SERVER");
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_SERVER);
+                    currentDialog = new ConnectionDialog(
+                            _("Connecting to server"), STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_LOGIN:
@@ -972,6 +951,8 @@ int main(int argc, char *argv[])
                 case STATE_LOGIN_ATTEMPT:
                     logger->log("State: LOGIN ATTEMPT");
                     accountLogin(&loginData);
+                    currentDialog = new ConnectionDialog(
+                            _("Logging in"), STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_WORLD_SELECT:
@@ -1003,7 +984,8 @@ int main(int argc, char *argv[])
 
                 case STATE_WORLD_SELECT_ATTEMPT:
                     logger->log("State: WORLD SELECT ATTEMPT");
-                    currentDialog = new ConnectionDialog(STATE_WORLD_SELECT);
+                    currentDialog = new ConnectionDialog(
+                            _("Entering game world"), STATE_WORLD_SELECT);
                     break;
 
                 case STATE_UPDATE:
@@ -1059,6 +1041,9 @@ int main(int argc, char *argv[])
                 case STATE_GET_CHARACTERS:
                     logger->log("State: GET CHARACTERS");
                     Net::getCharHandler()->getCharacters();
+                    currentDialog = new ConnectionDialog(
+                            _("Requesting characters"),
+                            STATE_SWITCH_SERVER);
                     break;
 
                 case STATE_CHAR_SELECT:
@@ -1091,7 +1076,9 @@ int main(int argc, char *argv[])
                     logger->log("State: CONNECT GAME");
 
                     Net::getGameHandler()->connect();
-                    currentDialog = new ConnectionDialog(STATE_SWITCH_CHARACTER);
+                    currentDialog = new ConnectionDialog(
+                            _("Connecting to the game server"),
+                            STATE_SWITCH_CHARACTER);
                     break;
 
                 case STATE_GAME:
@@ -1117,7 +1104,7 @@ int main(int argc, char *argv[])
 
                     logger->log("State: GAME");
                     game = new Game;
-                    game->logic();
+                    game->exec();
                     delete game;
                     game = 0;
 
@@ -1143,7 +1130,8 @@ int main(int argc, char *argv[])
                 case STATE_REGISTER_PREP:
                     logger->log("State: REGISTER_PREP");
                     Net::getLoginHandler()->getRegistrationDetails();
-                    currentDialog = new ConnectionDialog(STATE_LOGIN);
+                    currentDialog = new ConnectionDialog(
+                            _("Requesting registration details"), STATE_LOGIN);
                     break;
 
                 case STATE_REGISTER:

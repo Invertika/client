@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -79,10 +79,12 @@ Download::Download(void *ptr, const std::string &url,
 
 Download::~Download()
 {
-    delete mError;
-
     if (mHeaders)
         curl_slist_free_all(mHeaders);
+
+    int status;
+    SDL_WaitThread(mThread, &status);
+    free(mError);
 }
 
 void Download::addHeader(const std::string &header)
