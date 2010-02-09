@@ -53,13 +53,13 @@ extern Window *buySellDialog;
 /** @see in game.cpp */
 extern const int MILLISECONDS_IN_A_TICK;
 
-/** @see in map.cpp */
-extern const int DEFAULT_TILE_SIDE_LENGTH;
-
-/* Max. distance we are willing to scroll after a teleport;
+/**
+ * Max. distance we are willing to scroll after a teleport;
  * everything beyond will reset the port hard.
+ * 32 is the nominal tile width/height.
+ * @todo: Make this parameter read from config.
  */
-static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * DEFAULT_TILE_SIDE_LENGTH;
+static const int MAP_TELEPORT_SCROLL_DISTANCE = 8 * 32;
 
 /**
  * Listener used for handling the overweigth message.
@@ -432,7 +432,7 @@ int PlayerHandler::getJobLocation()
     return -1;
 }
 
-float PlayerHandler::getDefaultWalkSpeed()
+Vector PlayerHandler::getDefaultWalkSpeed()
 {
     // Return translation in pixels per ticks.
     return ManaServ::BeingHandler::giveSpeedInPixelsPerTicks(6.0f);

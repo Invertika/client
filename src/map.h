@@ -43,8 +43,6 @@ typedef std::list<Sprite*> MapSprites;
 typedef MapSprites::iterator MapSprite;
 typedef std::vector<MapLayer*> Layers;
 
-extern const int DEFAULT_TILE_SIDE_LENGTH;
-
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
@@ -256,12 +254,14 @@ class Map : public Properties
         /**
          * Returns the tile width of this map.
          */
-        int getTileWidth() const { return mTileWidth; }
+        int getTileWidth() const
+        { return mTileWidth; }
 
         /**
          * Returns the tile height used by this map.
          */
-        int getTileHeight() const { return mTileHeight; }
+        int getTileHeight() const
+        { return mTileHeight; }
 
         const std::string &getMusicFile() const;
         const std::string &getName() const;

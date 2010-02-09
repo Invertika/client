@@ -39,7 +39,7 @@ class ListBox : public gcn::ListBox
         /**
          * Constructor.
          */
-        ListBox(gcn::ListModel *listModel, bool deleteModel = false);
+        ListBox(gcn::ListModel *listModel);
 
         ~ListBox();
 
@@ -65,10 +65,8 @@ class ListBox : public gcn::ListBox
 
         void mouseDragged(gcn::MouseEvent &event);
 
-    private:
+    protected:
         static float mAlpha;
-
-        bool mDeleteModel;
 };
 
 #endif

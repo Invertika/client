@@ -28,9 +28,8 @@
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
+#include "party.h"
 #include "playerrelations.h"
-
-#include "gui/partywindow.h"
 
 #include "net/ea/protocol.h"
 
@@ -162,7 +161,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // Prevent division by 0 when calculating frame
             if (speed == 0) { speed = 150; }
 
-            dstBeing->setWalkSpeed(speed);
+            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
             dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();
@@ -515,15 +514,14 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             player = dynamic_cast<Player*>(dstBeing);
 
-            {
-                PartyMember *member = partyWindow->findMember(id);
-                if (member && member->getAvatar()->getOnline())
+            if (Party *party = player_node->getParty()){
+                if (party->isMember(id))
                 {
-                    player->setInParty(true);
+                    player->setParty(party);
                 }
             }
 
-            dstBeing->setWalkSpeed(speed);
+            dstBeing->setWalkSpeed(Vector(speed, speed, 0));
             dstBeing->setJob(job);
             hairStyle = msg.readInt16();
             weapon = msg.readInt16();

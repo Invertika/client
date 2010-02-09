@@ -192,8 +192,8 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 Game *game = Game::instance();
 
-                const std::string &currentMap = game->getCurrentMapName();
-                bool sameMap = (currentMap == mapPath);
+                const std::string &currentMapName = game->getCurrentMapName();
+                bool sameMap = (currentMapName == mapPath);
 
                 // Switch the actual map, deleting the previous one if necessary
                 mapPath = mapPath.substr(0, mapPath.rfind("."));
@@ -207,8 +207,11 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     || (abs(x - player_node->getTileX()) > MAP_TELEPORT_SCROLL_DISTANCE)
                     || (abs(y - player_node->getTileY()) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
-                    scrollOffsetX = (x - player_node->getTileX()) * 32;
-                    scrollOffsetY = (y - player_node->getTileY()) * 32;
+                    Map *map = game->getCurrentMap();
+                    scrollOffsetX = (x - player_node->getTileX())
+                                    * map->getTileWidth();
+                    scrollOffsetY = (y - player_node->getTileY())
+                                    * map->getTileHeight();
                 }
 
                 player_node->setAction(Being::STAND);
@@ -229,7 +232,9 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 switch (type)
                 {
-                    case 0x0000: player_node->setWalkSpeed(value); break;
+                    case 0x0000:
+                      player_node->setWalkSpeed(Vector(value, value, 0));
+                    break;
                     case 0x0004: break; // manner
                     case 0x0005: player_node->setHp(value); break;
                     case 0x0006: player_node->setMaxHp(value); break;
@@ -639,9 +644,11 @@ int PlayerHandler::getJobLocation()
     return JOB;
 }
 
-float PlayerHandler::getDefaultWalkSpeed()
+Vector PlayerHandler::getDefaultWalkSpeed()
 {
-    return 150;
+    // Return an normalized speed for any side
+    // as the offset is calculated elsewhere.
+    return Vector(150, 150, 0);
 }
 
 } // namespace EAthena
