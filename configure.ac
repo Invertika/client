@@ -122,7 +122,6 @@ data/graphics/gui/Makefile
 data/graphics/images/Makefile
 data/help/Makefile
 data/icons/Makefile
-docs/Makefile
 po/Makefile.in
 ])
 
