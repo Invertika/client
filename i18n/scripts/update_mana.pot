@@ -1,0 +1,2 @@
+#!/bin/bash
+xgettext --files-from=po/POTFILES.in -C -a --add-comments=/// po/mana.pot

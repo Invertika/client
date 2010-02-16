@@ -1,0 +1,2 @@
+#!/bin/bash
+msgmerge po/de.po po/mana.pot
