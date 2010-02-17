@@ -88,6 +88,11 @@ void ScrollArea::init()
     // Draw background by default
     setOpaque(true);
 
+    setUpButtonScrollAmount(2);
+    setDownButtonScrollAmount(2);
+    setLeftButtonScrollAmount(2);
+    setRightButtonScrollAmount(2);
+
     if (instances == 0)
     {
         // Load the background skin
@@ -184,6 +189,27 @@ void ScrollArea::logic()
             content->setHeight(getChildrenArea().height -
                     2 * content->getFrameSize());
         }
+    }
+
+    if (mUpButtonPressed)
+    {
+        setVerticalScrollAmount(getVerticalScrollAmount() -
+                                mUpButtonScrollAmount);
+    }
+    else if (mDownButtonPressed)
+    {
+        setVerticalScrollAmount(getVerticalScrollAmount() +
+                                mDownButtonScrollAmount);
+    }
+    else if (mLeftButtonPressed)
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount() -
+                                  mLeftButtonScrollAmount);
+    }
+    else if (mRightButtonPressed)
+    {
+        setHorizontalScrollAmount(getHorizontalScrollAmount() +
+                                  mRightButtonScrollAmount);
     }
 }
 
@@ -346,8 +372,8 @@ void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 
 void ScrollArea::mouseMoved(gcn::MouseEvent& event)
 {
-mX = event.getX();
-mY = event.getY();
+    mX = event.getX();
+    mY = event.getY();
 }
 
 void ScrollArea::mouseEntered(gcn::MouseEvent& event)

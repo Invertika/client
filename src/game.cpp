@@ -41,8 +41,6 @@
 #include "playerrelations.h"
 #include "sound.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
 #include "gui/chat.h"
 #include "gui/confirmdialog.h"
 #include "gui/debugwindow.h"
@@ -59,7 +57,6 @@
 #include "gui/outfitwindow.h"
 #include "gui/quitdialog.h"
 #include "gui/sdlinput.h"
-#include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/socialwindow.h"
 #include "gui/specialswindow.h"
@@ -112,13 +109,8 @@ OkDialog *disconnectedDialog = NULL;
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
-BuyDialog *buyDialog;
-SellDialog *sellDialog;
-BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-NpcDialog *npcDialog;
-NpcPostDialog *npcPostDialog;
 StorageWindow *storageWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -137,6 +129,7 @@ ChannelManager *channelManager = NULL;
 CommandHandler *commandHandler = NULL;
 Particle *particleEngine = NULL;
 EffectManager *effectManager = NULL;
+Viewport *viewport = NULL;                    /**< Viewport on the map. */
 
 ChatTab *localChatTab = NULL;
 
@@ -213,13 +206,8 @@ static void createGuiWindows()
 
     // Create dialogs
     chatWindow = new ChatWindow;
-    buyDialog = new BuyDialog;
-    sellDialog = new SellDialog;
     tradeWindow = new TradeWindow;
-    buySellDialog = new BuySellDialog;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    npcDialog = new NpcDialog;
-    npcPostDialog = new NpcPostDialog;
     storageWindow = new StorageWindow;
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
@@ -259,12 +247,7 @@ static void destroyGuiWindows()
     del_0(chatWindow)
     del_0(statusWindow)
     del_0(miniStatusWindow)
-    del_0(buyDialog)
-    del_0(sellDialog)
-    del_0(buySellDialog)
     del_0(inventoryWindow)
-    del_0(npcDialog)
-    del_0(npcPostDialog)
     del_0(skillDialog)
     del_0(minimap)
     del_0(equipmentWindow)
@@ -291,6 +274,15 @@ Game::Game():
     mInstance = this;
 
     disconnectedDialog = NULL;
+
+    // Create the viewport
+    viewport = new Viewport();
+    viewport->setDimension(gcn::Rectangle(0, 0, graphics->getWidth(),
+                                          graphics->getHeight()));
+
+    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+    top->add(viewport);
+    viewport->requestMoveToBottom();
 
     createGuiWindows();
 
@@ -352,6 +344,7 @@ Game::~Game()
     delete commandHandler;
     delete joystick;
     delete particleEngine;
+    delete viewport;
 
     viewport->setMap(NULL);
 
@@ -444,10 +437,11 @@ void Game::exec()
         if (mCurrentMap)
             mCurrentMap->update(get_elapsed_time(gameTime));
 
+        handleInput();
+
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
-            handleInput();
             beingManager->logic();
             particleEngine->update();
             gui->logic();
@@ -522,7 +516,7 @@ void Game::handleInput()
 
             // send straight to gui for certain windows
             if (quitDialog || TextDialog::isActive() ||
-                npcPostDialog->isVisible())
+                NpcPostDialog::isActive())
             {
                 try
                 {
@@ -552,37 +546,29 @@ void Game::handleInput()
             if (!chatWindow->isInputFocused()
                 && !gui->getFocusHandler()->getModalFocused())
             {
+                NpcDialog *dialog = NpcDialog::getActive();
                 if (keyboard.isKeyActive(keyboard.KEY_OK))
                 {
                     // Close the Browser if opened
-                    if (helpWindow->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
+                    if (helpWindow->isVisible())
                         helpWindow->setVisible(false);
                     // Close the config window, cancelling changes if opened
-                    else if (setupWindow->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
+                    else if (setupWindow->isVisible())
                         setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
-                    else if (npcDialog->isVisible() &&
-                                keyboard.isKeyActive(keyboard.KEY_OK))
-                        npcDialog->action(gcn::ActionEvent(NULL, "ok"));
-                    /*
-                    else if (guildWindow->isVisible())
-                    {
-                        // TODO: Check if a dialog is open and close it if so
-                    }
-                    */
+                    else if (dialog)
+                        dialog->action(gcn::ActionEvent(NULL, "ok"));
                 }
                 if (keyboard.isKeyActive(keyboard.KEY_TOGGLE_CHAT))
                 {
                     if (chatWindow->requestChatFocus())
                         used = true;
                 }
-                if (npcDialog->isVisible())
+                if (dialog)
                 {
                     if (keyboard.isKeyActive(keyboard.KEY_MOVE_UP))
-                        npcDialog->move(1);
+                        dialog->move(1);
                     else if (keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN))
-                        npcDialog->move(-1);
+                        dialog->move(-1);
                 }
             }
 
@@ -601,82 +587,69 @@ void Game::handleInput()
                 }
             }
 
-            if ((event.key.keysym.mod & KMOD_RCTRL || event.key.keysym.mod & KMOD_LCTRL)
-                && !chatWindow->isInputFocused())
+            if (!chatWindow->isInputFocused())
             {
-                int outfitNum = -1;
-                switch (event.key.keysym.sym)
+                bool wearOutfit = false;
+                bool copyOutfit = false;
+
+                if (keyboard.isKeyActive(keyboard.KEY_WEAR_OUTFIT))
+                    wearOutfit = true;
+
+                if (keyboard.isKeyActive(keyboard.KEY_COPY_OUTFIT))
+                    copyOutfit = true;
+
+                if (wearOutfit || copyOutfit)
                 {
-                    case SDLK_1:
-                        outfitNum = 0;
-                        break;
+                    int outfitNum = -1;
+                    switch (event.key.keysym.sym)
+                    {
+                        case SDLK_1:
+                        case SDLK_2:
+                        case SDLK_3:
+                        case SDLK_4:
+                        case SDLK_5:
+                        case SDLK_6:
+                        case SDLK_7:
+                        case SDLK_8:
+                        case SDLK_9:
+                            outfitNum = event.key.keysym.sym - SDLK_1;
+                            break;
 
-                    case SDLK_2:
-                        outfitNum = 1;
-                        break;
+                        case SDLK_0:
+                            outfitNum = 9;
+                            break;
 
-                    case SDLK_3:
-                        outfitNum = 2;
-                        break;
+                        case SDLK_MINUS:
+                            outfitNum = 10;
+                            break;
 
-                    case SDLK_4:
-                        outfitNum = 3;
-                        break;
+                        case SDLK_EQUALS:
+                            outfitNum = 11;
+                            break;
 
-                    case SDLK_5:
-                        outfitNum = 4;
-                        break;
+                        case SDLK_BACKSPACE:
+                            outfitNum = 12;
+                            break;
 
-                    case SDLK_6:
-                        outfitNum = 5;
-                        break;
+                        case SDLK_INSERT:
+                            outfitNum = 13;
+                            break;
 
-                    case SDLK_7:
-                        outfitNum = 6;
-                        break;
+                        case SDLK_HOME:
+                            outfitNum = 14;
+                            break;
 
-                    case SDLK_8:
-                        outfitNum = 7;
-                        break;
-
-                    case SDLK_9:
-                        outfitNum = 8;
-                        break;
-
-                    case SDLK_0:
-                        outfitNum = 9;
-                        break;
-
-                    case SDLK_MINUS:
-                        outfitNum = 10;
-                        break;
-
-                    case SDLK_EQUALS:
-                        outfitNum = 11;
-                        break;
-
-                    case SDLK_BACKSPACE:
-                        outfitNum = 12;
-                        break;
-
-                    case SDLK_INSERT:
-                        outfitNum = 13;
-                        break;
-
-                    case SDLK_HOME:
-                        outfitNum = 14;
-                        break;
-
-                    default:
-                        break;
-                }
-                if (outfitNum >= 0)
-                {
-                    used = true;
-                    if (event.key.keysym.mod & KMOD_RCTRL)
-                        outfitWindow->wearOutfit(outfitNum);
-                    else if (event.key.keysym.mod & KMOD_LCTRL)
-                        outfitWindow->copyOutfit(outfitNum);
+                        default:
+                            break;
+                    }
+                    if (outfitNum >= 0)
+                    {
+                        used = true;
+                        if (wearOutfit)
+                            outfitWindow->wearOutfit(outfitNum);
+                        else if (copyOutfit)
+                            outfitWindow->copyOutfit(outfitNum);
+                    }
                 }
             }
 
@@ -717,8 +690,8 @@ void Game::handleInput()
                 default:
                     break;
             }
-            if (keyboard.isEnabled() &&
-                 !chatWindow->isInputFocused() && !npcDialog->isInputFocused())
+            if (keyboard.isEnabled() && !chatWindow->isInputFocused() &&
+                !NpcDialog::isAnyInputFocused())
             {
                 const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
 
@@ -900,7 +873,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->isAlive() && current_npc == 0 &&
+    if (player_node->isAlive() && !NPC::isTalking() &&
         !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys
@@ -1018,15 +991,12 @@ void Game::handleInput()
         // Talk to the nearest NPC if 't' pressed
         if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
         {
-            if (!npcDialog->isVisible())
-            {
-                Being *target = player_node->getTarget();
+            Being *target = player_node->getTarget();
 
-                if (target)
-                {
-                    if (target->getType() == Being::NPC)
-                        dynamic_cast<NPC*>(target)->talk();
-                }
+            if (target)
+            {
+                if (target->getType() == Being::NPC)
+                    dynamic_cast<NPC*>(target)->talk();
             }
         }
 

@@ -58,11 +58,17 @@ class DropDown : public gcn::DropDown
 
         void drawFrame(gcn::Graphics *graphics);
 
+        // Inherited from FocusListener
+
+        void focusLost(const gcn::Event& event);
+
         // Inherited from KeyListener
 
         void keyPressed(gcn::KeyEvent& keyEvent);
 
         // Inherited from MouseListener
+
+        void mousePressed(gcn::MouseEvent& mouseEvent);
 
         void mouseWheelMovedUp(gcn::MouseEvent& mouseEvent);
 

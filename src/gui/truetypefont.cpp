@@ -1,6 +1,7 @@
 /*
  *  The Mana World
  *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  Copyright (C) 2009  Aethyra Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -162,6 +163,17 @@ void TrueTypeFont::drawString(gcn::Graphics *graphics,
 
 int TrueTypeFont::getWidth(const std::string &text) const
 {
+    for (CacheIterator i = mCache.begin(); i != mCache.end(); i++)
+    {
+        if (i->text == text)
+        {
+            // Raise priority: move it to front
+            // Assumption is that TTF::draw will be called next
+            mCache.splice(mCache.begin(), mCache, i);
+            return i->img->getWidth();
+        }
+    }
+
     int w, h;
     TTF_SizeUTF8(mFont, text.c_str(), &w, &h);
     return w;

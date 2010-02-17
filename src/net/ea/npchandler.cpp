@@ -57,76 +57,72 @@ NpcHandler::NpcHandler()
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
 {
-    int id;
-    bool resetPlayer = false;
+    if (msg.getId() == SMSG_NPC_CHOICE || msg.getId() == SMSG_NPC_MESSAGE)
+    {
+        msg.readInt16();  // length
+    }
+
+    int npcId = msg.readInt32();
+    NpcDialogs::iterator diag = mNpcDialogs.find(npcId);
+    NpcDialog *dialog = 0;
+
+    if (diag == mNpcDialogs.end())
+    {
+        // Empty dialogs don't help
+        if (msg.getId() == SMSG_NPC_CLOSE)
+        {
+            closeDialog(npcId);
+        }
+        else if (msg.getId() == SMSG_NPC_NEXT)
+        {
+            nextDialog(npcId);
+        }
+        else
+        {
+            dialog = new NpcDialog(npcId);
+            Wrapper wrap;
+            wrap.dialog = dialog;
+            mNpcDialogs[npcId] = wrap;
+        }
+    }
+    else
+    {
+        dialog = diag->second.dialog;
+    }
 
     switch (msg.getId())
     {
         case SMSG_NPC_CHOICE:
-            msg.readInt16();  // length
-            current_npc = msg.readInt32();
-            npcDialog->setNpc(current_npc);
-            npcDialog->choiceRequest();
-            npcDialog->parseListItems(msg.readString(msg.getLength() - 8));
-            npcDialog->setVisible(true);
-            resetPlayer = true;
+            dialog->choiceRequest();
+            dialog->parseListItems(msg.readString(msg.getLength() - 8));
             break;
 
         case SMSG_NPC_MESSAGE:
-            msg.readInt16();  // length
-            current_npc = msg.readInt32();
-            npcDialog->setNpc(current_npc);
-            npcDialog->addText(msg.readString(msg.getLength() - 8));
-            npcDialog->setVisible(true);
-            resetPlayer = true;
+            dialog->addText(msg.readString(msg.getLength() - 8));
             break;
 
          case SMSG_NPC_CLOSE:
-            id = msg.readInt32();
-            // If we're talking to that NPC, show the close button
-            if (id == current_npc)
-            {
-                npcDialog->showCloseButton();
-                resetPlayer = true;
-            }
-            // Otherwise, move on as an empty dialog doesn't help
-            else
-                closeDialog(id);
+            // Show the close button
+            dialog->showCloseButton();
             break;
 
         case SMSG_NPC_NEXT:
-            id = msg.readInt32();
-            // If we're talking to that NPC, show the next button
-            if (id == current_npc)
-            {
-                npcDialog->showNextButton();
-                resetPlayer = true;
-            }
-            // Otherwise, move on as an empty dialog doesn't help
-            else
-                nextDialog(id);
+            // Show the next button
+            dialog->showNextButton();
             break;
 
         case SMSG_NPC_INT_INPUT:
             // Request for an integer
-            current_npc = msg.readInt32();
-            npcDialog->setNpc(current_npc);
-            npcDialog->integerRequest(0);
-            npcDialog->setVisible(true);
-            resetPlayer = true;
+            dialog->integerRequest(0);
             break;
 
         case SMSG_NPC_STR_INPUT:
             // Request for a string
-            current_npc = msg.readInt32();
-            npcDialog->setNpc(current_npc);
-            npcDialog->textRequest("");
-            npcDialog->setVisible(true);
-            resetPlayer = true;
+            dialog->textRequest("");
             break;
     }
 
-    if (resetPlayer && player_node->getCurrentAction() != Being::SIT)
+    if (player_node->getCurrentAction() != Being::SIT)
         player_node->setAction(Being::STAND);
 }
 
@@ -147,8 +143,13 @@ void NpcHandler::closeDialog(int npcId)
 {
     MessageOut outMsg(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcId);
-    npcDialog->setText("");
-    npcDialog->setVisible(false);
+
+    NpcDialogs::iterator it = mNpcDialogs.find(npcId);
+    if (it != mNpcDialogs.end())
+    {
+        (*it).second.dialog->close();
+        mNpcDialogs.erase(it);
+    }
 }
 
 void NpcHandler::listInput(int npcId, int value)

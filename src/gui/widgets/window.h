@@ -105,7 +105,7 @@ class Window : public gcn::Window, gcn::WidgetListener
         /**
          * Called whenever the widget is hidden.
          */
-        void widgetHidden(const gcn::Event &event);
+        virtual void widgetHidden(const gcn::Event& event);
 
         /**
          * Sets whether or not the window has a close button.
@@ -171,7 +171,7 @@ class Window : public gcn::Window, gcn::WidgetListener
          * Overloads window setVisible by Guichan to allow sticky window
          * handling.
          */
-        void setVisible(bool visible);
+        virtual void setVisible(bool visible);
 
         /**
          * Overloads window setVisible by Guichan to allow sticky window
