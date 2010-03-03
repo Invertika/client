@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/inventoryhandler.h"
@@ -61,7 +61,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     {
         case GPMSG_INVENTORY_FULL:
             player_node->clearInventory();
-            player_node->mEquipment->setBackend(&mEqiups);
+            player_node->mEquipment->setBackend(&mEquips);
             // no break!
 
         case GPMSG_INVENTORY:
@@ -77,7 +77,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 int id = msg.readInt16();
                 if (slot < EQUIPMENT_SIZE)
                 {
-                    mEqiups.setEquipment(slot, id);
+                    mEquips.setEquipment(slot, id);
                 }
                 else if (slot >= 32 && slot < 32 + getSize(INVENTORY))
                 {
@@ -105,7 +105,7 @@ void InventoryHandler::unequipItem(const Item *item)
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     int equipSlot = item->getInvIndex();
     logger->log("Unequipping %d", equipSlot);
-    mEqiups.setEquipment(equipSlot, 0);
+    mEquips.setEquipment(equipSlot, 0);
 }
 
 void InventoryHandler::useItem(const Item *item)

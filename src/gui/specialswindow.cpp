@@ -1,8 +1,8 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/specialswindow.h"
@@ -25,6 +24,7 @@
 #include "log.h"
 
 #include "gui/setup.h"
+#include "gui/skin.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -220,7 +220,7 @@ SpecialEntry::SpecialEntry(SpecialInfo *info) :
     if (!info->icon.empty())
         mIcon = new Icon(info->icon);
     else
-        mIcon = new Icon("graphics/gui/unknown-item.png");
+        mIcon = new Icon(SkinLoader::resolveThemePath("unknown-item.png"));
 
     mIcon->setPosition(1, 0);
     add(mIcon);

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/scrollarea.h"
@@ -27,7 +27,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -96,8 +95,7 @@ void ScrollArea::init()
     if (instances == 0)
     {
         // Load the background skin
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
         const int bggridx[4] = {0, 3, 28, 31};
         const int bggridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
@@ -118,8 +116,8 @@ void ScrollArea::init()
         textbox->decRef();
 
         // Load vertical scrollbar skin
-        Image *vscroll = resman->getImage("graphics/gui/vscroll_grey.png");
-        Image *vscrollHi = resman->getImage("graphics/gui/vscroll_highlight.png");
+        Image *vscroll = SkinLoader::getImageFromTheme("vscroll_grey.png");
+        Image *vscrollHi = SkinLoader::getImageFromTheme("vscroll_highlight.png");
 
         int vsgridx[4] = {0, 4, 7, 11};
         int vsgridy[4] = {0, 4, 15, 19};
@@ -147,21 +145,21 @@ void ScrollArea::init()
         vscrollHi->decRef();
 
         buttons[UP][0] =
-            resman->getImage("graphics/gui/vscroll_up_default.png");
+            SkinLoader::getImageFromTheme("vscroll_up_default.png");
         buttons[DOWN][0] =
-            resman->getImage("graphics/gui/vscroll_down_default.png");
+            SkinLoader::getImageFromTheme("vscroll_down_default.png");
         buttons[LEFT][0] =
-            resman->getImage("graphics/gui/hscroll_left_default.png");
+            SkinLoader::getImageFromTheme("hscroll_left_default.png");
         buttons[RIGHT][0] =
-            resman->getImage("graphics/gui/hscroll_right_default.png");
+            SkinLoader::getImageFromTheme("hscroll_right_default.png");
         buttons[UP][1] =
-            resman->getImage("graphics/gui/vscroll_up_pressed.png");
+            SkinLoader::getImageFromTheme("vscroll_up_pressed.png");
         buttons[DOWN][1] =
-            resman->getImage("graphics/gui/vscroll_down_pressed.png");
+            SkinLoader::getImageFromTheme("vscroll_down_pressed.png");
         buttons[LEFT][1] =
-            resman->getImage("graphics/gui/hscroll_left_pressed.png");
+            SkinLoader::getImageFromTheme("hscroll_left_pressed.png");
         buttons[RIGHT][1] =
-            resman->getImage("graphics/gui/hscroll_right_pressed.png");
+            SkinLoader::getImageFromTheme("hscroll_right_pressed.png");
     }
 
     instances++;

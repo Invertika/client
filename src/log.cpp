@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include <iostream>
@@ -35,7 +35,7 @@
 #include <sys/time.h>
 
 Logger::Logger():
-    mLogToStandardOut(false),
+    mLogToStandardOut(true),
     mChatWindow(NULL)
 {
 }
@@ -61,11 +61,6 @@ void Logger::setLogFile(const std::string &logFilename)
 
 void Logger::log(const char *log_text, ...)
 {
-    if (!mLogFile.is_open())
-    {
-        return;
-    }
-
     char* buf = new char[1024];
     va_list ap;
 
@@ -94,7 +89,10 @@ void Logger::log(const char *log_text, ...)
         << (int)((tv.tv_usec / 10000) % 100)
         << "] ";
 
-    mLogFile << timeStr.str() << buf << std::endl;
+    if (mLogFile.is_open())
+    {
+        mLogFile << timeStr.str() << buf << std::endl;
+    }
 
     if (mLogToStandardOut)
     {

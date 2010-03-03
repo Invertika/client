@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef BEING_H
@@ -234,10 +234,21 @@ class Being : public Sprite, public ConfigListener
          */
         virtual void setName(const std::string &name);
 
-        const bool getShowName() const
+        bool getShowName() const
         { return mShowName; }
 
         virtual void setShowName(bool doShowName);
+
+        /**
+         * Following are set from the server (mainly for players)
+         */
+        void setPartyName(const std::string &name) { mPartyName = name; }
+
+        const std::string &getPartyName() const { return mPartyName; }
+
+        virtual void setGuildName(const std::string &name);
+
+        virtual void setGuildPos(const std::string &pos);
 
         /**
          * Get the number of hairstyles implemented
@@ -602,6 +613,7 @@ class Being : public Sprite, public ConfigListener
         Uint8 mSpriteDirection;         /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
+        std::string mPartyName;
         MapSprite mMapSprite;
 
         /**
@@ -633,6 +645,16 @@ class Being : public Sprite, public ConfigListener
         ParticleVector mStatusParticleEffects;
         ParticleList mChildParticleEffects;
 
+        Vector mDest;  /**< destination coordinates. */
+
+        /**
+         * Check the current position against surrounding blocking tiles, and
+         * correct the position offset within tile when needed.
+         */
+        Position checkNodeOffsets(const Position &position) const;
+        Position checkNodeOffsets(int x, int y) const
+        { return checkNodeOffsets(Position(x, y)); }
+
     private:
 
         /**
@@ -656,9 +678,8 @@ class Being : public Sprite, public ConfigListener
          */
         Vector mWalkSpeed;
 
-        Vector mPos;
-        Vector mDest;
-        int mX, mY;                     /**< Position on tile */
+        Vector mPos;  /**< Position coordinates. */
+        int mX, mY;   /**< Position in tile */
 
         int mDamageTaken;
 

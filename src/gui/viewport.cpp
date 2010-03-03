@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,16 +16,15 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/viewport.h"
 
+#include "client.h"
 #include "beingmanager.h"
 #include "configuration.h"
 #include "flooritemmanager.h"
-#include "game.h"
 #include "graphics.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
@@ -36,6 +36,7 @@
 #include "gui/gui.h"
 #include "gui/ministatus.h"
 #include "gui/popupmenu.h"
+#include "gui/beingpopup.h"
 
 #include "net/net.h"
 
@@ -52,10 +53,7 @@ Viewport::Viewport():
     mMouseY(0),
     mPixelViewX(0.0f),
     mPixelViewY(0.0f),
-    mTileViewX(0),
-    mTileViewY(0),
     mShowDebugPath(false),
-    mVisibleNames(false),
     mPlayerFollowMouse(false),
     mLocalWalkTime(-1)
 {
@@ -66,20 +64,20 @@ Viewport::Viewport():
     mScrollRadius = (int) config.getValue("ScrollRadius", 0);
     mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
     mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
-    mVisibleNames = config.getValue("visiblenames", 1);
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
-    config.addListener("visiblenames", this);
 
     mPopupMenu = new PopupMenu;
+    mBeingPopup = new BeingPopup;
+
+    setFocusable(true);
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
-
-    config.removeListener("visiblenames", this);
+    delete mBeingPopup;
 }
 
 void Viewport::setMap(Map *map)
@@ -106,10 +104,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
-
-    // Ensure the client doesn't freak out if a feature localplayer uses
-    // is dependent on a map.
-    player_node->setMapInitialized(true);
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -181,9 +175,6 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
         if (mPixelViewY > viewYmax)
             mPixelViewY = viewYmax;
     }
-
-    mTileViewX = (int) (mPixelViewX + 16) / 32;
-    mTileViewY = (int) (mPixelViewY + 16) / 32;
 
     // Draw tiles and sprites
     if (mMap)
@@ -310,25 +301,18 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
 
     const int pixelX = event.getX() + (int) mPixelViewX;
     const int pixelY = event.getY() + (int) mPixelViewY;
-    const int tileX = pixelX / mMap->getTileWidth();
-    const int tileY = pixelY / mMap->getTileHeight();
 
     // Right click might open a popup
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Being *being;
-        FloorItem *floorItem;
-
-        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)) &&
-             being != player_node)
+        if (mHoverBeing && mHoverBeing != player_node)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), being);
+            mPopupMenu->showPopup(event.getX(), event.getY(), mHoverBeing);
             return;
         }
-        else if ((floorItem = floorItemManager->findByCoordinates(tileX,
-                                                                  tileY)))
+        else if (mHoverItem)
         {
-            mPopupMenu->showPopup(event.getX(), event.getY(), floorItem);
+            mPopupMenu->showPopup(event.getX(), event.getY(), mHoverItem);
             return;
         }
     }
@@ -343,35 +327,32 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     // Left click can cause different actions
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        FloorItem *item;
-        Being *being;
-
         // Interact with some being
-        if ((being = beingManager->findBeingByPixel(pixelX, pixelY)))
+        if (mHoverBeing)
         {
-            switch (being->getType())
+            switch (mHoverBeing->getType())
             {
                 // Talk to NPCs
                 case Being::NPC:
-                    dynamic_cast<NPC*>(being)->talk();
+                    static_cast<NPC*>(mHoverBeing)->talk();
                     break;
 
                 // Attack or walk to monsters or players
                 case Being::MONSTER:
                 case Being::PLAYER:
                     // Ignore it if its dead
-                    if (!being->isAlive())
+                    if (!mHoverBeing->isAlive())
                         break;
 
-                    if (player_node->withinAttackRange(being) ||
+                    if (player_node->withinAttackRange(mHoverBeing) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
                     {
-                        player_node->attack(being,
+                        player_node->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
                     }
                     else
                     {
-                        player_node->setGotoTarget(being);
+                        player_node->setGotoTarget(mHoverBeing);
                     }
                     break;
                 default:
@@ -379,9 +360,9 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
              }
         // Picks up a item if we clicked on one
         }
-        else if ((item = floorItemManager->findByCoordinates(tileX, tileY)))
+        else if (mHoverItem)
         {
-            player_node->pickUp(item);
+            player_node->pickUp(mHoverItem);
         }
         else if (player_node->getCurrentAction() == Being::SIT)
         {
@@ -431,8 +412,10 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
           if (mLocalWalkTime != player_node->getWalkTime())
           {
               mLocalWalkTime = player_node->getWalkTime();
-              int destX = event.getX() / 32 + mTileViewX;
-              int destY = event.getY() / 32 + mTileViewY;
+              int destX = (event.getX() + mPixelViewX + 16) /
+                          mMap->getTileWidth();
+              int destY = (event.getY() + mPixelViewY + 16) /
+                          mMap->getTileHeight();
               player_node->setDestination(destX, destY);
           }
         }
@@ -447,9 +430,10 @@ void Viewport::mouseReleased(gcn::MouseEvent &event)
     mLocalWalkTime = -1;
 }
 
-void Viewport::showPopup(int x, int y, Item *item, bool isInventory)
+void Viewport::showPopup(Window *parent, int x, int y, Item *item,
+                         bool isInventory)
 {
-    mPopupMenu->showPopup(x, y, item, isInventory);
+    mPopupMenu->showPopup(parent, x, y, item, isInventory);
 }
 
 void Viewport::closePopupMenu()
@@ -461,9 +445,6 @@ void Viewport::optionChanged(const std::string &name)
 {
     mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
     mScrollRadius = (int) config.getValue("ScrollRadius", 32);
-
-    if (name == "visiblenames")
-        mVisibleNames = config.getValue("visiblenames", 1);
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)
@@ -472,10 +453,45 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     if (!mMap || !player_node)
         return;
 
-    const int tilex = (event.getX() + (int) mPixelViewX) / 32;
-    const int tiley = (event.getY() + (int) mPixelViewY) / 32;
+    const int x = (event.getX() + (int) mPixelViewX);
+    const int y = (event.getY() + (int) mPixelViewY);
 
-    mSelectedBeing = beingManager->findBeing(tilex, tiley);
+    mHoverBeing = beingManager->findBeingByPixel(x, y);
+    if (Player *p = dynamic_cast<Player*>(mHoverBeing))
+        mBeingPopup->show(getMouseX(), getMouseY(), p);
+    else
+        mBeingPopup->setVisible(false);
+
+    mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
+                                                    y / mMap->getTileHeight());
+
+    if (mHoverBeing)
+    {
+        switch (mHoverBeing->getType())
+        {
+            // NPCs
+            case Being::NPC:
+                gui->setCursorType(Gui::CURSOR_TALK);
+                break;
+
+            // Monsters
+            case Being::MONSTER:
+                gui->setCursorType(Gui::CURSOR_FIGHT);
+                break;
+            default:
+                gui->setCursorType(Gui::CURSOR_POINTER);
+                break;
+         }
+    // Item mouseover
+    }
+    else if (mHoverItem)
+    {
+        gui->setCursorType(Gui::CURSOR_PICKUP);
+    }
+    else
+    {
+        gui->setCursorType(Gui::CURSOR_POINTER);
+    }
 }
 
 void Viewport::toggleDebugPath()
@@ -489,3 +505,7 @@ void Viewport::toggleDebugPath()
     }
 }
 
+void Viewport::hideBeingPopup()
+{
+    mBeingPopup->setVisible(false);
+}

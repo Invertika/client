@@ -1,9 +1,10 @@
 /*
  *  Extended support for activating emotes
  *  Copyright (C) 2009  Aethyra Development Team
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +17,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/emotepopup.h"
@@ -29,10 +29,11 @@
 #include "localplayer.h"
 #include "log.h"
 
+#include "gui/skin.h"
+
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -56,8 +57,7 @@ EmotePopup::EmotePopup():
         mEmotes.push_back(EmoteDB::getAnimation(i));
     }
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    mSelectionImage = resman->getImage("graphics/gui/selection.png");
+    mSelectionImage = SkinLoader::getImageFromTheme("selection.png");
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 
@@ -119,6 +119,8 @@ void EmotePopup::mousePressed(gcn::MouseEvent &event)
 
 void EmotePopup::mouseMoved(gcn::MouseEvent &event)
 {
+    Popup::mouseMoved(event);
+
     mHoveredEmoteIndex = getIndexAt(event.getX(), event.getY());
 }
 

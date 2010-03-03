@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,15 +16,15 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "beingmanager.h"
-#include "configuration.h"
-#include "game.h"
-#include "graphics.h"
 #include "map.h"
+
+#include "beingmanager.h"
+#include "client.h"
+#include "configuration.h"
+#include "graphics.h"
 #include "particle.h"
 #include "simpleanimation.h"
 #include "sprite.h"
@@ -37,8 +38,6 @@
 #include "utils/stringutils.h"
 
 #include <queue>
-
-extern volatile int tick_time;
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -291,14 +290,13 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
 
 void Map::update(int ticks)
 {
-    //update animated tiles
+    // Update animated tiles
     for (std::map<int, TileAnimation*>::iterator iAni = mTileAnimations.begin();
          iAni != mTileAnimations.end();
          iAni++)
     {
         iAni->second->update(ticks);
     }
-
 }
 
 void Map::draw(Graphics *graphics, int scrollX, int scrollY)
@@ -603,7 +601,8 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
     std::priority_queue<Location> openList;
 
     // Return when destination not walkable
-    if (!getWalk(destX, destY, walkmask)) return path;
+    if (!getWalk(destX, destY, walkmask))
+        return path;
 
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef MAIN_H
@@ -27,9 +27,9 @@
  *
  * \section Introduction Introduction
  *
- * This is the documentation for the client of The Mana World
- * (http://themanaworld.org). It is always a work in progress, with the intent
- * to make it easier for new developers to grow familiar with the source code.
+ * This is the documentation for the Mana client (http://manasource.org). It is
+ * always a work in progress, with the intent to make it easier for new
+ * developers to grow familiar with the source code.
  *
  * \section General General information
  *
@@ -44,11 +44,10 @@
  * \link FloorItem FloorItems\endlink, they are drawn from top to bottom
  * by the map, interleaved with the tiles in the fringe layer.
  *
- * The server is split up into an \link Net::AccountServer account
- * server\endlink, a \link Net::ChatServer chat server\endlink and a \link
- * Net::GameServer game server\endlink. There may be multiple game servers.
- * Handling of incoming messages is spread over several \link MessageHandler
- * MessageHanders\endlink.
+ * The client supports two servers, \link EAthena eAthena\endlink (the TMW
+ * version) and the \link ManaServ Mana server\endlink. To achieve this, the
+ * \link Net network communication layer\endlink is abstracted in many
+ * different interfaces, which have different implementations for each server.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -56,14 +55,8 @@
 #elif defined WIN32
 #include "winver.h"
 #elif defined __APPLE__
-#define PACKAGE_VERSION "0.0.29.1"
+#define PACKAGE_VERSION "1.0.0"
 #endif
-
-#include "net/logindata.h"
-
-#include <guichan/actionlistener.hpp>
-
-#include <string>
 
 #ifdef PACKAGE_VERSION
 #define FULL_VERSION "v" PACKAGE_VERSION
@@ -71,69 +64,35 @@
 #define FULL_VERSION "Unknown Version"
 #endif
 
+#ifdef PACKAGE_OS
+// If it's already been defined, let's not change it
+#elif defined __APPLE__
+#define PACKAGE_OS "Apple"
+#elif defined __FreeBSD__ || defined __DragonFly__
+#define PACKAGE_OS "FreeBSD"
+#elif defined __NetBSD__
+#define PACKAGE_OS "NetBSD"
+#elif defined __OpenBSD__
+#define PACKAGE_OS "OpenBSD"
+#elif defined __linux__ || defined __linux
+#define PACKAGE_OS "Linux"
+#elif defined __GNU__
+#define PACKAGE_OS "GNU Hurd"
+#elif defined WIN32 || defined _WIN32 || defined __WIN32__ || defined __NT__ \
+    || defined WIN64 || defined _WIN64 || defined __WIN64__
+#define PACKAGE_OS "Windows"
+#else
+#define PACKAGE_OS "Other"
+#endif
+
+#ifdef PACKAGE_VERSION
+#define PACKAGE_EXTENDED_VERSION "Mana/" PACKAGE_VERSION " (" PACKAGE_OS "; %s)"
+#else
+#define PACKAGE_EXTENDED_VERSION "Mana (" PACKAGE_OS "; %s)"
+#endif
+
 #ifndef PKG_DATADIR
 #define PKG_DATADIR ""
 #endif
-
-#define MAX_CHARACTER_COUNT 3
-
-//manaserv uses 9601
-//#define DEFAULT_PORT 9601
-#define DEFAULT_PORT 6901
-
-const std::string &getHomeDirectory();
-
-/*
- * Client different States
- */
-enum State {
-    STATE_ERROR = -1,
-    STATE_START = 0,
-    STATE_CHOOSE_SERVER,
-    STATE_CONNECT_SERVER,
-    STATE_LOGIN,
-    STATE_LOGIN_ATTEMPT,
-    STATE_WORLD_SELECT, // 5
-    STATE_WORLD_SELECT_ATTEMPT,
-    STATE_UPDATE,
-    STATE_LOAD_DATA,
-    STATE_GET_CHARACTERS,
-    STATE_CHAR_SELECT, // 10
-    STATE_CONNECT_GAME,
-    STATE_GAME,
-    STATE_CHANGE_MAP, // Switch map-server/gameserver
-    STATE_LOGIN_ERROR,
-    STATE_ACCOUNTCHANGE_ERROR, // 15
-    STATE_REGISTER_PREP,
-    STATE_REGISTER,
-    STATE_REGISTER_ATTEMPT,
-    STATE_CHANGEPASSWORD,
-    STATE_CHANGEPASSWORD_ATTEMPT, // 20
-    STATE_CHANGEPASSWORD_SUCCESS,
-    STATE_CHANGEEMAIL,
-    STATE_CHANGEEMAIL_ATTEMPT,
-    STATE_CHANGEEMAIL_SUCCESS,
-    STATE_UNREGISTER, // 25
-    STATE_UNREGISTER_ATTEMPT,
-    STATE_UNREGISTER_SUCCESS,
-    STATE_SWITCH_SERVER,
-    STATE_SWITCH_LOGIN,
-    STATE_SWITCH_CHARACTER, // 30
-    STATE_LOGOUT_ATTEMPT,
-    STATE_WAIT,
-    STATE_EXIT,
-    STATE_FORCE_QUIT
-};
-
-class ErrorListener : public gcn::ActionListener
-{
-    public:
-        void action(const gcn::ActionEvent &event);
-};
-
-extern State state;
-extern std::string errorMessage;
-extern ErrorListener errorListener;
-extern LoginData loginData;
 
 #endif

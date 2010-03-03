@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef NET_EA_CHARSERVERHANDLER_H
@@ -42,9 +42,6 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
 
         virtual void handleMessage(Net::MessageIn &msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
-        { mCharInfo = charInfo; }
-
         void setCharSelectDialog(CharSelectDialog *window);
 
         /**
@@ -54,31 +51,28 @@ class CharServerHandler : public MessageHandler, public Net::CharHandler
          */
         void setCharCreateDialog(CharCreateDialog *window);
 
-        void getCharacters();
+        void requestCharacters();
 
-        void chooseCharacter(int slot, LocalPlayer* character);
+        void chooseCharacter(Net::Character *character);
 
         void newCharacter(const std::string &name, int slot, bool gender,
-                    int hairstyle, int hairColor, std::vector<int> stats);
+                          int hairstyle, int hairColor,
+                          const std::vector<int> &stats);
 
-        void deleteCharacter(int slot, LocalPlayer* character);
+        void deleteCharacter(Net::Character *character);
 
         void switchCharacter();
 
-        unsigned int baseSprite() const;
+        int baseSprite() const;
 
-        unsigned int hairSprite() const;
+        int hairSprite() const;
 
-        unsigned int maxSprite() const;
+        int maxSprite() const;
 
         void connect();
 
-    protected:
-        LockedArray<LocalPlayer*> *mCharInfo;
-        CharSelectDialog *mCharSelectDialog;
-        CharCreateDialog *mCharCreateDialog;
-
-        LocalPlayer *readPlayerData(Net::MessageIn &msg, int &slot);
+    private:
+        LocalPlayer *readPlayerData(Net::MessageIn &msg, int *slot);
 };
 
 } // namespace EAthena

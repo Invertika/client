@@ -1,9 +1,10 @@
 /*
  *  Support for non-overlapping floating text
  *  Copyright (C) 2008  Douglas Boffey <DougABoffey@netscape.net>
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  Copyright (C) 2008-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +17,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "text.h"
@@ -28,6 +28,7 @@
 
 #include "gui/gui.h"
 #include "gui/palette.h"
+#include "gui/skin.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/image.h"
@@ -49,8 +50,7 @@ Text::Text(const std::string &text, int x, int y,
     if (textManager == 0)
     {
         textManager = new TextManager;
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *sbImage = resman->getImage("graphics/gui/bubble.png|W:#"
+        Image *sbImage = SkinLoader::getImageFromTheme("bubble.png|W:#"
             + config.getValue("speechBubblecolor", "000000"));
         mBubble.grid[0] = sbImage->getSubImage(0, 0, 5, 5);
         mBubble.grid[1] = sbImage->getSubImage(5, 0, 5, 5);

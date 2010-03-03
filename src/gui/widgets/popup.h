@@ -1,9 +1,10 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *  Copyright (C) 2009  Aethyra Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +17,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef POPUP_H
@@ -27,6 +27,8 @@
 #include "guichanfwd.h"
 
 #include "gui/widgets/container.h"
+
+#include <guichan/mouselistener.hpp>
 
 class Skin;
 class WindowContainer;
@@ -43,7 +45,7 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Popup : public Container
+class Popup : public Container, public gcn::MouseListener
 {
     public:
         /**
@@ -55,7 +57,7 @@ class Popup : public Container
          * @param skin    The location where the Popup's skin XML can be found.
          */
         Popup(const std::string &name = "",
-              const std::string &skin = "graphics/gui/gui.xml");
+              const std::string &skin = "window.xml");
 
         /**
          * Destructor. Deletes all the added widgets.
@@ -93,6 +95,8 @@ class Popup : public Container
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
+
+        void mouseMoved(gcn::MouseEvent &event);
 
         /**
          * Sets the minimum width of the popup.
@@ -151,6 +155,14 @@ class Popup : public Container
         // Inherited from BasicContainer
 
         virtual gcn::Rectangle getChildrenArea();
+
+        /**
+         * Sets the location to display the popup. Tries to horizontally center
+         * the popup and provide a vertical buffer between the given point and
+         * the popup. Prevents the popup from extending off-screen, if
+         * possible.
+         */
+        void position(int x, int y);
 
     private:
         std::string mPopupName;       /**< Name of the popup */

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,16 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/gamehandler.h"
 
-#include "game.h"
+#include "client.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -74,7 +73,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                     x, y, direction);
             // Switch now or we'll have problems
-            state = STATE_GAME;
+            Client::setState(STATE_GAME);
             player_node->setTileCoords(x, y);
          }  break;
 
@@ -91,7 +90,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_CHAR_SWITCH_RESPONSE:
             if (msg.readInt8())
             {
-                state = STATE_SWITCH_CHARACTER;
+                Client::setState(STATE_SWITCH_CHARACTER);
             }
             break;
 

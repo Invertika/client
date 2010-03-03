@@ -1,8 +1,8 @@
 /*
- *  The Mana World
- *  Copyright (C) 2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,11 +15,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "progressindicator.h"
+
+#include "gui/skin.h"
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
@@ -32,9 +33,8 @@
 
 ProgressIndicator::ProgressIndicator()
 {
-    ResourceManager *rm = ResourceManager::getInstance();
-    ImageSet *images = rm->getImageSet("graphics/gui/progress-indicator.png",
-                                       32, 32);
+    ImageSet *images =
+            SkinLoader::getImageSetFromTheme("progress-indicator.png", 32, 32);
 
     Animation *anim = new Animation;
     for (ImageSet::size_type i = 0; i < images->size(); ++i)

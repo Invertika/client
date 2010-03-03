@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/charcreatedialog.h"
@@ -90,13 +90,13 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mFemale->addActionListener(this);
 
     mPlayerBox = new PlayerBox(mPlayer);
-
     mPlayerBox->setWidth(74);
 
     mNameField->setActionEventId("create");
     mNameField->addActionListener(this);
 
-    mAttributesLeft = new Label(strprintf(_("Please distribute %d points"), 99));
+    mAttributesLeft = new Label(
+            strprintf(_("Please distribute %d points"), 99));
 
     int w = 200;
     int h = 330;
@@ -168,8 +168,9 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
             }
 
             Net::getCharHandler()->newCharacter(getName(), mSlot,
-                                mFemale->isSelected(), mHairStyle,
-                                mHairColor, atts);
+                                                mFemale->isSelected(),
+                                                mHairStyle,
+                                                mHairColor, atts);
         }
         else
         {
@@ -246,11 +247,13 @@ void CharCreateDialog::updateSliders()
         mCreateButton->setEnabled(false);
         if (pointsLeft > 0)
         {
-            mAttributesLeft->setCaption(strprintf(_("Please distribute %d points"), pointsLeft));
+            mAttributesLeft->setCaption(
+                    strprintf(_("Please distribute %d points"), pointsLeft));
         }
         else
         {
-            mAttributesLeft->setCaption(strprintf(_("Please remove %d points"), -pointsLeft));
+            mAttributesLeft->setCaption(
+                    strprintf(_("Please remove %d points"), -pointsLeft));
         }
     }
 
@@ -273,7 +276,7 @@ int CharCreateDialog::getDistributedPoints() const
     return points;
 }
 
-void CharCreateDialog::setAttributes(std::vector<std::string> labels,
+void CharCreateDialog::setAttributes(const std::vector<std::string> &labels,
                                      int available, int min, int max)
 {
     mMaxPoints = available;
@@ -303,7 +306,8 @@ void CharCreateDialog::setAttributes(std::vector<std::string> labels,
         add(mAttributeLabel[i]);
 
         mAttributeSlider[i] = new Slider(min, max);
-        mAttributeSlider[i]->setDimension(gcn::Rectangle(75, 140 + i*20, 100, 10));
+        mAttributeSlider[i]->setDimension(gcn::Rectangle(75, 140 + i * 20,
+                                                         100, 10));
         mAttributeSlider[i]->setActionEventId("statslider");
         mAttributeSlider[i]->addActionListener(this);
         add(mAttributeSlider[i]);
@@ -344,11 +348,6 @@ void CharCreateDialog::setFixedGender(bool fixed, Gender gender)
         mMale->setEnabled(false);
         mFemale->setEnabled(false);
     }
-}
-
-void CharCreateDialog::success()
-{
-    mCharSelectDialog->update(mSlot);
 }
 
 void CharCreateDialog::updateHair()

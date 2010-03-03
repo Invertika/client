@@ -2,7 +2,7 @@
  *  Desktop widget
  *  Copyright (c) 2009-2010  The Mana World Development Team
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,12 +15,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/desktop.h"
 
+#include "configuration.h"
 #include "graphics.h"
 #include "log.h"
 #include "main.h"
@@ -33,6 +33,8 @@
 #include "resources/resourcemanager.h"
 #include "resources/wallpaper.h"
 
+#include "utils/stringutils.h"
+
 Desktop::Desktop()
     : mWallpaper(0)
 {
@@ -40,7 +42,14 @@ Desktop::Desktop()
 
     Wallpaper::loadWallpapers();
 
-    mVersionLabel = new Label(FULL_VERSION);
+    std::string appName = branding.getValue("appName", "");
+
+    if (appName.empty())
+        mVersionLabel = new Label(FULL_VERSION);
+    else
+        mVersionLabel = new Label(strprintf("%s (Mana %s)", appName.c_str(),
+                                            FULL_VERSION));
+
     mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));
     add(mVersionLabel, 25, 2);
 }

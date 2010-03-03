@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/quitdialog.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/sdlinput.h"
 
@@ -50,7 +50,9 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
 
     ContainerPlacer place = getPlacer(0, 0);
 
-    //All states, when we're not logged in to someone.
+    const State state = Client::getState();
+
+    // All states, when we're not logged in to someone.
     if (state == STATE_CHOOSE_SERVER ||
         state == STATE_CONNECT_SERVER ||
         state == STATE_LOGIN ||
@@ -106,19 +108,19 @@ void QuitDialog::action(const gcn::ActionEvent &event)
     {
         if (mForceQuit->isSelected())
         {
-            state = STATE_FORCE_QUIT;
+            Client::setState(STATE_FORCE_QUIT);
         }
         else if (mLogoutQuit->isSelected())
         {
-            state = STATE_EXIT;
+            Client::setState(STATE_EXIT);
         }
         else if (mSwitchAccountServer->isSelected())
         {
-            state = STATE_SWITCH_SERVER;
+            Client::setState(STATE_SWITCH_SERVER);
         }
         else if (mSwitchCharacter->isSelected())
         {
-            assert(state == STATE_GAME);
+            assert(Client::getState() == STATE_GAME);
 
             Net::getCharHandler()->switchCharacter();
         }

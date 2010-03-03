@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,14 +16,13 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/loginhandler.h"
 
+#include "client.h"
 #include "log.h"
-#include "main.h"
 
 #include "net/logindata.h"
 #include "net/messagein.h"
@@ -68,7 +68,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful pass change
             if (errMsg == 1)
             {
-                state = STATE_CHANGEPASSWORD_SUCCESS;
+                Client::setState(STATE_CHANGEPASSWORD_SUCCESS);
             }
             // pass change failed
             else
@@ -88,7 +88,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -136,7 +136,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 
                 mWorlds.push_back(world);
             }
-            state = STATE_WORLD_SELECT;
+            Client::setState(STATE_WORLD_SELECT);
             break;
 
         case SMSG_LOGIN_ERROR:
@@ -175,8 +175,9 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("Unknown error.");
                     break;
             }
-            state = STATE_ERROR;
+            Client::setState(STATE_ERROR);
             break;
+
         case SMSG_SERVER_VERSION_RESPONSE:
             {
                 // TODO: verify these!
@@ -214,7 +215,7 @@ void LoginHandler::disconnect()
 void LoginHandler::getRegistrationDetails()
 {
     // Not supported, so move on
-    state = STATE_REGISTER;
+    Client::setState(STATE_REGISTER);
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)
@@ -250,7 +251,7 @@ void LoginHandler::chooseServer(unsigned int server)
     charServer.hostname = ipToString(mWorlds[server]->address);
     charServer.port = mWorlds[server]->port;
 
-    state = STATE_UPDATE;
+    Client::setState(STATE_UPDATE);
 }
 
 void LoginHandler::registerAccount(LoginData *loginData)

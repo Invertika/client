@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GUILDHANDLER_H
@@ -32,6 +32,10 @@ namespace Net {
 class GuildHandler
 {
     public:
+        virtual ~GuildHandler() {}
+
+        virtual bool isSupported() { return false; }
+
         virtual void create(const std::string &name) = 0;
 
         virtual void invite(int guildId, const std::string &name) = 0;
@@ -42,13 +46,13 @@ class GuildHandler
 
         virtual void leave(int guildId) = 0;
 
-        virtual void kick(GuildMember member) = 0;
+        virtual void kick(GuildMember *member, std::string reason = "") = 0;
 
         virtual void chat(int guildId, const std::string &text) = 0;
 
         virtual void memberList(int guildId) = 0;
 
-        virtual void changeMemberPostion(GuildMember member, int level) = 0;
+        virtual void changeMemberPostion(GuildMember *member, int level) = 0;
 
         virtual void requestAlliance(int guildId, int otherGuildId) = 0;
 
@@ -56,8 +60,6 @@ class GuildHandler
                                              bool response) = 0;
 
         virtual void endAlliance(int guildId, int otherGuildId) = 0;
-
-        virtual ~GuildHandler() {}
 };
 
 }

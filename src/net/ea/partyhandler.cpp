@@ -1,8 +1,8 @@
 /*
- *  The Mana World
+ *  The Mana Client
  *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/partyhandler.h"
@@ -69,11 +68,8 @@ PartyHandler::PartyHandler():
 
 PartyHandler::~PartyHandler()
 {
-    if (partyTab)
-    {
-        delete partyTab;
-        partyTab = 0;
-    }
+    delete partyTab;
+    partyTab = 0;
 }
 
 void PartyHandler::handleMessage(Net::MessageIn &msg)
@@ -105,11 +101,12 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                     bool leader = msg.readInt8() == 0;
                     bool online = msg.readInt8() == 0;
 
-                    PartyMember *member = new PartyMember(PARTY_ID, id, nick);
+                    PartyMember *member = eaParty->addMember(id, nick);
                     member->setLeader(leader);
                     member->setOnline(online);
-                    eaParty->addMember(member);
                 }
+
+                player_node->setParty(eaParty);
             }
             break;
         case SMSG_PARTY_INVITE_RESPONSE:
@@ -270,6 +267,13 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
                 {
                     m->setHp(hp);
                     m->setMaxHp(maxhp);
+                }
+
+                // The server only sends this when the member is in range, so
+                // lets make sure they get the party hilight.
+                if (Being *b = beingManager->findBeing(id))
+                {
+                    static_cast<Player*>(b)->setParty(eaParty);
                 }
             }
             break;

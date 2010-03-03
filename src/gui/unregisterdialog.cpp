@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/unregisterdialog.h"
 
-#include "main.h"
+#include "client.h"
 #include "log.h"
 
 #include "gui/okdialog.h"
@@ -91,12 +91,11 @@ UnRegisterDialog::~UnRegisterDialog()
     delete mWrongDataNoticeListener;
 }
 
-void
-UnRegisterDialog::action(const gcn::ActionEvent &event)
+void UnRegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_CHAR_SELECT;
+        Client::setState(STATE_CHAR_SELECT);
     }
     else if (event.getId() == "unregister")
     {
@@ -139,7 +138,7 @@ UnRegisterDialog::action(const gcn::ActionEvent &event)
             // No errors detected, unregister the new user.
             mUnRegisterButton->setEnabled(false);
             mLoginData->password = password;
-            state = STATE_UNREGISTER_ATTEMPT;
+            Client::setState(STATE_UNREGISTER_ATTEMPT);
         }
     }
 }

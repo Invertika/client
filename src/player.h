@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PLAYER_H
@@ -75,7 +75,7 @@ class Player : public Being
         /**
          * Sets visible equipments for this player.
          */
-        virtual void setSprite(unsigned int slot, int id,
+        virtual void setSprite(int slot, int id,
                                const std::string &color = "",
                                bool isWeapon = false);
 
@@ -103,6 +103,16 @@ class Player : public Being
          * Returns a pointer to the guild with matching id.
          */
         Guild *getGuild(int id) const;
+
+        /**
+         * Returns all guilds the player is in.
+         */
+        const std::map<int, Guild*> &getGuilds() const;
+
+        /**
+         * Removes all guilds the player is in.
+         */
+        void clearGuilds();
 
         /**
          * Get number of guilds the player belongs to.

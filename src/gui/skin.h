@@ -2,9 +2,10 @@
  *  Gui Skinning
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
  *  Copyright (C) 2009  Aethyra Development Team
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,8 +18,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SKIN_H
@@ -31,6 +31,7 @@
 
 class ConfigListener;
 class Image;
+class ImageSet;
 
 class Skin
 {
@@ -101,11 +102,24 @@ class SkinLoader
         static SkinLoader *instance();
         static void deleteInstance();
 
+        static void prepareThemePath();
+        static std::string getThemePath() { return mThemePath; }
+
+        /**
+         * Returns the patch to the given gui resource relative to the theme
+         * or, if it isn't in the theme, relative to 'graphics/gui'.
+         */
+        static std::string resolveThemePath(const std::string &path);
+
+        static Image *getImageFromTheme(const std::string &path);
+        static ImageSet *getImageSetFromTheme(const std::string &path,
+                                           int w, int h);
+
         /**
          * Loads a skin.
          */
         Skin *load(const std::string &filename,
-                   const std::string &defaultPath);
+                   const std::string &defaultPath = getThemePath());
 
         /**
          * Updates the alpha values of all of the skins.
@@ -141,7 +155,10 @@ class SkinLoader
          */
         ConfigListener *mSkinConfigListener;
 
+        static std::string mThemePath;
         static SkinLoader *mInstance;
+
+        static bool tryThemePath(std::string themePath);
 
         /**
          * Tells if the current skins opacity

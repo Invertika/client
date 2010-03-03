@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef GUILD_H
@@ -35,12 +35,6 @@ class Guild;
 class GuildMember : public Avatar
 {
 public:
-    GuildMember(int guildId, int id, const std::string &name);
-
-    GuildMember(int guildId, int id);
-
-    GuildMember(int guildId, const std::string &name);
-
     int getID() const { return mId; }
 
     void setID(int id) { mId = id; }
@@ -49,6 +43,12 @@ public:
 
 protected:
     friend class Guild;
+
+    GuildMember(Guild *guild, int id, const std::string &name);
+
+    GuildMember(Guild *guild, int id);
+
+    GuildMember(Guild *guild, const std::string &name);
 
     int mId;
     Guild *mGuild;
@@ -69,7 +69,17 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(GuildMember *member);
+    GuildMember *addMember(int id, const std::string &name);
+
+    /**
+     * Adds member to the list.
+     */
+    GuildMember *addMember(int id);
+
+    /**
+     * Adds member to the list.
+     */
+    GuildMember *addMember(const std::string &name);
 
     /**
      * Find a member by ID.

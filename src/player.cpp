@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,18 +16,18 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "player.h"
+
 #include "animatedsprite.h"
+#include "client.h"
 #include "configuration.h"
-#include "game.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "particle.h"
 #include "party.h"
-#include "player.h"
 #include "text.h"
 
 #include "gui/palette.h"
@@ -49,7 +50,7 @@ Player::Player(int id, int job, Map *map, bool isNPC):
 {
     if (!isNPC)
     {
-        for (unsigned int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
+        for (int i = 0; i < Net::getCharHandler()->maxSprite(); i++)
         {
             mSprites.push_back(NULL);
             mSpriteIDs.push_back(0);
@@ -157,7 +158,7 @@ void Player::setGM(bool gm)
     updateColors();
 }
 
-void Player::setSprite(unsigned int slot, int id, const std::string &color,
+void Player::setSprite(int slot, int id, const std::string &color,
                        bool isWeapon)
 {
     if (getType() == NPC)
@@ -219,6 +220,7 @@ void Player::setSpriteColor(unsigned int slot, const std::string &color)
 void Player::addGuild(Guild *guild)
 {
     mGuilds[guild->getId()] = guild;
+    guild->addMember(mId, mName);
 
     if (this == player_node && socialWindow)
     {
@@ -233,6 +235,7 @@ void Player::removeGuild(int id)
         socialWindow->removeTab(mGuilds[id]);
     }
 
+    mGuilds[id]->removeMember(mId);
     mGuilds.erase(id);
 }
 
@@ -263,6 +266,27 @@ Guild *Player::getGuild(int id) const
     return NULL;
 }
 
+const std::map<int, Guild*> &Player::getGuilds() const
+{
+    return mGuilds;
+}
+
+void Player::clearGuilds()
+{
+    std::map<int, Guild*>::const_iterator itr, itr_end = mGuilds.end();
+    for (itr = mGuilds.begin(); itr != itr_end; ++itr)
+    {
+        Guild *guild = itr->second;
+
+        if (this == player_node && socialWindow)
+            socialWindow->removeTab(guild);
+
+        guild->removeMember(mId);
+    }
+
+    mGuilds.clear();
+}
+
 void Player::setParty(Party *party)
 {
     if (party == mParty)
@@ -270,6 +294,16 @@ void Player::setParty(Party *party)
 
     Party *old = mParty;
     mParty = party;
+
+    if (old)
+    {
+        party->removeMember(mId);
+    }
+
+    if (party)
+    {
+        party->addMember(mId, mName);
+    }
 
     updateColors();
 
@@ -300,7 +334,7 @@ void Player::updateColors()
         mTextColor = &guiPalette->getColor(Palette::GM);
         mNameColor = &guiPalette->getColor(Palette::GM_NAME);
     }
-    else if (mParty != NULL)
+    else if (mParty && mParty == player_node->getParty())
     {
         mNameColor = &guiPalette->getColor(Palette::PARTY);
     }

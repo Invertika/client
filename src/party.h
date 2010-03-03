@@ -1,8 +1,8 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef PARTY_H
@@ -35,12 +34,6 @@ class Party;
 class PartyMember : public Avatar
 {
 public:
-    PartyMember(int partyId, int id, const std::string &name);
-
-    PartyMember(int partyId, int id);
-
-    PartyMember(int partyId, const std::string &name);
-
     int getID() const { return mId; }
 
     void setID(int id) { mId = id; }
@@ -53,6 +46,12 @@ public:
 
 protected:
     friend class Party;
+
+    PartyMember(Party *party, int id, const std::string &name);
+
+    PartyMember(Party *party, int id);
+
+    PartyMember(Party *party, const std::string &name);
 
     int mId;
     Party *mParty;
@@ -74,7 +73,17 @@ public:
     /**
      * Adds member to the list.
      */
-    void addMember(PartyMember *member);
+    PartyMember *addMember(int id, const std::string &name);
+
+    /**
+     * Adds member to the list.
+     */
+    PartyMember *addMember(int id);
+
+    /**
+     * Adds member to the list.
+     */
+    PartyMember *addMember(const std::string &name);
 
     /**
      * Find a member by ID.
@@ -163,7 +172,7 @@ private:
     static PartyMap parties;
 
     /**
-     * Constructor with guild id passed to it.
+     * Constructor with party id passed to it.
      */
     Party(short id);
 

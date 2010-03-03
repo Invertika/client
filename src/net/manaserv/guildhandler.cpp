@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2008-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/guildhandler.h"
@@ -131,9 +131,8 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                     online = msg.readInt8();
                     if (name != "")
                     {
-                        member = new GuildMember(guildId, name);
+                        member = guild->addMember(name);
                         member->setOnline(online);
-                        guild->addMember(member);
                     }
                 }
             }
@@ -153,9 +152,8 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
                 switch(eventId)
                 {
                     case GUILD_EVENT_NEW_PLAYER:
-                        member = new GuildMember(guildId, name);
+                        member = guild->addMember(name);
                         member->setOnline(true);
-                        guild->addMember(member);
                         break;
 
                     case GUILD_EVENT_LEAVING_PLAYER:
@@ -296,7 +294,7 @@ void GuildHandler::leave(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::kick(GuildMember member)
+void GuildHandler::kick(GuildMember *member, std::string reason)
 {
     // TODO
 }
@@ -313,7 +311,7 @@ void GuildHandler::memberList(int guildId)
     chatServerConnection->send(msg);
 }
 
-void GuildHandler::changeMemberPostion(GuildMember member, int level)
+void GuildHandler::changeMemberPostion(GuildMember *member, int level)
 {
     /*MessageOut msg(PCMSG_GUILD_PROMOTE_MEMBER);
     msg.writeInt16(guildId);

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,16 +16,16 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/beinghandler.h"
 
 #include "being.h"
 #include "beingmanager.h"
+#include "client.h"
 #include "effectmanager.h"
-#include "game.h"
+#include "guild.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
@@ -56,6 +57,7 @@ BeingHandler::BeingHandler(bool enableSync):
         SMSG_BEING_CHANGE_LOOKS,
         SMSG_BEING_CHANGE_LOOKS2,
         SMSG_BEING_NAME_RESPONSE,
+        SMSG_PLAYER_GUILD_PARTY_INFO,
         SMSG_BEING_CHANGE_DIRECTION,
         SMSG_PLAYER_UPDATE_1,
         SMSG_PLAYER_UPDATE_2,
@@ -105,7 +107,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     int param1;
     int stunMode;
     Uint32 statusEffects;
-    int type;
+    int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
     Player *player;
@@ -178,9 +180,19 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             hairColor = msg.readInt16();
             shoes = msg.readInt16();  // clothes color - "abused" as shoes
             gloves = msg.readInt16();  // head dir - "abused" as gloves
-            msg.readInt16();  // guild
-            msg.readInt16();  // unknown
-            msg.readInt16();  // unknown
+            guild = msg.readInt32();  // guild
+            if (player)
+            {
+                if (guild == 0)
+                {
+                    player->clearGuilds();
+                }
+                else
+                {
+                    player->addGuild(Guild::getGuild(guild));
+                }
+            }
+            msg.readInt16();  // guild emblem
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
@@ -480,7 +492,15 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing->setName(msg.readString(24));
             }
             break;
-
+        case SMSG_PLAYER_GUILD_PARTY_INFO:
+            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            {
+                dstBeing->setPartyName(msg.readString(24));
+                dstBeing->setGuildName(msg.readString(24));
+                dstBeing->setGuildPos(msg.readString(24));
+                msg.readString(24); // Discard this
+            }
+            break;
         case SMSG_BEING_CHANGE_DIRECTION:
             if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
             {

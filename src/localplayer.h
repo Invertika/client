@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef LOCALPLAYER_H
@@ -105,7 +105,7 @@ class LocalPlayer : public Player
         /**
          * Constructor.
          */
-        LocalPlayer(int id= 65535, int job = 0, Map *map = NULL);
+        LocalPlayer(int id= 65535, int job = 0);
 
         /**
          * Destructor.
@@ -131,11 +131,6 @@ class LocalPlayer : public Player
          * Returns the player's inventory.
          */
         Inventory *getInventory() const { return mInventory; }
-
-        /**
-         * Returns the player's storage
-         */
-        Inventory *getStorage() const { return mStorage; }
 
         /**
          * Check the player has permission to invite users to specific guild
@@ -249,12 +244,12 @@ class LocalPlayer : public Player
         /**
          * Uses a character point to raise an attribute
          */
-        void raiseAttribute(size_t attr);
+        void raiseAttribute(int attr);
 
         /**
          * Uses a correction point to lower an attribute
          */
-        void lowerAttribute(size_t attr);
+        void lowerAttribute(int attr);
 
         void toggleSit();
         void emote(Uint8 emotion);
@@ -263,12 +258,6 @@ class LocalPlayer : public Player
          * Shows item pickup notifications.
          */
         void pickedUp(const ItemInfo &itemInfo, int amount);
-
-        /**
-         * Accessors for mInStorage
-         */
-        bool getInStorage() { return mInStorage; }
-        void setInStorage(bool inStorage);
 
         int getHp() const
         { return mHp; }
@@ -402,17 +391,6 @@ class LocalPlayer : public Player
          */
         bool getCheckNameSetting() const { return mUpdateName; }
 
-        /**
-         * Set if the current map is initialized.
-         */
-        void setMapInitialized(bool initialized)
-        { mMapInitialized = initialized; }
-
-        /**
-         * Tells if the current map is initialized.
-         */
-        bool isMapInitialized() const { return mMapInitialized; }
-
         /**  Keeps the Equipment related values */
         const std::auto_ptr<Equipment> mEquipment;
 
@@ -421,16 +399,12 @@ class LocalPlayer : public Player
         /** Whether or not the name settings have changed */
         bool mUpdateName;
 
-        bool mMapInitialized; /**< Whether or not the map is available yet */
-
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
 
         // Colors don't change for local player
         virtual void updateColors() {}
 
         void startWalking(unsigned char dir);
-
-        bool mInStorage;      /**< Whether storage is currently accessible */
 
         int mAttackRange;
 
@@ -474,8 +448,6 @@ class LocalPlayer : public Player
         int mLastAction;      /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;      /**< The direction the player is walking in. */
         bool mPathSetByMouse; /**< Tells if the path was set using mouse */
-        int mDestX;           /**< X coordinate of destination. */
-        int mDestY;           /**< Y coordinate of destination. */
 
         std::vector<int> mStatusEffectIcons;
 
@@ -483,8 +455,6 @@ class LocalPlayer : public Player
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
-
-        Inventory *mStorage;
 
         /** Load the target cursors into memory */
         void initTargetCursor();

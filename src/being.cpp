@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,16 +16,15 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "being.h"
 
 #include "animatedsprite.h"
+#include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
@@ -62,7 +62,6 @@
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
-extern const int MILLISECONDS_IN_A_TICK;
 
 
 int Being::mNumberOfHairstyles = 1;
@@ -128,6 +127,48 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
+Position Being::checkNodeOffsets(const Position &position) const
+{
+    // Pre-computing character's position in tiles
+    const int tx = position.x / 32;
+    const int ty = position.y / 32;
+
+    // Pre-computing character's position offsets.
+    int fx = position.x % 32;
+    int fy = position.y % 32;
+
+    // Compute the being radius:
+    // FIXME: the beings' radius should be obtained from xml values
+    // and stored into the Being ojects.
+    int radius = getWidth() / 2;
+    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
+    // go or spawn in too narrow places. The server will have to be aware
+    // of being's radius value (in tiles) to handle this gracefully.
+    if (radius > 32 / 2) radius = 32 / 2;
+    // set a default value if no value returned.
+    if (radius < 1) radius = 32 / 3;
+
+    // Fix coordinates so that the player does not seem to dig into walls.
+    if (fx > (32 - radius) && !mMap->getWalk(tx + 1, ty, getWalkMask()))
+        fx = 32 - radius;
+    else if (fx < radius && !mMap->getWalk(tx - 1, ty, getWalkMask()))
+        fx = radius;
+    else if (fy > (32 - radius) && !mMap->getWalk(tx, ty + 1, getWalkMask()))
+        fy = 32 - radius;
+    else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
+        fy = radius;
+
+    // FIXME: Check also diagonal positions.
+
+    // Test also the current character's position, to avoid the corner case
+    // where a player can approach an obstacle by walking from slightly
+    // under, diagonally. First part to the walk on water bug.
+    //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
+    //  fy = 16;
+
+    return Position(tx * 32 + fx, ty * 32 + fy);
+}
+
 void Being::setDestination(int dstX, int dstY)
 {
     if (Net::getNetworkType() == ServerInfo::EATHENA)
@@ -137,8 +178,13 @@ void Being::setDestination(int dstX, int dstY)
         return;
     }
 
-    mDest.x = dstX;
-    mDest.y = dstY;
+    // If the destination is unwalkable, don't bother trying to get there
+    if (!mMap->getWalk(dstX / 32, dstY / 32))
+        return;
+
+    Position dest = checkNodeOffsets(dstX, dstY);
+    mDest.x = dest.x;
+    mDest.y = dest.y;
     int srcX = mPos.x;
     int srcY = mPos.y;
 
@@ -174,10 +220,12 @@ void Being::setDestination(int dstX, int dstY)
     int i = 0;
     while (it != thisPath.end())
     {
-       it->x = (it->x * 32) + startX + (changeX * i);
-       it->y = (it->y * 32) + startY + (changeY * i);
-       i++;
-       it++;
+        // A position that is valid on the start and end tile is not
+        // necessarily valid on all the tiles in between, so check the offsets.
+        *it = checkNodeOffsets(it->x * 32 + startX + changeX * i,
+                               it->y * 32 + startY + changeY * i);
+        i++;
+        it++;
     }
 
     // Remove the last path node, as it's more clever to go to mDest instead.
@@ -197,6 +245,7 @@ void Being::clearPath()
 void Being::setPath(const Path &path)
 {
     mPath = path;
+
     if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
             mAction != WALK && mAction != DEAD)
     {
@@ -311,13 +360,9 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         }
 
         if (type != CRITICAL)
-        {
             effectManager->trigger(26, this);
-        }
         else
-        {
             effectManager->trigger(28, this);
-        }
     }
 }
 
@@ -325,6 +370,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
 {
     if (this != player_node)
         setAction(Being::ATTACK, 1);
+
     if (getType() == PLAYER && victim)
     {
         if (mEquippedWeapon)
@@ -362,6 +408,17 @@ void Being::setShowName(bool doShowName)
             mDispName = 0;
         }
     }
+}
+
+void Being::setGuildName(const std::string &name)
+{
+    logger->log("Got guild name \"%s\" for being %s(%i)", name.c_str(), mName.c_str(), mId);
+}
+
+
+void Being::setGuildPos(const std::string &pos)
+{
+    logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(), mName.c_str(), mId);
 }
 
 void Being::setMap(Map *map)
@@ -814,10 +871,10 @@ int Being::getOffset(char pos, char neg) const
     if (mMap)
     {
         offset = (pos == LEFT && neg == RIGHT) ?
-        (int)((get_elapsed_time(mWalkTime)
-        * mMap->getTileWidth()) / mWalkSpeed.x) :
-        (int)((get_elapsed_time(mWalkTime)
-        * mMap->getTileHeight()) / mWalkSpeed.y);
+                 (int)((get_elapsed_time(mWalkTime)
+                        * mMap->getTileWidth()) / mWalkSpeed.x) :
+                 (int)((get_elapsed_time(mWalkTime)
+                        * mMap->getTileHeight()) / mWalkSpeed.y);
     }
 
     // We calculate the offset _from_ the _target_ location

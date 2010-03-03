@@ -2,7 +2,7 @@
  *  A chat recorder
  *  Copyright (C) 2008  Lloyd Bryant <lloyd_bryant@netzero.net>
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +15,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/recorder.h"
 
-#include "main.h"
+#include "client.h"
 
 #include "gui/chat.h"
 
@@ -103,7 +102,7 @@ void Recorder::setRecordingFile(const std::string &msg)
          * recorded.
          */
         localChatTab->chatLog(_("Starting to record..."), BY_SERVER);
-        const std::string file = std::string(getHomeDirectory() + msgCopy);
+        const std::string file = Client::getLocalDataDirectory() + "/" + msgCopy;
 
         mStream.open(file.c_str(), std::ios_base::trunc);
 

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/storagewindow.h"
@@ -52,9 +52,11 @@
 
 #include <string>
 
-StorageWindow::StorageWindow(int invSize):
+StorageWindow::WindowList StorageWindow::instances;
+
+StorageWindow::StorageWindow(Inventory *inventory):
     Window(_("Storage")),
-    mMaxSlots(invSize),
+    mInventory(inventory),
     mItemDesc(false)
 {
     setWindowName("Storage");
@@ -70,19 +72,19 @@ StorageWindow::StorageWindow(int invSize):
 
     mCloseButton = new Button(_("Close"), "close", this);
 
-    mItems = new ItemContainer(player_node->getStorage(), true);
+    mItems = new ItemContainer(mInventory, true);
     mItems->addSelectionListener(this);
 
     gcn::ScrollArea *invenScroll = new ScrollArea(mItems);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mUsedSlots = player_node->getStorage()->getNumberOfSlotsUsed();
+    mUsedSlots = mInventory->getNumberOfSlotsUsed();
 
     mSlotsLabel = new Label(_("Slots:"));
 
     mSlotsBar = new ProgressBar(0.0f, 100, 20, gcn::Color(225, 200, 25));
-    mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
-    mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
+    mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mInventory->getSize()));
+    mSlotsBar->setProgress((float) mUsedSlots / mInventory->getSize());
 
     setMinHeight(130);
     setMinWidth(200);
@@ -98,10 +100,14 @@ StorageWindow::StorageWindow(int invSize):
     layout.setRowHeight(0, mStoreButton->getHeight());
 
     loadWindowState();
+
+    instances.push_back(this);
+    setVisible(true);
 }
 
 StorageWindow::~StorageWindow()
 {
+    instances.remove(this);
 }
 
 void StorageWindow::logic()
@@ -111,15 +117,16 @@ void StorageWindow::logic()
 
     Window::logic();
 
-    const int usedSlots = player_node->getStorage()->getNumberOfSlotsUsed();
+    const int usedSlots = mInventory->getNumberOfSlotsUsed();
 
     if (mUsedSlots != usedSlots)
     {
         mUsedSlots = usedSlots;
 
-        mSlotsBar->setProgress((float) mUsedSlots / mMaxSlots);
+        mSlotsBar->setProgress((float) mUsedSlots / mInventory->getSize());
 
-        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots, mMaxSlots));
+        mSlotsBar->setText(strprintf("%d/%d", mUsedSlots,
+                                     mInventory->getSize()));
     }
 }
 
@@ -173,7 +180,7 @@ void StorageWindow::mouseClicked(gcn::MouseEvent &event)
          */
         const int mx = event.getX() + getX();
         const int my = event.getY() + getY();
-        viewport->showPopup(mx, my, item, false);
+        viewport->showPopup(this, mx, my, item, false);
     }
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
@@ -211,4 +218,6 @@ void StorageWindow::removeStore(Item *item, int amount)
 void StorageWindow::close()
 {
     Net::getInventoryHandler()->closeStorage(Net::InventoryHandler::STORAGE);
+
+    scheduleDelete();
 }

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,13 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/beinghandler.h"
 
+#include "client.h"
 #include "effectmanager.h"
 #include "game.h"
 #include "localplayer.h"
@@ -40,9 +41,6 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
-
-/** @see in game.cpp */
-extern const int MILLISECONDS_IN_A_TICK;
 
 /**
  * Max. distance we are willing to scroll after a teleport;
@@ -306,14 +304,14 @@ void PlayerHandler::emote(int emoteId)
     // TODO
 }
 
-void PlayerHandler::increaseAttribute(size_t attr)
+void PlayerHandler::increaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_RAISE_ATTRIBUTE);
     msg.writeInt8(attr);
     gameServerConnection->send(msg);
 }
 
-void PlayerHandler::decreaseAttribute(size_t attr)
+void PlayerHandler::decreaseAttribute(int attr)
 {
     MessageOut msg(PGMSG_LOWER_ATTRIBUTE);
     msg.writeInt8(attr);

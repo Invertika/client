@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/itemcontainer.h"
@@ -32,6 +32,7 @@
 #include "gui/outfitwindow.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
+#include "gui/skin.h"
 #include "gui/viewport.h"
 
 #include "net/net.h"
@@ -39,7 +40,6 @@
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
 
@@ -67,9 +67,7 @@ ItemContainer::ItemContainer(Inventory *inventory, bool forceQuantity):
     mItemPopup = new ItemPopup;
     setFocusable(true);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    mSelImg = resman->getImage("graphics/gui/selection.png");
+    mSelImg = SkinLoader::getImageFromTheme("selection.png");
     if (!mSelImg)
         logger->error("Unable to load selection.png");
 
@@ -320,7 +318,7 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
     if (item)
     {
         mItemPopup->setItem(item->getInfo());
-        mItemPopup->view(viewport->getMouseX(), viewport->getMouseY());
+        mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
     }
     else
     {

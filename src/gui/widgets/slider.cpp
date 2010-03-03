@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/slider.h"
@@ -27,7 +27,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
@@ -83,9 +82,8 @@ void Slider::init()
     // Load resources
     if (mInstances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *slider = resman->getImage("graphics/gui/slider.png");
-        Image *sliderHi = resman->getImage("graphics/gui/slider_hilight.png");
+        Image *slider = SkinLoader::getImageFromTheme("slider.png");
+        Image *sliderHi = SkinLoader::getImageFromTheme("slider_hilight.png");
 
         x = 0; y = 0;
         w = 15; h = 6;

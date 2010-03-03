@@ -1,9 +1,10 @@
 /*
  *  Configurable text colors
  *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,14 +17,13 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "palette.h"
 
 #include "configuration.h"
-#include "game.h"
+#include "client.h"
 
 #include "gui/gui.h"
 
@@ -99,6 +99,7 @@ Palette::Palette() :
     addColor(WHISPER, 0x00feaf, STATIC, indent + _("Whisper"), 'W');
     addColor(IS, 0xa08527, STATIC, indent + _("Is"), 'I');
     addColor(PARTY, 0xf48055, STATIC, indent + _("Party"), 'P');
+    addColor(GUILD, 0xf48055, STATIC, indent + _("Guild"), 'U');
     addColor(SERVER, 0x8415e2, STATIC, indent + _("Server"), 'S');
     addColor(LOGGER, 0x919191, STATIC, indent + _("Logger"), 'L');
     addColor(HYPERLINK, 0xe50d0d, STATIC, indent + _("Hyperlink"), '<');

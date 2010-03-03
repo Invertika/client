@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/textfield.h"
@@ -29,8 +29,8 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
+#include "utils/copynpaste.h"
 #include "utils/dtor.h"
 
 #include <guichan/font.hpp>
@@ -52,8 +52,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
     if (instances == 0)
     {
         // Load the skin
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        Image *textbox = SkinLoader::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;
@@ -250,8 +249,23 @@ void TextField::keyPressed(gcn::KeyEvent &keyEvent)
             if (mLoseFocusOnTab)
                 return;
             break;
+
+        case 22: // Control code 22, SYNCHRONOUS IDLE, sent on Ctrl+v
+            handlePaste();
+            break;
     }
 
     keyEvent.consume();
     fixScroll();
+}
+
+void TextField::handlePaste()
+{
+    std::string text = getText();
+    std::string::size_type caretPos = getCaretPosition();
+
+    if (RetrieveBuffer(text, caretPos)) {
+        setText(text);
+        setCaretPosition(caretPos);
+    }
 }

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2008-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "partytab.h"
+#include "net/ea/gui/partytab.h"
 
 #include "commandhandler.h"
+#include "localplayer.h"
+#include "party.h"
 
 #include "gui/palette.h"
 
@@ -196,9 +198,12 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
     return true;
 }
 
-int PartyTab::getType() const
+void PartyTab::getAutoCompleteList(std::vector<std::string> &names) const
 {
-    return ChatTab::PARTY;
+    Party *p = player_node->getParty();
+
+    if (p)
+        p->getNames(names);
 }
 
 } // namespace EAthena

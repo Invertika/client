@@ -2,7 +2,7 @@
  *  Custom keyboard shortcuts configuration
  *  Copyright (C) 2007  Joshua Langley <joshlangley@optusnet.com.au>
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "configuration.h"
@@ -157,15 +156,24 @@ bool KeyboardConfig::hasConflicts()
     {
         for (j = i, j++; j < KEY_TOTAL; j++)
         {
-            // Allow for item shortcut and emote keys to overlap
-            // as well as emote and ignore keys, but no other keys
-            if (!((((i >= KEY_SHORTCUT_1) && (i <= KEY_SHORTCUT_12)) &&
-                   ((j >= KEY_EMOTE_1) && (j <= KEY_EMOTE_12))) ||
-                   ((i == KEY_TOGGLE_CHAT) && (j == KEY_OK)) ||
-                   ((i == KEY_EMOTE) &&
-                    (j == KEY_IGNORE_INPUT_1 || j == KEY_IGNORE_INPUT_2))) &&
-                   (mKey[i].value == mKey[j].value)
-               )
+            // Allow collisions between shortcut and emote keys
+            if ((i >= KEY_SHORTCUT_1 && i <= KEY_SHORTCUT_12) && (j >= KEY_EMOTE_1 && j <= KEY_EMOTE_12))
+                continue;
+
+            // Why?
+            if (i == KEY_TOGGLE_CHAT && j == KEY_OK)
+                continue;
+
+            // Ignore keys can collide with anything.
+            if (j == KEY_IGNORE_INPUT_1 || j == KEY_IGNORE_INPUT_2)
+                continue;
+
+            // If the one of the keys is not set, then no conflict can happen.
+            if (mKey[i].value == -1 || mKey[j].value == -1)
+                continue;
+
+            // Finally test to see if a conflict DOES exist.
+            if (mKey[i].value == mKey[j].value)
             {
                 mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
                                          "Resolve them, or gameplay may result"

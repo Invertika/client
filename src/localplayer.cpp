@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,17 +16,16 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "localplayer.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
 #include "equipment.h"
 #include "flooritem.h"
-#include "game.h"
 #include "graphics.h"
 #include "guild.h"
 #include "inventory.h"
@@ -43,6 +43,7 @@
 #include "gui/ministatus.h"
 #include "gui/palette.h"
 #include "gui/skilldialog.h"
+#include "gui/skin.h"
 #include "gui/statuswindow.h"
 #include "gui/storagewindow.h"
 
@@ -74,10 +75,9 @@ const short walkingKeyboardDelay = 1000;
 
 LocalPlayer *player_node = NULL;
 
-LocalPlayer::LocalPlayer(int id, int job, Map *map):
-    Player(id, job, map),
+LocalPlayer::LocalPlayer(int id, int job):
+    Player(id, job, 0),
     mEquipment(new Equipment),
-    mInStorage(false),
     mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
@@ -98,19 +98,11 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mDestX(0), mDestY(0),
     mInventory(new Inventory(Net::getInventoryHandler()
                              ->getSize(Net::InventoryHandler::INVENTORY))),
     mLocalWalkTime(-1),
-    mStorage(new Inventory(Net::getInventoryHandler()
-                           ->getSize(Net::InventoryHandler::STORAGE))),
     mMessageTime(0)
 {
-    // Variable to keep the local player from doing certain actions before a map
-    // is initialized. e.g. drawing a player's name using the TextManager, since
-    // it appears to be dependant upon map coordinates for updating drawing.
-    mMapInitialized = false;
-
     mUpdateName = true;
 
     mTextColor = &guiPalette->getColor(Palette::PLAYER);
@@ -125,7 +117,6 @@ LocalPlayer::LocalPlayer(int id, int job, Map *map):
 LocalPlayer::~LocalPlayer()
 {
     delete mInventory;
-    delete mStorage;
 
     config.removeListener("showownname", this);
 
@@ -463,66 +454,17 @@ void LocalPlayer::setTarget(Being *target)
 
 void LocalPlayer::setDestination(int x, int y)
 {
-    if (Net::getNetworkType() == ServerInfo::MANASERV)
-    {
-        // Pre-computing character's destination in tiles
-        const int tx = x / 32;
-        const int ty = y / 32;
-
-        // Check the walkability of the destination
-        // If the destination is a wall, don't go there!
-        if (!mMap->getWalk(tx, ty))
-            return;
-
-        // Pre-computing character's position useful variables.
-        Vector playerPosition = getPosition();
-        const int posX = (int)(playerPosition.x / 32);
-        const int posY = (int)(playerPosition.y / 32);
-        const int offsetY = (int)playerPosition.y % 32;
-
-        // check if we're finding a path to the seeked destination
-        // If the path is empty... and isn't on the same tile,
-        // then, it's an unvalid one.
-        if (posX != tx || posY != ty)
-        {
-            Path evaluatedPath = mMap->findPath(posX, posY, tx, ty,
-                                                getWalkMask());
-            if (evaluatedPath.empty())
-                return;
-        }
-
-        // Pre-computing character's destination offsets.
-        int fx = x % 32;
-        int fy = y % 32;
-
-        // Fix coordinates so that the player does not seem to dig into walls.
-         if (fx > 16 && !mMap->getWalk(tx + 1, ty, getWalkMask()))
-            fx = 16;
-         else if (fx < 16 && !mMap->getWalk(tx - 1, ty, getWalkMask()))
-            fx = 16;
-         else if (fy > 16 && !mMap->getWalk(tx, ty + 1, getWalkMask()))
-            fy = 16;
-         else if (fy < 16 && !mMap->getWalk(tx, ty - 1, getWalkMask()))
-            fy = 16;
-
-         // Test also the current character's position, to avoid the corner case
-         // where a player can approach an obstacle by walking from slightly
-         // under, diagonally. First part to the walk on water bug.
-         if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
-            fy = 16;
-
-        x = tx * 32 + fx;
-        y = ty * 32 + fy;
-    }
-
     // Only send a new message to the server when destination changes
-    if (x != mDestX || y != mDestY)
+    if (x != mDest.x || y != mDest.y)
     {
-        mDestX = x;
-        mDestY = y;
-
         Being::setDestination(x, y);
-        Net::getPlayerHandler()->setDestination(x, y, mDirection);
+
+        // Manaserv:
+        // If the destination given to being class is accepted,
+        // we inform the Server.
+        if ((x == mDest.x && y == mDest.y)
+            || Net::getNetworkType() == ServerInfo::EATHENA)
+          Net::getPlayerHandler()->setDestination(x, y, mDirection);
     }
 
     mPickUpTarget = NULL;
@@ -795,7 +737,7 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-void LocalPlayer::raiseAttribute(size_t attr)
+void LocalPlayer::raiseAttribute(int attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCharacterPoints--;
@@ -805,7 +747,7 @@ void LocalPlayer::raiseAttribute(size_t attr)
     Net::getPlayerHandler()->increaseAttribute(attr);
 }
 
-void LocalPlayer::lowerAttribute(size_t attr)
+void LocalPlayer::lowerAttribute(int attr)
 {
     // we assume that the server allows the change. When not we will undo it later.
     mCorrectionPoints--;
@@ -1104,18 +1046,12 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
 void LocalPlayer::initTargetCursor()
 {
     // Load target cursors
-    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
-                     false, TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
-                     true, TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
-                     false, TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
-                     true, TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
-                     false, TC_LARGE);
-    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
-                     true, TC_LARGE);
+    loadTargetCursor("target-cursor-blue-s.png", 44, 35, false, TC_SMALL);
+    loadTargetCursor("target-cursor-red-s.png", 44, 35, true, TC_SMALL);
+    loadTargetCursor("target-cursor-blue-m.png", 62, 44, false, TC_MEDIUM);
+    loadTargetCursor("target-cursor-red-m.png", 62, 44, true, TC_MEDIUM);
+    loadTargetCursor("target-cursor-blue-l.png", 82, 60, false, TC_LARGE);
+    loadTargetCursor("target-cursor-red-l.png", 82, 60, true, TC_LARGE);
 }
 
 void LocalPlayer::loadTargetCursor(const std::string &filename,
@@ -1125,9 +1061,8 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     assert(size > -1);
     assert(size < 3);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
+    ImageSet *currentImageSet = SkinLoader::getImageSetFromTheme(filename,
+                                                                width, height);
     Animation *anim = new Animation;
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
@@ -1143,13 +1078,6 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
 
     mTargetCursorImages[index][size] = currentImageSet;
     mTargetCursor[index][size] = currentCursor;
-}
-
-void LocalPlayer::setInStorage(bool inStorage)
-{
-    mInStorage = inStorage;
-
-    storageWindow->setVisible(inStorage);
 }
 
 void LocalPlayer::addMessageToQueue(const std::string &message,

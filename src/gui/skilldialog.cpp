@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/skilldialog.h"
@@ -25,6 +25,7 @@
 #include "log.h"
 
 #include "gui/setup.h"
+#include "gui/skin.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/container.h"
@@ -76,7 +77,7 @@ struct SkillInfo
         icon->decRef();
     }
 
-    void setIcon(std::string iconPath)
+    void setIcon(const std::string &iconPath)
     {
         ResourceManager *res = ResourceManager::getInstance();
         if (!iconPath.empty())
@@ -85,7 +86,7 @@ struct SkillInfo
         }
         else
         {
-            icon = res->getImage("graphics/gui/unknown-item.png");
+            icon = SkinLoader::getImageFromTheme("unknown-item.png");
         }
     }
 
@@ -99,11 +100,19 @@ typedef std::vector<SkillInfo*> SkillList;
 class SkillModel : public gcn::ListModel
 {
 public:
-    int getNumberOfElements() { return mVisibleSkills.size(); }
-    SkillInfo *getSkillAt(int i) { return mVisibleSkills.at(i); }
-    std::string getElementAt(int i) { return getSkillAt(i)->name; }
+    int getNumberOfElements()
+    { return mVisibleSkills.size(); }
+
+    SkillInfo *getSkillAt(int i) const
+    { return mVisibleSkills.at(i); }
+
+    std::string getElementAt(int i)
+    { return getSkillAt(i)->name; }
+
     void updateVisibilities();
-    void addSkill(SkillInfo *info) { mSkills.push_back(info); }
+
+    void addSkill(SkillInfo *info)
+    { mSkills.push_back(info); }
 
 private:
     SkillList mSkills;
@@ -119,7 +128,11 @@ public:
 
     SkillInfo *getSelectedInfo()
     {
-        return static_cast<SkillModel*>(mListModel)->getSkillAt(getSelected());
+        const int selected = getSelected();
+        if (selected < 0 || selected > mListModel->getNumberOfElements())
+            return 0;
+
+        return static_cast<SkillModel*>(mListModel)->getSkillAt(selected);
     }
 
     void draw(gcn::Graphics *gcnGraphics)
@@ -216,9 +229,8 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 
         if (tab)
         {
-            SkillInfo *info = tab->getSelectedInfo();
-
-            Net::getPlayerHandler()->increaseSkill(info->id);
+            if (SkillInfo *info = tab->getSelectedInfo())
+                Net::getPlayerHandler()->increaseSkill(info->id);
         }
     }
     else if (event.getId() == "close")

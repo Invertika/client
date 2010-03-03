@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "guild.h"
@@ -24,22 +24,19 @@
 #include "beingmanager.h"
 #include "player.h"
 
-GuildMember::GuildMember(int guildId, int id, const std::string &name):
-        Avatar(name), mId(id)
+GuildMember::GuildMember(Guild *guild, int id, const std::string &name):
+        Avatar(name), mId(id), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
-GuildMember::GuildMember(int guildId, int id):
-        mId(id)
+GuildMember::GuildMember(Guild *guild, int id):
+        mId(id), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
-GuildMember::GuildMember(int guildId, const std::string &name):
-        Avatar(name), mId(0)
+GuildMember::GuildMember(Guild *guild, const std::string &name):
+        Avatar(name), mId(0), mGuild(guild)
 {
-    mGuild = Guild::getGuild(guildId);
 }
 
 Guild::GuildMap Guild::guilds;
@@ -51,16 +48,49 @@ Guild::Guild(short id):
     guilds[id] = this;
 }
 
-void Guild::addMember(GuildMember *member)
+GuildMember *Guild::addMember(int id, const std::string &name)
 {
-    if (member->mGuild > 0 && member->mGuild != this)
-        throw "Member in another guild!";
-
-    if (!isMember(member))
+    GuildMember *m;
+    if ((m = getMember(id)))
     {
-        mMembers.push_back(member);
-        member->mGuild = this;
+        return m;
     }
+
+    m = new GuildMember(this, id, name);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+GuildMember *Guild::addMember(int id)
+{
+    GuildMember *m;
+    if ((m = getMember(id)))
+    {
+        return m;
+    }
+
+    m = new GuildMember(this, id);
+
+    mMembers.push_back(m);
+
+    return m;
+}
+
+GuildMember *Guild::addMember(const std::string &name)
+{
+    GuildMember *m;
+    if ((m = getMember(name)))
+    {
+        return m;
+    }
+
+    m = new GuildMember(this, name);
+
+    mMembers.push_back(m);
+
+    return m;
 }
 
 GuildMember *Guild::getMember(int id)

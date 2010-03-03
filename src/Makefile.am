@@ -95,6 +95,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/widgets/window.h \
 	      gui/widgets/windowcontainer.cpp \
 	      gui/widgets/windowcontainer.h \
+	      gui/beingpopup.cpp \
+	      gui/beingpopup.h \
 	      gui/buy.cpp \
 	      gui/buy.h \
 	      gui/buysell.cpp \
@@ -208,6 +210,7 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/worldselectdialog.cpp \
 	      gui/worldselectdialog.h \
 	      net/adminhandler.h \
+	      net/charhandler.cpp \
 	      net/charhandler.h \
 	      net/chathandler.h \
 	      net/download.cpp \
@@ -280,11 +283,17 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      resources/wallpaper.h \
 	      utils/base64.cpp \
 	      utils/base64.h \
+	      utils/copynpaste.cpp \
+	      utils/copynpaste.h \
 	      utils/dtor.h \
 	      utils/gettext.h \
 	      utils/mathutils.h \
+	      utils/mkdir.cpp \
+	      utils/mkdir.h \
 	      utils/sha256.cpp \
 	      utils/sha256.h \
+	      utils/specialfolder.cpp \
+	      utils/specialfolder.h \
 	      utils/stringutils.cpp \
 	      utils/stringutils.h \
 	      utils/mutex.h \
@@ -300,6 +309,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      being.h \
 	      beingmanager.cpp \
 	      beingmanager.h \
+	      client.cpp \
+	      client.h \
 	      channel.cpp \
 	      channel.h \
 	      channelmanager.cpp \
@@ -339,7 +350,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      keyboardconfig.h \
 	      localplayer.cpp \
 	      localplayer.h \
-	      lockedarray.h \
 	      log.cpp \
 	      log.h \
 	      main.cpp \
@@ -442,6 +452,8 @@ mana_SOURCES += \
 	      net/manaserv/tradehandler.h
 
 mana_SOURCES += \
+	      net/ea/gui/guildtab.cpp \
+	      net/ea/gui/guildtab.h \
 	      net/ea/gui/partytab.cpp \
 	      net/ea/gui/partytab.h \
 	      net/ea/adminhandler.cpp \

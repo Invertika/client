@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef STORAGEWINDOW_H
@@ -49,8 +49,7 @@ class StorageWindow : public Window, gcn::ActionListener,
         /**
          * Constructor.
          */
-        StorageWindow(int invSize = Net::getInventoryHandler()
-                                    ->getSize(Net::InventoryHandler::STORAGE));
+        StorageWindow(Inventory *inventory);
 
         /**
          * Destructor.
@@ -75,22 +74,31 @@ class StorageWindow : public Window, gcn::ActionListener,
         void mouseClicked(gcn::MouseEvent &event);
 
         /**
-         * Add the specified ammount of the specified item to storage
-         */
-        void addStore(Item* item, int amount);
-
-        /**
-         * Remove the specified ammount of the specified item from storage
-         */
-        void removeStore(Item* item, int amount);
-
-        /**
          * Closes the Storage Window, as well as telling the server that the
          * window has been closed.
          */
         void close();
 
+        /**
+         * Add the specified ammount of the specified item to storage
+         */
+        static void addStore(Item* item, int amount);
+
+        /**
+         * Remove the specified ammount of the specified item from storage
+         */
+        static void removeStore(Item* item, int amount);
+
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isActive() { return instances.size() > 0; }
+
     private:
+        typedef std::list<StorageWindow*> WindowList;
+        static WindowList instances;
+
+        Inventory *mInventory;
         ItemContainer *mItems;
 
         int mSlots;
@@ -101,11 +109,7 @@ class StorageWindow : public Window, gcn::ActionListener,
 
         ProgressBar *mSlotsBar;
 
-        int mMaxSlots;
-
         bool mItemDesc;
 };
-
-extern StorageWindow *storageWindow;
 
 #endif // STORAGEWINDOW_H

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef SERVERDIALOG_H
@@ -32,6 +32,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <guichan/mouselistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
 #include <string>
@@ -68,18 +69,24 @@ class ServersListModel : public gcn::ListModel
         ServerInfo getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
 
+        /**
+         * Removes the entry.
+         */
+        void remove(int elementIndex)
+        { mServers->erase(mServers->begin() + elementIndex); }
+
     private:
         ServerInfos *mServers;
         ServerDialog *mParent;
 };
 
 /**
- * Server and Port List Model
+ * Server Type List Model
  */
 class TypeListModel : public gcn::ListModel
 {
     public:
-        TypeListModel() { };
+        TypeListModel() {}
 
         /**
          * Used to get number of line in the list
@@ -128,6 +135,8 @@ class ServerDialog : public Window,
          */
         void valueChanged(const gcn::SelectionEvent &event);
 
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
+
         void logic();
 
     protected:
@@ -143,7 +152,7 @@ class ServerDialog : public Window,
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 
-        void setFieldsReadOnly(const bool readOnly);
+        void setFieldsReadOnly(bool readOnly);
 
         TextField *mServerNameField;
         TextField *mPortField;
@@ -151,6 +160,7 @@ class ServerDialog : public Window,
         Button *mQuitButton;
         Button *mConnectButton;
         Button *mManualEntryButton;
+        Button *mDeleteButton;
 
         ListBox *mServersList;
         ServersListModel *mServersListModel;

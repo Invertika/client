@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,14 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "game.h"
 
 #include "beingmanager.h"
 #include "channelmanager.h"
+#include "client.h"
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
@@ -34,7 +35,6 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "map.h"
 #include "npc.h"
 #include "particle.h"
@@ -82,22 +82,18 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/gettext.h"
+#include "utils/mkdir.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/focushandler.hpp>
 
 #include <physfs.h>
 
-#include <sys/stat.h>
-
 #include <fstream>
 #include <sstream>
 #include <string>
 
 std::string map_path;
-
-volatile int tick_time;
-volatile int fps = 0, frame = 0;
 
 Joystick *joystick = NULL;
 
@@ -111,7 +107,6 @@ StatusWindow *statusWindow;
 MiniStatusWindow *miniStatusWindow;
 InventoryWindow *inventoryWindow;
 SkillDialog *skillDialog;
-StorageWindow *storageWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 TradeWindow *tradeWindow;
@@ -132,55 +127,6 @@ EffectManager *effectManager = NULL;
 Viewport *viewport = NULL;                    /**< Viewport on the map. */
 
 ChatTab *localChatTab = NULL;
-
-std::string screenshotDir = "";
-
-/**
- * Tells the max tick value,
- * setting it back to zero (and start again).
- */
-const int MAX_TICK_VALUE = 10000;
-/**
- * Set the milliseconds value of a tick time.
- */
-const int MILLISECONDS_IN_A_TICK = 10;
-
-/**
- * Advances game logic counter.
- * Called every 10 milliseconds by SDL_AddTimer()
- * @see MILLISECONDS_IN_A_TICK value
- */
-Uint32 nextTick(Uint32 interval, void *param)
-{
-    tick_time++;
-    if (tick_time == MAX_TICK_VALUE) tick_time = 0;
-    return interval;
-}
-
-/**
- * Updates fps.
- * Called every seconds by SDL_AddTimer()
- */
-Uint32 nextSecond(Uint32 interval, void *param)
-{
-    fps = frame;
-    frame = 0;
-
-    return interval;
-}
-
-/**
- * @return the elapsed time in milliseconds
- * between two tick values.
- */
-int get_elapsed_time(int start_time)
-{
-    if (start_time <= tick_time)
-        return (tick_time - start_time) * MILLISECONDS_IN_A_TICK;
-    else
-        return (tick_time + (MAX_TICK_VALUE - start_time))
-                * MILLISECONDS_IN_A_TICK;
-}
 
 /**
  * Initialize every game sub-engines in the right order
@@ -208,7 +154,6 @@ static void createGuiWindows()
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    storageWindow = new StorageWindow;
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
     inventoryWindow = new InventoryWindow;
@@ -256,7 +201,6 @@ static void destroyGuiWindows()
     del_0(debugWindow)
     del_0(itemShortcutWindow)
     del_0(emoteShortcutWindow)
-    del_0(storageWindow)
     del_0(outfitWindow)
     del_0(specialsWindow)
     del_0(socialWindow)
@@ -266,8 +210,6 @@ Game *Game::mInstance = 0;
 
 Game::Game():
     mLastTarget(Being::UNKNOWN),
-    mLogicCounterId(0), mSecondsCounterId(0),
-    mLimitFps(false),
     mCurrentMap(0), mMapName("")
 {
     assert(!mInstance);
@@ -276,7 +218,7 @@ Game::Game():
     disconnectedDialog = NULL;
 
     // Create the viewport
-    viewport = new Viewport();
+    viewport = new Viewport;
     viewport->setDimension(gcn::Rectangle(0, 0, graphics->getWidth(),
                                           graphics->getHeight()));
 
@@ -290,11 +232,6 @@ Game::Game():
     windowContainer->add(mWindowMenu);
 
     initEngines();
-
-    // Initialize logic and seconds counters
-    tick_time = 0;
-    mLogicCounterId = SDL_AddTimer(MILLISECONDS_IN_A_TICK, nextTick, NULL);
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
     // This part is eAthena specific
     // For Manaserv, the map is obtained
@@ -317,11 +254,6 @@ Game::Game():
      */
     Net::getGameHandler()->ping(tick_time);
 
-    // Initialize frame limiting
-    SDL_initFramerate(&mFpsManager);
-    config.addListener("fpslimit", this);
-    optionChanged("fpslimit");
-
     Joystick::init();
     // TODO: The user should be able to choose which one to use
     // Open the first device
@@ -337,43 +269,18 @@ Game::~Game()
 
     destroyGuiWindows();
 
-    delete beingManager;
-    delete player_node;
-    delete floorItemManager;
-    delete channelManager;
-    delete commandHandler;
-    delete joystick;
-    delete particleEngine;
-    delete viewport;
-
-    viewport->setMap(NULL);
-
-    delete mCurrentMap;
+    del_0(beingManager)
+    del_0(player_node)
+    del_0(floorItemManager)
+    del_0(channelManager)
+    del_0(commandHandler)
+    del_0(joystick)
+    del_0(particleEngine)
+    del_0(viewport)
+    del_0(mCurrentMap)
     map_path = "";
 
-    player_node = NULL;
-    beingManager = NULL;
-    floorItemManager = NULL;
-    joystick = NULL;
-
-    SDL_RemoveTimer(mLogicCounterId);
-    SDL_RemoveTimer(mSecondsCounterId);
-
     mInstance = 0;
-}
-
-void setScreenshotDir(const std::string &dir)
-{
-    if (dir.empty())
-    {
-        screenshotDir = std::string(PHYSFS_getUserDir()) + "Desktop";
-        // If ~/Desktop does not exist, we save screenshots in the user's home.
-        struct stat statbuf;
-        if (stat(screenshotDir.c_str(), &statbuf))
-            screenshotDir = std::string(PHYSFS_getUserDir());
-    }
-    else
-        screenshotDir = dir;
 }
 
 static bool saveScreenshot()
@@ -386,14 +293,24 @@ static bool saveScreenshot()
     std::stringstream filenameSuffix;
     std::stringstream filename;
     std::fstream testExists;
+    std::string screenshotDirectory = Client::getScreenshotDirectory();
     bool found = false;
+
+    if (mkdir_r(screenshotDirectory.c_str()) != 0)
+    {
+        logger->log("Directory %s doesn't exist and can't be created! "
+                    "Setting screenshot directory to home.",
+                    screenshotDirectory.c_str());
+        screenshotDirectory = std::string(PHYSFS_getUserDir());
+    }
 
     do {
         screenshotCount++;
         filenameSuffix.str("");
         filename.str("");
-        filename << screenshotDir << "/";
-        filenameSuffix << "Mana_Screenshot_" << screenshotCount << ".png";
+        filename << screenshotDirectory << "/";
+        filenameSuffix << branding.getValue("appShort", "Mana")
+                       << "_Screenshot_" << screenshotCount << ".png";
         filename << filenameSuffix.str();
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
@@ -420,74 +337,36 @@ static bool saveScreenshot()
     return success;
 }
 
-void Game::optionChanged(const std::string &name)
+void Game::logic()
 {
-    const int fpsLimit = (int) config.getValue("fpslimit", 60);
-    mLimitFps = fpsLimit > 0;
-    if (mLimitFps)
-        SDL_setFramerate(&mFpsManager, fpsLimit);
-}
+    handleInput();
 
-void Game::exec()
-{
-    int gameTime = tick_time;
+    // Handle all necessary game logic
+    beingManager->logic();
+    particleEngine->update();
+    if (mCurrentMap)
+        mCurrentMap->update();
 
-    while (state == STATE_GAME)
+    // Handle network stuff
+    if (!Net::getGameHandler()->isConnected())
     {
-        if (mCurrentMap)
-            mCurrentMap->update(get_elapsed_time(gameTime));
-
-        handleInput();
-
-        // Handle all necessary game logic
-        while (get_elapsed_time(gameTime) > 0)
+        if (Client::getState() != STATE_ERROR)
         {
-            beingManager->logic();
-            particleEngine->update();
-            gui->logic();
-
-            gameTime++;
+            errorMessage = _("The connection to the server was lost.");
         }
 
-        // This is done because at some point tick_time will wrap.
-        gameTime = tick_time;
-
-        // Update the screen when application is active, delay otherwise.
-        if (SDL_GetAppState() & SDL_APPACTIVE)
+        if (!disconnectedDialog)
         {
-            frame++;
-            gui->draw();
-            graphics->updateScreen();
-        }
-        else
-        {
-            SDL_Delay(10);
-        }
-
-        if (mLimitFps)
-            SDL_framerateDelay(&mFpsManager);
-
-        // Handle network stuff
-        Net::getGeneralHandler()->flushNetwork();
-        if (!Net::getGameHandler()->isConnected())
-        {
-            if (state != STATE_ERROR)
-            {
-                errorMessage = _("The connection to the server was lost.");
-            }
-
-            if (!disconnectedDialog)
-            {
-                disconnectedDialog = new OkDialog(_("Network Error"), errorMessage);
-                disconnectedDialog->addActionListener(&errorListener);
-                disconnectedDialog->requestMoveToTop();
-            }
+            disconnectedDialog = new OkDialog(_("Network Error"),
+                                              errorMessage);
+            disconnectedDialog->addActionListener(&errorListener);
+            disconnectedDialog->requestMoveToTop();
         }
     }
 }
 
 /**
- * The MONSTER input handling method.
+ * The huge input handling method.
  */
 void Game::handleInput()
 {
@@ -717,8 +596,12 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_PICKUP:
                         {
                             const Vector &pos = player_node->getPosition();
-                            Uint16 x = (int) pos.x / 32;
-                            Uint16 y = (int) pos.y / 32;
+                            Map *map = viewport->getCurrentMap();
+                            Uint16 x = (int) pos.x / map->getTileWidth();
+                            Uint16 y = (int) (pos.y - 1)
+                                       / map->getTileHeight();
+                            // y - 1 needed to fix position, otherwise, it's
+                            // off under eAthena.
 
                             FloorItem *item =
                                 floorItemManager->findByCoordinates(x, y);
@@ -849,7 +732,7 @@ void Game::handleInput()
         // Quit event
         else if (event.type == SDL_QUIT)
         {
-            state = STATE_EXIT;
+            Client::setState(STATE_EXIT);
         }
 
         // Push input to GUI when not used
@@ -861,7 +744,7 @@ void Game::handleInput()
             }
             catch (gcn::Exception e)
             {
-                const char* err = e.getMessage().c_str();
+                const char *err = e.getMessage().c_str();
                 logger->log("Warning: guichan input exception: %s", err);
             }
         }
@@ -989,7 +872,8 @@ void Game::handleInput()
         }
 
         // Talk to the nearest NPC if 't' pressed
-        if ( keyboard.isKeyActive(keyboard.KEY_TALK) )
+        if (event.type == SDL_KEYDOWN &&
+            keyboard.getKeyIndex(event.key.keysym.sym) == KeyboardConfig::KEY_TALK)
         {
             Being *target = player_node->getTarget();
 

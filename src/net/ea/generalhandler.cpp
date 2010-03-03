@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2009-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,15 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/generalhandler.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/charselectdialog.h"
 #include "gui/inventorywindow.h"
@@ -38,6 +38,7 @@
 #include "net/ea/chathandler.h"
 #include "net/ea/charserverhandler.h"
 #include "net/ea/gamehandler.h"
+#include "net/ea/guildhandler.h"
 #include "net/ea/inventoryhandler.h"
 #include "net/ea/itemhandler.h"
 #include "net/ea/loginhandler.h"
@@ -49,6 +50,7 @@
 #include "net/ea/tradehandler.h"
 #include "net/ea/specialhandler.h"
 
+#include "net/ea/gui/guildtab.h"
 #include "net/ea/gui/partytab.h"
 
 #include "net/messagein.h"
@@ -68,6 +70,7 @@ namespace EAthena {
 ServerInfo charServer;
 ServerInfo mapServer;
 
+extern Guild *eaGuild;
 extern Party *eaParty;
 
 GeneralHandler::GeneralHandler():
@@ -77,6 +80,7 @@ GeneralHandler::GeneralHandler():
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),
     mGameHandler(new GameHandler),
+    mGuildHandler(new GuildHandler),
     mInventoryHandler(new InventoryHandler),
     mItemHandler(new ItemHandler),
     mLoginHandler(new LoginHandler),
@@ -129,7 +133,7 @@ void GeneralHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("No servers available.");
                     break;
                 case 2:
-                    if (state == STATE_GAME)
+                    if (Client::getState() == STATE_GAME)
                         errorMessage = _("Someone else is trying to use this "
                                          "account.");
                     else
@@ -145,7 +149,7 @@ void GeneralHandler::handleMessage(Net::MessageIn &msg)
                     errorMessage = _("Unknown connection error.");
                     break;
             }
-            state = STATE_ERROR;
+            Client::setState(STATE_ERROR);
             break;
     }
 }
@@ -160,6 +164,7 @@ void GeneralHandler::load()
     mNetwork->registerHandler(mChatHandler.get());
     mNetwork->registerHandler(mCharHandler.get());
     mNetwork->registerHandler(mGameHandler.get());
+    mNetwork->registerHandler(mGuildHandler.get());
     mNetwork->registerHandler(mInventoryHandler.get());
     mNetwork->registerHandler(mItemHandler.get());
     mNetwork->registerHandler(mLoginHandler.get());
@@ -199,7 +204,7 @@ void GeneralHandler::flushNetwork()
         else
             errorMessage = _("Got disconnected from server!");
 
-        state = STATE_ERROR;
+        Client::setState(STATE_ERROR);
     }
 }
 
@@ -226,12 +231,14 @@ void GeneralHandler::guiWindowsLoaded()
 
 void GeneralHandler::guiWindowsUnloaded()
 {
+    socialWindow->removeTab(eaGuild);
     socialWindow->removeTab(eaParty);
-    if (partyTab)
-    {
-        delete partyTab;
-        partyTab = 0;
-    }
+
+    delete guildTab;
+    guildTab = 0;
+
+    delete partyTab;
+    partyTab = 0;
 }
 
 void GeneralHandler::clearHandlers()

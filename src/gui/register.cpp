@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,15 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/register.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/login.h"
 #include "gui/okdialog.h"
@@ -144,7 +144,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = STATE_LOGIN;
+        Client::setState(STATE_LOGIN);
     }
     else if (event.getId() == "register" && canSubmit())
     {
@@ -232,7 +232,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mLoginData->email = mEmailField->getText();
             mLoginData->registerLogin = true;
 
-            state = STATE_REGISTER_ATTEMPT;
+            Client::setState(STATE_REGISTER_ATTEMPT);
         }
     }
 }
@@ -247,5 +247,5 @@ bool RegisterDialog::canSubmit() const
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
-           state == STATE_REGISTER;
+           Client::getState() == STATE_REGISTER;
 }

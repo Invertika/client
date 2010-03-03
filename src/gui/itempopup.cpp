@@ -1,9 +1,10 @@
 /*
- *  The Mana World
+ *  The Mana Client
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  Copyright (C) 2008-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,8 +17,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/itempopup.h"
@@ -166,25 +166,10 @@ gcn::Color ItemPopup::getColor(ItemType type)
     }
 }
 
-void ItemPopup::view(int x, int y)
-{
-    const int distance = 20;
-
-    int posX = std::max(0, x - getWidth() / 2);
-    int posY = y + distance;
-
-    if (posX > graphics->getWidth() - getWidth())
-        posX = graphics->getWidth() - getWidth();
-    if (posY > graphics->getHeight() - getHeight())
-        posY = y - getHeight() - distance;
-
-    setPosition(posX, posY);
-    setVisible(true);
-    requestMoveToTop();
-}
-
 void ItemPopup::mouseMoved(gcn::MouseEvent &event)
 {
+    Popup::mouseMoved(event);
+
     // When the mouse moved on top of the popup, hide it
     setVisible(false);
 }

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,15 +16,14 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/updatewindow.h"
 
+#include "client.h"
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include "gui/sdlinput.h"
 
@@ -223,7 +223,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "play")
     {
-        state = STATE_LOAD_DATA;
+        Client::setState(STATE_LOAD_DATA);
     }
 }
 
@@ -234,7 +234,7 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
     if (key.getValue() == Key::ESCAPE)
     {
         action(gcn::ActionEvent(NULL, mCancelButton->getActionEventId()));
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else if (key.getValue() == Key::ENTER)
     {
@@ -296,15 +296,18 @@ int UpdaterWindow::updateProgress(void *ptr, DownloadStatus status,
 
     float progress = (float) dn / dt;
 
-    if (progress != progress) progress = 0.0f; // check for NaN
-    if (progress < 0.0f) progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
-    if (progress > 1.0f) progress = 1.0f;
+    if (progress != progress)
+        progress = 0.0f; // check for NaN
+    if (progress < 0.0f)
+        progress = 0.0f; // no idea how this could ever happen, but why not check for it anyway.
+    if (progress > 1.0f)
+        progress = 1.0f;
 
     uw->setLabel(
             uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
     uw->setProgress(progress);
 
-    if (state != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (Client::getState() != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;

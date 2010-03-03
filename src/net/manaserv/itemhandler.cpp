@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/itemhandler.h"
@@ -58,12 +58,9 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
 
                 if (itemId)
                 {
-                    Game *game = Game::instance();
-                    Map *map = 0;
-                    if (game)
+                    if (Game *game = Game::instance())
                     {
-                        map = game->getCurrentMap();
-                        if (map)
+                        if (Map *map = game->getCurrentMap())
                         {
                             floorItemManager->create(id,
                                                      itemId,
@@ -71,9 +68,11 @@ void ItemHandler::handleMessage(Net::MessageIn &msg)
                                                      y / map->getTileHeight());
                         }
                         else
-                          logger->log(
-                          "ItemHandler: An item wasn't created because of"
-                          "Game/Map not initialized...");
+                        {
+                            logger->log(
+                                    "ItemHandler: An item wasn't created "
+                                    "because of Game/Map not initialized...");
+                        }
                     }
                 }
                 else if (FloorItem *item = floorItemManager->findById(id))

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef NET_EA_INVENTORYHANDLER_H
@@ -26,10 +26,14 @@
 #include "inventory.h"
 #include "localplayer.h"
 
+#include "gui/storagewindow.h"
+
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
 #include "net/ea/messagehandler.h"
+
+#include <list>
 
 namespace EAthena {
 
@@ -89,10 +93,34 @@ class EquipBackend : public Equipment::Backend {
         int mEquipment[EQUIPMENT_SIZE];
 };
 
+/**
+ * Used to cache storage data until we get size data for it.
+ */
+class InventoryItem
+{
+    public:
+        int slot;
+        int id;
+        int quantity;
+        bool equip;
+
+        InventoryItem(int slot, int id, int quantity, bool equip)
+        {
+            this->slot = slot;
+            this->id = id;
+            this->quantity = quantity;
+            this->equip = equip;
+        }
+};
+
+typedef std::list<InventoryItem> InventoryItems;
+
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 {
     public:
         InventoryHandler();
+
+        ~InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
@@ -121,6 +149,9 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler
 
     private:
         EquipBackend mEquips;
+        InventoryItems mInventoryItems;
+        Inventory *mStorage;
+        StorageWindow *mStorageWindow;
 };
 
 } // namespace EAthena

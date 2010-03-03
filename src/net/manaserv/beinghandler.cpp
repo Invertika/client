@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,21 +16,19 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/beinghandler.h"
 
 #include "being.h"
 #include "beingmanager.h"
+#include "client.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "npc.h"
 #include "particle.h"
-#include "sound.h"
 
 #include "gui/okdialog.h"
 
@@ -103,10 +102,10 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
         {
             speedInTicks.x = speedInTilesPerSeconds
                 * (float)map->getTileWidth()
-                / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                / 1000 * (float) MILLISECONDS_IN_A_TICK;
             speedInTicks.y = speedInTilesPerSeconds
                 * (float)map->getTileHeight()
-                / 1000 * (float)MILLISECONDS_IN_A_TICK;
+                / 1000 * (float) MILLISECONDS_IN_A_TICK;
         }
     }
 
@@ -114,7 +113,7 @@ Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
     {
         speedInTicks.x = speedInTicks.y = 0;
         logger->log("Manaserv::BeingHandler: Speed wasn't given back"
-        " because game/Map not initialized.");
+                    " because game/Map not initialized.");
     }
     // We don't use z for now.
     speedInTicks.z = 0;

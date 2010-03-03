@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,13 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/manaserv/loginhandler.h"
 
-#include "main.h"
+#include "client.h"
+#include "log.h"
 
 #include "net/logindata.h"
 
@@ -64,16 +65,18 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
         case APMSG_LOGIN_RESPONSE:
             handleLoginResponse(msg);
             break;
+
         case APMSG_REGISTER_RESPONSE:
             handleRegisterResponse(msg);
             break;
+
         case APMSG_RECONNECT_RESPONSE:
         {
             int errMsg = msg.readInt8();
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHAR_SELECT;
+                Client::setState(STATE_CHAR_SELECT);
             }
             // Login failed
             else
@@ -93,7 +96,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;
@@ -104,7 +107,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEPASSWORD_SUCCESS;
+                Client::setState(STATE_CHANGEPASSWORD_SUCCESS);
             }
             // pass change failed
             else
@@ -124,7 +127,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -135,7 +138,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_CHANGEEMAIL_SUCCESS;
+                Client::setState(STATE_CHANGEEMAIL_SUCCESS);
             }
             // pass change failed
             else
@@ -158,7 +161,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -183,7 +186,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                state = STATE_ERROR;
+                Client::setState(STATE_ERROR);
             }
         }
             break;
@@ -193,7 +196,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
             // Successful unregistration
             if (errMsg == ERRMSG_OK)
             {
-                state = STATE_UNREGISTER;
+                Client::setState(STATE_UNREGISTER);
             }
             // Unregistration failed
             else
@@ -208,7 +211,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                state = STATE_ACCOUNTCHANGE_ERROR;
+                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
             }
         }
             break;
@@ -226,7 +229,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
 
                 printf("%s: %s\n", captchaURL.c_str(), captchaInstructions.c_str());
 
-                state = STATE_REGISTER;
+                Client::setState(STATE_REGISTER);
             }
             else
             {
@@ -235,7 +238,7 @@ void LoginHandler::handleMessage(Net::MessageIn &msg)
                 if (errorMessage.empty())
                     errorMessage = _("Client registration is not allowed. "
                                      "Please contact server administration.");
-                state = STATE_LOGIN_ERROR;
+                Client::setState(STATE_LOGIN_ERROR);
             }
         }
             break;
@@ -250,7 +253,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
     {
         readUpdateHost(msg);
         // No worlds atm, but future use :-D
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else
     {
@@ -276,7 +279,7 @@ void LoginHandler::handleLoginResponse(Net::MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        state = STATE_LOGIN_ERROR;
+        Client::setState(STATE_LOGIN_ERROR);
     }
 }
 
@@ -287,7 +290,7 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         readUpdateHost(msg);
-        state = STATE_WORLD_SELECT;
+        Client::setState(STATE_WORLD_SELECT);
     }
     else
     {
@@ -313,17 +316,22 @@ void LoginHandler::handleRegisterResponse(Net::MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        state = STATE_LOGIN_ERROR;
+        Client::setState(STATE_LOGIN_ERROR);
     }
 }
 
 void LoginHandler::readUpdateHost(Net::MessageIn &msg)
 {
+    // Safety check for outdated manaserv versions (remove me later)
+    if (msg.getUnreadLength() == 0)
+        return;
+
     // Set the update host when included in the message
-    if (msg.getUnreadLength() > 0)
-    {
-        mLoginData->updateHost = msg.readString();
-    }
+    const std::string updateHost = msg.readString();
+    if (!updateHost.empty())
+        mLoginData->updateHost = updateHost;
+    else
+        logger->log("Warning: server does not have an update host set!");
 }
 
 void LoginHandler::connect()
@@ -340,9 +348,9 @@ void LoginHandler::disconnect()
 {
     accountServerConnection->disconnect();
 
-    if (state == STATE_CONNECT_GAME)
+    if (Client::getState() == STATE_CONNECT_GAME)
     {
-        state = STATE_GAME;
+        Client::setState(STATE_GAME);
     }
 }
 

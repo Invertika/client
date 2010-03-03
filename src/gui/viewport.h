@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef VIEWPORT_H
@@ -30,12 +30,14 @@
 #include <guichan/mouselistener.hpp>
 
 class Being;
+class BeingPopup;
 class FloorItem;
 class Graphics;
 class ImageSet;
 class Item;
 class Map;
 class PopupMenu;
+class Window;
 
 /** Delay between two mouse calls when dragging mouse and move the player */
 const int walkingMouseDelay = 500;
@@ -106,7 +108,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
-        void showPopup(int x, int y, Item *item, bool isInventory = true);
+        void showPopup(Window *parent, int x, int y, Item *item,
+                       bool isInventory = true);
 
         /**
          * Closes the popup menu. Needed for when the player dies or switching
@@ -149,6 +152,11 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         Map *getCurrentMap() const { return mMap; }
 
+        /**
+         * Hides the BeingPopup.
+         */
+        void hideBeingPopup();
+
     private:
         /**
          * Finds a path from the player to the mouse, and draws it. This is for
@@ -176,19 +184,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mMouseY;                 /**< Current mouse position in pixels. */
         float mPixelViewX;           /**< Current viewpoint in pixels. */
         float mPixelViewY;           /**< Current viewpoint in pixels. */
-        int mTileViewX;              /**< Current viewpoint in tiles. */
-        int mTileViewY;              /**< Current viewpoint in tiles. */
         int mShowDebugPath;         /**< Show a path from player to pointer. */
-        bool mVisibleNames;          /**< Show target names. */
 
         bool mPlayerFollowMouse;
 
         int mLocalWalkTime; /**< Timestamp before the next walk can be sent. */
 
         PopupMenu *mPopupMenu;       /**< Popup menu. */
-        Being *mSelectedBeing;       /**< Current selected being. */
+        Being *mHoverBeing;          /**< Being mouse is currently over. */
+        FloorItem *mHoverItem;       /**< FloorItem mouse is currently over. */
+        BeingPopup *mBeingPopup;     /**< Being information popup. */
 };
 
-extern Viewport *viewport;           /**< The viewport */
+extern Viewport *viewport;           /**< The viewport. */
 
 #endif

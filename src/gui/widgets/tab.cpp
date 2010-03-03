@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2008-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2008-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/tab.h"
@@ -30,7 +30,6 @@
 #include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -55,10 +54,10 @@ struct TabData
 };
 
 static TabData const data[TAB_COUNT] = {
-    { "graphics/gui/tab.png", 0, 0 },
-    { "graphics/gui/tab_hilight.png", 9, 4 },
-    { "graphics/gui/tabselected.png", 16, 19 },
-    { "graphics/gui/tab.png", 25, 23 }
+    { "tab.png", 0, 0 },
+    { "tab_hilight.png", 9, 4 },
+    { "tabselected.png", 16, 19 },
+    { "tab.png", 25, 23 }
 };
 
 ImageRect Tab::tabImg[TAB_COUNT];
@@ -91,14 +90,13 @@ void Tab::init()
     if (mInstances == 0)
     {
         // Load the skin
-        ResourceManager *resman = ResourceManager::getInstance();
         Image *tab[TAB_COUNT];
 
         int a, x, y, mode;
 
         for (mode = 0; mode < TAB_COUNT; mode++)
         {
-            tab[mode] = resman->getImage(data[mode].file);
+            tab[mode] = SkinLoader::getImageFromTheme(data[mode].file);
             a = 0;
             for (y = 0; y < 3; y++)
             {

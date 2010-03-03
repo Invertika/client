@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2006-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2006-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/dropdown.h"
@@ -32,7 +32,6 @@
 #include "gui/widgets/scrollarea.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -54,17 +53,16 @@ DropDown::DropDown(gcn::ListModel *listModel):
     if (instances == 0)
     {
         // Load the background skin
-        ResourceManager *resman = ResourceManager::getInstance();
 
         // Get the button skin
         buttons[1][0] =
-            resman->getImage("graphics/gui/vscroll_up_default.png");
+                SkinLoader::getImageFromTheme("vscroll_up_default.png");
         buttons[0][0] =
-            resman->getImage("graphics/gui/vscroll_down_default.png");
+                SkinLoader::getImageFromTheme("vscroll_down_default.png");
         buttons[1][1] =
-            resman->getImage("graphics/gui/vscroll_up_pressed.png");
+                SkinLoader::getImageFromTheme("vscroll_up_pressed.png");
         buttons[0][1] =
-            resman->getImage("graphics/gui/vscroll_down_pressed.png");
+                SkinLoader::getImageFromTheme("vscroll_down_pressed.png");
 
         buttons[0][0]->setAlpha(mAlpha);
         buttons[0][1]->setAlpha(mAlpha);
@@ -72,7 +70,7 @@ DropDown::DropDown(gcn::ListModel *listModel):
         buttons[1][1]->setAlpha(mAlpha);
 
         // get the border skin
-        Image *boxBorder = resman->getImage("graphics/gui/deepbox.png");
+        Image *boxBorder = SkinLoader::getImageFromTheme("deepbox.png");
         int gridx[4] = {0, 3, 28, 31};
         int gridy[4] = {0, 3, 28, 31};
         int a = 0, x, y;

@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "net/ea/playerhandler.h"
@@ -86,8 +86,6 @@ namespace {
             NpcDialog::closeAll();
             SellDialog::closeAll();
 
-            if (storageWindow->isVisible())
-                storageWindow->close();
             viewport->closePopupMenu();
         }
     } deathListener;
@@ -556,7 +554,7 @@ void PlayerHandler::emote(int emoteId)
     outMsg.writeInt8(emoteId);
 }
 
-void PlayerHandler::increaseAttribute(size_t attr)
+void PlayerHandler::increaseAttribute(int attr)
 {
     if (attr >= STR && attr <= LUK)
     {
@@ -566,7 +564,7 @@ void PlayerHandler::increaseAttribute(size_t attr)
     }
 }
 
-void PlayerHandler::decreaseAttribute(size_t attr)
+void PlayerHandler::decreaseAttribute(int attr)
 {
     // Supported by eA?
 }

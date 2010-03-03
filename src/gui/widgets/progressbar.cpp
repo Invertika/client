@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,8 +16,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/widgets/progressbar.h"
@@ -30,7 +30,6 @@
 #include "gui/skin.h"
 
 #include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 
@@ -59,8 +58,7 @@ ProgressBar::ProgressBar(float progress,
 
     if (mInstances == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+        Image *dBorders = SkinLoader::getImageFromTheme("vscroll_grey.png");
         mBorder.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
         mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
         mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);

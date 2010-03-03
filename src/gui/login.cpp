@@ -1,8 +1,9 @@
 /*
- *  The Mana World
- *  Copyright (C) 2004-2010  The Mana World Development Team
+ *  The Mana Client
+ *  Copyright (C) 2004-2009  The Mana World Development Team
+ *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana World.
+ *  This file is part of The Mana Client.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,13 +16,12 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "gui/login.h"
 
-#include "main.h"
+#include "client.h"
 #include "configuration.h"
 
 #include "gui/okdialog.h"
@@ -107,18 +107,19 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         mRegisterButton->setEnabled(false);
         mServerButton->setEnabled(false);
         mLoginButton->setEnabled(false);
-        state = STATE_LOGIN_ATTEMPT;
+
+        Client::setState(STATE_LOGIN_ATTEMPT);
     }
     else if (event.getId() == "server")
     {
-        state = STATE_SWITCH_SERVER;
+        Client::setState(STATE_SWITCH_SERVER);
     }
     else if (event.getId() == "register")
     {
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
 
-        state = STATE_REGISTER_PREP;
+        Client::setState(STATE_REGISTER_PREP);
     }
 }
 
@@ -140,9 +141,9 @@ void LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
     }
 }
 
-bool LoginDialog::canSubmit()
+bool LoginDialog::canSubmit() const
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&
-           state == STATE_LOGIN;
+           Client::getState() == STATE_LOGIN;
 }
