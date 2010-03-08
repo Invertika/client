@@ -64,6 +64,7 @@ Particle::Particle(Map *map):
     mAlpha(1.0f),
     mAutoDelete(true),
     mMap(map),
+    mAllowSizeAdjust(false),
     mGravity(0.0f),
     mRandomness(0),
     mBounce(0.0f),
@@ -322,6 +323,8 @@ Particle *Particle::addEffect(const std::string &particleEffectFile,
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
         newParticle->setLifetime(lifetime);
+        bool resizeable = "false" != XML::getProperty(effectChildNode, "size-adjustable", "false");
+        newParticle->setAllowSizeAdjust(resizeable);
 
         // Look for additional emitters for this particle
         for_each_xml_child_node(emitterNode, effectChildNode)
@@ -376,6 +379,18 @@ Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
     mChildParticles.push_back(newParticle);
 
     return newParticle;
+}
+
+void Particle::adjustEmitterSize(int w, int h)
+{
+    if (mAllowSizeAdjust)
+    {
+        for (EmitterIterator e = mChildEmitters.begin();
+             e != mChildEmitters.end(); e++)
+        {
+            (*e)->adjustSize(w, h);
+        }
+    }
 }
 
 void Particle::setMap(Map *map)

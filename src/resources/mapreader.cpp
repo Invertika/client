@@ -21,6 +21,7 @@
 
 #include "resources/mapreader.h"
 
+#include "configuration.h"
 #include "log.h"
 #include "map.h"
 #include "tileset.h"
@@ -258,8 +259,9 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
                     std::string objType = XML::getProperty(objectNode, "type", "");
                     objType = toUpper(objType);
 
-                    if (objType == "WARP" || objType == "NPC" ||
-                        objType == "SCRIPT" || objType == "SPAWN")
+                    if (objType == "NPC" ||
+                        objType == "SCRIPT" ||
+                        objType == "SPAWN")
                     {
                         // Silently skip server-side objects.
                         continue;
@@ -268,6 +270,8 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
                     const std::string objName = XML::getProperty(objectNode, "name", "");
                     const int objX = XML::getProperty(objectNode, "x", 0);
                     const int objY = XML::getProperty(objectNode, "y", 0);
+                    const int objW = XML::getProperty(objectNode, "width", 0);
+                    const int objH = XML::getProperty(objectNode, "height", 0);
 
                     logger->log("- Loading object name: %s type: %s at %d:%d",
                                 objName.c_str(), objType.c_str(),
@@ -283,7 +287,17 @@ Map *MapReader::readMap(xmlNodePtr node, const std::string &path)
 
                         map->addParticleEffect(objName,
                                                objX + offsetX,
-                                               objY + offsetY);
+                                               objY + offsetY,
+                                               objW, objH);
+                    }
+                    else if (objType == "WARP")
+                    {
+                        if (config.getValue("showWarps", 1))
+                        {
+                            map->addParticleEffect(
+                                "graphics/particles/warparea.particle.xml",
+                                objX, objY, objW, objH);
+                        }
                     }
                     else
                     {
