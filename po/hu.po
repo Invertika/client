@@ -1,16 +1,16 @@
-# Hebrew translation for mana
-# Copyright (c) 2008 Rosetta Contributors and Canonical Ltd 2008
+# Hungarian translation for mana
+# Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the mana package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2008.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mana\n"
 "Report-Msgid-Bugs-To: dev@manasource.org\n"
-"POT-Creation-Date: 2010-03-05 21:52+0100\n"
-"PO-Revision-Date: 2010-01-09 11:27+0000\n"
-"Last-Translator: hewhohasalongname <Unknown>\n"
-"Language-Team: Hebrew <he@li.org>\n"
+"POT-Creation-Date: 2010-03-16 22:27+0100\n"
+"PO-Revision-Date: 2009-07-07 19:52+0000\n"
+"Last-Translator: Tatsukichi <artit91@gmail.com>\n"
+"Language-Team: Hungarian <hu@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,136 +18,136 @@ msgstr ""
 "X-Launchpad-Export-Date: 2010-03-05 19:28+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
-#: src/client.cpp:553 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:62
+#: src/client.cpp:555 src/gui/setup.cpp:43 src/gui/windowmenu.cpp:66
 msgid "Setup"
-msgstr "הגדרות"
+msgstr "Beállítások"
 
-#: src/client.cpp:623
+#: src/client.cpp:625
 #, fuzzy
 msgid "Connecting to server"
-msgstr "מתחבר לשרת המפה..."
+msgstr "Csatlakozás a térkép szerverhez...."
 
-#: src/client.cpp:650
+#: src/client.cpp:652
 #, fuzzy
 msgid "Logging in"
-msgstr "התחברות"
+msgstr "Belépés"
 
-#: src/client.cpp:683
+#: src/client.cpp:685
 msgid "Entering game world"
 msgstr ""
 
-#: src/client.cpp:739
+#: src/client.cpp:741
 #, fuzzy
 msgid "Requesting characters"
-msgstr "בחר שחקן"
+msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
-#: src/client.cpp:768
+#: src/client.cpp:770
 #, fuzzy
 msgid "Connecting to the game server"
-msgstr "מתחבר לשרת המפה..."
+msgstr "Csatlakozás a térkép szerverhez...."
 
-#: src/client.cpp:799 src/client.cpp:806 src/client.cpp:940
+#: src/client.cpp:801 src/client.cpp:808 src/client.cpp:942
 #: src/gui/changeemaildialog.cpp:156 src/gui/changepassworddialog.cpp:149
 #: src/gui/charcreatedialog.cpp:177 src/gui/register.cpp:218
-#: src/gui/serverdialog.cpp:261 src/gui/unregisterdialog.cpp:133
+#: src/gui/serverdialog.cpp:241 src/gui/unregisterdialog.cpp:133
 #: src/net/ea/charserverhandler.cpp:135 src/net/ea/charserverhandler.cpp:152
 #: src/net/manaserv/charhandler.cpp:161 src/net/manaserv/charhandler.cpp:204
 msgid "Error"
-msgstr "שגיאה"
+msgstr "Hiba"
 
-#: src/client.cpp:815
+#: src/client.cpp:817
 msgid "Requesting registration details"
 msgstr ""
 
-#: src/client.cpp:842
+#: src/client.cpp:844
 #, fuzzy
 msgid "Password Change"
-msgstr "סיסמה:"
+msgstr "Jelszó:"
 
-#: src/client.cpp:843
+#: src/client.cpp:845
 msgid "Password changed successfully!"
 msgstr ""
 
-#: src/client.cpp:862
+#: src/client.cpp:864
 #, fuzzy
 msgid "Email Change"
-msgstr "שנה"
+msgstr "Változtatás"
 
-#: src/client.cpp:863
+#: src/client.cpp:865
 #, fuzzy
 msgid "Email changed successfully!"
-msgstr "החבר קודם בהצלחה."
+msgstr "A tag előléptetése sikeres."
 
-#: src/client.cpp:883
+#: src/client.cpp:885
 #, fuzzy
 msgid "Unregister Successful"
-msgstr "בטל רישום"
+msgstr "Regisztráció megszüntetése"
 
-#: src/client.cpp:884
+#: src/client.cpp:886
 msgid "Farewell, come back any time..."
 msgstr ""
 
-#: src/client.cpp:1007 src/client.cpp:1030
+#: src/client.cpp:1009 src/client.cpp:1032
 #, c-format
 msgid "%s doesn't exist and can't be created! Exiting."
 msgstr ""
 
-#: src/client.cpp:1119
+#: src/client.cpp:1121
 #, fuzzy, c-format
 msgid "Invalid update host: %s"
-msgstr "שרת עדכון פגום: "
+msgstr "Helytelen frissítési kiszolgáló: "
 
-#: src/client.cpp:1153 src/client.cpp:1159
+#: src/client.cpp:1155 src/client.cpp:1161
 msgid "Error creating updates directory!"
-msgstr "שגיאה ביצירת ספריית העדכונים!"
+msgstr "Hiba a frissítési könyvtár létrehozása közben!"
 
 #: src/commandhandler.cpp:127 src/commandhandler.cpp:308
 msgid "Unknown command."
-msgstr "פקודה לא מוכרת."
+msgstr "Ismeretlen parancs."
 
 #: src/commandhandler.cpp:156
 msgid "-- Help --"
-msgstr "-- עזרה --"
+msgstr "-- Segítség --"
 
 #: src/commandhandler.cpp:157
 msgid "/help > Display this help"
-msgstr "הצג תפריט עזרה זה <help/"
+msgstr "/help > Megmutatja ezt a segítséget"
 
 #: src/commandhandler.cpp:159
 msgid "/where > Display map name"
-msgstr "הצג את שם המפה <where/"
+msgstr "/where > Megmutatja a térkép nevét"
 
 #: src/commandhandler.cpp:160
 msgid "/who > Display number of online users"
-msgstr "הצג את כמות המשתמשים המחוברים <who/"
+msgstr "/who > Megmutatja az online felhasználókat"
 
 #: src/commandhandler.cpp:161
 msgid "/me > Tell something about yourself"
-msgstr "ספר על עצמך <me/"
+msgstr "/me > Mondasz valamit magadról"
 
 #: src/commandhandler.cpp:163
 msgid "/clear > Clears this window"
-msgstr "נקה את החלון <clear/"
+msgstr "/clear > Letörli ezt az ablakot"
 
 #: src/commandhandler.cpp:165
 msgid "/msg > Send a private message to a user"
-msgstr "שלח הודעה פרטית למשתמש < msg/"
+msgstr "/msg > Privát üzenetet küld egy felhasználónak"
 
 #: src/commandhandler.cpp:166
 msgid "/whisper > Alias of msg"
-msgstr "נמען ההודעה < whisper/"
+msgstr "/whisper > msg megfelelője"
 
 #: src/commandhandler.cpp:167
 msgid "/w > Alias of msg"
-msgstr "נמען ההודעה  <w/"
+msgstr "/w > msg megfelelője"
 
 #: src/commandhandler.cpp:168
 msgid "/query > Makes a tab for private messages with another user"
-msgstr "/query > יוצר לשונית עבור הודעות פרטיות עם משתמש אחר"
+msgstr "/query > Fület hoz létre privát beszélgetéshez"
 
 #: src/commandhandler.cpp:169
 msgid "/q > Alias of query"
-msgstr "/q > שם נוסף ל-query"
+msgstr "/q > query megfelelője"
 
 #: src/commandhandler.cpp:171
 msgid "/ignore > ignore a player"
@@ -159,229 +159,237 @@ msgstr ""
 
 #: src/commandhandler.cpp:174
 msgid "/list > Display all public channels"
-msgstr "/list > הצג את כל החדרים הציבוריים"
+msgstr "/list > Publikus csatornák listázása"
 
 #: src/commandhandler.cpp:175
 msgid "/join > Join or create a channel"
-msgstr "/join > צור או הצטרף לחדר"
+msgstr "/join > Csatornához kapcsolódás/csatornát létrehoz"
 
 #: src/commandhandler.cpp:177
 #, fuzzy
 msgid "/createparty > Create a new party"
-msgstr "/create > צור חבורה חדשה"
+msgstr "/create > Új csapat létrehozása"
 
 #: src/commandhandler.cpp:178
 msgid "/party > Invite a user to party"
-msgstr "/party > הזמן משתמש לחבורה"
+msgstr "/party > Felhasználó csapatba hívása"
 
 #: src/commandhandler.cpp:180
 msgid "/record > Start recording the chat to an external file"
-msgstr "/record > התחל להקליט את השיחה לקובץ חיצוני"
+msgstr "/record > Beszélgetés rögzítése külső fájlba"
 
 #: src/commandhandler.cpp:181
 msgid "/toggle > Determine whether <return> toggles the chat log"
-msgstr "/toggle > קובע אם <אנטר> סוגר את תיבת הטקסט של הצ'אט"
+msgstr ""
+"/toggle > Választható, hogy üres <enter> kell e az input panel bezárásához"
 
 #: src/commandhandler.cpp:182
 msgid "/present > Get list of players present (sent to chat log, if logging)"
-msgstr "/present > קבל את רשימת הנמצאים (ישלח לרישום, אם פעיל)"
+msgstr "/present > \"Hallható\" játékosok kilistázása"
 
 #: src/commandhandler.cpp:184
 msgid "/announce > Global announcement (GM only)"
-msgstr "/announce > הודעה גלובאלית (GM בלבד)"
+msgstr "/announce > Globális üzenet (csak GM)"
 
 #: src/commandhandler.cpp:188
 msgid "For more information, type /help <command>."
-msgstr "למידע נוסף, הקלד /help <command>."
+msgstr "További információhoz gépeld be a /help <parancsnév> parancsot."
 
 #: src/commandhandler.cpp:192
 msgid "Command: /help"
-msgstr "פקודה: /help"
+msgstr "Parancs: /help"
 
 #: src/commandhandler.cpp:193
 msgid "This command displays a list of all commands available."
-msgstr "פקודה זו מציגה רשימה של כל הפקודות האפשריות."
+msgstr "Ez a parancs az elérhető parancsokat listázza."
 
 #: src/commandhandler.cpp:194
 msgid "Command: /help <command>"
-msgstr "פקודה: /help <command>"
+msgstr "Parancs: /help <parancsnév>"
 
 #: src/commandhandler.cpp:195
 msgid "This command displays help on <command>."
-msgstr "פקודה זו מציגה עזרה על <command>."
+msgstr ""
+"Ez a parancs segítséget nyújt a <parancsnév> alatt megadott parancshoz."
 
 #: src/commandhandler.cpp:203
 msgid "Command: /announce <msg>"
-msgstr "פקודה: /announce <msg>"
+msgstr "Parancs: /announce <üzenet>"
 
 #: src/commandhandler.cpp:204
 msgid "*** only available to a GM ***"
-msgstr "*** זמין ל-GM בלבד ***"
+msgstr "*** csak GM-nek elérhető ***"
 
 #: src/commandhandler.cpp:205
 msgid "This command sends the message <msg> to all players currently online."
 msgstr ""
-"This command sends the message <msg> to all players currently online.\r\n"
-"פקודה זו שולחת את ההודעה <msg> לכל השחקנים המחוברים."
+"Ez a parancs az <üzenet>-en belül megadott szöveget elküldi az összes "
+"elérhető játékosnak."
 
 #: src/commandhandler.cpp:210
 msgid "Command: /clear"
-msgstr "פקודה: /clear"
+msgstr "Parancs: /clear"
 
 #: src/commandhandler.cpp:211
 msgid "This command clears the chat log of previous chat."
-msgstr "פקודה זו מנקה את רישום השיחה הקודמת."
+msgstr "Törli a beszélgetés panel tartalmát."
 
 #: src/commandhandler.cpp:215
 #, fuzzy
 msgid "Command: /ignore <player>"
-msgstr "פקודה: /item <policy>"
+msgstr "Parancs: /item <szabály>"
 
 #: src/commandhandler.cpp:216
 #, fuzzy
 msgid "This command ignores the given player regardless of current relations."
-msgstr "פקודה זו מציגה את מספר השחקנים המחוברים כרגע."
+msgstr "Ez a parancs megmutatja az online játékosok számát."
 
 #: src/commandhandler.cpp:221
 msgid "Command: /join <channel>"
-msgstr "פקודה: /join <channel>"
+msgstr "Parancs: /join <csatorna>"
 
 #: src/commandhandler.cpp:222
 msgid "This command makes you enter <channel>."
-msgstr "פקודה זו מכניסה אותך אל <channel>."
+msgstr "Belépsz a <csatorna> helyen megadott beszélgetési csatornába."
 
 #: src/commandhandler.cpp:223
 msgid "If <channel> doesn't exist, it's created."
-msgstr "אם <channel> אינו קיים, הוא נוצר."
+msgstr "Ha a <csatorna> helyen megadott csatorna nem létezik, létrehozod."
 
 #: src/commandhandler.cpp:227
 msgid "Command: /list"
-msgstr "פקודה: /list"
+msgstr "Parancs: /list"
 
 #: src/commandhandler.cpp:228
 msgid "This command shows a list of all channels."
-msgstr "פקודה זו מציגה את רשימת כל החדרים."
+msgstr "Kilistázza az összes csatornát."
 
 #: src/commandhandler.cpp:232
 msgid "Command: /me <message>"
-msgstr "פקודה: /me <message>"
+msgstr "Parancs: /me <üzenet>"
 
 #: src/commandhandler.cpp:233
 msgid "This command tell others you are (doing) <msg>."
-msgstr "פקודה זו תאמר לאחרים שאתה (עושה) <msg>."
+msgstr "Ezzel a paranccsal az állapotodat jelzed. Megjelenés: Név <üzenet>"
 
 #: src/commandhandler.cpp:237
 msgid "Command: /msg <nick> <message>"
-msgstr "פקודה: /msg <nick> <message>"
+msgstr "Parancs: /msg <név> <üzenet>"
 
 #: src/commandhandler.cpp:238
 msgid "Command: /whisper <nick> <message>"
-msgstr "פקודה: /whisper <nick> <message>"
+msgstr "Parancs: /whisper <név> <üzenet>"
 
 #: src/commandhandler.cpp:239
 msgid "Command: /w <nick> <message>"
-msgstr "פקודה: /w <nick> <message>"
+msgstr "Parancs: /w <név> <üzenet>"
 
 #: src/commandhandler.cpp:240
 msgid "This command sends the text <message> to <nick>."
-msgstr "פקודה זו שולחת את הטקסט <message> אל <nick>."
+msgstr ""
+"Ez a parancs elküldi az <üzenet> szövegét a <név> alatt megadott nevű "
+"játékosnak."
 
 #: src/commandhandler.cpp:241 src/commandhandler.cpp:260
 #: src/gui/widgets/channeltab.cpp:82 src/gui/widgets/channeltab.cpp:91
 #: src/net/ea/gui/guildtab.cpp:75 src/net/ea/gui/partytab.cpp:75
 msgid "If the <nick> has spaces in it, enclose it in double quotes (\")."
-msgstr "אם <nick> מכיל רווחים בתוכו, תחום אותו במרכאות כפולות (\")."
+msgstr ""
+"Ha a <név> alatt megadott név szóközt tartalmaz idézőjelbe kell tenni. (\")."
 
 #: src/commandhandler.cpp:246
 msgid "Command: /query <nick>"
-msgstr "פקודה: /query <nick>"
+msgstr "Parancs: /query <név>"
 
 #: src/commandhandler.cpp:247
 msgid "Command: /q <nick>"
-msgstr "פקודה: /q <nick>"
+msgstr "Parancs: /q <név>"
 
 #: src/commandhandler.cpp:248
 msgid "This command tries to make a tab for whispers betweenyou and <nick>."
-msgstr "הפקודה מנסה ליצור לשונית עבור מסרים בינך לבין <nick>."
+msgstr ""
+"Ez a parancs egy új fület nyit beszélgetéseidhez a <név> alatt megadott nevű "
+"játékossal."
 
 #: src/commandhandler.cpp:253
 #, fuzzy
 msgid "Command: /createparty <name>"
-msgstr "פקודה: /create <party-name>"
+msgstr "Parancs: /create <csapatnév>"
 
 #: src/commandhandler.cpp:254
 #, fuzzy
 msgid "This command creates a new party called <name>."
-msgstr "פקודות אלה יוצרות חבורה בשם <party-name>."
+msgstr ""
+"Ezek a parancsok új csapatot hoznak létre a <csapatnév> alatt megadott néven."
 
 #: src/commandhandler.cpp:258
 msgid "Command: /party <nick>"
-msgstr "פקודה: /party <nick>"
+msgstr "Parancs: /party <név>"
 
 #: src/commandhandler.cpp:259 src/net/ea/gui/partytab.cpp:74
 msgid "This command invites <nick> to party with you."
-msgstr "פקודה זו מזמינה את <nick> להיות בחבורתך."
+msgstr "Ez a parancs csapatba hívja a <név> alatt megadott nevű játékost."
 
 #: src/commandhandler.cpp:265
 msgid "Command: /present"
-msgstr "פקודה: /present"
+msgstr "Parancs: /present"
 
 #: src/commandhandler.cpp:266
 msgid ""
 "This command gets a list of players within hearing and sends it to either "
 "the record log if recording, or the chat log otherwise."
 msgstr ""
-"פקודה זו מקבלת את רשימת המשתמשים המופיעים על המסך, ושולח אותה לרישום, אם "
-"הינך מקליט רישום, או אל השיחה."
+"Ez a parancs megmutatja a \"hallható\" játékosok nevét és fájlba is rögzíti, "
+"ha éppen rögzítjük a beszélgetést."
 
 #: src/commandhandler.cpp:272
 msgid "Command: /record <filename>"
-msgstr "פקודה: /record <filename>"
+msgstr "parancs: /record <fájlnév>"
 
 #: src/commandhandler.cpp:273
 msgid "This command starts recording the chat log to the file <filename>."
-msgstr "פקודה זו מתחילה להקליט רישום שיחה לקובץ <filename>."
+msgstr ""
+"Ez a parancs elkezdi felvenni a beszélgetést a <fájlnév> alatt megadott "
+"fájlba."
 
 #: src/commandhandler.cpp:275
 msgid "Command: /record"
-msgstr "פקודה: /record"
+msgstr "Parancs: /record"
 
 #: src/commandhandler.cpp:276
 msgid "This command finishes a recording session."
-msgstr "פקודה זו מסיימת תהליך הקלטה."
+msgstr "Befejezi a beszélgetés rögzítését."
 
 #: src/commandhandler.cpp:280
 msgid "Command: /toggle <state>"
-msgstr "פקודה: /toggle <state>"
+msgstr "Parancs: /toggle <állás>"
 
 #: src/commandhandler.cpp:281
 msgid ""
 "This command sets whether the return key should toggle the chat log, or "
 "whether the chat log turns off automatically."
-msgstr ""
-"הפקודה קובעת אם מקש האנטר יסגור את תיבת הטקסט של הצ'אט או שהוא ייסגר באופן "
-"אוטומטי."
+msgstr "Ez a parancs beállítja az enter billentyű használatát a játékban."
 
 #: src/commandhandler.cpp:283
 msgid ""
 "<state> can be one of \"1\", \"yes\", \"true\" to turn the toggle on, or \"0"
 "\", \"no\", \"false\" to turn the toggle off."
 msgstr ""
-"<state> יכול להיות אחד משני משני מצבים. \"1\", \"yes\", \"ture\" כדי לשנות "
-"למצב פעיל, או \"0\", no\", falst\" כדי לשנות למצב כבוי."
+"<állás> lehet \"1\", \"yes\", \"true\" ha ki akarod kapcsolni a chat input "
+"automatikus eltűnését, \"0\", \"no\", \"false\"  ha nem."
 
 #: src/commandhandler.cpp:286
 msgid "Command: /toggle"
-msgstr "פקודה: /toggle"
+msgstr "Parancs: /toggle"
 
 #: src/commandhandler.cpp:287
 msgid "This command displays the return toggle status."
-msgstr "הפקודה מציגה את מצב סגירת הטקסט האוטומטית."
+msgstr "A /toggle jelenlegi állását mutatja meg."
 
 #: src/commandhandler.cpp:291 src/gui/widgets/whispertab.cpp:93
 #, fuzzy
 msgid "Command: /unignore <player>"
-msgstr "פקודה: /item <policy>"
+msgstr "Parancs: /item <szabály>"
 
 #: src/commandhandler.cpp:292
 msgid "This command stops ignoring the given player if they are being ignored"
@@ -389,27 +397,27 @@ msgstr ""
 
 #: src/commandhandler.cpp:297
 msgid "Command: /where"
-msgstr "פקודה: /where"
+msgstr "Parancs: /where"
 
 #: src/commandhandler.cpp:298
 msgid "This command displays the name of the current map."
-msgstr "פקודה זו מציגה את שם המפה הנוכחית."
+msgstr "Ez a parancs megmutatja az aktuális térkép nevét."
 
 #: src/commandhandler.cpp:302
 msgid "Command: /who"
-msgstr "פקודה: /who"
+msgstr "Parancs: /who"
 
 #: src/commandhandler.cpp:303
 msgid "This command displays the number of players currently online."
-msgstr "פקודה זו מציגה את מספר השחקנים המחוברים כרגע."
+msgstr "Ez a parancs megmutatja az online játékosok számát."
 
 #: src/commandhandler.cpp:309
 msgid "Type /help for a list of commands."
-msgstr "הקלד /help לרשימת הפקודות."
+msgstr "Parancsok listája: /help"
 
 #: src/commandhandler.cpp:375
 msgid "Cannot send empty whispers!"
-msgstr "לא ניתן לשלוח לחישות ריקות!"
+msgstr "Nem küldhetsz üres üzenetet!"
 
 #: src/commandhandler.cpp:383
 #, c-format
@@ -417,17 +425,16 @@ msgid ""
 "Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
 "you."
 msgstr ""
-"לא ניתן ליצור לשונית לחישות עבור הכינוי \"%s\"! הלשונית כבר קיימת או שמדובר "
-"בך."
+"Nem tudsz fület létrehozni \"%s\" számára! Létre van hozva, vagy te vagy az."
 
 #: src/commandhandler.cpp:397
 #, c-format
 msgid "Requesting to join channel %s."
-msgstr "מבקש להצטרף לחדר %s."
+msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
 #: src/commandhandler.cpp:410 src/net/ea/gui/partytab.cpp:109
 msgid "Party name is missing."
-msgstr "שם חבורה חסר."
+msgstr "A csapatnév hiányzik."
 
 #: src/commandhandler.cpp:423 src/commandhandler.cpp:471
 #: src/commandhandler.cpp:493
@@ -436,19 +443,19 @@ msgstr ""
 
 #: src/commandhandler.cpp:441
 msgid "Return toggles chat."
-msgstr "סגירת תיבת הטקסט האוטומטית."
+msgstr "Az enter megnyitja a bevitelt."
 
 #: src/commandhandler.cpp:441
 msgid "Message closes chat."
-msgstr "ההודעה סוגרת את תיבת הטקסט."
+msgstr "Az üzenet bezárja a bevitelt."
 
 #: src/commandhandler.cpp:450
 msgid "Return now toggles chat."
-msgstr "מקש האנטר כעת סוגר את תיבת הטקסט."
+msgstr "Az enter mostantól megnyitja a bevitelt."
 
 #: src/commandhandler.cpp:454
 msgid "Message now closes chat."
-msgstr "ההודעה כעת סוגרת את תיבת הטקסט."
+msgstr "Az üzenet mostantól bezárja a bevitelt."
 
 #: src/commandhandler.cpp:477
 msgid "Player already ignored!"
@@ -457,12 +464,12 @@ msgstr ""
 #: src/commandhandler.cpp:484
 #, fuzzy
 msgid "Player successfully ignored!"
-msgstr "חבורה נוצרה בהצלחה."
+msgstr "Csapat létrehozása sikeres."
 
 #: src/commandhandler.cpp:486
 #, fuzzy
 msgid "Player could not be ignored!"
-msgstr "הלחישה לא יכלה להשלח, מהמשתמש מתעלם."
+msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
 #: src/commandhandler.cpp:501
 msgid "Player wasn't ignored!"
@@ -475,101 +482,102 @@ msgstr ""
 #: src/commandhandler.cpp:508
 #, fuzzy
 msgid "Player could not be unignored!"
-msgstr "הלחישה לא יכלה להשלח, מהמשתמש מתעלם."
+msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
 #: src/commandhandler.h:31
 #, c-format
 msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
 msgstr ""
-"האפשרויות עבור /%s הינם \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+"Lehetőségek a /%s parancshoz: \"yes\", \"no\", \"true\", \"false\", \"1\", "
+"\"0\"."
 
 #: src/game.cpp:172
 msgid "General"
-msgstr "כללי"
+msgstr "Általános"
 
 #: src/game.cpp:326
 #, fuzzy
 msgid "Screenshot saved as "
-msgstr "תמונת־מסך נשמרה במיקום ~/"
+msgstr "Képernyőt mentettük a ~/ helyre"
 
 #: src/game.cpp:331
 msgid "Saving screenshot failed!"
-msgstr "שמירת תמונת־מסך נכשלה"
+msgstr "Hiba a képernyő mentése során!"
 
 #: src/game.cpp:355
 #, fuzzy
 msgid "The connection to the server was lost."
-msgstr "החיבור לשרת נכשל, התוכנה תסגר כעת"
+msgstr "A kapcsolat megszakadt a szerverrel, a program most kilép."
 
 #: src/game.cpp:360
 msgid "Network Error"
-msgstr "שגיאת רשת"
+msgstr "Hálózati hiba"
 
 #: src/game.cpp:705
 msgid "Ignoring incoming trade requests"
-msgstr "מתעלם מהצעות סחר נכנסות"
+msgstr "Kereskedési kérelmek elutasítása"
 
 #: src/game.cpp:712
 msgid "Accepting incoming trade requests"
-msgstr "מאשר הצעות סחר נכנסות"
+msgstr "Kereskedési kérelmek elfogadása"
 
 #: src/game.cpp:946
 #, fuzzy
 msgid "Could Not Load Map"
-msgstr "לא ניתן לטעון את המפה"
+msgstr "Nem lehet betölteni a térképet"
 
 #: src/game.cpp:947
 #, c-format
 msgid "Error while loading %s"
-msgstr "שגיאה בעת טעינת %s"
+msgstr "Hiba %s betöltése közben"
 
 #: src/gui/beingpopup.cpp:75
 #, fuzzy, c-format
 msgid "Party: %s"
-msgstr "חבורה (%s)"
+msgstr "Csapat (%s)"
 
 #: src/gui/buy.cpp:49 src/gui/buy.cpp:78 src/gui/buysell.cpp:47
 msgid "Buy"
-msgstr "קנה"
+msgstr "Vétel"
 
 #: src/gui/buy.cpp:69 src/gui/buy.cpp:256 src/gui/sell.cpp:71
 #: src/gui/sell.cpp:276
 #, c-format
 msgid "Price: %s / Total: %s"
-msgstr "מחיר: %s / סה\"כ: %s"
+msgstr "Ár: %s / Teljes: %s"
 
 #. TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
 #. You may change this symbol if your language uses another.
 #: src/gui/buy.cpp:74 src/gui/itemamount.cpp:99 src/gui/npcdialog.cpp:100
-#: src/gui/sell.cpp:74 src/gui/statuswindow.cpp:479
+#: src/gui/sell.cpp:74 src/gui/statuswindow.cpp:404
 msgid "+"
 msgstr ""
 
 #. TRANSLATORS: This is a narrow symbol used to denote 'decreasing'.
 #. You may change this symbol if your language uses another.
 #: src/gui/buy.cpp:77 src/gui/itemamount.cpp:98 src/gui/npcdialog.cpp:101
-#: src/gui/sell.cpp:75 src/gui/statuswindow.cpp:491
+#: src/gui/sell.cpp:75 src/gui/statuswindow.cpp:416
 msgid "-"
 msgstr ""
 
 #: src/gui/buy.cpp:79 src/gui/quitdialog.cpp:40 src/gui/quitdialog.cpp:42
-#: src/gui/quitdialog.cpp:43 src/gui/sell.cpp:77 src/gui/serverdialog.cpp:182
+#: src/gui/quitdialog.cpp:43 src/gui/sell.cpp:77 src/gui/serverdialog.cpp:152
 #: src/keyboardconfig.cpp:103
 msgid "Quit"
-msgstr "יציאה"
+msgstr "Kilépés"
 
-#: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:408
-#: src/gui/statuswindow.cpp:478 src/gui/statuswindow.cpp:512
+#: src/gui/buy.cpp:80 src/gui/sell.cpp:78 src/gui/statuswindow.cpp:333
+#: src/gui/statuswindow.cpp:403 src/gui/statuswindow.cpp:437
 msgid "Max"
-msgstr "מקסימום"
+msgstr "Max."
 
 #: src/gui/buysell.cpp:38
 msgid "Shop"
-msgstr "חנות"
+msgstr "Üzlet"
 
 #: src/gui/buysell.cpp:47 src/gui/sell.cpp:49 src/gui/sell.cpp:76
 msgid "Sell"
-msgstr "מכר"
+msgstr "Eladás"
 
 #: src/gui/buysell.cpp:47 src/gui/changeemaildialog.cpp:55
 #: src/gui/changepassworddialog.cpp:58 src/gui/charcreatedialog.cpp:79
@@ -577,54 +585,54 @@ msgstr "מכר"
 #: src/gui/npcpostdialog.cpp:57 src/gui/popupmenu.cpp:178
 #: src/gui/popupmenu.cpp:197 src/gui/popupmenu.cpp:402
 #: src/gui/quitdialog.cpp:47 src/gui/register.cpp:74 src/gui/setup.cpp:51
-#: src/gui/socialwindow.cpp:242 src/gui/textdialog.cpp:39
+#: src/gui/socialwindow.cpp:243 src/gui/textdialog.cpp:39
 #: src/gui/unregisterdialog.cpp:56 src/gui/updatewindow.cpp:144
 msgid "Cancel"
-msgstr "בטל"
+msgstr "Mégse"
 
 #: src/gui/changeemaildialog.cpp:45 src/gui/changeemaildialog.cpp:54
 msgid "Change Email Address"
-msgstr "שנה כתובת דואר אלקטרוני"
+msgstr "Email cím módosírása"
 
 #: src/gui/changeemaildialog.cpp:49 src/gui/changepassworddialog.cpp:52
 #, c-format
 msgid "Account: %s"
-msgstr "משתמש: %s"
+msgstr "Fiók: %s"
 
 #: src/gui/changeemaildialog.cpp:51
 #, fuzzy
 msgid "Type new email address twice:"
-msgstr "הקלד כתובת דוא\"ל חדשה פעמיים:"
+msgstr "Írd be az új Email címet kétszer:"
 
 #: src/gui/changeemaildialog.cpp:127
 #, fuzzy, c-format
 msgid "The new email address needs to be at least %d characters long."
-msgstr "שם המשתמש חייב להכיל לפחות %d תוים."
+msgstr "A felhasználónévnek legalább %d karakternek kell lennie."
 
 #: src/gui/changeemaildialog.cpp:134
 #, fuzzy, c-format
 msgid "The new email address needs to be less than %d characters long."
-msgstr "שם המשתמש חייב להכיל פחות מ-%d תוים."
+msgstr "A felhasználónévnek legfeljebb %d karakternek kell lennie."
 
 #: src/gui/changeemaildialog.cpp:141
 #, fuzzy
 msgid "The email address entries mismatch."
-msgstr "כתובת הדוא\"ל החדשה כבר בשימוש."
+msgstr "Az új email cím már foglalt."
 
 #: src/gui/changepassworddialog.cpp:47 src/gui/changepassworddialog.cpp:56
 #: src/gui/charselectdialog.cpp:128
 msgid "Change Password"
-msgstr "שנה סיסמה"
+msgstr "Jelszó módosítása"
 
 #: src/gui/changepassworddialog.cpp:61 src/gui/login.cpp:53
 #: src/gui/register.cpp:68 src/gui/unregisterdialog.cpp:53
 msgid "Password:"
-msgstr "סיסמה:"
+msgstr "Jelszó:"
 
 #: src/gui/changepassworddialog.cpp:63
 #, fuzzy
 msgid "Type new password twice:"
-msgstr "הקלד סיסמה חדשה פעמיים:"
+msgstr "Írd be az új jelszót kétszer:"
 
 #: src/gui/changepassworddialog.cpp:110
 msgid "Enter the old password first."
@@ -633,12 +641,12 @@ msgstr ""
 #: src/gui/changepassworddialog.cpp:116
 #, fuzzy, c-format
 msgid "The new password needs to be at least %d characters long."
-msgstr "הסיסמה חייבת להכיל לפחות %d תוים."
+msgstr "A jelszónak legalább %d karakter hosszúnak kell lennie."
 
 #: src/gui/changepassworddialog.cpp:123
 #, fuzzy, c-format
 msgid "The new password needs to be less than %d characters long."
-msgstr "הסיסמה חייבת להכיל פחות מ-%d תוים."
+msgstr "A jelszónak legfeljebb %d karakter hosszúnak kell lennie."
 
 #: src/gui/changepassworddialog.cpp:130
 msgid "The new password entries mismatch."
@@ -646,12 +654,12 @@ msgstr ""
 
 #: src/gui/charcreatedialog.cpp:53
 msgid "Create Character"
-msgstr "צור שחקן"
+msgstr "Karakter létrehozása"
 
 #: src/gui/charcreatedialog.cpp:67 src/gui/login.cpp:52
 #: src/gui/register.cpp:67
 msgid "Name:"
-msgstr "שם:"
+msgstr "Név:"
 
 #. TRANSLATORS: This is a narrow symbol used to denote 'next'.
 #. You may change this symbol if your language uses another.
@@ -670,55 +678,55 @@ msgstr ""
 #: src/gui/charcreatedialog.cpp:74
 #, fuzzy
 msgid "Hair color:"
-msgstr "צבע שיער:"
+msgstr "Haj szín:"
 
 #: src/gui/charcreatedialog.cpp:77
 #, fuzzy
 msgid "Hair style:"
-msgstr "תיספורת:"
+msgstr "Haj stílus:"
 
 #: src/gui/charcreatedialog.cpp:78 src/gui/charselectdialog.cpp:397
-#: src/gui/socialwindow.cpp:296
+#: src/gui/socialwindow.cpp:297
 msgid "Create"
-msgstr "צור"
+msgstr "Létrehozás"
 
 #: src/gui/charcreatedialog.cpp:80 src/gui/register.cpp:90
 msgid "Male"
-msgstr "זכר"
+msgstr "Férfi"
 
 #: src/gui/charcreatedialog.cpp:81 src/gui/register.cpp:91
 msgid "Female"
-msgstr "נקבה"
+msgstr "Nő"
 
 #: src/gui/charcreatedialog.cpp:99 src/gui/charcreatedialog.cpp:251
 #, c-format
 msgid "Please distribute %d points"
-msgstr "אנא חלק %d נקודות"
+msgstr "Kérlek oszd el a pontjaidat (%d van még)"
 
 #: src/gui/charcreatedialog.cpp:178
 msgid "Your name needs to be at least 4 characters."
-msgstr "יש להכניס לפחות 4 תוים בשם."
+msgstr "A nevednek minimum 4 karakternek kell lennie."
 
 #: src/gui/charcreatedialog.cpp:242
 msgid "Character stats OK"
-msgstr "נתוני שחקן - אישור"
+msgstr "Karakter statok rendben"
 
 #: src/gui/charcreatedialog.cpp:256
 #, c-format
 msgid "Please remove %d points"
-msgstr "אנא הסר %d נקודות"
+msgstr "Kérlek távolíts el %d pontot"
 
 #: src/gui/charselectdialog.cpp:69
 msgid "Confirm Character Delete"
-msgstr "אשר מחיקת שחקן"
+msgstr "Karakter törlésének megerősítése"
 
 #: src/gui/charselectdialog.cpp:70
 msgid "Are you sure you want to delete this character?"
-msgstr "האם אתה בטוח כי ברצונך למחוק את השחקן?"
+msgstr "Biztos hogy ki akarod törölni ezt a karaktert?"
 
 #: src/gui/charselectdialog.cpp:117
 msgid "Account and Character Management"
-msgstr "ניהול משתמש ושחקן"
+msgstr "Fiók és Karakter Menedzsment"
 
 #: src/gui/charselectdialog.cpp:127
 msgid "Switch Login"
@@ -727,52 +735,52 @@ msgstr ""
 #: src/gui/charselectdialog.cpp:141 src/gui/unregisterdialog.cpp:47
 #: src/gui/unregisterdialog.cpp:55
 msgid "Unregister"
-msgstr "בטל רישום"
+msgstr "Regisztráció megszüntetése"
 
 #: src/gui/charselectdialog.cpp:150
 #, fuzzy
 msgid "Change Email"
-msgstr "שנה כתובת דואר אלקטרוני"
+msgstr "Email cím módosírása"
 
-#: src/gui/charselectdialog.cpp:335 src/gui/serverdialog.cpp:185
+#: src/gui/charselectdialog.cpp:335 src/gui/serverdialog.cpp:155
 #: src/gui/setup_players.cpp:230
 msgid "Delete"
-msgstr "מחק"
+msgstr "Törlés"
 
 #: src/gui/charselectdialog.cpp:387
 #, fuzzy
 msgid "Choose"
-msgstr "סגור"
+msgstr "Bezár"
 
 #: src/gui/charselectdialog.cpp:399 src/gui/charselectdialog.cpp:400
 msgid "(empty)"
 msgstr ""
 
-#: src/gui/chat.cpp:77 src/gui/palette.cpp:96
+#: src/gui/chat.cpp:77
 msgid "Chat"
-msgstr "שיחה"
+msgstr "Chat"
 
 #: src/gui/chat.cpp:287
 #, fuzzy, c-format
 msgid "Present: %s; %d players are present."
-msgstr "%d משתמשים נוכחים."
+msgstr "%d játékos van a közeledben."
 
 #: src/gui/chat.cpp:305
 msgid "Attendance written to record log."
-msgstr "מקליט שמות נוכחים לרישום."
+msgstr "A látogatottság rögzíve lessz."
 
 #: src/gui/chat.cpp:469
 #, c-format
 msgid "Whispering to %s: %s"
-msgstr "לוחש אל %s: %s"
+msgstr "Üzenet %s számára: %s"
 
 #: src/gui/confirmdialog.cpp:42
 msgid "Yes"
-msgstr "כן"
+msgstr "Igen"
 
 #: src/gui/confirmdialog.cpp:43
 msgid "No"
-msgstr "לא"
+msgstr "Nem"
 
 #: src/gui/debugwindow.cpp:43
 msgid "Debug"
@@ -791,17 +799,17 @@ msgstr ""
 #: src/gui/debugwindow.cpp:65 src/gui/debugwindow.cpp:104
 #, fuzzy, c-format
 msgid "Music: %s"
-msgstr "כותרת: %s"
+msgstr "Téma: %s"
 
 #: src/gui/debugwindow.cpp:66 src/gui/debugwindow.cpp:108
 #, fuzzy, c-format
 msgid "Map: %s"
-msgstr "שם: %s"
+msgstr "Név: %s"
 
 #: src/gui/debugwindow.cpp:67 src/gui/debugwindow.cpp:106
 #, fuzzy, c-format
 msgid "Minimap: %s"
-msgstr "חלון מיני מפה"
+msgstr "Minitérkép Ablak"
 
 #: src/gui/debugwindow.cpp:68 src/gui/debugwindow.cpp:99
 #, c-format
@@ -811,152 +819,152 @@ msgstr ""
 #: src/gui/debugwindow.cpp:69 src/gui/debugwindow.cpp:111
 #, fuzzy, c-format
 msgid "Particle count: %d"
-msgstr "אפקטים חלקיים"
+msgstr "Effektek"
 
 #: src/gui/debugwindow.cpp:116
 #, fuzzy, c-format
 msgid "Particle detail: %s"
-msgstr "מידע חלקי"
+msgstr "Effektek részletessége"
 
 #: src/gui/debugwindow.cpp:121
 #, fuzzy, c-format
 msgid "Ambient FX: %s"
-msgstr "אופף FX"
+msgstr "Környezeti effektek"
 
-#: src/gui/equipmentwindow.cpp:69 src/gui/windowmenu.cpp:56
+#: src/gui/equipmentwindow.cpp:69 src/gui/windowmenu.cpp:55
 msgid "Equipment"
-msgstr "לבוש"
+msgstr "Felszerelés"
 
-#: src/gui/equipmentwindow.cpp:87 src/gui/inventorywindow.cpp:77
-#: src/gui/inventorywindow.cpp:79 src/gui/inventorywindow.cpp:298
+#: src/gui/equipmentwindow.cpp:87 src/gui/inventorywindow.cpp:78
+#: src/gui/inventorywindow.cpp:80 src/gui/inventorywindow.cpp:291
 #: src/gui/popupmenu.cpp:372
 msgid "Unequip"
-msgstr "הורד"
+msgstr "Nem használ"
 
 #: src/gui/help.cpp:36
 msgid "Help"
-msgstr "עזרה"
+msgstr "Súgó"
 
-#: src/gui/help.cpp:50 src/gui/npcdialog.cpp:46 src/gui/storagewindow.cpp:73
+#: src/gui/help.cpp:50 src/gui/npcdialog.cpp:46 src/gui/storagewindow.cpp:74
 msgid "Close"
-msgstr "סגור"
+msgstr "Bezár"
 
-#: src/gui/inventorywindow.cpp:56 src/gui/windowmenu.cpp:57
+#: src/gui/inventorywindow.cpp:57 src/gui/windowmenu.cpp:56
 msgid "Inventory"
-msgstr "ציוד"
+msgstr "Táska"
 
-#: src/gui/inventorywindow.cpp:72 src/gui/inventorywindow.cpp:74
-#: src/gui/inventorywindow.cpp:300 src/gui/popupmenu.cpp:374
+#: src/gui/inventorywindow.cpp:73 src/gui/inventorywindow.cpp:75
+#: src/gui/inventorywindow.cpp:293 src/gui/popupmenu.cpp:374
 msgid "Equip"
-msgstr "השתמש"
+msgstr "Használ"
 
-#: src/gui/inventorywindow.cpp:73 src/gui/inventorywindow.cpp:74
-#: src/gui/inventorywindow.cpp:304 src/gui/popupmenu.cpp:377
+#: src/gui/inventorywindow.cpp:74 src/gui/inventorywindow.cpp:75
+#: src/gui/inventorywindow.cpp:297 src/gui/popupmenu.cpp:377
 msgid "Use"
-msgstr "השתמש"
+msgstr "Bevet"
 
-#: src/gui/inventorywindow.cpp:83 src/gui/inventorywindow.cpp:308
+#: src/gui/inventorywindow.cpp:84 src/gui/inventorywindow.cpp:301
 #: src/gui/popupmenu.cpp:380
 #, fuzzy
 msgid "Drop..."
-msgstr "השלך"
+msgstr "Eldob"
 
-#: src/gui/inventorywindow.cpp:84 src/gui/popupmenu.cpp:386
+#: src/gui/inventorywindow.cpp:85 src/gui/popupmenu.cpp:386
 msgid "Split"
-msgstr "פצל"
+msgstr "Felosztás"
 
-#: src/gui/inventorywindow.cpp:85 src/gui/outfitwindow.cpp:51
+#: src/gui/inventorywindow.cpp:86 src/gui/outfitwindow.cpp:51
 msgid "Outfits"
 msgstr ""
 
-#: src/gui/inventorywindow.cpp:96 src/gui/storagewindow.cpp:83
+#: src/gui/inventorywindow.cpp:97 src/gui/storagewindow.cpp:84
 msgid "Slots:"
-msgstr "בשימוש:"
+msgstr "Hely:"
 
-#: src/gui/inventorywindow.cpp:97
+#: src/gui/inventorywindow.cpp:98
 msgid "Weight:"
-msgstr "משקל:"
+msgstr "Súly:"
 
-#: src/gui/inventorywindow.cpp:310 src/gui/popupmenu.cpp:382
+#: src/gui/inventorywindow.cpp:303 src/gui/popupmenu.cpp:382
 msgid "Drop"
-msgstr "השלך"
+msgstr "Eldob"
 
 #: src/gui/itemamount.cpp:100 src/gui/okdialog.cpp:42
 #: src/gui/quitdialog.cpp:46 src/gui/textdialog.cpp:38 src/gui/trade.cpp:73
 #: src/gui/trade.cpp:75
 msgid "OK"
-msgstr "אישור"
+msgstr "Ok"
 
 #: src/gui/itemamount.cpp:102
 msgid "All"
-msgstr "הכל"
+msgstr "Mind"
 
 #: src/gui/itemamount.cpp:128
 msgid "Select amount of items to trade."
-msgstr "בחר כמות חפצים לסחור."
+msgstr "Válaszd ki mennyi tárggyal akarsz üzletelni."
 
 #: src/gui/itemamount.cpp:131
 msgid "Select amount of items to drop."
-msgstr "בחר כמות חפצים להשליך."
+msgstr "Válaszd ki mennyit akarsz eldobni."
 
 #: src/gui/itemamount.cpp:134
 msgid "Select amount of items to store."
-msgstr "בחר כמות חפצים לאחסן."
+msgstr "Válaszd ki a raktározandó mennyiséget."
 
 #: src/gui/itemamount.cpp:137
 msgid "Select amount of items to retrieve."
-msgstr "בחר כמות חפצים להחזיר."
+msgstr "Válaszd ki mennyit veszel magadhoz."
 
 #: src/gui/itemamount.cpp:140
 msgid "Select amount of items to split."
-msgstr "בחר כמות חפצים לפצל."
+msgstr "Válaszd ki az elosztandó mennyiséget."
 
 #: src/gui/itempopup.cpp:92
 #, fuzzy, c-format
 msgid "Weight: %s"
-msgstr "משקל: "
+msgstr "Súly: "
 
 #: src/gui/login.cpp:49 src/gui/login.cpp:61
 msgid "Login"
-msgstr "התחברות"
+msgstr "Belépés"
 
 #: src/gui/login.cpp:58
 #, fuzzy
 msgid "Remember username"
-msgstr "זכור שם משתמש"
+msgstr "Felhasználónév megjegyzése"
 
 #: src/gui/login.cpp:59 src/gui/register.cpp:58 src/gui/register.cpp:73
 msgid "Register"
-msgstr "הרשם"
+msgstr "Regisztráció"
 
 #: src/gui/login.cpp:60
 #, fuzzy
 msgid "Change Server"
-msgstr "שרת"
+msgstr "Szerver"
 
 #: src/gui/minimap.cpp:46 src/gui/minimap.cpp:87
 msgid "Map"
-msgstr "מפה"
+msgstr "Térkép"
 
 #: src/gui/npcdialog.cpp:44
 msgid "Waiting for server"
-msgstr "ממתין לשרת"
+msgstr "Várakozás a szerverre"
 
 #: src/gui/npcdialog.cpp:45
 msgid "Next"
-msgstr "הבא"
+msgstr "Következő"
 
 #: src/gui/npcdialog.cpp:47
 msgid "Submit"
-msgstr "שלח"
+msgstr "Küldés"
 
 #: src/gui/npcdialog.cpp:52 src/gui/npcpostdialog.cpp:41
 msgid "NPC"
-msgstr "NPC"
+msgstr "Gépjátékos"
 
 #: src/gui/npcdialog.cpp:110
 msgid "Reset"
-msgstr "אפס"
+msgstr "Alaphelyzet"
 
 #. TRANSLATORS: Please leave the \n sequences intact.
 #: src/gui/npcdialog.cpp:171
@@ -964,19 +972,19 @@ msgstr "אפס"
 msgid ""
 "\n"
 "> Next\n"
-msgstr "הבא"
+msgstr "Következő"
 
 #: src/gui/npcpostdialog.cpp:47
 msgid "To:"
-msgstr "אל:"
+msgstr "Cél:"
 
 #: src/gui/npcpostdialog.cpp:54
 msgid "Send"
-msgstr "שלח"
+msgstr "Küldés"
 
 #: src/gui/npcpostdialog.cpp:96
 msgid "Failed to send as sender or letter invalid."
-msgstr "נכשלה השליחה מכיוון והשולח או המכתב בעלי שגיאה."
+msgstr "A levél elküldése sikertelen. A feladó, vagy a címzett nem található."
 
 #: src/gui/outfitwindow.cpp:68 src/gui/outfitwindow.cpp:141
 #: src/gui/outfitwindow.cpp:154
@@ -987,251 +995,37 @@ msgstr ""
 #: src/gui/outfitwindow.cpp:70
 #, fuzzy
 msgid "Unequip first"
-msgstr "הורד"
-
-#: src/gui/palette.cpp:81 src/gui/setup_video.cpp:143
-msgid "Text"
-msgstr "טקסט"
-
-#: src/gui/palette.cpp:82
-msgid "Text Shadow"
-msgstr "הצללת טקסט"
-
-#: src/gui/palette.cpp:83
-msgid "Text Outline"
-msgstr "מתאר הטקסט"
-
-#: src/gui/palette.cpp:84
-msgid "Progress Bar Labels"
-msgstr "תוויות סרגל התקדמות"
-
-#: src/gui/palette.cpp:85
-msgid "Buttons"
-msgstr ""
-
-#: src/gui/palette.cpp:86
-msgid "Disabled Buttons"
-msgstr ""
-
-#: src/gui/palette.cpp:87
-msgid "Tabs"
-msgstr ""
-
-#: src/gui/palette.cpp:89
-msgid "Background"
-msgstr "רקע"
-
-#: src/gui/palette.cpp:91
-msgid "Highlight"
-msgstr "הדגשה"
-
-#: src/gui/palette.cpp:92
-msgid "Tab Highlight"
-msgstr "לשונית הדגשה"
-
-#: src/gui/palette.cpp:93
-#, fuzzy
-msgid "Item Too Expensive"
-msgstr "החפץ יקר מדי"
-
-#: src/gui/palette.cpp:94
-#, fuzzy
-msgid "Item Is Equipped"
-msgstr "החפץ בשימוש"
-
-#: src/gui/palette.cpp:97
-msgid "GM"
-msgstr "GM"
-
-#: src/gui/palette.cpp:98
-msgid "Player"
-msgstr "שחקן"
-
-#: src/gui/palette.cpp:99
-msgid "Whisper"
-msgstr "לחישה"
-
-#: src/gui/palette.cpp:100
-msgid "Is"
-msgstr "הינו"
-
-#: src/gui/palette.cpp:101 src/net/ea/gui/partytab.cpp:43
-msgid "Party"
-msgstr "חבורה"
-
-#: src/gui/palette.cpp:102 src/net/ea/gui/guildtab.cpp:45
-msgid "Guild"
-msgstr "גילדה"
-
-#: src/gui/palette.cpp:103
-msgid "Server"
-msgstr "שרת"
-
-#: src/gui/palette.cpp:104
-msgid "Logger"
-msgstr "רישום"
-
-#: src/gui/palette.cpp:105
-msgid "Hyperlink"
-msgstr "קישור"
-
-#: src/gui/palette.cpp:107
-msgid "Being"
-msgstr "נהיה"
-
-#: src/gui/palette.cpp:108
-msgid "Other Players' Names"
-msgstr "שמות המשתמשים האחרים"
-
-#: src/gui/palette.cpp:109
-msgid "Own Name"
-msgstr "השם שלך"
-
-#: src/gui/palette.cpp:110
-msgid "GM Names"
-msgstr "שמות המנהלים"
-
-#: src/gui/palette.cpp:111
-msgid "NPCs"
-msgstr "דמויות"
-
-#: src/gui/palette.cpp:112
-msgid "Monsters"
-msgstr "מפלצות"
-
-#: src/gui/palette.cpp:114
-msgid "Unknown Item Type"
-msgstr "סוג חפץ לא ידוע"
-
-#: src/gui/palette.cpp:115
-msgid "Generics"
-msgstr "כלליים"
-
-#: src/gui/palette.cpp:116
-msgid "Hats"
-msgstr "כובעים"
-
-#: src/gui/palette.cpp:117
-msgid "Usables"
-msgstr "שימושיים"
-
-#: src/gui/palette.cpp:118
-msgid "Shirts"
-msgstr "חולצות"
-
-#: src/gui/palette.cpp:119
-#, fuzzy
-msgid "One Handed Weapons"
-msgstr "נשקים ליד אחת"
-
-#: src/gui/palette.cpp:120
-msgid "Pants"
-msgstr "מכנסיים"
-
-#: src/gui/palette.cpp:121
-msgid "Shoes"
-msgstr "נעליים"
-
-#: src/gui/palette.cpp:122
-#, fuzzy
-msgid "Two Handed Weapons"
-msgstr "נשקים ליד אחת"
-
-#: src/gui/palette.cpp:123
-msgid "Shields"
-msgstr "מגנים"
-
-#: src/gui/palette.cpp:124
-msgid "Rings"
-msgstr "טבעות"
-
-#: src/gui/palette.cpp:125
-msgid "Necklaces"
-msgstr "שרשראות"
-
-#: src/gui/palette.cpp:126
-msgid "Arms"
-msgstr "ידיים"
-
-#: src/gui/palette.cpp:127
-msgid "Ammo"
-msgstr "תחמושת"
-
-#: src/gui/palette.cpp:129
-msgid "Particle Effects"
-msgstr "אפקטים חלקיים"
-
-#: src/gui/palette.cpp:130
-msgid "Pickup Notification"
-msgstr "הודעה על לקיחה"
-
-#: src/gui/palette.cpp:131
-msgid "Exp Notification"
-msgstr "הודעה על נק' נסיון"
-
-#: src/gui/palette.cpp:133
-#, fuzzy
-msgid "Player Hits Monster"
-msgstr "משתמש מכה מפלצת"
-
-#: src/gui/palette.cpp:135
-#, fuzzy
-msgid "Monster Hits Player"
-msgstr "משתמש מכה משתמש"
-
-#: src/gui/palette.cpp:136
-msgid "Critical Hit"
-msgstr "מכה קריטית"
-
-#: src/gui/palette.cpp:137
-msgid "Misses"
-msgstr "פספוס"
-
-#: src/gui/palette.cpp:139
-msgid "HP Bar"
-msgstr "סרגל חיים"
-
-#: src/gui/palette.cpp:140
-msgid "3/4 HP Bar"
-msgstr "3/4 סרגל חיים"
-
-#: src/gui/palette.cpp:141
-msgid "1/2 HP Bar"
-msgstr "1/2 סרגל חיים"
-
-#: src/gui/palette.cpp:142
-msgid "1/4 HP Bar"
-msgstr "1/4 סרגל חיים"
+msgstr "Nem használ"
 
 #: src/gui/popupmenu.cpp:84
 #, fuzzy, c-format
 msgid "Trade with %s..."
-msgstr "סוחר עם%s"
+msgstr "Üzlet Te és %s között"
 
 #: src/gui/popupmenu.cpp:88 src/gui/popupmenu.cpp:161
 #, fuzzy, c-format
 msgid "Attack %s"
-msgstr "התקפה %+d"
+msgstr "Támadás %+d"
 
 #: src/gui/popupmenu.cpp:92
 #, fuzzy, c-format
 msgid "Whisper %s"
-msgstr "לחישה"
+msgstr "Privát üzenet"
 
 #: src/gui/popupmenu.cpp:101
 #, fuzzy, c-format
 msgid "Befriend %s"
-msgstr "@@friend|הצע חברות %s@@"
+msgstr "@@friend|Felvenni %s-t a barátok közé@@"
 
 #: src/gui/popupmenu.cpp:106
 #, fuzzy, c-format
 msgid "Disregard %s"
-msgstr "מזלזל"
+msgstr "Semmibevett"
 
 #: src/gui/popupmenu.cpp:109
 #, fuzzy, c-format
 msgid "Ignore %s"
-msgstr "מתעלם"
+msgstr "Tiltott"
 
 #: src/gui/popupmenu.cpp:115 src/gui/popupmenu.cpp:124
 #, c-format
@@ -1241,7 +1035,7 @@ msgstr ""
 #: src/gui/popupmenu.cpp:118
 #, fuzzy, c-format
 msgid "Completely ignore %s"
-msgstr "@@ignore|התעלם לחלוטין %s@@"
+msgstr "@@ignore|Teljesen letiltod %s-t@@"
 
 #: src/gui/popupmenu.cpp:130
 #, c-format
@@ -1251,168 +1045,168 @@ msgstr ""
 #: src/gui/popupmenu.cpp:133
 #, fuzzy, c-format
 msgid "Invite %s to join your guild"
-msgstr "@@guild|הזמן את %s להצטרף לגילדה@@"
+msgstr "@@guild|%s meghívása a klánodba@@"
 
 #: src/gui/popupmenu.cpp:137
 #, fuzzy, c-format
 msgid "Invite %s to join your party"
-msgstr "@@party|הזמן את %s להצטרף לחבורה@@"
+msgstr "@@party|%s meghívása a csapatodba@@"
 
 #: src/gui/popupmenu.cpp:144
 #, fuzzy
 msgid "Kick player"
-msgstr "העפה נכשלה!"
+msgstr "Kirúgás sikertelen!"
 
 #: src/gui/popupmenu.cpp:153
 #, fuzzy, c-format
 msgid "Talk to %s"
-msgstr "@@talk|דבר אל %s@@"
+msgstr "@@talk|Privát Te és %s között@@"
 
 #: src/gui/popupmenu.cpp:166
 #, fuzzy
 msgid "Kick monster"
-msgstr "@@admin-kick|העף מפלצת@@"
+msgstr "@@admin-kick|Szörny kirúgása@@"
 
 #: src/gui/popupmenu.cpp:174
 #, fuzzy
 msgid "Add name to chat"
-msgstr "@@name|הוסף שם לשיחה@@"
+msgstr "@@name|Neve hozzáadása a csevegéshez@@"
 
 #: src/gui/popupmenu.cpp:191
 #, fuzzy, c-format
 msgid "Pick up %s"
-msgstr "הרם"
+msgstr "Felvesz"
 
 #: src/gui/popupmenu.cpp:193 src/gui/popupmenu.cpp:400
 #, fuzzy
 msgid "Add to chat"
-msgstr "@@chat|הוסף לשיחה@@"
+msgstr "@@chat|Hozzáadás a chat-hez@@"
 
-#: src/gui/popupmenu.cpp:391 src/gui/storagewindow.cpp:70
+#: src/gui/popupmenu.cpp:391 src/gui/storagewindow.cpp:71
 msgid "Store"
-msgstr "אחסן"
+msgstr "Raktároz"
 
-#: src/gui/popupmenu.cpp:398 src/gui/storagewindow.cpp:71
+#: src/gui/popupmenu.cpp:398 src/gui/storagewindow.cpp:72
 msgid "Retrieve"
-msgstr "החזר"
+msgstr "Magához vesz"
 
 #: src/gui/quitdialog.cpp:44
 msgid "Switch server"
-msgstr "החלף שרת"
+msgstr "Szerver változtatása"
 
 #: src/gui/quitdialog.cpp:45
 msgid "Switch character"
-msgstr "החלף שחקן"
+msgstr "Karakter változtatása"
 
 #: src/gui/recorder.cpp:87
 msgid "Finishing recording."
-msgstr "מסיים להקליט."
+msgstr "Rögzítés befejezése."
 
 #: src/gui/recorder.cpp:91
 msgid "Not currently recording."
-msgstr "אינו מקליט כרגע."
+msgstr "Jelenleg nem rögzítesz."
 
 #: src/gui/recorder.cpp:96
 msgid "Already recording."
-msgstr "כבר מקליט."
+msgstr "Már rögzítesz."
 
 #: src/gui/recorder.cpp:104
 msgid "Starting to record..."
-msgstr "מתחיל להקליט..."
+msgstr "Rögzítés megkezdése..."
 
 #: src/gui/recorder.cpp:112
 msgid "Failed to start recording."
-msgstr "שגיאה בהתחלת ההקלטה."
+msgstr "Sikertelen rögzítés."
 
 #: src/gui/recorder.h:38
 msgid "Recording..."
-msgstr "מקליט..."
+msgstr "Rögzítés..."
 
 #: src/gui/recorder.h:39
 msgid "Stop recording"
-msgstr "מפסיק להקליט"
+msgstr "Rögzítés leállítása"
 
 #: src/gui/register.cpp:69
 msgid "Confirm:"
-msgstr "אשר:"
+msgstr "Megerősítés:"
 
 #: src/gui/register.cpp:100
 msgid "Email:"
-msgstr "דוא\"ל:"
+msgstr "Email:"
 
 #: src/gui/register.cpp:166
 #, c-format
 msgid "The username needs to be at least %d characters long."
-msgstr "שם המשתמש חייב להכיל לפחות %d תוים."
+msgstr "A felhasználónévnek legalább %d karakternek kell lennie."
 
 #: src/gui/register.cpp:174
 #, c-format
 msgid "The username needs to be less than %d characters long."
-msgstr "שם המשתמש חייב להכיל פחות מ-%d תוים."
+msgstr "A felhasználónévnek legfeljebb %d karakternek kell lennie."
 
 #: src/gui/register.cpp:182 src/gui/unregisterdialog.cpp:117
 #, c-format
 msgid "The password needs to be at least %d characters long."
-msgstr "הסיסמה חייבת להכיל לפחות %d תוים."
+msgstr "A jelszónak legalább %d karakter hosszúnak kell lennie."
 
 #: src/gui/register.cpp:190 src/gui/unregisterdialog.cpp:124
 #, c-format
 msgid "The password needs to be less than %d characters long."
-msgstr "הסיסמה חייבת להכיל פחות מ-%d תוים."
+msgstr "A jelszónak legfeljebb %d karakter hosszúnak kell lennie."
 
 #: src/gui/register.cpp:197
 msgid "Passwords do not match."
-msgstr "הסיסמאות אינן תואמות."
+msgstr "A jelszavak nem egyeznek."
 
-#: src/gui/serverdialog.cpp:134
+#: src/gui/serverdialog.cpp:124
 #, fuzzy
 msgid "Choose Your Server"
-msgstr "בחר את השרת שלך"
+msgstr "Válassz szervert"
 
-#: src/gui/serverdialog.cpp:141 src/gui/widgets/chattab.cpp:139
+#: src/gui/serverdialog.cpp:131 src/gui/widgets/chattab.cpp:139
 msgid "Server:"
-msgstr "שרת:"
+msgstr "Szerver:"
 
-#: src/gui/serverdialog.cpp:142
+#: src/gui/serverdialog.cpp:132
 msgid "Port:"
-msgstr "פורט:"
+msgstr "Port:"
 
-#: src/gui/serverdialog.cpp:143
+#: src/gui/serverdialog.cpp:133
 #, fuzzy
 msgid "Server type:"
-msgstr "שרת:"
+msgstr "Szerver:"
 
-#: src/gui/serverdialog.cpp:183
+#: src/gui/serverdialog.cpp:153
 #, fuzzy
 msgid "Connect"
-msgstr "מתחבר..."
+msgstr "Csatlakozás…"
 
-#: src/gui/serverdialog.cpp:184
+#: src/gui/serverdialog.cpp:154
 #, fuzzy
 msgid "Custom Server"
-msgstr "סמן-עכבר מותאם"
+msgstr "Egyéni kurzor"
 
-#: src/gui/serverdialog.cpp:262
+#: src/gui/serverdialog.cpp:242
 msgid "Please type both the address and the port of a server."
-msgstr "אנא הכנס גם את כתובת וגם את פורט השרת."
+msgstr "Kérlek írd be a szerver címét és portját egyaránt."
 
-#: src/gui/serverdialog.cpp:411
+#: src/gui/serverdialog.cpp:357
 #, c-format
 msgid "Downloading server list...%2.2f%%"
 msgstr ""
 
-#: src/gui/serverdialog.cpp:417
+#: src/gui/serverdialog.cpp:363
 #, fuzzy
 msgid "Waiting for server..."
-msgstr "ממתין לשרת"
+msgstr "Várakozás a szerverre"
 
-#: src/gui/serverdialog.cpp:421
+#: src/gui/serverdialog.cpp:367
 msgid "Preparing download"
 msgstr ""
 
 #: src/gui/setup_audio.cpp:42
 msgid "Sound"
-msgstr "צליל"
+msgstr "Hang"
 
 #: src/gui/setup_audio.cpp:43
 msgid "Download music"
@@ -1420,20 +1214,20 @@ msgstr ""
 
 #: src/gui/setup_audio.cpp:47
 msgid "Audio"
-msgstr "שמע"
+msgstr "Audió"
 
 #: src/gui/setup_audio.cpp:50
 msgid "Sfx volume"
-msgstr "עוצמת SFX"
+msgstr "Effektek hangereje"
 
 #: src/gui/setup_audio.cpp:51
 msgid "Music volume"
-msgstr "עוצמת מוזיקה"
+msgstr "Zene hangereje"
 
 #: src/gui/setup_audio.cpp:94
 #, fuzzy
 msgid "Notice"
-msgstr "ללא טקסט"
+msgstr "Nincs szöveg"
 
 #: src/gui/setup_audio.cpp:94
 msgid "You may have to restart your client if you want to download new music"
@@ -1443,129 +1237,134 @@ msgstr ""
 msgid "Sound Engine"
 msgstr ""
 
-#: src/gui/setup_colors.cpp:44
+#: src/gui/setup_colors.cpp:45
 msgid "This is what the color looks like"
-msgstr "כך הצבע נראה"
+msgstr "Így fog kinézni a felirat."
 
-#: src/gui/setup_colors.cpp:49
+#: src/gui/setup_colors.cpp:50
 msgid "Colors"
-msgstr "צבעים"
+msgstr "Színek"
 
-#: src/gui/setup_colors.cpp:70
+#: src/gui/setup_colors.cpp:71
 #, fuzzy
 msgid "Type:"
-msgstr "סוג: "
+msgstr "Típus: "
 
-#: src/gui/setup_colors.cpp:81 src/gui/setup_colors.cpp:433
+#: src/gui/setup_colors.cpp:82 src/gui/setup_colors.cpp:330
 msgid "Static"
-msgstr "סטטי"
+msgstr "Statikus"
 
-#: src/gui/setup_colors.cpp:83 src/gui/setup_colors.cpp:84
-#: src/gui/setup_colors.cpp:434
+#: src/gui/setup_colors.cpp:84 src/gui/setup_colors.cpp:85
+#: src/gui/setup_colors.cpp:331
 msgid "Pulse"
-msgstr "פעימה"
+msgstr "Pulzáló"
 
-#: src/gui/setup_colors.cpp:85 src/gui/setup_colors.cpp:86
-#: src/gui/setup_colors.cpp:435
+#: src/gui/setup_colors.cpp:86 src/gui/setup_colors.cpp:87
+#: src/gui/setup_colors.cpp:332
 msgid "Rainbow"
-msgstr "קשת בענן"
+msgstr "Szivárvány"
 
-#: src/gui/setup_colors.cpp:87 src/gui/setup_colors.cpp:88
-#: src/gui/setup_colors.cpp:435
+#: src/gui/setup_colors.cpp:88 src/gui/setup_colors.cpp:89
+#: src/gui/setup_colors.cpp:332
 msgid "Spectrum"
-msgstr "מינסרה"
+msgstr "Színkép"
 
-#: src/gui/setup_colors.cpp:92
+#: src/gui/setup_colors.cpp:93
 #, fuzzy
 msgid "Delay:"
-msgstr "עיכוב: "
+msgstr "Várakozás "
 
-#: src/gui/setup_colors.cpp:107
+#: src/gui/setup_colors.cpp:108
 #, fuzzy
 msgid "Red:"
-msgstr "אדום: "
+msgstr "Vörös: "
 
-#: src/gui/setup_colors.cpp:122
+#: src/gui/setup_colors.cpp:123
 #, fuzzy
 msgid "Green:"
-msgstr "ירוק: "
+msgstr "Zöld: "
 
-#: src/gui/setup_colors.cpp:137
+#: src/gui/setup_colors.cpp:138
 #, fuzzy
 msgid "Blue:"
-msgstr "כחול: "
+msgstr "Kék: "
 
 #: src/gui/setup.cpp:51
 msgid "Apply"
-msgstr "אשר"
+msgstr "Alkalmaz"
 
 #: src/gui/setup.cpp:51
 msgid "Reset Windows"
-msgstr "אתחל חלונות"
+msgstr "Ablakok alaphelyzetbe"
 
 #: src/gui/setup_joystick.cpp:37 src/gui/setup_joystick.cpp:78
 msgid "Press the button to start calibration"
-msgstr "לחץ על הכפתור בכדי להתחיל בכיול"
+msgstr "Nyomd meg a gombot a kalibrálás megkezdéséhez"
 
 #: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:76
 msgid "Calibrate"
-msgstr "כייל"
+msgstr "Kalibrálás"
 
 #: src/gui/setup_joystick.cpp:39
 msgid "Enable joystick"
-msgstr "אפשר ג'ויסטיק"
+msgstr "Joystick engedélyezése"
 
 #: src/gui/setup_joystick.cpp:41
 msgid "Joystick"
-msgstr "ג'ויסטיק"
+msgstr "Joystick"
 
 #: src/gui/setup_joystick.cpp:83
 msgid "Stop"
-msgstr "עצור"
+msgstr "Leállít"
 
 #: src/gui/setup_joystick.cpp:84
 msgid "Rotate the stick"
-msgstr "סובב את המקל"
+msgstr "Mozgasd körbe"
 
 #: src/gui/setup_keyboard.cpp:77
 msgid "Keyboard"
-msgstr "מקלדת"
+msgstr "Billentyűzet"
 
 #: src/gui/setup_keyboard.cpp:86
 msgid "Assign"
-msgstr "שנה"
+msgstr "Hozzárendel"
 
 #: src/gui/setup_keyboard.cpp:90
-msgid "Default"
-msgstr "ברירת מחדל"
+#, fuzzy
+msgid "Unassign"
+msgstr "Hozzárendel"
 
-#: src/gui/setup_keyboard.cpp:119
+#: src/gui/setup_keyboard.cpp:94
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: src/gui/setup_keyboard.cpp:125
 msgid "Key Conflict(s) Detected."
-msgstr "נמצאו קונפליקטי מקשים."
+msgstr "Billentyű ütközés van."
 
 #: src/gui/setup_players.cpp:57
 msgid "Name"
-msgstr "שם"
+msgstr "Név"
 
 #: src/gui/setup_players.cpp:58
 msgid "Relation"
-msgstr "התנהגות"
+msgstr "Kapcsolat"
 
 #: src/gui/setup_players.cpp:63
 msgid "Neutral"
-msgstr "ניטרלי"
+msgstr "Semleges"
 
 #: src/gui/setup_players.cpp:64
 msgid "Friend"
-msgstr "חבר"
+msgstr "Barát"
 
 #: src/gui/setup_players.cpp:65
 msgid "Disregarded"
-msgstr "מזלזל"
+msgstr "Semmibevett"
 
 #: src/gui/setup_players.cpp:66
 msgid "Ignored"
-msgstr "מתעלם"
+msgstr "Tiltott"
 
 #: src/gui/setup_players.cpp:208 src/gui/setup_video.cpp:132
 msgid "???"
@@ -1573,195 +1372,199 @@ msgstr "???"
 
 #: src/gui/setup_players.cpp:226
 msgid "Allow trading"
-msgstr "אפשר מסחר"
+msgstr "Üzletelés engedélyezése"
 
 #: src/gui/setup_players.cpp:228
 msgid "Allow whispers"
-msgstr "אפשר לחישות"
+msgstr "Privát engedélyezése"
 
 #: src/gui/setup_players.cpp:232
 msgid "Put all whispers in tabs"
-msgstr "הכנס את כל הלחישות ללשוניות"
+msgstr "Privátok fülekbe tétele"
 
 #: src/gui/setup_players.cpp:234
 #, fuzzy
 msgid "Show gender"
-msgstr "הצג שם"
+msgstr "A név mutatása"
 
 #: src/gui/setup_players.cpp:236
 msgid "Players"
-msgstr "שחקנים"
+msgstr "Játékosok"
 
 #: src/gui/setup_players.cpp:261
 msgid "When ignoring:"
-msgstr "כאשר מתעלם:"
+msgstr "Ha ignorolva van:"
 
 #: src/gui/setup_video.cpp:113
 msgid "Tiny"
-msgstr "מזערי"
+msgstr "Apró"
 
 #: src/gui/setup_video.cpp:114
 msgid "Small"
-msgstr "קטן"
+msgstr "Kicsi"
 
 #: src/gui/setup_video.cpp:115
 msgid "Medium"
-msgstr "בינוני"
+msgstr "Közepes"
 
 #: src/gui/setup_video.cpp:116
 msgid "Large"
-msgstr "גדול"
+msgstr "Nagy"
 
 #: src/gui/setup_video.cpp:142
 msgid "No text"
-msgstr "ללא טקסט"
+msgstr "Nincs szöveg"
+
+#: src/gui/setup_video.cpp:143
+msgid "Text"
+msgstr "Szöveg"
 
 #: src/gui/setup_video.cpp:144
 msgid "Bubbles, no names"
-msgstr "בועות, ללא שמות"
+msgstr "Buborékok, nincs név."
 
 #: src/gui/setup_video.cpp:145
 msgid "Bubbles with names"
-msgstr "בועות עם שמות"
+msgstr "Buborékok nevekkel"
 
 #: src/gui/setup_video.cpp:157
 msgid "off"
-msgstr "כבוי"
+msgstr "ki"
 
 #: src/gui/setup_video.cpp:158 src/gui/setup_video.cpp:171
 msgid "low"
-msgstr "נמוך"
+msgstr "alacsony"
 
 #: src/gui/setup_video.cpp:159 src/gui/setup_video.cpp:173
 msgid "high"
-msgstr "גבוה"
+msgstr "magas"
 
 #: src/gui/setup_video.cpp:172
 msgid "medium"
-msgstr "בינוני"
+msgstr "közepes"
 
 #: src/gui/setup_video.cpp:174
 msgid "max"
-msgstr "מקסימלי"
+msgstr "max."
 
 #: src/gui/setup_video.cpp:196
 msgid "Full screen"
-msgstr "מסך מלא"
+msgstr "Teljes képernyő"
 
 #: src/gui/setup_video.cpp:197
 msgid "OpenGL"
-msgstr "‏OpenGL"
+msgstr "OpenGL"
 
 #: src/gui/setup_video.cpp:198
 msgid "Custom cursor"
-msgstr "סמן-עכבר מותאם"
+msgstr "Egyéni kurzor"
 
 #: src/gui/setup_video.cpp:200
 msgid "Visible names"
-msgstr "שמות גלויים"
+msgstr "Látható nevek"
 
 #: src/gui/setup_video.cpp:202
 msgid "Particle effects"
-msgstr "אפקטים חלקיים"
+msgstr "Játékbéli effektek"
 
 #: src/gui/setup_video.cpp:204
 #, fuzzy
 msgid "Show own name"
-msgstr "הצג שם"
+msgstr "A név mutatása"
 
 #: src/gui/setup_video.cpp:205
 msgid "Show pickup notification"
-msgstr "הצג התרעת לקיחה"
+msgstr "Értesítés tárgy felvételkor"
 
 #. TRANSLATORS: Refers to "Show own name"
 #: src/gui/setup_video.cpp:207
 msgid "in chat"
-msgstr "בשיחה"
+msgstr "Chat-en belül"
 
 #. TRANSLATORS: Refers to "Show own name"
 #: src/gui/setup_video.cpp:209
 msgid "as particle"
-msgstr "באופן חלקי"
+msgstr "Karakter felett"
 
 #: src/gui/setup_video.cpp:214
 #, fuzzy
 msgid "FPS limit:"
-msgstr "הגבלת FPS:"
+msgstr "FPS Limit:"
 
 #: src/gui/setup_video.cpp:225
 msgid "Video"
-msgstr "וידאו"
+msgstr "Videó"
 
 #: src/gui/setup_video.cpp:227
 #, fuzzy
 msgid "Show monster damage"
-msgstr "הצג שם"
+msgstr "A név mutatása"
 
 #: src/gui/setup_video.cpp:233
 msgid "Overhead text"
-msgstr "טקסט מעל הראש"
+msgstr "Fej feletti szöveg"
 
 #: src/gui/setup_video.cpp:234
 msgid "Gui opacity"
-msgstr "אטימות Gui"
+msgstr "Menük áttetszősége"
 
 #: src/gui/setup_video.cpp:235
 msgid "Ambient FX"
-msgstr "אופף FX"
+msgstr "Környezeti effektek"
 
 #: src/gui/setup_video.cpp:236
 #, fuzzy
 msgid "Particle detail"
-msgstr "מידע חלקי"
+msgstr "Effektek részletessége"
 
 #: src/gui/setup_video.cpp:237
 msgid "Font size"
-msgstr "גודל הגופן"
+msgstr "Betűméret"
 
 #: src/gui/setup_video.cpp:251 src/gui/setup_video.cpp:454
 #: src/gui/setup_video.cpp:568
 #, fuzzy
 msgid "None"
-msgstr "לא"
+msgstr "Nem"
 
 #: src/gui/setup_video.cpp:381
 #, fuzzy
 msgid ""
 "Failed to switch to windowed mode and restoration of old mode also failed!"
-msgstr "מצב ושיחזור מצב ישן נכשלו!"
+msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
 
 #: src/gui/setup_video.cpp:387
 #, fuzzy
 msgid ""
 "Failed to switch to fullscreen mode and restoration of old mode also failed!"
-msgstr "מצב ושיחזור מצב ישן נכשלו!"
+msgstr "Ez a mód és az előző mód visszaállítása sikertelen."
 
 #: src/gui/setup_video.cpp:398
 #, fuzzy
 msgid "Switching to Full Screen"
-msgstr "מחליף למסך מלא"
+msgstr "Átállás teljes képernyőre"
 
 #: src/gui/setup_video.cpp:399
 msgid "Restart needed for changes to take effect."
-msgstr "נדרש איתחול כדי שהשינויים יהיו ברי-תוקף."
+msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
 
 #: src/gui/setup_video.cpp:411
 #, fuzzy
 msgid "Changing to OpenGL"
-msgstr "משנה OpenGL"
+msgstr "OpenGL átállítása"
 
 #: src/gui/setup_video.cpp:412
 msgid "Applying change to OpenGL requires restart."
-msgstr "אישור שינויים עבור OpenGL דורש איתחול."
+msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
 
 #: src/gui/setup_video.cpp:486 src/gui/setup_video.cpp:491
 #, fuzzy
 msgid "Screen Resolution Changed"
-msgstr "רזולוצית המסך השתנתה"
+msgstr "A képernyő felbontása megváltozott"
 
 #: src/gui/setup_video.cpp:487 src/gui/setup_video.cpp:492
 msgid "Restart your client for the change to take effect."
-msgstr "טען מחדש כדי שהשינוי יחול."
+msgstr "A változások érvénybe lépéséhez a program újraindítása szükséges."
 
 #: src/gui/setup_video.cpp:489
 msgid "Some windows may be moved to fit the lowered resolution."
@@ -1770,224 +1573,224 @@ msgstr ""
 #: src/gui/setup_video.cpp:522
 #, fuzzy
 msgid "Particle Effect Settings Changed."
-msgstr "הגדרות השינוי החלקי השתנו."
+msgstr "Effektek beállítása megváltozott."
 
 #: src/gui/setup_video.cpp:523
 msgid "Changes will take effect on map change."
-msgstr "השינויים יחולו על שינוי המפה."
+msgstr "A változások érvénybe lépéséhez töltsön be egy új térképet."
 
-#: src/gui/skilldialog.cpp:197 src/gui/windowmenu.cpp:58
+#: src/gui/skilldialog.cpp:198 src/gui/windowmenu.cpp:59
 msgid "Skills"
-msgstr "כישורים"
+msgstr "Képességek"
 
-#: src/gui/skilldialog.cpp:208
+#: src/gui/skilldialog.cpp:209
 msgid "Up"
-msgstr "למעלה"
+msgstr "Fejleszt"
 
-#: src/gui/skilldialog.cpp:262
+#: src/gui/skilldialog.cpp:263
 #, fuzzy, c-format
 msgid "Skill points available: %d"
-msgstr "נקודות כישורים:  %d"
+msgstr "Képesség pontok: %d"
 
-#: src/gui/skilldialog.cpp:314
+#: src/gui/skilldialog.cpp:315
 #, fuzzy, c-format
 msgid "Skill Set %d"
-msgstr "נקודות כישורים:  %d"
+msgstr "Képesség pontok: %d"
 
-#: src/gui/skilldialog.cpp:323
+#: src/gui/skilldialog.cpp:324
 #, fuzzy, c-format
 msgid "Skill %d"
-msgstr "כישורים"
+msgstr "Képességek"
 
-#: src/gui/skilldialog.cpp:405
+#: src/gui/skilldialog.cpp:406
 #, fuzzy, c-format
 msgid "Lvl: %d (%+d)"
-msgstr "רמה: %d"
+msgstr "Szint: %d"
 
-#: src/gui/skilldialog.cpp:416
+#: src/gui/skilldialog.cpp:417
 #, fuzzy, c-format
 msgid "Lvl: %d"
-msgstr "רמה: %d"
+msgstr "Szint: %d"
 
-#: src/gui/socialwindow.cpp:117
+#: src/gui/socialwindow.cpp:118
 #, c-format
 msgid "Invited user %s to guild %s."
 msgstr ""
 
-#: src/gui/socialwindow.cpp:126
+#: src/gui/socialwindow.cpp:127
 #, fuzzy, c-format
 msgid "Guild %s quit requested."
-msgstr "גילדה נוצרה."
+msgstr "Klán létrehozva."
 
-#: src/gui/socialwindow.cpp:136
+#: src/gui/socialwindow.cpp:137
 msgid "Member Invite to Guild"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:137
+#: src/gui/socialwindow.cpp:138
 #, c-format
 msgid "Who would you like to invite to guild %s?"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:146
+#: src/gui/socialwindow.cpp:147
 #, fuzzy
 msgid "Leave Guild?"
-msgstr "צור גילדה"
+msgstr "Klán létrehozása"
 
-#: src/gui/socialwindow.cpp:147
+#: src/gui/socialwindow.cpp:148
 #, fuzzy, c-format
 msgid "Are you sure you want to leave guild %s?"
-msgstr "האם אתה בטוח שברצונך לצאת?"
+msgstr "Biztos, hogy ki szeretne lépni?"
 
-#: src/gui/socialwindow.cpp:182
+#: src/gui/socialwindow.cpp:183
 #, fuzzy, c-format
 msgid "Invited user %s to party."
-msgstr "/party > הזמן משתמש לחבורה"
+msgstr "/party > Felhasználó csapatba hívása"
 
-#: src/gui/socialwindow.cpp:189
+#: src/gui/socialwindow.cpp:190
 #, c-format
 msgid "Party %s quit requested."
 msgstr ""
 
-#: src/gui/socialwindow.cpp:199
+#: src/gui/socialwindow.cpp:200
 #, fuzzy
 msgid "Member Invite to Party"
-msgstr "/party > הזמן משתמש לחבורה"
+msgstr "/party > Felhasználó csapatba hívása"
 
-#: src/gui/socialwindow.cpp:200
+#: src/gui/socialwindow.cpp:201
 #, c-format
 msgid "Who would you like to invite to party %s?"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:209
+#: src/gui/socialwindow.cpp:210
 msgid "Leave Party?"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:210
+#: src/gui/socialwindow.cpp:211
 #, fuzzy, c-format
 msgid "Are you sure you want to leave party %s?"
-msgstr "האם אתה בטוח שברצונך לצאת?"
+msgstr "Biztos, hogy ki szeretne lépni?"
 
-#: src/gui/socialwindow.cpp:239
+#: src/gui/socialwindow.cpp:240
 msgid "Create Guild"
-msgstr "צור גילדה"
+msgstr "Klán létrehozása"
 
-#: src/gui/socialwindow.cpp:240 src/gui/socialwindow.cpp:564
+#: src/gui/socialwindow.cpp:241 src/gui/socialwindow.cpp:565
 #, fuzzy
 msgid "Create Party"
-msgstr "צור שחקן"
+msgstr "Karakter létrehozása"
 
-#: src/gui/socialwindow.cpp:279 src/gui/windowmenu.cpp:60
+#: src/gui/socialwindow.cpp:280 src/gui/windowmenu.cpp:64
 msgid "Social"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:297
-#, fuzzy
-msgid "Invite"
-msgstr "הזמן משתמש"
-
 #: src/gui/socialwindow.cpp:298
 #, fuzzy
-msgid "Leave"
-msgstr "גדול"
+msgid "Invite"
+msgstr "Felhasználó meghívása"
 
-#: src/gui/socialwindow.cpp:394
+#: src/gui/socialwindow.cpp:299
+#, fuzzy
+msgid "Leave"
+msgstr "Nagy"
+
+#: src/gui/socialwindow.cpp:395
 #, fuzzy, c-format
 msgid "Accepted party invite from %s."
-msgstr "אשר את ההזמנה של %s."
+msgstr "Csapatba hívást elfogadta %s."
 
-#: src/gui/socialwindow.cpp:400
+#: src/gui/socialwindow.cpp:401
 #, fuzzy, c-format
 msgid "Rejected party invite from %s."
-msgstr "דחה את ההזמנה של %s."
+msgstr "Csapatba hívást elutasította %s."
 
-#: src/gui/socialwindow.cpp:413
+#: src/gui/socialwindow.cpp:414
 #, fuzzy, c-format
 msgid "Accepted guild invite from %s."
-msgstr "אשר את ההזמנה של %s."
+msgstr "Csapatba hívást elfogadta %s."
 
-#: src/gui/socialwindow.cpp:419
+#: src/gui/socialwindow.cpp:420
 #, fuzzy, c-format
 msgid "Rejected guild invite from %s."
-msgstr "דחה את ההזמנה של %s."
+msgstr "Csapatba hívást elutasította %s."
 
-#: src/gui/socialwindow.cpp:463
+#: src/gui/socialwindow.cpp:464
 #, fuzzy, c-format
 msgid "Creating guild called %s."
-msgstr "שגיאה ביצירת גילדה."
+msgstr "Hiba a klán létrehozása közben."
 
-#: src/gui/socialwindow.cpp:477
+#: src/gui/socialwindow.cpp:478
 #, c-format
 msgid "Creating party called %s."
 msgstr ""
 
-#: src/gui/socialwindow.cpp:484
-#, fuzzy
-msgid "Guild Name"
-msgstr "גילדה"
-
 #: src/gui/socialwindow.cpp:485
 #, fuzzy
-msgid "Choose your guild's name."
-msgstr "בחר את השרת שלך"
+msgid "Guild Name"
+msgstr "Klán"
 
-#: src/gui/socialwindow.cpp:497
+#: src/gui/socialwindow.cpp:486
+#, fuzzy
+msgid "Choose your guild's name."
+msgstr "Válassz szervert"
+
+#: src/gui/socialwindow.cpp:498
 #, fuzzy
 msgid "Received guild request, but one already exists."
-msgstr "התקבלה הזמנה לחבורה, אך הזמנה זהה כבר קיימת."
+msgstr "Csapatba hívtak, de neked van csapatod."
 
-#: src/gui/socialwindow.cpp:502
+#: src/gui/socialwindow.cpp:503
 #, fuzzy, c-format
 msgid "%s has invited you to join the guild %s."
-msgstr "%s הזמין אותך להצטרף לחבורת %s."
+msgstr "%s behívott %s csapatába."
 
-#: src/gui/socialwindow.cpp:507
+#: src/gui/socialwindow.cpp:508
 #, fuzzy
 msgid "Accept Guild Invite"
-msgstr "אשר את הזמנת חבורה"
+msgstr "Ajánlat elfogadása"
 
-#: src/gui/socialwindow.cpp:519
+#: src/gui/socialwindow.cpp:520
 msgid "Received party request, but one already exists."
-msgstr "התקבלה הזמנה לחבורה, אך הזמנה זהה כבר קיימת."
+msgstr "Csapatba hívtak, de neked van csapatod."
 
-#: src/gui/socialwindow.cpp:529
+#: src/gui/socialwindow.cpp:530
 #, fuzzy
 msgid "You have been invited you to join a party."
-msgstr "%s הזמין אותך לחבורה שלהם."
+msgstr "%s a csapatába hívott."
 
-#: src/gui/socialwindow.cpp:533
+#: src/gui/socialwindow.cpp:534
 #, fuzzy, c-format
 msgid "You have been invited to join the %s party."
-msgstr "%s הזמין אותך להצטרף לחבורת %s."
+msgstr "%s behívott %s csapatába."
 
-#: src/gui/socialwindow.cpp:541
+#: src/gui/socialwindow.cpp:542
 #, c-format
 msgid "%s has invited you to join their party."
-msgstr "%s הזמין אותך לחבורה שלהם."
+msgstr "%s a csapatába hívott."
 
-#: src/gui/socialwindow.cpp:546
+#: src/gui/socialwindow.cpp:547
 #, c-format
 msgid "%s has invited you to join the %s party."
-msgstr "%s הזמין אותך להצטרף לחבורת %s."
+msgstr "%s behívott %s csapatába."
 
-#: src/gui/socialwindow.cpp:554
+#: src/gui/socialwindow.cpp:555
 msgid "Accept Party Invite"
-msgstr "אשר את הזמנת חבורה"
+msgstr "Ajánlat elfogadása"
 
-#: src/gui/socialwindow.cpp:565
+#: src/gui/socialwindow.cpp:566
 msgid "Cannot create party. You are already in a party"
 msgstr ""
 
-#: src/gui/socialwindow.cpp:570
-#, fuzzy
-msgid "Party Name"
-msgstr "חבורה"
-
 #: src/gui/socialwindow.cpp:571
 #, fuzzy
-msgid "Choose your party's name."
-msgstr "בחר את השרת שלך"
+msgid "Party Name"
+msgstr "Csapat"
 
-#: src/gui/specialswindow.cpp:85 src/gui/windowmenu.cpp:59
+#: src/gui/socialwindow.cpp:572
+#, fuzzy
+msgid "Choose your party's name."
+msgstr "Válassz szervert"
+
+#: src/gui/specialswindow.cpp:85 src/gui/windowmenu.cpp:62
 msgid "Specials"
 msgstr ""
 
@@ -2001,259 +1804,261 @@ msgstr ""
 msgid "Special %d"
 msgstr ""
 
-#: src/gui/statuswindow.cpp:99 src/gui/statuswindow.cpp:247
+#: src/gui/statuswindow.cpp:100 src/gui/statuswindow.cpp:247
 #, c-format
 msgid "Level: %d"
-msgstr "רמה: %d"
+msgstr "Szint: %d"
 
-#: src/gui/statuswindow.cpp:100 src/gui/statuswindow.cpp:211
+#: src/gui/statuswindow.cpp:101 src/gui/statuswindow.cpp:211
 #, c-format
 msgid "Money: %s"
-msgstr "כסף: %s"
+msgstr "Pénz: %s"
 
-#: src/gui/statuswindow.cpp:102
+#: src/gui/statuswindow.cpp:104
 msgid "HP:"
-msgstr "חיים:"
+msgstr "Élet:"
 
-#: src/gui/statuswindow.cpp:107
+#: src/gui/statuswindow.cpp:109
 msgid "Exp:"
-msgstr "נסיון:"
+msgstr "TP:"
 
-#: src/gui/statuswindow.cpp:112
+#: src/gui/statuswindow.cpp:114
 msgid "MP:"
-msgstr "קסם:"
+msgstr "Varázserő:"
 
 #: src/gui/statuswindow.cpp:132 src/gui/statuswindow.cpp:219
 #, c-format
 msgid "Job: %d"
-msgstr "עבודה: %d"
+msgstr "Munka: %d"
 
 #: src/gui/statuswindow.cpp:133
 msgid "Job:"
-msgstr "עבודה:"
+msgstr "Munka:"
 
 #: src/gui/statuswindow.cpp:194
 #, fuzzy
 msgid "HP"
-msgstr "חיים:"
+msgstr "Élet:"
 
 #: src/gui/statuswindow.cpp:200
 #, fuzzy
 msgid "MP"
-msgstr "קסם:"
+msgstr "Varázserő:"
 
 #: src/gui/statuswindow.cpp:206
 #, fuzzy
 msgid "Exp"
-msgstr "נסיון:"
+msgstr "TP:"
 
 #: src/gui/statuswindow.cpp:215
 #, fuzzy
 msgid "Money"
-msgstr "זהב: %d"
+msgstr "Pénz: %d"
 
 #: src/gui/statuswindow.cpp:225
 #, fuzzy
 msgid "Job"
-msgstr "עבודה:"
+msgstr "Munka:"
 
 #: src/gui/statuswindow.cpp:229
 #, fuzzy, c-format
 msgid "Character points: %d"
-msgstr "נתוני שחקן - אישור"
+msgstr "Karakter statok rendben"
 
 #: src/gui/statuswindow.cpp:235
 #, fuzzy, c-format
 msgid "Correction points: %d"
-msgstr "נקודות כישורים:  %d"
+msgstr "Képesség pontok: %d"
 
 #: src/gui/statuswindow.cpp:251
 #, fuzzy
 msgid "Level"
-msgstr "רמה: %d"
+msgstr "Szint: %d"
 
-#: src/gui/storagewindow.cpp:58
+#: src/gui/storagewindow.cpp:59
 msgid "Storage"
-msgstr "איחסון"
+msgstr "Raktár"
 
 #: src/gui/trade.cpp:52
 msgid "Propose trade"
-msgstr "מציע לחור"
+msgstr "Üzletet javasol"
 
 #: src/gui/trade.cpp:53
 msgid "Confirmed. Waiting..."
-msgstr "אושר. ממתין..."
+msgstr "Megerősítve. Vár..."
 
 #: src/gui/trade.cpp:54
 msgid "Agree trade"
-msgstr "הסכם למסחר"
+msgstr "Üzlet elfogadása"
 
 #: src/gui/trade.cpp:55
 msgid "Agreed. Waiting..."
-msgstr "מוסכם. ממתין..."
+msgstr "Elfogadva. Vár..."
 
 #: src/gui/trade.cpp:58
 msgid "Trade: You"
-msgstr "סחור: אתה"
+msgstr "Üzlet: Te"
 
 #: src/gui/trade.cpp:74 src/gui/trade.cpp:75
 msgid "Trade"
-msgstr "סחרר"
+msgstr "Üzlet"
 
 #: src/gui/trade.cpp:77
 msgid "Add"
-msgstr "הוסף"
+msgstr "Hozzáad"
 
 #: src/gui/trade.cpp:99 src/gui/trade.cpp:135
 #, fuzzy, c-format
 msgid "You get %s"
-msgstr "אתה מקבל %s."
+msgstr "Kapott tárgy: %s."
 
 #: src/gui/trade.cpp:100
 msgid "You give:"
-msgstr "אתה נותן:"
+msgstr "Adott tárgyak:"
 
 #: src/gui/trade.cpp:104
 msgid "Change"
-msgstr "שנה"
+msgstr "Változtatás"
 
 #: src/gui/trade.cpp:275
 msgid "Failed adding item. You can not overlap one kind of item on the window."
-msgstr "הוספת הפריט נכשלה. לא ניתן להכניס מעל חפץ אחד לחלון."
+msgstr ""
+"Hiba a tárgy hozzáadásakor. Nem tudod rárakni az egyik tárgyat a másikra."
 
 #: src/gui/trade.cpp:318
 msgid "You don't have enough money."
-msgstr "אין לך מספיק כסף."
+msgstr "Nincs elég pénzed."
 
 #: src/gui/unregisterdialog.cpp:51
 #, c-format
 msgid "Name: %s"
-msgstr "שם: %s"
+msgstr "Név: %s"
 
 #: src/gui/updatewindow.cpp:124
 msgid "Updating..."
-msgstr "מעדכן..."
+msgstr "Frissítés…"
 
 #: src/gui/updatewindow.cpp:142
 msgid "Connecting..."
-msgstr "מתחבר..."
+msgstr "Csatlakozás…"
 
 #: src/gui/updatewindow.cpp:145
 msgid "Play"
-msgstr "שחק"
+msgstr "Játék"
 
 #: src/gui/updatewindow.cpp:405
 msgid "##1  The update process is incomplete."
-msgstr "##1  תהליך העדכון לא תם."
+msgstr "##1 A frissítési folyamat befejezetlen"
 
 #. TRANSLATORS: Continues "you try again later.".
 #: src/gui/updatewindow.cpp:407
 msgid "##1  It is strongly recommended that"
-msgstr "##1  מומלץ ביותר שתנסה שוב מאוחר יותר"
+msgstr "##1 Erősen ajánljuk, hogy"
 
 #. TRANSLATORS: Begins "It is strongly recommended that".
 #: src/gui/updatewindow.cpp:409
 #, fuzzy
 msgid "##1  you try again later."
-msgstr "-"
+msgstr "##1 próbáld meg később"
 
 #: src/gui/updatewindow.cpp:501
 msgid "Completed"
-msgstr "הסתיים"
+msgstr "Kész"
 
 #: src/gui/widgets/channeltab.cpp:49
 msgid "/users > Lists the users in the current channel"
-msgstr "/users > רשימת המשתמשים בחדר הנוכחי"
+msgstr "/users > Kilistázza az aktuális csatorna felhasználóit"
 
 #: src/gui/widgets/channeltab.cpp:50
 msgid "/topic > Set the topic of the current channel"
-msgstr "/topic > קבע את כותרת נושא החדר"
+msgstr "/topic > Beállítja egy csatorna témáját."
 
 #: src/gui/widgets/channeltab.cpp:51
 msgid "/quit > Leave a channel"
-msgstr "/quit >עזוב את החדר"
+msgstr "/quit > Csatorna elhagyása"
 
 #: src/gui/widgets/channeltab.cpp:52
 msgid "/op > Make a user a channel operator"
-msgstr "/op > הפוך משתמש למנהל החדר"
+msgstr "/op > Felhasználóból csatorna operátort képez."
 
 #: src/gui/widgets/channeltab.cpp:53
 msgid "/kick > Kick a user from the channel"
-msgstr "/kick > העף משתמש מהחדר"
+msgstr "/kick > Felhasználó kirúgása a csatornából"
 
 #: src/gui/widgets/channeltab.cpp:63
 msgid "Command: /users"
-msgstr "פקודה: /users"
+msgstr "Parancs: /users"
 
 #: src/gui/widgets/channeltab.cpp:64
 msgid "This command shows the users in this channel."
-msgstr "פקודה זו מציגה את המשתמשים בחדר."
+msgstr "Ez a parancs megmutatja ennek a csatornának a felhasználóit."
 
 #: src/gui/widgets/channeltab.cpp:68
 msgid "Command: /topic <message>"
-msgstr "פקודה: /topic <message>"
+msgstr "Parancs: /topic <téma>"
 
 #: src/gui/widgets/channeltab.cpp:69
 msgid "This command sets the topic to <message>."
-msgstr "פקודה זו מציבה את <message> ככותרת נושא החדר."
+msgstr "Ez a parancs beállítja a témát a <téma> alatt megadott szövegre."
 
 #: src/gui/widgets/channeltab.cpp:73
 msgid "Command: /quit"
-msgstr "פקודה: /quit"
+msgstr "Parancs: /quit"
 
 #: src/gui/widgets/channeltab.cpp:74
 msgid "This command leaves the current channel."
-msgstr "הפקודה מוציאה אותך מהחדר הנוכחי."
+msgstr "Ez a parancs kilép az aktuális csatornából."
 
 #: src/gui/widgets/channeltab.cpp:75
 msgid "If you're the last person in the channel, it will be deleted."
-msgstr "אם הינך האדם האחרון בחדר, הוא יימחק."
+msgstr "Ha te vagy az utolsó személy a csatornán, akkor kitörli."
 
 #: src/gui/widgets/channeltab.cpp:80
 msgid "Command: /op <nick>"
-msgstr "פקודה: /op <nick>"
+msgstr "Parancs: /op <név>"
 
 #: src/gui/widgets/channeltab.cpp:81
 msgid "This command makes <nick> a channel operator."
-msgstr "פקודה זו הופכת את <nick> למנהל החדר."
+msgstr ""
+"Ez a parancs a <név> alatt megadott személyt csatorna operátorrá teszi."
 
 #: src/gui/widgets/channeltab.cpp:84
 msgid "Channel operators can kick and op other users from the channel."
-msgstr "מנהלי חדר יכולים להעיף משתמשים ולהפוך משתמשים אחרים בחדר למנהלים."
+msgstr "A csatorna operátor parancsai: /kick /op"
 
 #: src/gui/widgets/channeltab.cpp:89
 msgid "Command: /kick <nick>"
-msgstr "פקודה: /kick <nick>"
+msgstr "Parancs: /kick <név>"
 
 #: src/gui/widgets/channeltab.cpp:90
 msgid "This command makes <nick> leave the channel."
-msgstr "פקודה זו גורמת ל-<nick> לעזוב את החדר."
+msgstr "Ez a parancs kirúgja a <név> alatt megadott személyt a csatornából."
 
 #: src/gui/widgets/channeltab.cpp:119
 msgid "Need a user to op!"
-msgstr "צריך משתמש שינהל!"
+msgstr "Kell egy játékos az op parancshoz."
 
 #: src/gui/widgets/channeltab.cpp:126
 msgid "Need a user to kick!"
-msgstr "צריך משתמש שיעיף!"
+msgstr "Kell egy játékos a kick parancshoz."
 
 #: src/gui/widgets/chattab.cpp:118
 msgid "Global announcement:"
-msgstr "הודעה גלובאלית:"
+msgstr "Globális bejelentés:"
 
 #: src/gui/widgets/chattab.cpp:124
 #, c-format
 msgid "Global announcement from %s:"
-msgstr "הודעה גלובאלית מאת %s:"
+msgstr "Globális bejelentés (%s) :"
 
 #: src/gui/widgets/chattab.cpp:150
 #, fuzzy, c-format
 msgid "%s whispers: %s"
-msgstr "%s: לוחש: "
+msgstr "%s mondja: "
 
 #: src/gui/widgets/whispertab.cpp:51
 msgid "Cannot send empty chat!"
-msgstr "לא ניתן לשלוח הודעה ריקה!"
+msgstr "Nem tudsz üres üzenetet küldeni!"
 
 #: src/gui/widgets/whispertab.cpp:70
 msgid "/ignore > Ignore the other player"
@@ -2265,126 +2070,128 @@ msgstr ""
 
 #: src/gui/widgets/whispertab.cpp:72
 msgid "/close > Close the whisper tab"
-msgstr "/close > סוגר את לשונית הלחישות"
+msgstr "/close > Bezárja a privát fület."
 
 #: src/gui/widgets/whispertab.cpp:82
 msgid "Command: /close"
-msgstr "פקודה: /close"
+msgstr "Parancs: /close"
 
 #: src/gui/widgets/whispertab.cpp:83
 msgid "This command closes the current whisper tab."
-msgstr "הפקודה סוגרת את לשונית הלחישות הנוכחית."
+msgstr "Ez a parancs bezárja az aktuális privát fület."
 
 #: src/gui/widgets/whispertab.cpp:87
 #, fuzzy
 msgid "Command: /ignore"
-msgstr "פקודה: /item"
+msgstr "Parancs: /item"
 
 #: src/gui/widgets/whispertab.cpp:88
 #, fuzzy
 msgid "This command ignores the other player regardless of current relations."
-msgstr "פקודה זו מציגה את מספר השחקנים המחוברים כרגע."
+msgstr "Ez a parancs megmutatja az online játékosok számát."
 
 #: src/gui/widgets/whispertab.cpp:94
 #, fuzzy
 msgid "This command stops ignoring the other player if they are being ignored."
-msgstr "פקודה זו מתחילה להקליט רישום שיחה לקובץ <filename>."
+msgstr ""
+"Ez a parancs elkezdi felvenni a beszélgetést a <fájlnév> alatt megadott "
+"fájlba."
 
-#: src/gui/windowmenu.cpp:55
+#: src/gui/windowmenu.cpp:54
 msgid "Status"
-msgstr "מצב"
+msgstr "Státusz"
 
-#: src/gui/windowmenu.cpp:61
+#: src/gui/windowmenu.cpp:65
 msgid "Shortcut"
-msgstr "קיצור־דרך"
+msgstr "Gyorsmenü"
 
 #: src/gui/worldselectdialog.cpp:71
 #, fuzzy
 msgid "Select World"
-msgstr "בחר אישור"
+msgstr "Ok Kiválasztása"
 
 #: src/gui/worldselectdialog.cpp:76
 #, fuzzy
 msgid "Change Login"
-msgstr "שנה"
+msgstr "Változtatás"
 
 #: src/gui/worldselectdialog.cpp:77
 #, fuzzy
 msgid "Choose World"
-msgstr "בחר את השרת שלך"
+msgstr "Válassz szervert"
 
 #: src/keyboardconfig.cpp:40
 msgid "Move Up"
-msgstr "הזז למעלה"
+msgstr "Mozgás felfelé"
 
 #: src/keyboardconfig.cpp:41
 msgid "Move Down"
-msgstr "הזז למטה"
+msgstr "Mozgás lefelé"
 
 #: src/keyboardconfig.cpp:42
 msgid "Move Left"
-msgstr "הזז שמאלה"
+msgstr "Mozgás balra"
 
 #: src/keyboardconfig.cpp:43
 msgid "Move Right"
-msgstr "הזז ימינה"
+msgstr "Mozgás jobbra"
 
 #: src/keyboardconfig.cpp:44 src/net/ea/generalhandler.cpp:223
 msgid "Attack"
-msgstr "תקוף"
+msgstr "Támadás"
 
 #: src/keyboardconfig.cpp:45
 msgid "Target & Attack"
-msgstr "כוון ותקוף"
+msgstr "Kijelöl és Támad"
 
 #: src/keyboardconfig.cpp:46
 msgid "Smilie"
-msgstr "חייך"
+msgstr "Hangulatjel"
 
 #: src/keyboardconfig.cpp:47
 msgid "Talk"
-msgstr "דבר"
+msgstr "Csevegés"
 
 #: src/keyboardconfig.cpp:48
 msgid "Stop Attack"
-msgstr "הפסק לתקוף"
+msgstr "Támadás Megszüntetése"
 
 #: src/keyboardconfig.cpp:49
 #, fuzzy
 msgid "Target Monster"
-msgstr "כוון לקרוב ביותר"
+msgstr "Legközelebbit Kijelöl"
 
 #: src/keyboardconfig.cpp:50
 msgid "Target NPC"
-msgstr "כוון לדמות"
+msgstr "Gépjátékost Kijelöl"
 
 #: src/keyboardconfig.cpp:51
 msgid "Target Player"
-msgstr "כוון לשחקן"
+msgstr "Játékost Kijelöl"
 
 #: src/keyboardconfig.cpp:52
 msgid "Pickup"
-msgstr "הרם"
+msgstr "Felvesz"
 
 #: src/keyboardconfig.cpp:53
 msgid "Hide Windows"
-msgstr "הסתר חלונות"
+msgstr "Ablakok Elrejtése"
 
 #: src/keyboardconfig.cpp:54
 msgid "Sit"
-msgstr "שב"
+msgstr "Ülés"
 
 #: src/keyboardconfig.cpp:55
 msgid "Screenshot"
-msgstr "תמונת־מסך"
+msgstr "Képernyőkép"
 
 #: src/keyboardconfig.cpp:56
 msgid "Enable/Disable Trading"
-msgstr "אפשר/בטל מסחר"
+msgstr "Üzletelés Engedélyezése/Tiltása"
 
 #: src/keyboardconfig.cpp:57
 msgid "Find Path to Mouse"
-msgstr "מצא נתיב לעכבר"
+msgstr "Útvonal Keresése a Kurzorig"
 
 #: src/keyboardconfig.cpp:58 src/keyboardconfig.cpp:59
 #: src/keyboardconfig.cpp:60 src/keyboardconfig.cpp:61
@@ -2394,61 +2201,61 @@ msgstr "מצא נתיב לעכבר"
 #: src/keyboardconfig.cpp:68 src/keyboardconfig.cpp:69
 #, c-format
 msgid "Item Shortcut %d"
-msgstr "קיצור־דרך לחפץ %d"
+msgstr "Gyorsmenü %d"
 
 #: src/keyboardconfig.cpp:70
 msgid "Help Window"
-msgstr "חלון עזרה"
+msgstr "Súgó Ablak"
 
 #: src/keyboardconfig.cpp:71
 msgid "Status Window"
-msgstr "חלון מצב"
+msgstr "Sztátusz Ablak"
 
 #: src/keyboardconfig.cpp:72
 msgid "Inventory Window"
-msgstr "חלון ציוד"
+msgstr "Táska Ablak"
 
 #: src/keyboardconfig.cpp:73
 msgid "Equipment Window"
-msgstr "חלון לבוש"
+msgstr "Felszerelés Ablak"
 
 #: src/keyboardconfig.cpp:74
 msgid "Skill Window"
-msgstr "חלון כישורים"
+msgstr "Képességek Ablak"
 
 #: src/keyboardconfig.cpp:75
 msgid "Minimap Window"
-msgstr "חלון מיני מפה"
+msgstr "Minitérkép Ablak"
 
 #: src/keyboardconfig.cpp:76
 msgid "Chat Window"
-msgstr "חלון שיחה"
+msgstr "Chat Ablak"
 
 #: src/keyboardconfig.cpp:77
 msgid "Item Shortcut Window"
-msgstr "חלון קיצור־דרך לחפץ"
+msgstr "Gyorsmenü Ablak"
 
 #: src/keyboardconfig.cpp:78
 msgid "Setup Window"
-msgstr "חלון הגדרות"
+msgstr "Beállítások Ablak"
 
 #: src/keyboardconfig.cpp:79
 msgid "Debug Window"
-msgstr "חלון ניפוי"
+msgstr "Hibakereső Ablak"
 
 #: src/keyboardconfig.cpp:80
 #, fuzzy
 msgid "Social Window"
-msgstr "חלון כישורים"
+msgstr "Képességek Ablak"
 
 #: src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
-msgstr "חלון קיצור־דרך לרגישון"
+msgstr "Hangulatjel Gyorsmenü Ablak"
 
 #: src/keyboardconfig.cpp:82
 #, fuzzy
 msgid "Outfits Window"
-msgstr "חלון מצב"
+msgstr "Sztátusz Ablak"
 
 #: src/keyboardconfig.cpp:83
 msgid "Wear Outfit"
@@ -2466,59 +2273,59 @@ msgstr ""
 #: src/keyboardconfig.cpp:95 src/keyboardconfig.cpp:96
 #, c-format
 msgid "Emote Shortcut %d"
-msgstr "קיצור־דרך לריגשון %d"
+msgstr "Hangulatjel Gyorsmenü %d"
 
 #: src/keyboardconfig.cpp:97
 msgid "Toggle Chat"
-msgstr "סגירת הצ'אט"
+msgstr "Chat Ki/Be Kapcsolása"
 
 #: src/keyboardconfig.cpp:98
 msgid "Scroll Chat Up"
-msgstr "גלול שיחה למעלה"
+msgstr "Csevej Felfele Görgetése"
 
 #: src/keyboardconfig.cpp:99
 msgid "Scroll Chat Down"
-msgstr "גלול שיחה למטה"
+msgstr "Csevej Lefele Görgetése"
 
 #: src/keyboardconfig.cpp:100
 msgid "Previous Chat Tab"
-msgstr "לשונית השיחה הקודמת"
+msgstr "Előző Chat Fül"
 
 #: src/keyboardconfig.cpp:101
 msgid "Next Chat Tab"
-msgstr "לשונית השיחה הבאה"
+msgstr "Következő Chat Fül"
 
 #: src/keyboardconfig.cpp:102
 msgid "Select OK"
-msgstr "בחר אישור"
+msgstr "Ok Kiválasztása"
 
 #: src/keyboardconfig.cpp:104
 msgid "Ignore input 1"
-msgstr "קלט התעלמות 1"
+msgstr "Ignore input 1"
 
 #: src/keyboardconfig.cpp:105
 msgid "Ignore input 2"
-msgstr "קלט התעלמות 2"
+msgstr "Ignore input 2"
 
-#: src/keyboardconfig.cpp:178
+#: src/keyboardconfig.cpp:184
 #, fuzzy, c-format
 msgid ""
 "Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
 "strange behaviour."
-msgstr "פתור אותם, אחרת המשחק עלול להתנהג באופן מוזר."
+msgstr "Állítsd át, vagy a játék érdekesen fog viselkedni."
 
-#: src/localplayer.cpp:913
+#: src/localplayer.cpp:914
 msgid "Unable to pick up item."
-msgstr "לא ניתן להרים את החפץ."
+msgstr "Nem tudod felvenni a tárgyat."
 
 #. TRANSLATORS: This sentence may be translated differently
 #. for different grammatical numbers (singular, plural, ...)
-#: src/localplayer.cpp:922
+#: src/localplayer.cpp:923
 #, fuzzy, c-format
 msgid "You picked up %d [@@%d|%s@@]."
 msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] "הרמת %s [@@%d|%s@@]."
-msgstr[1] "הרמת %s [@@%d|%s@@]."
+msgstr[0] "Zsákmányod%s [@@%d|%s@@]."
+msgstr[1] "Zsákmányod%s [@@%d|%s@@]."
 
 #: src/main.cpp:43
 msgid "mana [options] [mana-file]"
@@ -2526,185 +2333,185 @@ msgstr ""
 
 #: src/main.cpp:44
 msgid "Options:"
-msgstr "אפשרויות:"
+msgstr "Opciók:"
 
 #: src/main.cpp:45
 #, fuzzy
 msgid "  -v --version        : Display the version"
-msgstr "  -v --version     : Display the version"
+msgstr "  -v --version : Megmutatja a verziót"
 
 #: src/main.cpp:46
 #, fuzzy
 msgid "  -h --help           : Display this help"
-msgstr "  -h --help        : Display this help"
+msgstr "  -h --help : Megmutatja ezt a súgót"
 
 #: src/main.cpp:47
 #, fuzzy
 msgid "  -C --config-dir     : Configuration directory to use"
-msgstr "  -C --config-file : Configuration file to use"
+msgstr "  -C --config-file : Konfigurációs fájl használata"
 
 #: src/main.cpp:48
 #, fuzzy
 msgid "  -U --username       : Login with this username"
-msgstr "  -U --username    : Login with this username"
+msgstr "  -U --username : Bejelentkezés ezzel a felhasználónévvel"
 
 #: src/main.cpp:49
 #, fuzzy
 msgid "  -P --password       : Login with this password"
-msgstr "  -P --password    : Login with this password"
+msgstr "  -P --password : Bejelentkezés ezzel a jelszóval"
 
 #: src/main.cpp:50
 #, fuzzy
 msgid "  -c --character      : Login with this character"
-msgstr "  -c --character   : Login with this character"
+msgstr "  -c --character : Bejelentkezés ezzel a karakterrel"
 
 #: src/main.cpp:51
 #, fuzzy
 msgid "  -s --server         : Login server name or IP"
-msgstr "  -s --server      : Login server name or IP"
+msgstr "  -s --server : Szerver neve vagy IP címe"
 
 #: src/main.cpp:52
 #, fuzzy
 msgid "  -p --port           : Login server port"
-msgstr "  -p --port        : Login server port"
+msgstr "  -p --port : Bejelentkezési port"
 
 #: src/main.cpp:53
 #, fuzzy
 msgid "     --update-host    : Use this update host"
-msgstr "  -H --update-host : Use this update host"
+msgstr "  -H --update-host : A frissítési szerver kijelölésére használjuk"
 
 #: src/main.cpp:54
 #, fuzzy
 msgid "  -D --default        : Choose default character server and character"
-msgstr "  -D --default     : Choose default character server and character"
+msgstr "  -D --default : Válaszd ki az alapértelmezett szervert és karaktert"
 
 #: src/main.cpp:56
 #, fuzzy
 msgid "  -u --skip-update    : Skip the update downloads"
-msgstr "  -u --skip-update : Skip the update downloads"
+msgstr "  -u --skip-update :  Frissítés átugrása"
 
 #: src/main.cpp:57
 #, fuzzy
 msgid "  -d --data           : Directory to load game data from"
-msgstr "  -d --data        : Directory to load game data from"
+msgstr "  -d --data : Könyvtár ahonnan betöltöd a játékot"
 
 #: src/main.cpp:58
 #, fuzzy
 msgid "  -L --localdata-dir  : Directory to use as local data directory"
-msgstr "  -S --home-dir    : Directory to use as home directory"
+msgstr "  -S --home-dir : Könyvtár használata gyökérkönyvtárként"
 
 #: src/main.cpp:59
 #, fuzzy
 msgid "     --screenshot-dir : Directory to store screenshots"
-msgstr "  -S --home-dir    : Directory to use as home directory"
+msgstr "  -S --home-dir : Könyvtár használata gyökérkönyvtárként"
 
 #: src/main.cpp:61
 #, fuzzy
 msgid "     --no-opengl      : Disable OpenGL for this session"
-msgstr "  -O --no-opengl   : Disable OpenGL for this session"
+msgstr "  -O --no-opengl : OpenGL kikapcsolása erre az időszakra"
 
 #: src/net/ea/adminhandler.cpp:63
 msgid "Kick failed!"
-msgstr "העפה נכשלה!"
+msgstr "Kirúgás sikertelen!"
 
 #: src/net/ea/adminhandler.cpp:65
 msgid "Kick succeeded!"
-msgstr "העפה הצליחה!"
+msgstr "Kirúgás sikeres!"
 
 #: src/net/ea/buysellhandler.cpp:110
 msgid "Nothing to sell."
-msgstr "אין מה למכור."
+msgstr "Nincs mit eladni."
 
 #: src/net/ea/buysellhandler.cpp:117
 msgid "Thanks for buying."
-msgstr "תודה על הקנייה."
+msgstr "Öröm volt veled üzletet kötni!"
 
 #: src/net/ea/buysellhandler.cpp:124
 msgid "Unable to buy."
-msgstr "לא ניתן לקנות."
+msgstr "Nem tudod megvenni."
 
 #: src/net/ea/buysellhandler.cpp:130
 msgid "Thanks for selling."
-msgstr "תודה על המכירה."
+msgstr "Öröm volt veled üzletet kötni!"
 
 #: src/net/ea/buysellhandler.cpp:132
 msgid "Unable to sell."
-msgstr "לא ניתן למכור."
+msgstr "Nem tudod eladni."
 
 #: src/net/ea/charserverhandler.cpp:103
 #, fuzzy
 msgid "Access denied."
-msgstr "הגישה נדחתה"
+msgstr "Hozzáférés megtagadva"
 
 #: src/net/ea/charserverhandler.cpp:106
 #, fuzzy
 msgid "Cannot use this ID."
-msgstr "לא ניתן להשתמש ב-ID זה."
+msgstr "Nem használhatod ez a nevet."
 
 #: src/net/ea/charserverhandler.cpp:109
 #, fuzzy
 msgid "Unknown failure to select character."
-msgstr "שגיאה לא ידועה בבחירת השחקן"
+msgstr "Ismeretlen hiba a karakter választásnál."
 
 #: src/net/ea/charserverhandler.cpp:135
 msgid "Failed to create character. Most likely the name is already taken."
-msgstr "נכשל ביצירת השחקן. ייתכן כי שם זה כבר תפוס."
+msgstr "Nem tudod létrehozni a karaktert. Valószínű a neve használatban van."
 
 #: src/net/ea/charserverhandler.cpp:147 src/net/manaserv/charhandler.cpp:187
 msgid "Info"
-msgstr "מידע"
+msgstr "Infó"
 
 #: src/net/ea/charserverhandler.cpp:147
 msgid "Character deleted."
-msgstr "השחקן נמחק."
+msgstr "Karakter törölve."
 
 #: src/net/ea/charserverhandler.cpp:152
 msgid "Failed to delete character."
-msgstr "נכשל במחיקת השחקן."
+msgstr "Karakter törlése sikertelen."
 
 #: src/net/ea/charserverhandler.cpp:237 src/net/manaserv/charhandler.cpp:263
 msgid "Strength:"
-msgstr "עוצמה:"
+msgstr "Erő:"
 
 #: src/net/ea/charserverhandler.cpp:238 src/net/manaserv/charhandler.cpp:264
 msgid "Agility:"
-msgstr "זריזות:"
+msgstr "Mozgékonyság:"
 
 #: src/net/ea/charserverhandler.cpp:239 src/net/manaserv/charhandler.cpp:266
 msgid "Vitality:"
-msgstr "חיוניות:"
+msgstr "Egészség:"
 
 #: src/net/ea/charserverhandler.cpp:240 src/net/manaserv/charhandler.cpp:267
 msgid "Intelligence:"
-msgstr "תבונה:"
+msgstr "Intelligencia:"
 
 #: src/net/ea/charserverhandler.cpp:241 src/net/manaserv/charhandler.cpp:265
 msgid "Dexterity:"
-msgstr "מיומנות:"
+msgstr "Ügyesség:"
 
 #: src/net/ea/charserverhandler.cpp:242
 msgid "Luck:"
-msgstr "מזל:"
+msgstr "Szerencse:"
 
 #: src/net/ea/chathandler.cpp:80
 msgid "Whisper could not be sent, user is offline."
-msgstr "הלחישה לא יכלה להשלח, המשתמש אינו מחובר."
+msgstr "A privát üzenet nem lett elküldve, mert a játékos nem elérhető."
 
 #: src/net/ea/chathandler.cpp:84
 msgid "Whisper could not be sent, ignored by user."
-msgstr "הלחישה לא יכלה להשלח, מהמשתמש מתעלם."
+msgstr "A privát üzenet nem lett elküldve, mert le lettél tiltva."
 
 #: src/net/ea/chathandler.cpp:171
 #, fuzzy
 msgid "MVP player."
-msgstr "שחקן"
+msgstr "Játékos"
 
 #: src/net/ea/chathandler.cpp:204 src/net/ea/chathandler.cpp:210
 #: src/net/ea/chathandler.cpp:215 src/net/ea/chathandler.cpp:220
 #: src/net/ea/chathandler.cpp:225 src/net/ea/chathandler.cpp:230
 #: src/net/ea/chathandler.cpp:235 src/net/ea/chathandler.cpp:240
 msgid "Channels are not supported!"
-msgstr "חדרים אינם נתמכים!"
+msgstr "A csatornák le vannak tiltva!"
 
 #: src/net/ea/gamehandler.cpp:86
 #, c-format
@@ -2714,177 +2521,181 @@ msgstr ""
 #: src/net/ea/gamehandler.cpp:100
 #, fuzzy
 msgid "Game"
-msgstr "שם"
+msgstr "Név"
 
 #: src/net/ea/gamehandler.cpp:100
 #, fuzzy
 msgid "Request to quit denied!"
-msgstr "בקשה למסחר"
+msgstr "Üzleti ajánlat"
 
 #: src/net/ea/generalhandler.cpp:102 src/net/manaserv/generalhandler.cpp:95
 #, c-format
 msgid "Strength %+d"
-msgstr "עוצמה %+d"
+msgstr "Erő %+d"
 
 #: src/net/ea/generalhandler.cpp:103 src/net/manaserv/generalhandler.cpp:96
 #, c-format
 msgid "Agility %+d"
-msgstr "זריזות %+d"
+msgstr "Mozgékonyság %+d"
 
 #: src/net/ea/generalhandler.cpp:104 src/net/manaserv/generalhandler.cpp:98
 #, c-format
 msgid "Vitality %+d"
-msgstr "חיוניות %+d"
+msgstr "Egészség %+d"
 
 #: src/net/ea/generalhandler.cpp:105 src/net/manaserv/generalhandler.cpp:99
 #, c-format
 msgid "Intelligence %+d"
-msgstr "תבונה %+d"
+msgstr "Intelligencia %+d"
 
 #: src/net/ea/generalhandler.cpp:106 src/net/manaserv/generalhandler.cpp:97
 #, c-format
 msgid "Dexterity %+d"
-msgstr "מיומנות %+d"
+msgstr "Ügyesség %+d"
 
 #: src/net/ea/generalhandler.cpp:107
 #, c-format
 msgid "Luck %+d"
-msgstr "מזל %+d"
+msgstr "Szerencse %+d"
 
 #: src/net/ea/generalhandler.cpp:130
 #, fuzzy
 msgid "Authentication failed."
-msgstr "האימות נכשל"
+msgstr "Azonosítás sikertelen"
 
 #: src/net/ea/generalhandler.cpp:133
 #, fuzzy
 msgid "No servers available."
-msgstr "אין שרתים זמינים"
+msgstr "Nincs elérhető szerver"
 
 #: src/net/ea/generalhandler.cpp:137
 #, fuzzy
 msgid "Someone else is trying to use this account."
-msgstr "אדם אחר מנסה להשתמש בחשבון זה"
+msgstr "Valaki más megprobál belépni erre a fiókra"
 
 #: src/net/ea/generalhandler.cpp:140
 #, fuzzy
 msgid "This account is already logged in."
-msgstr "חשבון זה כבר מחובר"
+msgstr "Ez a fiók már be van lépve"
 
 #: src/net/ea/generalhandler.cpp:143
 #, fuzzy
 msgid "Speed hack detected."
-msgstr "פריצת מהירות זוהתה"
+msgstr "Speed hack észlelve"
 
 #: src/net/ea/generalhandler.cpp:146
 #, fuzzy
 msgid "Duplicated login."
-msgstr "התחברות כפולה"
+msgstr "Duplikált bejelentkezés"
 
 #: src/net/ea/generalhandler.cpp:149
 #, fuzzy
 msgid "Unknown connection error."
-msgstr "שגיאת חיבור לא ידועה"
+msgstr "Ismeretlen kapcsolati hiba"
 
 #: src/net/ea/generalhandler.cpp:205
 msgid "Got disconnected from server!"
-msgstr "נותקת מהשרת!"
+msgstr "Lekapcsolódtál a szerverről!"
 
 #: src/net/ea/generalhandler.cpp:216 src/net/manaserv/generalhandler.cpp:166
 msgid "Strength"
-msgstr "עוצמה"
+msgstr "Erő"
 
 #: src/net/ea/generalhandler.cpp:217 src/net/manaserv/generalhandler.cpp:167
 msgid "Agility"
-msgstr "זריזות"
+msgstr "Mozgékonyság"
 
 #: src/net/ea/generalhandler.cpp:218 src/net/manaserv/generalhandler.cpp:169
 msgid "Vitality"
-msgstr "חיוניות"
+msgstr "Egészség"
 
 #: src/net/ea/generalhandler.cpp:219 src/net/manaserv/generalhandler.cpp:170
 msgid "Intelligence"
-msgstr "תבונה"
+msgstr "Intelligencia"
 
 #: src/net/ea/generalhandler.cpp:220 src/net/manaserv/generalhandler.cpp:168
 msgid "Dexterity"
-msgstr "מיומנות"
+msgstr "Ügyesség"
 
 #: src/net/ea/generalhandler.cpp:221
 msgid "Luck"
-msgstr "מזל"
+msgstr "Szerencse"
 
 #: src/net/ea/generalhandler.cpp:224
 #, fuzzy
 msgid "Defense"
-msgstr "הגנה:"
+msgstr "Fizikális védelem:"
 
 #: src/net/ea/generalhandler.cpp:225
 #, fuzzy
 msgid "M.Attack"
-msgstr "התקפת קסם:"
+msgstr "Mágikus támadás:"
 
 #: src/net/ea/generalhandler.cpp:226
 #, fuzzy
 msgid "M.Defense"
-msgstr "הגנת קסם:"
+msgstr "Mágikus védelem:"
 
 #: src/net/ea/generalhandler.cpp:227
 #, fuzzy, c-format
 msgid "% Accuracy"
-msgstr "% דיוק:"
+msgstr "Találati esély (%):"
 
 #: src/net/ea/generalhandler.cpp:228
 #, fuzzy, c-format
 msgid "% Evade"
-msgstr "% התחמקות:"
+msgstr "Kitérés (%):"
 
 #: src/net/ea/generalhandler.cpp:229
 #, fuzzy, c-format
 msgid "% Critical"
-msgstr "מכה קריטית"
+msgstr "Kritikális ütéskor"
+
+#: src/net/ea/gui/guildtab.cpp:45
+msgid "Guild"
+msgstr "Klán"
 
 #: src/net/ea/gui/guildtab.cpp:61 src/net/ea/gui/partytab.cpp:59
 msgid "/help > Display this help."
-msgstr "/help > מציג עזרה זו."
+msgstr "/help > Megmutatja ezt a súgót."
 
 #: src/net/ea/gui/guildtab.cpp:62
 #, fuzzy
 msgid "/invite > Invite a player to your guild"
-msgstr "/invite > הזמן שחקן לחבורה שלך"
+msgstr "/invite > Játékos meghívása a csapatba"
 
 #: src/net/ea/gui/guildtab.cpp:63
 #, fuzzy
 msgid "/leave > Leave the guild you are in"
-msgstr "/leave > עזוב את החבורה בה אתה נמצא"
+msgstr "/leave > Jelenlegi csapat elhagyása"
 
 #: src/net/ea/gui/guildtab.cpp:64
 #, fuzzy
 msgid "/kick > Kick some one from the guild you are in"
-msgstr "/kick > העף מישהו מהחבורה בה אתה נמצא"
+msgstr "/kick > Valaki kirúgása a csapatból"
 
 #: src/net/ea/gui/guildtab.cpp:73 src/net/ea/gui/partytab.cpp:73
 msgid "Command: /invite <nick>"
-msgstr "פקודה: /invite <nick>"
+msgstr "Parancs: /invite <név>"
 
 #: src/net/ea/gui/guildtab.cpp:74
 #, fuzzy
 msgid "This command invites <nick> to the guild you're in."
-msgstr "פקודה זו מזמינה את <nick> להיות בחבורתך."
+msgstr "Ez a parancs csapatba hívja a <név> alatt megadott nevű játékost."
 
 #: src/net/ea/gui/guildtab.cpp:80 src/net/ea/gui/partytab.cpp:80
 msgid "Command: /leave"
-msgstr "פקודה: /leave"
+msgstr "Parancs: /leave"
 
 #: src/net/ea/gui/guildtab.cpp:81
 #, fuzzy
 msgid "This command causes the player to leave the guild."
-msgstr "פקודה זו גורמת לשחקן לעזוב את החבורה."
+msgstr "Ezzel a paranccsal a játékos elhagyja a csapatát."
 
 #: src/net/ea/gui/guildtab.cpp:89
 #, fuzzy
 msgid "Guild name is missing."
-msgstr "שם חבורה חסר."
+msgstr "A csapatnév hiányzik."
 
 #: src/net/ea/guildhandler.cpp:293
 msgid "Could not inivte user to guild."
@@ -2897,7 +2708,7 @@ msgstr ""
 #: src/net/ea/guildhandler.cpp:303
 #, fuzzy
 msgid "User is now part of your guild."
-msgstr "%s הצטרף לחבורה."
+msgstr "%s mostantól a csapatod tagja."
 
 #: src/net/ea/guildhandler.cpp:308
 msgid "Your guild is full."
@@ -2906,143 +2717,148 @@ msgstr ""
 #: src/net/ea/guildhandler.cpp:313
 #, fuzzy
 msgid "Unknown guild invite response."
-msgstr "תגובה לא ידועה להזמנה עבור %s."
+msgstr "%s részéről ismeretlen válasz a meghívásra."
 
 #: src/net/ea/guildhandler.cpp:390
 msgid "Guild creation isn't supported yet."
 msgstr ""
 
+#: src/net/ea/gui/partytab.cpp:43
+msgid "Party"
+msgstr "Csapat"
+
 #: src/net/ea/gui/partytab.cpp:60
 msgid "/invite > Invite a player to your party"
-msgstr "/invite > הזמן שחקן לחבורה שלך"
+msgstr "/invite > Játékos meghívása a csapatba"
 
 #: src/net/ea/gui/partytab.cpp:61
 msgid "/leave > Leave the party you are in"
-msgstr "/leave > עזוב את החבורה בה אתה נמצא"
+msgstr "/leave > Jelenlegi csapat elhagyása"
 
 #: src/net/ea/gui/partytab.cpp:62
 msgid "/kick > Kick some one from the party you are in"
-msgstr "/kick > העף מישהו מהחבורה בה אתה נמצא"
+msgstr "/kick > Valaki kirúgása a csapatból"
 
 #: src/net/ea/gui/partytab.cpp:63
 msgid "/item > Show/change party item sharing options"
-msgstr "/item > הצג/שנה את אפשרויות השיתוף של חפץ בחבורה"
+msgstr "/item > Tárgyak elosztását nézhetjük/átállíthatjuk vele"
 
 #: src/net/ea/gui/partytab.cpp:64
 msgid "/exp > Show/change party experience sharing options"
-msgstr "/exp > הצג/שנה את אפשרויות שיתוף הנסיון בחבורה"
+msgstr "/exp > Tapasztalat elosztását nézhetjük/átállíthatjuk vele"
 
 #: src/net/ea/gui/partytab.cpp:81
 msgid "This command causes the player to leave the party."
-msgstr "פקודה זו גורמת לשחקן לעזוב את החבורה."
+msgstr "Ezzel a paranccsal a játékos elhagyja a csapatát."
 
 #: src/net/ea/gui/partytab.cpp:85
 msgid "Command: /item <policy>"
-msgstr "פקודה: /item <policy>"
+msgstr "Parancs: /item <szabály>"
 
 #: src/net/ea/gui/partytab.cpp:86
 msgid "This command changes the party's item sharing policy."
-msgstr "הפקודה משנה את מדיניות השיתוף של חפצים בחבורה."
+msgstr "Ez a parancs a tárgyak megosztását szabályozza a csapaton belül."
 
 #: src/net/ea/gui/partytab.cpp:87
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable item sharing, or "
 "\"0\", \"no\", \"false\" to disable item sharing."
 msgstr ""
-"<policy> יכול להיות אחד מ- \"1\", \"yes\", \"true\" כדי לאפשר שיתוף חפץ, או "
-"\"0\", \"no\", \"false\" כדי לבטל שיתוף חפץ."
+"<szabály> lehet \"1\", \"yes\", \"true\" a tárgyak megosztásához, vagy \"0"
+"\", \"no\", \"false\" a tárgyak megosztásának kikapcsolásához."
 
 #: src/net/ea/gui/partytab.cpp:90
 msgid "Command: /item"
-msgstr "פקודה: /item"
+msgstr "Parancs: /item"
 
 #: src/net/ea/gui/partytab.cpp:91
 msgid "This command displays the party's current item sharing policy."
-msgstr "הפקודה מציגה את מדיניות השיתוף של חפצים בחבורה."
+msgstr "Ez a parancs megmutatja a csapat jelenlegi tárgymegosztási-szabályát."
 
 #: src/net/ea/gui/partytab.cpp:95
 msgid "Command: /exp <policy>"
-msgstr "פקודה: /exp <policy>"
+msgstr "Parancs: /exp <szabály>"
 
 #: src/net/ea/gui/partytab.cpp:96
 msgid "This command changes the party's experience sharing policy."
-msgstr "פקודה זו משנה את מדיניות שיתוף הנסיון בחבורה."
+msgstr "Ez a parancs a tapasztalat megosztását szabályozza a csapaton belül."
 
 #: src/net/ea/gui/partytab.cpp:97
 msgid ""
 "<policy> can be one of \"1\", \"yes\", \"true\" to enable experience "
 "sharing, or \"0\", \"no\", \"false\" to disable experience sharing."
 msgstr ""
-"<policy> יכול להיות  \"1\", \"yes\", \"true\" כדי לאפשר שיתוף נסיון, או \"0"
-"\", \"no\", \"false\" כדי לבטל שיתוף נסיון."
+"<szabály> lehet \"1\", \"yes\", \"true\" a tapasztalat megosztásához, vagy "
+"\"0\", \"no\", \"false\" a tapasztalat megosztásának kikapcsolásához."
 
 #: src/net/ea/gui/partytab.cpp:100
 msgid "Command: /exp"
-msgstr "פקודה: /exp"
+msgstr "Parancs: /exp"
 
 #: src/net/ea/gui/partytab.cpp:101
 msgid "This command displays the party's current experience sharing policy."
-msgstr "פקודה זו מציגה את מדיניות שיתוף הנסיון הנוכחית בחבורה."
+msgstr ""
+"Ez a parancs megmutatja a csapat jelenlegi tapasztalatmegosztási-szabályát."
 
 #: src/net/ea/gui/partytab.cpp:132 src/net/ea/partyhandler.cpp:198
 msgid "Item sharing enabled."
-msgstr "שיתוף חפצים מאופשר."
+msgstr "Tárgy megosztás engedélyezve."
 
 #: src/net/ea/gui/partytab.cpp:135 src/net/ea/partyhandler.cpp:204
 msgid "Item sharing disabled."
-msgstr "שיתוף חפצים מבוטל."
+msgstr "Tárgy megosztás tiltva."
 
 #: src/net/ea/gui/partytab.cpp:138 src/net/ea/partyhandler.cpp:210
 msgid "Item sharing not possible."
-msgstr "שיתוף חפצים לא אפשרי."
+msgstr "A tárgy megosztás nem lehetséges."
 
 #: src/net/ea/gui/partytab.cpp:141
 #, fuzzy
 msgid "Item sharing unknown."
-msgstr "שיתוף חפצים מאופשר."
+msgstr "Tárgy megosztás engedélyezve."
 
 #: src/net/ea/gui/partytab.cpp:167 src/net/ea/partyhandler.cpp:174
 msgid "Experience sharing enabled."
-msgstr "שיתוף נסיון מאופשר."
+msgstr "Tapasztalat megosztás engedélyezve."
 
 #: src/net/ea/gui/partytab.cpp:170 src/net/ea/partyhandler.cpp:180
 msgid "Experience sharing disabled."
-msgstr "שיתוף נסיון מבוטל."
+msgstr "Tapasztalat megosztás tiltva."
 
 #: src/net/ea/gui/partytab.cpp:173 src/net/ea/partyhandler.cpp:186
 msgid "Experience sharing not possible."
-msgstr "שיתוף נסיון לא אפשרי."
+msgstr "A tapasztalat megosztás nem lehetséges."
 
 #: src/net/ea/gui/partytab.cpp:176
 #, fuzzy
 msgid "Experience sharing unknown."
-msgstr "שיתוף נסיון מאופשר."
+msgstr "Tapasztalat megosztás engedélyezve."
 
 #: src/net/ea/inventoryhandler.cpp:281
 msgid "Failed to use item."
-msgstr "נכשל בשימוש בחפץ."
+msgstr "Nem tudod bevetni a tárgyat."
 
 #: src/net/ea/inventoryhandler.cpp:391
 msgid "Unable to equip."
-msgstr "לא ניתן ללבוש."
+msgstr "Nem tudod használni."
 
 #: src/net/ea/inventoryhandler.cpp:402
 msgid "Unable to unequip."
-msgstr "לא ניתן להסיר."
+msgstr "Nem tudod eltenni."
 
 #: src/net/ea/loginhandler.cpp:79
 msgid "Account was not found. Please re-login."
-msgstr "החשבון לא נמצא. אנא נסה להתחבר שנית."
+msgstr "Fiók nem található. Kérem jelentkezzen be újra."
 
 #: src/net/ea/loginhandler.cpp:82 src/net/manaserv/loginhandler.cpp:121
 #, fuzzy
 msgid "Old password incorrect."
-msgstr "הסיסמה הישנה שגויה"
+msgstr "A régi jelszó hibás"
 
 #: src/net/ea/loginhandler.cpp:85
 #, fuzzy
 msgid "New password too short."
-msgstr "הסיסמה החדשה קצרה מדי"
+msgstr "Az új jelszó túl rövid"
 
 #: src/net/ea/loginhandler.cpp:88 src/net/ea/loginhandler.cpp:175
 #: src/net/manaserv/charhandler.cpp:158 src/net/manaserv/loginhandler.cpp:96
@@ -3050,33 +2866,35 @@ msgstr "הסיסמה החדשה קצרה מדי"
 #: src/net/manaserv/loginhandler.cpp:279 src/net/manaserv/loginhandler.cpp:316
 #, fuzzy
 msgid "Unknown error."
-msgstr "שגיאה לא ידועה"
+msgstr "Ismeretlen hiba"
 
 #: src/net/ea/loginhandler.cpp:149
 #, fuzzy
 msgid "Unregistered ID."
-msgstr "ID לא רשום"
+msgstr "Az ID nincs regisztrálva"
 
 #: src/net/ea/loginhandler.cpp:152
 #, fuzzy
 msgid "Wrong password."
-msgstr "סיסמה שגויה"
+msgstr "Hibás jelszó"
 
 #: src/net/ea/loginhandler.cpp:155
 #, fuzzy
 msgid "Account expired."
-msgstr "המשתמש מושהה"
+msgstr "A fiók lejárt"
 
 #: src/net/ea/loginhandler.cpp:158
 #, fuzzy
 msgid "Rejected from server."
-msgstr "הועפת מהשרת"
+msgstr "Visszautasított a szerver"
 
 #: src/net/ea/loginhandler.cpp:161
 #, fuzzy
 msgid ""
 "You have been permanently banned from the game. Please contact the GM team."
-msgstr "הורחקת לצמיתות מן המשחק. אנא צור קשר עם צוות המנהלים."
+msgstr ""
+"Véglegesen kitiltottak a szerverről. Kérlek vedd fel a kapcsolatot a GM "
+"csapattal."
 
 #: src/net/ea/loginhandler.cpp:165
 #, c-format
@@ -3084,13 +2902,13 @@ msgid ""
 "You have been temporarily banned from the game until %s.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"הורחקת זמנית מן המשחק עד %s.\n"
-"אנא צור קשר עם צוות המנהלים באמצעות מערכת הפורומים."
+"Ki vagy tiltva a szerverről hátralévő idő a feloldásig %s\n"
+"Kérlek vedd fel a kapcsolatot a GM csapattal."
 
 #: src/net/ea/loginhandler.cpp:172
 #, fuzzy
 msgid "This user name is already taken."
-msgstr "שם המשתמש כבר נלקח"
+msgstr "Ez a felhasználónév már foglalt."
 
 #: src/net/ea/network.cpp:145
 msgid "Empty address given to Network::connect()!"
@@ -3099,58 +2917,58 @@ msgstr ""
 #: src/net/ea/network.cpp:345
 #, fuzzy
 msgid "Unable to resolve host \""
-msgstr "לא ניתן למכור."
+msgstr "Nem tudod eladni."
 
 #: src/net/ea/network.cpp:414
 #, fuzzy
 msgid "Connection to server terminated. "
-msgstr "מתחבר לשרת המפה..."
+msgstr "Csatlakozás a térkép szerverhez...."
 
 #: src/net/ea/partyhandler.cpp:81
 msgid "Could not create party."
-msgstr "לא היה ניתן ליצור חבורה."
+msgstr "Nem tudtad a csapatot létrehozni."
 
 #: src/net/ea/partyhandler.cpp:84
 msgid "Party successfully created."
-msgstr "חבורה נוצרה בהצלחה."
+msgstr "Csapat létrehozása sikeres."
 
 #: src/net/ea/partyhandler.cpp:118
 #, c-format
 msgid "%s is already a member of a party."
-msgstr "%s כבר חבר בחבורה."
+msgstr "%s eleve tagja a csapatnak."
 
 #: src/net/ea/partyhandler.cpp:122
 #, c-format
 msgid "%s refused your invitation."
-msgstr "%s דחה את הזמנתך."
+msgstr "%s visszautasította a csapatba hívást."
 
 #: src/net/ea/partyhandler.cpp:126
 #, c-format
 msgid "%s is now a member of your party."
-msgstr "%s הצטרף לחבורה."
+msgstr "%s mostantól a csapatod tagja."
 
 #: src/net/ea/partyhandler.cpp:130
 #, c-format
 msgid "Unknown invite response for %s."
-msgstr "תגובה לא ידועה להזמנה עבור %s."
+msgstr "%s részéről ismeretlen válasz a meghívásra."
 
 #: src/net/ea/partyhandler.cpp:238
 msgid "You have left the party."
-msgstr "עזבת את החבורה."
+msgstr "Kiléptél a csapatból."
 
 #: src/net/ea/partyhandler.cpp:249
 #, c-format
 msgid "%s has left your party."
-msgstr "%s עזב את החבורה שלך."
+msgstr "%s elhagyta a csapatot."
 
 #: src/net/ea/partyhandler.cpp:301
 #, c-format
 msgid "An unknown member tried to say: %s"
-msgstr "משתמש לא ידוע ניסה לומר: %s"
+msgstr "Egy ismeretlen csapattárs mondja: %s"
 
 #: src/net/ea/partyhandler.cpp:329
 msgid "Inviting like this isn't supported at the moment."
-msgstr "הזמנה בדרך זו אינה נתמכת כרגע."
+msgstr "Meghívás jelenleg nem lehetséges."
 
 #: src/net/ea/partyhandler.cpp:334
 msgid "You can only inivte when you are in a party!"
@@ -3159,136 +2977,140 @@ msgstr ""
 #: src/net/ea/partyhandler.cpp:365
 #, c-format
 msgid "%s is not in your party!"
-msgstr "%s אינו נמצא בחבורתך!"
+msgstr "%s nincs a csapatodban!"
 
 #: src/net/ea/playerhandler.cpp:99 src/net/manaserv/beinghandler.cpp:304
 msgid "You are dead."
-msgstr "אתה מת."
+msgstr "Meghaltál."
 
 #: src/net/ea/playerhandler.cpp:100 src/net/manaserv/beinghandler.cpp:305
 msgid "We regret to inform you that your character was killed in battle."
-msgstr "צר לנו לבשר לכם כי שחקנכם נהרג בקרב."
+msgstr "A karaktered elvérzett a csatában."
 
 #: src/net/ea/playerhandler.cpp:102 src/net/manaserv/beinghandler.cpp:307
 msgid "You are not that alive anymore."
-msgstr "אינך חי כל־כך כרגע."
+msgstr "Nem vagy már az élők sorában."
 
 #: src/net/ea/playerhandler.cpp:103 src/net/manaserv/beinghandler.cpp:308
 msgid "The cold hands of the grim reaper are grabbing for your soul."
-msgstr "קור ידיו של המוות הקודר אוחזים בנשמתך."
+msgstr "A kaszás eljött érted, hogy elvigye a lelked."
 
 #: src/net/ea/playerhandler.cpp:104 src/net/manaserv/beinghandler.cpp:309
 msgid "Game Over!"
-msgstr "המשחק נגמר!"
+msgstr "Vége a játéknak!"
 
 #: src/net/ea/playerhandler.cpp:105
 msgid "Insert coin to continue."
-msgstr "הכנס מטבע כדי להמשיך."
+msgstr "Dobj be egy érmét a folytatáshoz."
 
 #: src/net/ea/playerhandler.cpp:106 src/net/manaserv/beinghandler.cpp:310
 msgid ""
 "No, kids. Your character did not really die. It... err... went to a better "
 "place."
-msgstr "לא, ילדים. השחקן שלכם לא באמת מת. הוא... אה... הלך למקום טוב יותר."
+msgstr ""
+"Nem, gyerekek. A karakter nem meghalt, ..ööö... hanem egy szebb világba "
+"került."
 
 #: src/net/ea/playerhandler.cpp:108 src/net/manaserv/beinghandler.cpp:312
 msgid ""
 "Your plan of breaking your enemies weapon by bashing it with your throat "
 "failed."
-msgstr "תוכניתך לשבור את נשק האויב באמצות צווארך נכשלה."
+msgstr ""
+"A tervet, amiben a torkoddal támadsz az ellenség kardjába sikertelennek "
+"bizonyult."
 
 #: src/net/ea/playerhandler.cpp:110 src/net/manaserv/beinghandler.cpp:314
 msgid "I guess this did not run too well."
-msgstr "אני מניח שלא הלך לך כל־כך טוב."
+msgstr "Úgy látszik nem futottál túl gyorsan."
 
 #: src/net/ea/playerhandler.cpp:112 src/net/manaserv/beinghandler.cpp:315
 msgid "Do you want your possessions identified?"
-msgstr "האם ברצונך שיאתרו את חלקי גופתך?"
+msgstr "Meg akarod bánni a bűneid?"
 
 #: src/net/ea/playerhandler.cpp:114 src/net/manaserv/beinghandler.cpp:316
 msgid "Sadly, no trace of you was ever found..."
-msgstr "באופן מצער, מעולם לא נמצא זכר ממך..."
+msgstr "Kövesd a fényt az alagút végén."
 
 #: src/net/ea/playerhandler.cpp:116 src/net/manaserv/beinghandler.cpp:317
 msgid "Annihilated."
-msgstr "הושמדתך."
+msgstr "Megöltek."
 
 #: src/net/ea/playerhandler.cpp:118 src/net/manaserv/beinghandler.cpp:318
 msgid "Looks like you got your head handed to you."
-msgstr "נראה כאילו ראשך נמסר אליך."
+msgstr "Kezedbe adták a fejed."
 
 #: src/net/ea/playerhandler.cpp:120 src/net/manaserv/beinghandler.cpp:319
 msgid ""
 "You screwed up again, dump your body down the tubes and get you another one."
-msgstr "פישלת שוב, גופתך תיזרק לצינוק ותקבל אחת חדשה."
+msgstr "Sikolyok közepette kerültél a másvilágra."
 
 #: src/net/ea/playerhandler.cpp:123
 msgid "You're not dead yet. You're just resting."
-msgstr "אינך מת עדיין. אתה רק נח."
+msgstr "Nem haltál meg...csak alszol..."
 
 #: src/net/ea/playerhandler.cpp:124
 msgid "You are no more."
-msgstr "אינך יותר."
+msgstr "Nem létezel többé."
 
 #: src/net/ea/playerhandler.cpp:125
 msgid "You have ceased to be."
-msgstr "חדלת מלהתקיים."
+msgstr "Megszüntél létezni."
 
 #: src/net/ea/playerhandler.cpp:126
 msgid "You've expired and gone to meet your maker."
-msgstr "התפוגגת ועברת לפגוש את הבורא."
+msgstr "Véged és elindultál találkozni a készítőddel."
 
 #: src/net/ea/playerhandler.cpp:127
 msgid "You're a stiff."
-msgstr "אינך מת עדיין. אתה רק נח."
+msgstr "Hulla vagy."
 
 #: src/net/ea/playerhandler.cpp:128
 msgid "Bereft of life, you rest in peace."
-msgstr "נטול חיים, את נח על משכבך."
+msgstr "Megfosztottak az életedtől. Nyugodj békében."
 
 #: src/net/ea/playerhandler.cpp:129
 msgid "If you weren't so animated, you'd be pushing up the daisies."
-msgstr "אתה לא מת עדיין! אה.. טוב, עכשיו כן."
+msgstr "Szép vagy mikor alszol..."
 
 #: src/net/ea/playerhandler.cpp:130
 msgid "Your metabolic processes are now history."
-msgstr "חילוף החומרים שלך הפך להיסטוריה."
+msgstr "Történelem vagy."
 
 #: src/net/ea/playerhandler.cpp:131
 msgid "You're off the twig."
-msgstr "אתה מכה כמו גופה."
+msgstr "Elég gallyul nézel ki."
 
 #: src/net/ea/playerhandler.cpp:132
 msgid "You've kicked the bucket."
-msgstr "חדלת מלהתקיים."
+msgstr "Feldobtad a talpad."
 
 #: src/net/ea/playerhandler.cpp:133
 msgid ""
 "You've shuffled off your mortal coil, run down the curtain and joined the "
 "bleedin' choir invisibile."
-msgstr "התפוגגת ועברת לפגוש את הבורא."
+msgstr "Megfulladtál a saját véredben."
 
 #: src/net/ea/playerhandler.cpp:135
 msgid "You are an ex-player."
-msgstr "הינך שחקן לשעבר."
+msgstr "Ex-játékos lettél."
 
 #: src/net/ea/playerhandler.cpp:136
 msgid "You're pining for the fjords."
-msgstr "אתה מת. טוב שיש חברת ביטוח..."
+msgstr "Az örök búzamezőkön kaszálgatsz."
 
 #: src/net/ea/playerhandler.cpp:249 src/net/ea/playerhandler.cpp:310
 msgid "Message"
-msgstr "הודעה"
+msgstr "Üzenet"
 
 #: src/net/ea/playerhandler.cpp:250
 msgid ""
 "You are carrying more than half your weight. You are unable to regain health."
-msgstr "אתה סוחב יותר מחצי ממשקלך. אינך יכול לאחות את החיים."
+msgstr "Több tárgy van nálad mint a súlyod fele. Nem töltődik az életed."
 
 #: src/net/ea/playerhandler.cpp:333
 #, fuzzy, c-format
 msgid "You picked up %s."
-msgstr "הרמת "
+msgstr "Zsákmányod "
 
 #: src/net/ea/playerhandler.cpp:369
 msgid "Cannot raise skill!"
@@ -3296,157 +3118,157 @@ msgstr ""
 
 #: src/net/ea/playerhandler.cpp:532
 msgid "Equip arrows first."
-msgstr "הצטייד בחצים תחילה."
+msgstr "Előbb tegyél be nyílvesszőt."
 
 #: src/net/ea/specialhandler.cpp:147
 msgid "Trade failed!"
-msgstr "המסחר נכשל!"
+msgstr "Üzlet sikertelen!"
 
 #: src/net/ea/specialhandler.cpp:150
 msgid "Emote failed!"
-msgstr "הבעה נכשלה!"
+msgstr "Hangulatjel küldése sikertelen!"
 
 #: src/net/ea/specialhandler.cpp:153
 msgid "Sit failed!"
-msgstr "הישיבה נכשלה!"
+msgstr "Ülés sikertelen!"
 
 #: src/net/ea/specialhandler.cpp:156
 msgid "Chat creating failed!"
-msgstr "יצירת שיחה נכשלה!"
+msgstr "Beszélgetés létrehozása sikertelen."
 
 #: src/net/ea/specialhandler.cpp:159
 msgid "Could not join party!"
-msgstr "לא היה ניתן להצטרף לחגיגה!"
+msgstr "Nem tudsz csatlakozni a csapatba."
 
 #: src/net/ea/specialhandler.cpp:162
 msgid "Cannot shout!"
-msgstr "לא ניתן לצעוק!"
+msgstr "Nem tudsz ordítani!"
 
 #: src/net/ea/specialhandler.cpp:171
 msgid "You have not yet reached a high enough lvl!"
-msgstr "לא הגעת לרמה גבוהה מספיק!"
+msgstr "Nem érted még el a megfelelő szintet!"
 
 #: src/net/ea/specialhandler.cpp:174
 msgid "Insufficient HP!"
-msgstr "לא נותרו נק' חיים!"
+msgstr "Kevés az életed!"
 
 #: src/net/ea/specialhandler.cpp:177
 msgid "Insufficient SP!"
-msgstr "לא נותרו נק' קסם!"
+msgstr "Kimerültél."
 
 #: src/net/ea/specialhandler.cpp:180
 msgid "You have no memos!"
-msgstr "אין תזכירים!"
+msgstr "Nincs feljegyzésed."
 
 #: src/net/ea/specialhandler.cpp:183
 msgid "You cannot do that right now!"
-msgstr "אינך יכול לעשות זאת כרגע!"
+msgstr "Most nem csinálhatod!"
 
 #: src/net/ea/specialhandler.cpp:186
 msgid "Seems you need more money... ;-)"
-msgstr "נראה שאתה צריך עוד כסף... ;-)"
+msgstr "Úgy néz ki több pénzre van szükséged... ;)"
 
 #: src/net/ea/specialhandler.cpp:189
 msgid "You cannot use this skill with that kind of weapon!"
-msgstr "אינך יכול להשתמש בכישור עם נשק זה!"
+msgstr "Ezzel a fegyverrel nem tudod ezt a képességet használni!"
 
 #: src/net/ea/specialhandler.cpp:192
 msgid "You need another red gem!"
-msgstr "אתה צריך עוד אבן אדומה!"
+msgstr "Egy másik piros kőre van szükséged!"
 
 #: src/net/ea/specialhandler.cpp:195
 msgid "You need another blue gem!"
-msgstr "אתה צריך עוד אבן כחולה!"
+msgstr "Egy másik kék kőre van szükséged!"
 
 #: src/net/ea/specialhandler.cpp:198
 msgid "You're carrying to much to do this!"
-msgstr "אתה סוחב יותר מדי בכדי לעשות זאת!"
+msgstr "Túl sok dolgot cipelsz, hogy ezt csináld!"
 
 #: src/net/ea/specialhandler.cpp:201
 msgid "Huh? What's that?"
-msgstr "הא? מה זה?"
+msgstr "Huh? Mi volt ez?"
 
 #: src/net/ea/specialhandler.cpp:210
 msgid "Warp failed..."
-msgstr "הפיתול נכשל...."
+msgstr "Teleport sikertelen..."
 
 #: src/net/ea/specialhandler.cpp:213
 msgid "Could not steal anything..."
-msgstr "לא היה ניתן לגנוב דבר..."
+msgstr "Nem tudsz semmit ellopni..."
 
 #: src/net/ea/specialhandler.cpp:216
 msgid "Poison had no effect..."
-msgstr "לרעל לא הייתה כל השפעה..."
+msgstr "A méregnek nem volt hatása..."
 
 #: src/net/ea/tradehandler.cpp:107 src/net/manaserv/tradehandler.cpp:116
 msgid "Request for Trade"
-msgstr "בקשה למסחר"
+msgstr "Üzleti ajánlat"
 
 #: src/net/ea/tradehandler.cpp:108 src/net/manaserv/tradehandler.cpp:117
 #, c-format
 msgid "%s wants to trade with you, do you accept?"
-msgstr "%s מעוניין לסחור עימך, האם אתה מסכים?"
+msgstr "%s üzletelni akar veled. Te akarsz vele?"
 
 #: src/net/ea/tradehandler.cpp:124
 msgid "Trading isn't possible. Trade partner is too far away."
-msgstr "מסחר אינו אפשרי. השותף למסחר רחוק מדי."
+msgstr "Az üzlet nem lehetséges. A partner túl messze van."
 
 #: src/net/ea/tradehandler.cpp:128
 msgid "Trading isn't possible. Character doesn't exist."
-msgstr "מסחר אינו אפשרי. השחקן אינו קיים."
+msgstr "Az üzlet nem lehetséges. A partner nem létezik."
 
 #: src/net/ea/tradehandler.cpp:132
 msgid "Trade cancelled due to an unknown reason."
-msgstr "המסחר בוטל מסיבה לא ידועה."
+msgstr "Az üzlet ismeretlen okból megszakadt."
 
 #: src/net/ea/tradehandler.cpp:137
 #, c-format
 msgid "Trade: You and %s"
-msgstr "מסחר: אתה ו-%s"
+msgstr "Üzlet: Te és %s"
 
 #: src/net/ea/tradehandler.cpp:144
 #, c-format
 msgid "Trade with %s cancelled."
-msgstr "המסחר עם %s בוטל."
+msgstr "Te és %s üzlete megszakadt."
 
 #: src/net/ea/tradehandler.cpp:153
 msgid "Unhandled trade cancel packet."
-msgstr "המסחר נכשל"
+msgstr "Lekezeletlen üzlet elutasító csomag."
 
 #: src/net/ea/tradehandler.cpp:202
 msgid "Failed adding item. Trade partner is over weighted."
-msgstr "נכשל בהוספת חפץ. השותף למסחר שוקל יותר מדי."
+msgstr "Tárgy hozzáadása sikertelen. Az üzleti partner túl van terhelve."
 
 #: src/net/ea/tradehandler.cpp:207
 msgid "Failed adding item. Trade partner has no free slot."
-msgstr "נכשל בהוספת חפץ. לשותף למסחר אין מקומות פנויים."
+msgstr "Tárgy hozzáadása sikertelen. Az üzleti partnernek nincs elég helye."
 
 #: src/net/ea/tradehandler.cpp:211
 msgid "Failed adding item for unknown reason."
-msgstr "נכשל בהוספת חפץ מסיבה לא ידועה."
+msgstr "Ismeretlen okból a tárgy hozzáadása sikertelen."
 
 #: src/net/ea/tradehandler.cpp:224 src/net/manaserv/tradehandler.cpp:149
 msgid "Trade canceled."
-msgstr "המסחר בוטל."
+msgstr "Az üzlet megszakadt."
 
 #: src/net/ea/tradehandler.cpp:231 src/net/manaserv/tradehandler.cpp:156
 msgid "Trade completed."
-msgstr "המסחר הושלם."
+msgstr "Sikeres üzlet."
 
 #: src/net/manaserv/beinghandler.cpp:324
 #, fuzzy
 msgid "Press OK to respawn."
-msgstr " לחץ אישור כדי להשיב"
+msgstr " Nyomj Ok-t a feléledéshez"
 
 #: src/net/manaserv/beinghandler.cpp:325
 #, fuzzy
 msgid "You Died"
-msgstr "נהרגת"
+msgstr "Meghaltál."
 
 #: src/net/manaserv/charhandler.cpp:128 src/net/manaserv/charhandler.cpp:196
 #, fuzzy
 msgid "Not logged in."
-msgstr "כבר מחובר"
+msgstr "Már be van jelentkezve"
 
 #: src/net/manaserv/charhandler.cpp:131
 msgid "No empty slot."
@@ -3459,7 +3281,7 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:137
 #, fuzzy
 msgid "Character's name already exists."
-msgstr "שם המשתמש כבר בשימוש"
+msgstr "A felhasználónév foglalt"
 
 #: src/net/manaserv/charhandler.cpp:140
 msgid "Invalid hairstyle."
@@ -3476,12 +3298,12 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:149
 #, fuzzy
 msgid "Character's stats are too high."
-msgstr "נתוני שחקן - אישור"
+msgstr "Karakter statok rendben"
 
 #: src/net/manaserv/charhandler.cpp:152
 #, fuzzy
 msgid "Character's stats are too low."
-msgstr "נתוני שחקן - אישור"
+msgstr "Karakter statok rendben"
 
 #: src/net/manaserv/charhandler.cpp:155
 msgid "One stat is zero."
@@ -3490,46 +3312,46 @@ msgstr ""
 #: src/net/manaserv/charhandler.cpp:187
 #, fuzzy
 msgid "Player deleted."
-msgstr "השחקן נמחק."
+msgstr "Karakter törölve."
 
 #: src/net/manaserv/charhandler.cpp:199
 #, fuzzy
 msgid "Selection out of range."
-msgstr "בחר כמות חפצים לסחור."
+msgstr "Válaszd ki mennyi tárggyal akarsz üzletelni."
 
 #: src/net/manaserv/charhandler.cpp:202
 #, fuzzy, c-format
 msgid "Unknown error (%d)."
-msgstr "שגיאה לא ידועה"
+msgstr "Ismeretlen hiba"
 
 #: src/net/manaserv/charhandler.cpp:242
 msgid "No gameservers are available."
-msgstr "אין שרתי משחק זמינים."
+msgstr "Nincs elérhető játékszerver."
 
 #: src/net/manaserv/charhandler.cpp:268
 msgid "Willpower:"
-msgstr "כח רצון:"
+msgstr "Akaraterő:"
 
 #: src/net/manaserv/chathandler.cpp:180 src/net/manaserv/chathandler.cpp:301
 #: src/net/manaserv/guildhandler.cpp:259
 #, c-format
 msgid "Topic: %s"
-msgstr "כותרת: %s"
+msgstr "Téma: %s"
 
 #: src/net/manaserv/chathandler.cpp:184 src/net/manaserv/chathandler.cpp:262
 #, fuzzy
 msgid "Players in this channel:"
-msgstr "משתמש מכה מפלצת"
+msgstr "Sebzéskor"
 
 #: src/net/manaserv/chathandler.cpp:201
 #, fuzzy
 msgid "Error joining channel."
-msgstr "פקודה: /join <channel>"
+msgstr "Parancs: /join <csatorna>"
 
 #: src/net/manaserv/chathandler.cpp:207
 #, fuzzy
 msgid "Listing channels."
-msgstr "מבקש להצטרף לחדר %s."
+msgstr "Kapcsolódási kérelem a %s nevű csatornába."
 
 #: src/net/manaserv/chathandler.cpp:219
 msgid "End of channel list."
@@ -3538,7 +3360,7 @@ msgstr ""
 #: src/net/manaserv/chathandler.cpp:291
 #, fuzzy, c-format
 msgid "%s entered the channel."
-msgstr "%s הצטרף לחבורה."
+msgstr "%s csatlakozott a csapathoz."
 
 #: src/net/manaserv/chathandler.cpp:296
 #, c-format
@@ -3558,76 +3380,76 @@ msgstr ""
 #: src/net/manaserv/chathandler.cpp:327
 #, fuzzy
 msgid "Unknown channel event."
-msgstr "פקודה לא מוכרת."
+msgstr "Ismeretlen parancs."
 
 #: src/net/manaserv/generalhandler.cpp:100
 #, c-format
 msgid "Willpower %+d"
-msgstr "כח רצון %+d"
+msgstr "Akaraterő: %+d"
 
 #: src/net/manaserv/generalhandler.cpp:171
 #, fuzzy
 msgid "Willpower"
-msgstr "כח רצון:"
+msgstr "Akaraterő:"
 
 #: src/net/manaserv/guildhandler.cpp:81
 msgid "Guild created."
-msgstr "גילדה נוצרה."
+msgstr "Klán létrehozva."
 
 #: src/net/manaserv/guildhandler.cpp:86
 msgid "Error creating guild."
-msgstr "שגיאה ביצירת גילדה."
+msgstr "Hiba a klán létrehozása közben."
 
 #: src/net/manaserv/guildhandler.cpp:96
 msgid "Invite sent."
-msgstr "הזמנה נשלחה."
+msgstr "Meghívás elküldve."
 
 #: src/net/manaserv/guildhandler.cpp:203
 msgid "Member was promoted successfully."
-msgstr "החבר קודם בהצלחה."
+msgstr "A tag előléptetése sikeres."
 
 #: src/net/manaserv/guildhandler.cpp:208
 msgid "Failed to promote member."
-msgstr "נכשל בקידום החבר."
+msgstr "A tag előléptetése sikertelen."
 
 #: src/net/manaserv/loginhandler.cpp:87
 #, fuzzy
 msgid "Wrong magic_token."
-msgstr "magic_token שגוי"
+msgstr "Helytelen magic_token"
 
 #: src/net/manaserv/loginhandler.cpp:90 src/net/manaserv/loginhandler.cpp:269
 #, fuzzy
 msgid "Already logged in."
-msgstr "כבר מחובר"
+msgstr "Már be van jelentkezve"
 
 #: src/net/manaserv/loginhandler.cpp:93 src/net/manaserv/loginhandler.cpp:272
 #, fuzzy
 msgid "Server is full."
-msgstr "השרת מלא"
+msgstr "A szerver tele van"
 
 #: src/net/manaserv/loginhandler.cpp:118
 #, fuzzy
 msgid "New password incorrect."
-msgstr "הסיסמה החדשה שגויה"
+msgstr "Az új jelszó hibás"
 
 #: src/net/manaserv/loginhandler.cpp:124 src/net/manaserv/loginhandler.cpp:155
 msgid "Account not connected. Please login first."
-msgstr "החשבון אינו מחובר. אנא קודם־כל התחבר."
+msgstr "A fiók nem kapcsolódott. Kérlek jelentkezz be előbb."
 
 #: src/net/manaserv/loginhandler.cpp:149
 #, fuzzy
 msgid "New email address incorrect."
-msgstr "כתובת דוא\"ל חדשה שגויה"
+msgstr "Az új email cím hibás."
 
 #: src/net/manaserv/loginhandler.cpp:152
 #, fuzzy
 msgid "Old email address incorrect."
-msgstr "כתובת דוא\"ל ישנה שגויה"
+msgstr "A régi email cím hibás."
 
 #: src/net/manaserv/loginhandler.cpp:158
 #, fuzzy
 msgid "The new email address already exists."
-msgstr "כתובת הדוא\"ל החדשה כבר בשימוש."
+msgstr "Az új email cím már foglalt."
 
 #: src/net/manaserv/loginhandler.cpp:239
 msgid ""
@@ -3637,12 +3459,12 @@ msgstr ""
 #: src/net/manaserv/loginhandler.cpp:263 src/net/manaserv/loginhandler.cpp:300
 #, fuzzy
 msgid "Client version is too old."
-msgstr "גרסת הקליינט ישנה מדי"
+msgstr "A kliens verziója túl régi"
 
 #: src/net/manaserv/loginhandler.cpp:266
 #, fuzzy
 msgid "Wrong username or password."
-msgstr "שם משתמש או סיסמה שגויים"
+msgstr "Hibás felhasználónév vagy jelszó"
 
 #: src/net/manaserv/loginhandler.cpp:275
 msgid "Login attempt too soon after previous attempt."
@@ -3651,17 +3473,17 @@ msgstr ""
 #: src/net/manaserv/loginhandler.cpp:303
 #, fuzzy
 msgid "Wrong username, password or email address."
-msgstr "שם משתמש, סיסמה או דוא\"ל שגויים"
+msgstr "Hibás felhasználónév, jelszó, vagy email cím"
 
 #: src/net/manaserv/loginhandler.cpp:306
 #, fuzzy
 msgid "Username already exists."
-msgstr "שם המשתמש כבר בשימוש"
+msgstr "A felhasználónév foglalt"
 
 #: src/net/manaserv/loginhandler.cpp:309
 #, fuzzy
 msgid "Email address already exists."
-msgstr "כתובת הדוא\"ל כבר בשימוש"
+msgstr "Az email cím foglalt"
 
 #: src/net/manaserv/loginhandler.cpp:312
 msgid "You took too long with the captcha or your response was incorrect."
@@ -3669,35 +3491,35 @@ msgstr ""
 
 #: src/net/manaserv/partyhandler.cpp:88
 msgid "Joined party."
-msgstr "הצטרפת לחבורה."
+msgstr "Csatlakoztál a csapathoz."
 
 #: src/net/manaserv/partyhandler.cpp:106
 #, c-format
 msgid "%s joined the party."
-msgstr "%s הצטרף לחבורה."
+msgstr "%s csatlakozott a csapathoz."
 
 #: src/net/manaserv/partyhandler.cpp:123
 #, fuzzy, c-format
 msgid "%s rejected your invite."
-msgstr "%s דחה את הזמנתך."
+msgstr "%s visszautasította a csapatba hívást."
 
 #: src/net/manaserv/tradehandler.cpp:96
 msgid "Accepting incoming trade requests."
-msgstr "מקבל בקשות מסחר נכנסות."
+msgstr "Elfogadod a bejövő üzleti ajánlatokat."
 
 #: src/net/manaserv/tradehandler.cpp:98
 msgid "Ignoring incoming trade requests."
-msgstr "מתעלם מבקשות סחר נכנסות."
+msgstr "Elutasítod a bejövő üzleti ajánlatokat."
 
 #: src/net/manaserv/tradehandler.cpp:135
 #, c-format
 msgid "Trading with %s"
-msgstr "סוחר עם%s"
+msgstr "Üzlet Te és %s között"
 
 #: src/playerrelations.cpp:304
 #, fuzzy
 msgid "Completely ignore"
-msgstr "@@ignore|התעלם לחלוטין %s@@"
+msgstr "@@ignore|Teljesen letiltod %s-t@@"
 
 #: src/playerrelations.cpp:318
 msgid "Print '...'"
@@ -3718,256 +3540,394 @@ msgstr ""
 #: src/resources/itemdb.cpp:52
 #, c-format
 msgid "Attack %+d"
-msgstr "התקפה %+d"
+msgstr "Támadás %+d"
 
 #: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Defense %+d"
-msgstr "הגנה %+d"
+msgstr "Védelem %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "HP %+d"
-msgstr "חיים %+d"
+msgstr "Élet: %+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
 msgid "MP %+d"
-msgstr "MP %+d"
+msgstr "Varázserő %+d"
 
 #: src/resources/itemdb.cpp:114
 msgid "Unknown item"
-msgstr "חפץ לא ידוע"
+msgstr "Ismeretlen tárgy"
 
 #: src/resources/itemdb.cpp:158 src/resources/monsterdb.cpp:45
-#: src/resources/monsterdb.cpp:67
+#: src/resources/monsterdb.cpp:69
 msgid "unnamed"
-msgstr "ללא שם"
+msgstr "Névtelen"
+
+#~ msgid "Text Shadow"
+#~ msgstr "Szövegárnyék"
+
+#~ msgid "Text Outline"
+#~ msgstr "Szöveg körvonala"
+
+#~ msgid "Progress Bar Labels"
+#~ msgstr "Töltésjelző cimkék"
+
+#~ msgid "Background"
+#~ msgstr "Háttér"
+
+#~ msgid "Highlight"
+#~ msgstr "Kijelölt"
+
+#~ msgid "Tab Highlight"
+#~ msgstr "Kijelölt fül"
+
+#, fuzzy
+#~ msgid "Item Too Expensive"
+#~ msgstr "A tárgy túl drága"
+
+#, fuzzy
+#~ msgid "Item Is Equipped"
+#~ msgstr "A tárgy használatban van"
+
+#~ msgid "GM"
+#~ msgstr "GM"
+
+#~ msgid "Player"
+#~ msgstr "Játékos"
+
+#~ msgid "Whisper"
+#~ msgstr "Privát üzenet"
+
+#~ msgid "Is"
+#~ msgstr "Is"
+
+#~ msgid "Server"
+#~ msgstr "Szerver"
+
+#~ msgid "Logger"
+#~ msgstr "Rögzítő"
+
+#~ msgid "Hyperlink"
+#~ msgstr "Hiperlink"
+
+#~ msgid "Being"
+#~ msgstr "Nevek"
+
+#~ msgid "Other Players' Names"
+#~ msgstr "Ismeretlen játékos neve"
+
+#~ msgid "Own Name"
+#~ msgstr "Saját név"
+
+#~ msgid "GM Names"
+#~ msgstr "GM név"
+
+#~ msgid "NPCs"
+#~ msgstr "Gépjátékos neve"
+
+#~ msgid "Monsters"
+#~ msgstr "Szörny neve"
+
+#~ msgid "Unknown Item Type"
+#~ msgstr "Ismeretlen tárgy típus"
+
+#~ msgid "Generics"
+#~ msgstr "Gyógyszer"
+
+#~ msgid "Hats"
+#~ msgstr "Fejfedő"
+
+#~ msgid "Usables"
+#~ msgstr "Bevethető"
+
+#~ msgid "Shirts"
+#~ msgstr "Felső"
+
+#, fuzzy
+#~ msgid "One Handed Weapons"
+#~ msgstr "1 kezes fegyverek"
+
+#~ msgid "Pants"
+#~ msgstr "Nadrág"
+
+#~ msgid "Shoes"
+#~ msgstr "Cipő"
+
+#, fuzzy
+#~ msgid "Two Handed Weapons"
+#~ msgstr "1 kezes fegyverek"
+
+#~ msgid "Shields"
+#~ msgstr "Pajzsok"
+
+#~ msgid "Rings"
+#~ msgstr "Gyűrűk"
+
+#~ msgid "Necklaces"
+#~ msgstr "Nyaklánc"
+
+#~ msgid "Arms"
+#~ msgstr "Kezek"
+
+#~ msgid "Ammo"
+#~ msgstr "Töltény"
+
+#~ msgid "Particle Effects"
+#~ msgstr "Effektek"
+
+#~ msgid "Pickup Notification"
+#~ msgstr "Tárgy felvételekor"
+
+#~ msgid "Exp Notification"
+#~ msgstr "Tapasztalat szerzésekor"
+
+#, fuzzy
+#~ msgid "Player Hits Monster"
+#~ msgstr "Sebzéskor"
+
+#, fuzzy
+#~ msgid "Monster Hits Player"
+#~ msgstr "Sérüléskor"
+
+#~ msgid "Critical Hit"
+#~ msgstr "Kritikális ütéskor"
+
+#~ msgid "Misses"
+#~ msgstr "Ha nincs találat."
+
+#~ msgid "HP Bar"
+#~ msgstr "Élet csík"
+
+#~ msgid "3/4 HP Bar"
+#~ msgstr "3/4 élet csík"
+
+#~ msgid "1/2 HP Bar"
+#~ msgstr "1/2 élet csík"
+
+#~ msgid "1/4 HP Bar"
+#~ msgstr "1/4 Élet csík"
 
 #~ msgid "no"
-#~ msgstr "לא"
+#~ msgstr "Nem"
 
 #~ msgid "Buddy"
-#~ msgstr "חבר"
+#~ msgstr "Partner"
 
 #~ msgid "Buddy List"
-#~ msgstr "רשימת חברים"
+#~ msgstr "Partnerlista"
 
 #~ msgid "Description: %s"
-#~ msgstr "תיאור: %s"
+#~ msgstr "Leírás: %s"
 
 #~ msgid "Effect: %s"
-#~ msgstr "השפעה: %s"
+#~ msgstr "Hatás: %s"
 
 #~ msgid "Previous"
-#~ msgstr "הקודם"
+#~ msgstr "Előző"
 
 #~ msgid "New"
-#~ msgstr "חדש"
+#~ msgstr "Új"
 
 #~ msgid "Job Level: %d"
-#~ msgstr "רמת עבודה: %d"
+#~ msgstr "Munka szint: %d"
 
 #~ msgid "Present: "
-#~ msgstr "נוכחים: "
+#~ msgstr "Közel van: "
 
 #~ msgid "Quit Guild"
-#~ msgstr "עזוב גילדה"
+#~ msgstr "Klán elhagyása"
 
 #~ msgid "Ok"
-#~ msgstr "אישור"
+#~ msgstr "Ok"
 
 #~ msgid "Recent:"
-#~ msgstr "לאחרונה:"
+#~ msgstr "Előzmény:"
 
 #~ msgid "Magic"
-#~ msgstr "קסם"
+#~ msgstr "Mágia"
 
 #~ msgid "Cast Test Spell 1"
-#~ msgstr "הטל קסם נסיון 1"
+#~ msgstr "Teszt Varázs 1 Bevetése"
 
 #~ msgid "Cast Test Spell 2"
-#~ msgstr "הטל קסם נסיון 2"
+#~ msgstr "Teszt Varázs 2 Bevetése"
 
 #~ msgid "Cast Test Spell 3"
-#~ msgstr "הטל קסם נסיון 3"
+#~ msgstr "Teszt Varázs 3 Bevetése"
 
 #~ msgid "2 Handed Weapons"
-#~ msgstr "נשקים לשתי ידיים"
+#~ msgstr "2 kezes fegyverek"
 
 #~ msgid "@@trade|Trade With %s@@"
-#~ msgstr "@@trade|סחור עם %s@@"
+#~ msgstr "@@trade|Üzlet Te és %s között@@"
 
 #~ msgid "@@attack|Attack %s@@"
-#~ msgstr "@@attack|תקוף את %s@@"
+#~ msgstr "@@attack|%s megtámadása@@"
 
 #~ msgid "@@disregard|Disregard %s@@"
-#~ msgstr "@@disregard|זלזל %s@@"
+#~ msgstr "@@disregard|Semmibe veszed %s-t@@"
 
 #~ msgid "@@ignore|Ignore %s@@"
-#~ msgstr "@@ignore|התעלם %s@@"
+#~ msgstr "@@ignore|%s tiltása@@"
 
 #~ msgid "@@unignore|Un-Ignore %s@@"
-#~ msgstr "@@unignore|אל-התעלם %s@@"
+#~ msgstr "@@unignore|%s tiltásának feloldása@@"
 
 #~ msgid "@@admin-kick|Kick player@@"
-#~ msgstr "@@admin-kick|העף שחקן@@"
+#~ msgstr "@@admin-kick|Játékos kirúgása@@"
 
 #~ msgid "@@cancel|Cancel@@"
-#~ msgstr "@@cancel|ביטול@@"
+#~ msgstr "@@cancel|mégse@@"
 
 #~ msgid "@@pickup|Pick up %s@@"
-#~ msgstr "@@pickup|הרם %s@@"
+#~ msgstr "@@pickup|Vedd fel a(z) %s-t@@"
 
 #~ msgid "@@use|Unequip@@"
-#~ msgstr "@@use|הפשט@@"
+#~ msgstr "@@use|Nem használ@@"
 
 #~ msgid "@@use|Equip@@"
-#~ msgstr "@@use|השתמש@@"
+#~ msgstr "@@use|Használ@@"
 
 #~ msgid "@@use|Use@@"
-#~ msgstr "@@use|Use@@"
+#~ msgstr "@@use|Bevet@@"
 
 #~ msgid "@@drop|Drop@@"
-#~ msgstr "@@drop|השלך@@"
+#~ msgstr "@@drop|Eldob@@"
 
 #~ msgid "@@split|Split@@"
-#~ msgstr "@@split|פצל@@"
+#~ msgstr "@@split|Szétválaszt@@"
 
 #~ msgid "@@store|Store@@"
-#~ msgstr "@@store|אחסן@@"
+#~ msgstr "@@store|Raktároz@@"
 
 #~ msgid "@@retrieve|Retrieve@@"
-#~ msgstr "@@retrieve|החזר@@"
+#~ msgstr "@@retrieve|Visszavesz@@"
 
 #~ msgid "Select Server"
-#~ msgstr "בחר שרת"
+#~ msgstr "Válassza ki a szervert"
 
 #~ msgid "Failed to switch to "
-#~ msgstr "נכשל במעבר אל "
+#~ msgstr "Nem lehet erre váltani: "
 
 #~ msgid "windowed"
-#~ msgstr "חלון"
+#~ msgstr "ablakban"
 
 #~ msgid "fullscreen"
-#~ msgstr "מסך מלא"
+#~ msgstr "teljes képernyőn"
 
 #~ msgid "Mystery Skill"
-#~ msgstr "כישור מיסתורי"
+#~ msgstr "Misztikus képesség"
 
 #~ msgid "Weapons"
-#~ msgstr "נשקים"
+#~ msgstr "Fegyverek"
 
 #~ msgid "Crafts"
-#~ msgstr "מלאכה"
+#~ msgstr "Mesterségek"
 
 #~ msgid "Stats"
-#~ msgstr "רמות"
+#~ msgstr "Statok"
 
 #~ msgid "Total"
-#~ msgstr "סה\"כ"
+#~ msgstr "Összes"
 
 #~ msgid "Cost"
-#~ msgstr "עלות"
+#~ msgstr "Költség"
 
 #~ msgid "Attack:"
-#~ msgstr "התקפה:"
+#~ msgstr "Fizikális sebzés:"
 
 #~ msgid "% Reflex:"
-#~ msgstr "% ריפלקס:"
+#~ msgstr "Reflex (%):"
 
 #~ msgid "Remaining Status Points: %d"
-#~ msgstr "נקודות מצב נותרות: %d"
+#~ msgstr "Elosztható pontok: %d"
 
 #~ msgid "Max level"
-#~ msgstr "רמה מקסימלית"
+#~ msgstr "Max. szint"
 
 #~ msgid "curl error "
-#~ msgstr "שגיאת קיפולים: "
+#~ msgstr "curl hiba "
 
 #~ msgid " host: "
-#~ msgstr " שרת מארח: "
+#~ msgstr " kiszolgáló: "
 
 #~ msgid "Guilds"
-#~ msgstr "גילדות"
+#~ msgstr "Klánok"
 
 #~ msgid "Buddys"
-#~ msgstr "חברים"
+#~ msgstr "Partnerek"
 
 #~ msgid "Party Window"
-#~ msgstr "חלון חבורה"
+#~ msgstr "Csapat Ablak"
 
 #~ msgid "Unarmed"
-#~ msgstr "ללא תחמושת"
+#~ msgstr "Ököl"
 
 #~ msgid "Knife"
-#~ msgstr "סכין"
+#~ msgstr "Kés"
 
 #~ msgid "Sword"
-#~ msgstr "חרב"
+#~ msgstr "Kard"
 
 #~ msgid "Polearm"
-#~ msgstr "נשק מוט"
+#~ msgstr "Szálfegyver"
 
 #~ msgid "Staff"
-#~ msgstr "מקל"
+#~ msgstr "Bot"
 
 #~ msgid "Whip"
-#~ msgstr "שוט"
+#~ msgstr "Ostor"
 
 #~ msgid "Bow"
-#~ msgstr "קשת"
+#~ msgstr "Íj"
 
 #~ msgid "Shooting"
-#~ msgstr "ירייה"
+#~ msgstr "Lőfegyver"
 
 #~ msgid "Mace"
-#~ msgstr "שרביט"
+#~ msgstr "Buzogány"
 
 #~ msgid "Axe"
-#~ msgstr "גרזן"
+#~ msgstr "Fejsze"
 
 #~ msgid "Thrown"
-#~ msgstr "זריקה"
+#~ msgstr "Dobófegyver"
 
 #~ msgid "Craft"
-#~ msgstr "מלאכה"
+#~ msgstr "Mesterség"
 
 #~ msgid "Unknown Skill"
-#~ msgstr "כישור לא ידוע"
+#~ msgstr "Ismeretlen Képesség"
 
 #~ msgid " can't be created, but it doesn't exist! Exiting."
-#~ msgstr " can't be created, but it doesn't exist! Exiting."
+#~ msgstr " -t nem lehet létrehozni és nincs létrehozva! Kilépés."
 
 #~ msgid "Couldn't set "
-#~ msgstr "לא ניתן להגדיר "
+#~ msgstr "Nem lehet beállítani: "
 
 #~ msgid " video mode: "
-#~ msgstr " מצב וידאו: "
+#~ msgstr " videó mód: "
 
 #~ msgid "mana"
 #~ msgstr "mana"
 
 #~ msgid "Connecting to character server..."
-#~ msgstr "מתחבר לשרת השחקן..."
+#~ msgstr "Csatlakozás a karakter szerverhez...."
 
 #~ msgid "Connecting to account server..."
-#~ msgstr "מתחבר לשרת החשבון..."
+#~ msgstr "Csatlakozás a fiók szerverhez..."
 
 #~ msgid "/new > Alias of create"
-#~ msgstr "/new > שם נוסף ל-create"
+#~ msgstr "/new > Ugyanaz, mint a /create"
 
 #~ msgid "Command: /new <party-name>"
-#~ msgstr "פקודה: /new <party-name>"
+#~ msgstr "Parancs: /new <csapatnév>"
 
 #~ msgid "a"
-#~ msgstr "‎"
+#~ msgstr ":"
 
 #~ msgid "Unnamed"
-#~ msgstr "ללא שם"
-
-#~ msgid "Scroll radius"
-#~ msgstr "תווך גלילה"
-
-#~ msgid "Scroll laziness"
-#~ msgstr "עצלנות גלילה"
+#~ msgstr "Névtelen"
