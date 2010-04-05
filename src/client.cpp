@@ -42,7 +42,6 @@
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/okdialog.h"
-#include "gui/palette.h"
 #include "gui/quitdialog.h"
 #include "gui/register.h"
 #include "gui/sdlinput.h"
@@ -51,6 +50,7 @@
 #include "gui/theme.h"
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
+#include "gui/userpalette.h"
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
@@ -112,7 +112,7 @@ Configuration branding;       /**< XML branding information reader */
 Logger *logger;               /**< Log object */
 KeyboardConfig keyboard;
 
-Palette *guiPalette;
+UserPalette *userPalette;
 Graphics *graphics;
 
 Sound sound;
@@ -303,7 +303,7 @@ Client::Client(const Options &options):
     }
 #else
     mIcon = IMG_Load(resman->getPath(
-            branding.getValue("appIcon", "data/icons/mana.png")).c_str());
+            branding.getValue("appIcon", "icons/mana.png")).c_str());
     if (mIcon)
     {
         SDL_SetAlpha(mIcon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
@@ -372,7 +372,7 @@ Client::Client(const Options &options):
     // Initialise player relations
     player_relations.init();
 
-    guiPalette = new Palette;
+    userPalette = new UserPalette;
     setupWindow = new Setup;
 
     sound.playMusic(branding.getValue("loginMusic", "Magick - Real.ogg"));
@@ -390,11 +390,15 @@ Client::Client(const Options &options):
         mCurrentServer.hostname = branding.getValue("defaultServer",
                                             "server.themanaworld.org").c_str();
     }
-    if (options.serverPort == 0)
+
+    if (mCurrentServer.port == 0)
     {
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
+        mCurrentServer.type = ServerInfo::parseType(
+                branding.getValue("defaultServerType", "eathena"));
     }
+
     if (loginData.username.empty() && loginData.remember)
         loginData.username = config.getValue("username", "");
 
@@ -443,7 +447,7 @@ Client::~Client()
     SDL_FreeSurface(mIcon);
 
     logger->log("Quitting");
-    delete guiPalette;
+    delete userPalette;
 
     config.write();
 
@@ -597,7 +601,8 @@ int Client::exec()
                     // Allow changing this using a server choice dialog
                     // We show the dialog box only if the command-line
                     // options weren't set.
-                    if (mOptions.serverName.empty() && mOptions.serverPort == 0)
+                    if (mOptions.serverName.empty() && mOptions.serverPort == 0
+                        && !branding.getValue("onlineServerList", "a").empty())
                     {
                         // Don't allow an alpha opacity
                         // lower than the default value
@@ -1029,6 +1034,32 @@ void Client::initHomeDir()
     {
         logger->error(strprintf(_("%s doesn't exist and can't be created! "
                                   "Exiting."), mConfigDir.c_str()));
+    }
+
+    struct stat statbuf;
+    std::string newConfigFile = mConfigDir + "/config.xml";
+    if (stat(newConfigFile.c_str(), &statbuf))
+    {
+        std::string oldConfigFile = std::string(PHYSFS_getUserDir()) +
+            "/.tmw/config.xml";
+        if (!stat(oldConfigFile.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
+        {
+            std::ifstream oldConfig;
+            std::ofstream newConfig;
+            logger->log("Copying old TMW settings.");
+
+            oldConfig.open(oldConfigFile.c_str(), std::ios::binary);
+            newConfig.open(newConfigFile.c_str(), std::ios::binary);
+
+            if (!oldConfig.is_open() || !newConfig.is_open())
+                logger->log("Unable to copy old settings.");
+            else
+            {
+                newConfig << oldConfig.rdbuf();
+                newConfig.close();
+                oldConfig.close();
+            }
+        }
     }
 }
 

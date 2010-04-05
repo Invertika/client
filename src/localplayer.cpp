@@ -40,12 +40,12 @@
 #include "text.h"
 
 #include "gui/gui.h"
+#include "gui/inventorywindow.h"
 #include "gui/ministatus.h"
-#include "gui/palette.h"
 #include "gui/skilldialog.h"
 #include "gui/statuswindow.h"
-#include "gui/storagewindow.h"
 #include "gui/theme.h"
+#include "gui/userpalette.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -98,15 +98,14 @@ LocalPlayer::LocalPlayer(int id, int job):
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mInventory(new Inventory(Net::getInventoryHandler()
-                             ->getSize(Net::InventoryHandler::INVENTORY))),
+    mInventory(new Inventory(Inventory::INVENTORY)),
     mLocalWalkTime(-1),
     mMessageTime(0)
 {
     mUpdateName = true;
 
-    mTextColor = &guiPalette->getColor(Palette::PLAYER);
-    mNameColor = &guiPalette->getColor(Palette::SELF);
+    mTextColor = &Theme::getThemeColor(Theme::PLAYER);
+    mNameColor = &userPalette->getColor(UserPalette::SELF);
 
     initTargetCursor();
 
@@ -150,7 +149,7 @@ void LocalPlayer::logic()
                     (int) pos.y - 48,*/
                     getPixelX(),
                     getPixelY() - 48,
-                    &guiPalette->getColor(info.second),
+                    &userPalette->getColor(info.second),
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
@@ -334,7 +333,7 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
             //effectManager->trigger(15, (int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
             setDestination((int) pos.x + (dx * dScaler), (int) pos.y + (dy * dScaler));
         }
-        else if (dir)
+        else if (dir != mDirection)
         {
             // If the being can't move, just change direction
             Net::getPlayerHandler()->setDirection(dir);
@@ -422,10 +421,11 @@ Being *LocalPlayer::getTarget() const
 
 void LocalPlayer::setTarget(Being *target)
 {
-    if (mLastTarget != -1 || target == this)
+    if ((mLastTarget != -1 || target == this) && target)
         return;
 
-    mLastTarget = tick_time;
+    if (target)
+        mLastTarget = tick_time;
 
     if (target == mTarget)
         return;
@@ -444,12 +444,12 @@ void LocalPlayer::setTarget(Being *target)
         mTarget->untarget();
 
     if (mTarget && mTarget->getType() == Being::MONSTER)
-        static_cast<Monster *>(mTarget)->setShowName(false);
+        mTarget->setShowName(false);
 
     mTarget = target;
 
     if (target && target->getType() == Being::MONSTER)
-        static_cast<Monster *>(target)->setShowName(true);
+        target->setShowName(true);
 }
 
 void LocalPlayer::setDestination(int x, int y)
@@ -564,7 +564,7 @@ void LocalPlayer::startWalking(unsigned char dir)
         {
             setDestination(getTileX() + dx, getTileY() + dy);
         }
-        else if (dir)
+        else if (dir != mDirection)
         {
             // If the being can't move, just change direction
             Net::getPlayerHandler()->setDirection(dir);
@@ -758,6 +758,20 @@ void LocalPlayer::lowerAttribute(int attr)
     Net::getPlayerHandler()->decreaseAttribute(attr);
 }
 
+void LocalPlayer::setTotalWeight(int value)
+{
+    mTotalWeight = value;
+
+    inventoryWindow->updateWeight();
+}
+
+void LocalPlayer::setMaxWeight(int value)
+{
+    mMaxWeight = value;
+
+    inventoryWindow->updateWeight();
+}
+
 void LocalPlayer::setAttributeBase(int num, int value, bool notify)
 {
     int old = mAttributeBase[num];
@@ -928,7 +942,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         if (mMap && config.getValue("showpickupparticle", 0))
         {
             // Show pickup notification
-            addMessageToQueue(itemInfo.getName(), Palette::PICKUP_INFO);
+            addMessageToQueue(itemInfo.getName(), UserPalette::PICKUP_INFO);
         }
     }
 }
@@ -1080,8 +1094,7 @@ void LocalPlayer::loadTargetCursor(const std::string &filename,
     mTargetCursor[index][size] = currentCursor;
 }
 
-void LocalPlayer::addMessageToQueue(const std::string &message,
-                                    Palette::ColorType color)
+void LocalPlayer::addMessageToQueue(const std::string &message, int color)
 {
     mMessages.push_back(MessagePair(message, color));
 }

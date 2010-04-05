@@ -65,17 +65,17 @@ AvatarListBox::~AvatarListBox()
 
 void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
 {
-    AvatarListModel* model = dynamic_cast<AvatarListModel*>(mListModel);
-
-    if (!model)
+    if (!mListModel)
         return;
+
+    AvatarListModel* model = static_cast<AvatarListModel*>(mListModel);
 
     updateAlpha();
 
     Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
-    graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-            (int)(mAlpha * 255.0f)));
+    graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                            (int) (mAlpha * 255.0f)));
     graphics->setFont(getFont());
 
     const int fontHeight = getFont()->getHeight();
@@ -89,7 +89,7 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
     int width = 0;
 
     // Draw the list elements
-    graphics->setColor(guiPalette->getColor(Palette::TEXT));
+    graphics->setColor(Theme::getThemeColor(Theme::TEXT));
     for (int i = 0, y = 0;
          i < model->getNumberOfElements();
          ++i, y += fontHeight)
@@ -140,15 +140,12 @@ void AvatarListBox::mousePressed(gcn::MouseEvent &event)
         setSelected(y / getFont()->getHeight());
         distributeActionEvent();
 
-        if (event.getClickCount() == 2)
+        if (event.getClickCount() == 2 && mListModel)
         {
             int selected = getSelected();
-            AvatarListModel *model = dynamic_cast<AvatarListModel*>(mListModel);
-            if (model)
-            {
-                chatWindow->addWhisperTab(model->getAvatarAt(selected)
-                                          ->getName(), true);
-            }
+            AvatarListModel *model = static_cast<AvatarListModel*>(mListModel);
+            chatWindow->addWhisperTab(model->getAvatarAt(selected)->getName(),
+                                      true);
         }
     }
     // TODO: Add support for context menu

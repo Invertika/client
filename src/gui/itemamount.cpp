@@ -24,7 +24,6 @@
 #include "item.h"
 #include "keyboardconfig.h"
 
-#include "gui/storagewindow.h"
 #include "gui/trade.h"
 #include "gui/itempopup.h"
 #include "gui/viewport.h"
@@ -54,10 +53,14 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             Net::getInventoryHandler()->splitItem(item, amount);
             break;
         case StoreAdd:
-            StorageWindow::addStore(item, amount);
+            Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
+                                             item->getInvIndex(), amount,
+                                             Inventory::STORAGE);
             break;
         case StoreRemove:
-            StorageWindow::removeStore(item, amount);
+            Net::getInventoryHandler()->moveItem(Inventory::STORAGE,
+                                             item->getInvIndex(), amount,
+                                             Inventory::INVENTORY);
             break;
         default:
             break;

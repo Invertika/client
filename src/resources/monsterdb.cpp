@@ -29,6 +29,8 @@
 #include "utils/gettext.h"
 #include "utils/xml.h"
 
+#include "net/net.h"
+
 namespace
 {
     MonsterDB::MonsterInfos mMonsterInfos;
@@ -42,7 +44,6 @@ void MonsterDB::load()
         return;
 
     mUnknown.addSprite("error.xml");
-    mUnknown.setName(_("unnamed"));
 
     logger->log("Initializing monster database...");
 
@@ -53,6 +54,9 @@ void MonsterDB::load()
     {
         logger->error("Monster Database: Error while loading monster.xml!");
     }
+
+    int offset = XML::getProperty(rootNode, "offset",
+            Net::getNetworkType() == ServerInfo::EATHENA ? 1002 : 0);
 
     //iterate <monster>s
     for_each_xml_child_node(monsterNode, rootNode)
@@ -143,7 +147,7 @@ void MonsterDB::load()
                     (const char*) spriteNode->xmlChildrenNode->content);
             }
         }
-        mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
+        mMonsterInfos[XML::getProperty(monsterNode, "id", 0) + offset] = currentInfo;
     }
 
     mLoaded = true;

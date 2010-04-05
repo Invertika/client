@@ -1,10 +1,10 @@
 /*
- *  Speech bubbles
+ *  The Mana World
  *  Copyright (C) 2008  The Legend of Mazzeroth Development Team
  *  Copyright (C) 2008-2009  The Mana World Development Team
  *  Copyright (C) 2009-2010  The Mana Developers
  *
- *  This file is part of The Mana Client.
+ *  This file is part of The Mana World.
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -17,42 +17,51 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef SPEECHBUBBLE_H
-#define SPEECHBUBBLE_H
-
-#include "gui/theme.h"
+#ifndef TEXTPOPUP_H
+#define TEXTPOPUP_H
 
 #include "gui/widgets/popup.h"
 
+#include <guichan/mouselistener.hpp>
+
 class TextBox;
 
-class SpeechBubble : public Popup
+/**
+ * A popup that displays information about an item.
+ */
+class TextPopup : public Popup
 {
     public:
         /**
-         * Constructor. Initializes the speech bubble.
+         * Constructor. Initializes the item popup.
          */
-        SpeechBubble();
+        TextPopup();
 
         /**
-         * Sets the name displayed for the speech bubble, and in what color.
+         * Destructor. Cleans up the item popup on deletion.
          */
-        void setCaption(const std::string &name,
-                        const gcn::Color *color =
-                        &Theme::getThemeColor(Theme::TEXT));
+        ~TextPopup();
 
         /**
          * Sets the text to be displayed.
          */
-        void setText(const std::string &text, bool showName = true);
+        void show(int x, int y, const std::string &str1)
+        { show(x, y, str1, (const char*)""); };
+
+        /**
+         * Sets the text to be displayed.
+         */
+        void show(int x, int y, const std::string &str1, const std::string &str2);
+
+        void mouseMoved(gcn::MouseEvent &mouseEvent);
 
     private:
-        std::string mText;
-        gcn::Label *mCaption;
-        TextBox *mSpeechBox;
+        gcn::Label *mText1;
+        gcn::Label *mText2;
 };
 
-#endif
+#endif // TEXTPOPUP_H

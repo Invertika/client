@@ -24,7 +24,6 @@
 
 #include "inventory.h"
 
-#include "gui/storagewindow.h"
 #include "gui/widgets/window.h"
 
 #include "net/inventoryhandler.h"
@@ -47,24 +46,19 @@ class TextBox;
 class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
-                        public gcn::SelectionListener
+                        public gcn::SelectionListener,
+                        public InventoryListener
 {
     public:
         /**
          * Constructor.
          */
-        InventoryWindow(int invSize = Net::getInventoryHandler()
-                                ->getSize(Net::InventoryHandler::INVENTORY));
+        InventoryWindow(Inventory *inventory);
 
         /**
          * Destructor.
          */
         ~InventoryWindow();
-
-        /**
-         * Logic (updates buttons and weight information).
-         */
-        void logic();
 
         /**
          * Called when receiving actions from the widgets.
@@ -101,30 +95,41 @@ class InventoryWindow : public Window,
          */
         void setSplitAllowed(bool allowed);
 
-    private:
-        void updateButtons();    /**< Updates button states. */
+        /**
+         * Closes the Storage Window, as well as telling the server that the
+         * window has been closed.
+         */
+        void close();
+        
+        /**
+         * Updates the weight bar.
+         */
+        void updateWeight();
 
+        void slotsChanged(Inventory* inventory);
+
+        /**
+         * Returns true if any instances exist.
+         */
+        static bool isStorageActive() { return instances.size() > 1; }
+
+    private:
+        typedef std::list<InventoryWindow*> WindowList;
+        static WindowList instances;
+
+        Inventory *mInventory;
         ItemContainer *mItems;
 
-        std::string mWeight;
-        std::string mSlots;
-        int mUsedSlots;
-        int mTotalWeight;
-        int mMaxWeight;
-        gcn::Button *mUseButton;
-        gcn::Button *mDropButton;
-        gcn::Button *mSplitButton;
-        gcn::Button *mOutfitButton;
-        gcn::Label *mWeightLabel;
-        gcn::Label *mSlotsLabel;
+        std::string mWeight, mSlots;
 
-        ProgressBar *mWeightBar;
-        ProgressBar *mSlotsBar;
+        gcn::Button *mUseButton, *mDropButton, *mSplitButton, *mOutfitButton,
+                    *mStoreButton, *mRetrieveButton;
 
-        int mMaxSlots;
+        gcn::Label *mWeightLabel, *mSlotsLabel;
+
+        ProgressBar *mWeightBar, *mSlotsBar;
 
         bool mSplit;
-        bool mItemDesc;
 };
 
 extern InventoryWindow *inventoryWindow;

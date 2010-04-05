@@ -122,7 +122,8 @@ void GeneralHandler::load()
 
 void GeneralHandler::reload()
 {
-    // Nothing needed yet
+    static_cast<CharHandler*>(mCharHandler.get())->setCharCreateDialog(0);
+    static_cast<CharHandler*>(mCharHandler.get())->setCharSelectDialog(0);
 }
 
 void GeneralHandler::unload()
@@ -158,7 +159,7 @@ void GeneralHandler::flushNetwork()
 void GeneralHandler::guiWindowsLoaded()
 {
     inventoryWindow->setSplitAllowed(true);
-    skillDialog->loadSkills("tmw-skills.xml");
+    skillDialog->loadSkills("mana-skills.xml");
     specialsWindow->loadSpecials("specials.xml");
 
     player_node->setExpNeeded(100);

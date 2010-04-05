@@ -80,10 +80,7 @@ Being *createBeing(int id, short job)
     else if (job >= 46 && job <= 1000)
         type = Being::NPC;
     else if (job > 1000 && job <= 2000)
-    {
         type = Being::MONSTER;
-        job -= 1002;
-    }
 
     Being *being = beingManager->createBeing(id, type, job);
 
@@ -110,7 +107,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
-    Player *player;
+    Player *player = 0;
     int hairStyle, hairColor, flag;
     std::string player_followed;
 
@@ -143,7 +140,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing = createBeing(id, job);
             }
 
-            player = dynamic_cast<Player*>(dstBeing);
+            if (dstBeing->getType() == Being::PLAYER)
+                player = static_cast<Player*>(dstBeing);
 
             // Fix monster jobs
             if (dstBeing->getType() == Being::MONSTER)
@@ -423,7 +421,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 break;
             }
 
-            player = dynamic_cast<Player*>(dstBeing);
+            if (dstBeing->getType() == Being::PLAYER)
+                player = static_cast<Player*>(dstBeing);
 
             int type = msg.readInt8();
             int id = 0;
@@ -532,7 +531,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 dstBeing = createBeing(id, job);
             }
 
-            player = dynamic_cast<Player*>(dstBeing);
+            if (dstBeing->getType() == Being::PLAYER)
+                player = static_cast<Player*>(dstBeing);
 
             if (Party *party = player_node->getParty()){
                 if (party->isMember(id))

@@ -28,9 +28,15 @@
 
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
+#include "gui/textpopup.h"
+#include "gui/theme.h"
 
 #include "gui/widgets/progressbar.h"
 
+#include "net/net.h"
+#include "net/playerhandler.h"
+
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 extern volatile int tick_time;
@@ -38,15 +44,16 @@ extern volatile int tick_time;
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    mHpBar = new ProgressBar((float) player_node->getHp()
-                             / (float) player_node->getMaxHp(),
-                             100, 20, gcn::Color(0, 171, 34));
-    mMpBar = new ProgressBar((float) player_node->getMaxMP()
-                             / (float) player_node->getMaxMP(),
-                             100, 20, gcn::Color(26, 102, 230));
-    mXpBar = new ProgressBar((float) player_node->getExp()
-                             / player_node->getExpNeeded(),
-                             100, 20, gcn::Color(143, 192, 211));
+    int max = player_node->getMaxHp();
+    mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max : 0,
+                             100, 20, Theme::PROG_HP);
+    max = player_node->getMaxMP();
+    mMpBar = new ProgressBar(max ? (float) player_node->getMP() / max : 0,
+                             100, 20, Net::getPlayerHandler()->canUseMagic() ?
+                             Theme::PROG_MP : Theme::PROG_NO_MP);
+    max = player_node->getExpNeeded();
+    mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
+                             100, 20, Theme::PROG_EXP);
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
     mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
@@ -59,6 +66,11 @@ MiniStatusWindow::MiniStatusWindow():
                    mXpBar->getY() + mXpBar->getHeight());
 
     setVisible((bool) config.getValue(getPopupName() + "Visible", true));
+
+    mTextPopup = new TextPopup();
+
+    addMouseListener(this);
+
     update(StatusWindow::HP);
 }
 
@@ -129,3 +141,46 @@ void MiniStatusWindow::logic()
         if (mIcons[i])
             mIcons[i]->update(tick_time * 10);
 }
+
+void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
+{
+    Popup::mouseMoved(event);
+
+    const int x = event.getX();
+    const int y = event.getY();
+
+    if (event.getSource() == mXpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getExp(),
+                                   player_node->getExpNeeded()),
+                         strprintf("%s: %u", _("Need"),
+                                   player_node->getExpNeeded()
+                                   - player_node->getExp()));
+    }
+    else if (event.getSource() == mHpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getHp(),
+                                   player_node->getMaxHp()));
+    }
+    else if (event.getSource() == mMpBar)
+    {
+        mTextPopup->show(x + getX(), y + getY(),
+                         strprintf("%u/%u", player_node->getMP(),
+                                   player_node->getMaxMP()));
+    }
+    else
+    {
+        mTextPopup->setVisible(false);
+    }
+}
+
+void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
+{
+    Popup::mouseExited(event);
+
+    mTextPopup->setVisible(false);
+}
+
+

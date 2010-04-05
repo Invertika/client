@@ -189,10 +189,10 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/specialswindow.h \
 	      gui/statuswindow.cpp \
 	      gui/statuswindow.h \
-	      gui/storagewindow.cpp \
-	      gui/storagewindow.h \
 	      gui/textdialog.cpp \
 	      gui/textdialog.h \
+	      gui/textpopup.cpp \
+	      gui/textpopup.h \
 	      gui/theme.cpp \
 	      gui/theme.h \
 	      gui/trade.cpp \
@@ -203,6 +203,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      gui/unregisterdialog.h \
 	      gui/updatewindow.cpp \
 	      gui/updatewindow.h \
+	      gui/userpalette.cpp \
+	      gui/userpalette.h \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/windowmenu.cpp \
@@ -400,7 +402,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      units.cpp \
 	      units.h \
 	      vector.cpp \
-	      vector.h
+	      vector.h \
+	      winver.h
 
 mana_SOURCES += \
 	      net/manaserv/adminhandler.cpp \
@@ -495,8 +498,12 @@ mana_SOURCES += \
 	      net/ea/protocol.h \
 	      net/ea/specialhandler.cpp \
 	      net/ea/specialhandler.h \
+	      net/ea/token.h \
 	      net/ea/tradehandler.cpp \
 	      net/ea/tradehandler.h
+
+EXTRA_DIST = CMakeLists.txt \
+	     winver.h.in
 
 # set the include path found by configure
 INCLUDES = $(all_includes)

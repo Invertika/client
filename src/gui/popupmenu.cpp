@@ -33,7 +33,6 @@
 
 #include "gui/chat.h"
 #include "gui/inventorywindow.h"
-#include "gui/storagewindow.h"
 #include "gui/itemamount.h"
 
 #include "gui/widgets/browserbox.h"
@@ -204,16 +203,13 @@ void PopupMenu::handleLink(const std::string &link)
     Being *being = beingManager->findBeing(mBeingId);
 
     // Talk To action
-    if (link == "talk" &&
-        being && being->getType() == Being::NPC)
+    if (link == "talk" && being && being->getType() == Being::NPC)
     {
-        dynamic_cast<NPC*>(being)->talk();
+        static_cast<NPC*>(being)->talk();
     }
 
     // Trade action
-    else if (link == "trade" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "trade" && being && being->getType() == Being::PLAYER)
     {
         Net::getTradeHandler()->request(being);
         tradePartnerName = being->getName();
@@ -227,43 +223,33 @@ void PopupMenu::handleLink(const std::string &link)
     {
         chatWindow->addInputText("/w \"" + being->getName() + "\" ");
     }
-    else if (link == "unignore" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "unignore" && being && being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::NEUTRAL);
     }
 
-    else if (link == "ignore" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "ignore" && being && being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::IGNORED);
     }
 
-    else if (link == "disregard" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "disregard" && being && being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::DISREGARDED);
     }
 
-    else if (link == "friend" &&
-             being &&
-             being->getType() == Being::PLAYER)
+    else if (link == "friend" && being && being->getType() == Being::PLAYER)
     {
         player_relations.setRelation(being->getName(), PlayerRelation::FRIEND);
     }
     // Guild action
-    else if (link == "guild" &&
-             being != NULL &&
-             being->getType() == Being::PLAYER)
+    else if (link == "guild" && being && being->getType() == Being::PLAYER)
     {
         player_node->inviteToGuild(being);
     }
-    
+
     // Follow Player action
-    else if (link == "follow")
+    else if (link == "follow" && being)
     {
         player_node->setFollow(being->getName());
     }
@@ -326,7 +312,7 @@ void PopupMenu::handleLink(const std::string &link)
 
     else if (link == "party" && being && being->getType() == Being::PLAYER)
     {
-        Net::getPartyHandler()->invite(dynamic_cast<Player*>(being));
+        Net::getPartyHandler()->invite(static_cast<Player*>(being));
     }
 
     else if (link == "name" && being)
@@ -386,7 +372,7 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
             mBrowserBox->addRow(strprintf("@@split|%s@@", _("Split")));
         }
 
-        if (StorageWindow::isActive())
+        if (InventoryWindow::isStorageActive())
         {
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }

@@ -55,7 +55,9 @@ Viewport::Viewport():
     mPixelViewY(0.0f),
     mShowDebugPath(false),
     mPlayerFollowMouse(false),
-    mLocalWalkTime(-1)
+    mLocalWalkTime(-1),
+    mHoverBeing(0),
+    mHoverItem(0)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -457,8 +459,9 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (Player *p = dynamic_cast<Player*>(mHoverBeing))
-        mBeingPopup->show(getMouseX(), getMouseY(), p);
+    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER)
+        mBeingPopup->show(getMouseX(), getMouseY(),
+                          static_cast<Player*>(mHoverBeing));
     else
         mBeingPopup->setVisible(false);
 
@@ -508,4 +511,10 @@ void Viewport::toggleDebugPath()
 void Viewport::hideBeingPopup()
 {
     mBeingPopup->setVisible(false);
+}
+
+void Viewport::clearHoverBeing(Being *being)
+{
+    if (mHoverBeing == being)
+        mHoverBeing = 0;
 }

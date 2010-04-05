@@ -35,7 +35,10 @@
 #include "text.h"
 #include "statuseffect.h"
 
+#include "gui/gui.h"
 #include "gui/speechbubble.h"
+#include "gui/theme.h"
+#include "gui/userpalette.h"
 
 #include "resources/colordb.h"
 #include "resources/emotedb.h"
@@ -44,9 +47,6 @@
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
 
-#include "gui/gui.h"
-#include "gui/palette.h"
-#include "gui/speechbubble.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
@@ -96,8 +96,8 @@ Being::Being(int id, int job, Map *map):
 
     mSpeechBubble = new SpeechBubble;
 
-    mNameColor = &guiPalette->getColor(Palette::NPC);
-    mTextColor = &guiPalette->getColor(Palette::CHAT);
+    mNameColor = &userPalette->getColor(UserPalette::NPC);
+    mTextColor = &Theme::getThemeColor(Theme::CHAT);
     mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
 }
 
@@ -164,7 +164,7 @@ Position Being::checkNodeOffsets(const Position &position) const
     // where a player can approach an obstacle by walking from slightly
     // under, diagonally. First part to the walk on water bug.
     //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
-    //  fy = 16;
+      //fy = 16;
 
     return Position(tx * 32 + fx, ty * 32 + fy);
 }
@@ -305,7 +305,7 @@ void Being::setSpeech(const std::string &text, int time)
         mText = new Text(mSpeech,
                          getPixelX(), getPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
-                         &guiPalette->getColor(Palette::PARTICLE),
+                         &userPalette->getColor(UserPalette::PARTICLE),
                          true);
     }
 }
@@ -322,7 +322,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     // Selecting the right color
     if (type == CRITICAL || type == FLEE)
     {
-        color = &guiPalette->getColor(Palette::HIT_CRITICAL);
+        color = &userPalette->getColor(UserPalette::HIT_CRITICAL);
     }
     else if (!amount)
     {
@@ -330,20 +330,20 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         {
             // This is intended to be the wrong direction to visually
             // differentiate between hits and misses
-            color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
+            color = &userPalette->getColor(UserPalette::HIT_MONSTER_PLAYER);
         }
         else
         {
-            color = &guiPalette->getColor(Palette::MISS);
+            color = &userPalette->getColor(UserPalette::MISS);
         }
     }
     else if (getType() == MONSTER)
     {
-        color = &guiPalette->getColor(Palette::HIT_PLAYER_MONSTER);
+        color = &userPalette->getColor(UserPalette::HIT_PLAYER_MONSTER);
     }
     else
     {
-        color = &guiPalette->getColor(Palette::HIT_MONSTER_PLAYER);
+        color = &userPalette->getColor(UserPalette::HIT_MONSTER_PLAYER);
     }
 
     // Show damage number
@@ -590,6 +590,10 @@ void Being::logic()
             mDest : Vector(mPath.front().x,
                            mPath.front().y);
 
+        // This is a hack that stops NPCs from running off the map...
+        if (mDest.x <= 0 && mDest.y <= 0)
+            return;
+
         // The Vector representing the difference between current position
         // and the next destination path node.
         Vector dir = dest - mPos;
@@ -783,7 +787,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
             mText = new Text(mSpeech,
                              getPixelX(), getPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
-                             &guiPalette->getColor(Palette::PARTICLE),
+                             &userPalette->getColor(UserPalette::PARTICLE),
                              true);
         }
     }

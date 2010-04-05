@@ -71,6 +71,7 @@ struct SkillInfo
 
     std::string skillExp;
     float progress;
+    gcn::Color color;
 
     ~SkillInfo()
     {
@@ -137,17 +138,17 @@ public:
 
     void draw(gcn::Graphics *gcnGraphics)
     {
-        SkillModel* model = dynamic_cast<SkillModel*>(mListModel);
-
-        if (!model)
+        if (!mListModel)
             return;
+
+        SkillModel* model = static_cast<SkillModel*>(mListModel);
 
         updateAlpha();
 
         Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
-        graphics->setColor(guiPalette->getColor(Palette::HIGHLIGHT,
-                (int)(mAlpha * 255.0f)));
+        graphics->setColor(Theme::getThemeColor(Theme::HIGHLIGHT,
+                                                (int) (mAlpha * 255.0f)));
         graphics->setFont(getFont());
 
         // Draw filled rectangle around the selected list element
@@ -158,7 +159,7 @@ public:
         }
 
         // Draw the list elements
-        graphics->setColor(guiPalette->getColor(Palette::TEXT));
+        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         for (int i = 0, y = 1;
              i < model->getNumberOfElements();
              ++i, y += getRowHeight())
@@ -225,13 +226,9 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "inc")
     {
-        SkillTab *tab = dynamic_cast<SkillTab*>(mTabs->getSelectedTab());
-
-        if (tab)
-        {
-            if (SkillInfo *info = tab->getSelectedInfo())
-                Net::getPlayerHandler()->increaseSkill(info->id);
-        }
+        SkillTab *tab = static_cast<SkillTab*>(mTabs->getSelectedTab());
+        if (SkillInfo *info = tab->getSelectedInfo())
+            Net::getPlayerHandler()->increaseSkill(info->id);
     }
     else if (event.getId() == "close")
     {
@@ -294,17 +291,47 @@ void SkillDialog::loadSkills(const std::string &file)
     XML::Document doc(file);
     xmlNodePtr root = doc.rootNode();
 
-    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
-    {
-        logger->log("Error loading skills file: %s", file.c_str());
-        return;
-    }
-
     int setCount = 0;
     std::string setName;
     ScrollArea *scroll;
     SkillListBox *listbox;
     SkillTab *tab;
+
+    if (!root || !xmlStrEqual(root->name, BAD_CAST "skills"))
+    {
+        logger->log("Error loading skills file: %s", file.c_str());
+
+        if (Net::getNetworkType() == ServerInfo::EATHENA)
+        {
+            SkillModel *model = new SkillModel();
+            SkillInfo *skill = new SkillInfo;
+            skill->id = 1;
+            skill->name = "basic";
+            skill->setIcon("");
+            skill->modifiable = true;
+            skill->visible = true;
+            skill->model = model;
+            skill->update();
+
+            model->addSkill(skill);
+            mSkills[1] = skill;
+
+            model->updateVisibilities();
+
+            listbox = new SkillListBox(model);
+            scroll = new ScrollArea(listbox);
+            scroll->setOpaque(false);
+            scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
+            scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
+
+            tab = new SkillTab("Skills", listbox);
+
+            mTabs->addTab(tab, scroll);
+
+            update();
+        }
+        return;
+    }
 
     for_each_xml_child_node(set, root)
     {
@@ -429,6 +456,8 @@ void SkillInfo::update()
         progress = 0.0f;
     }
 
+    color = Theme::getProgressColor(Theme::PROG_EXP, progress);
+
     if (updateVisibility)
     {
         model->updateVisibilities();
@@ -452,7 +481,6 @@ void SkillInfo::draw(Graphics *graphics, int y, int width)
     {
         gcn::Rectangle rect(33, y + 15, width - 33, 17);
 
-        ProgressBar::render(graphics, rect, gcn::Color(143, 192, 211),
-                            progress, skillExp);
+        ProgressBar::render(graphics, rect, color, progress, skillExp);
     }
 }

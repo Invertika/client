@@ -23,6 +23,7 @@
 
 #include "log.h"
 
+#include <math.h>
 #include <sstream>
 
 DyePalette::DyePalette(const std::string &description)
@@ -75,6 +76,18 @@ DyePalette::DyePalette(const std::string &description)
     logger->log("Error, invalid embedded palette: %s", description.c_str());
 }
 
+void DyePalette::addFirstColor(const int color[3])
+{
+    Color c = { {color[0], color[1], color[2]} };
+    mColors.insert(mColors.begin(), c);
+}
+
+void DyePalette::addLastColor(const int color[3])
+{
+    Color c = { {color[0], color[1], color[2]} };
+    mColors.push_back(c);
+}
+
 void DyePalette::getColor(int intensity, int color[3]) const
 {
     if (intensity == 0)
@@ -119,6 +132,51 @@ void DyePalette::getColor(int intensity, int color[3]) const
     color[0] = ((255 - t) * r1 + t * r2) / 255;
     color[1] = ((255 - t) * g1 + t * g2) / 255;
     color[2] = ((255 - t) * b1 + t * b2) / 255;
+}
+
+void DyePalette::getColor(double intensity, int color[3]) const
+{
+    // Nothing to do here
+    if (mColors.size() == 0)
+        return;
+
+    // Force range
+    if (intensity > 1.0)
+        intensity = 1.0;
+    else if (intensity < 0.0)
+        intensity = 0.0;
+
+    // Scale up
+    intensity = intensity * (mColors.size() - 1);
+
+    // Color indices
+    int i = (int) floor(intensity);
+    int j = (int) ceil(intensity);
+
+    if (i == j)
+    {
+        // Exact color.
+        color[0] = mColors[i].value[0];
+        color[1] = mColors[i].value[1];
+        color[2] = mColors[i].value[2];
+        return;
+    }
+
+    intensity -= i;
+    double rest = 1 - intensity;
+
+    // Get the colors
+    int r1 = mColors[i].value[0],
+        g1 = mColors[i].value[1],
+        b1 = mColors[i].value[2],
+        r2 = mColors[j].value[0],
+        g2 = mColors[j].value[1],
+        b2 = mColors[j].value[2];
+
+    // Perform the interpolation.
+    color[0] = (rest * r1 + intensity * r2);
+    color[1] = (rest * g1 + intensity * g2);
+    color[2] = (rest * b1 + intensity * b2);
 }
 
 Dye::Dye(const std::string &description)

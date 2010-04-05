@@ -51,6 +51,8 @@ class DropDown;
 class ServersListModel : public gcn::ListModel
 {
     public:
+        typedef std::pair<int, std::string> VersionString;
+
         ServersListModel(ServerInfos *servers, ServerDialog *parent);
 
         /**
@@ -66,17 +68,21 @@ class ServersListModel : public gcn::ListModel
         /**
          * Used to get the corresponding Server struct
          */
-        ServerInfo getServer(int elementIndex) const
+        const ServerInfo &getServer(int elementIndex) const
         { return mServers->at(elementIndex); }
 
-        /**
-         * Removes the entry.
-         */
-        void remove(int elementIndex)
-        { mServers->erase(mServers->begin() + elementIndex); }
+        const VersionString &getVersionString(int index) const
+        { return mVersionStrings[index]; }
+
+        void setVersionString(int index, const std::string &version);
+
+        void addServer(const ServerInfo &info, const std::string &version);
 
     private:
+        typedef std::vector<VersionString> VersionStrings;
+
         ServerInfos *mServers;
+        VersionStrings mVersionStrings;
         ServerDialog *mParent;
 };
 
@@ -149,6 +155,10 @@ class ServerDialog : public Window,
          */
         void downloadServerList();
         void loadServers();
+
+        void loadCustomServers();
+        void saveCustomServers(const ServerInfo &currentServer = ServerInfo());
+
         static int downloadUpdate(void *ptr, DownloadStatus status,
                                   size_t total, size_t remaining);
 

@@ -24,7 +24,7 @@
 
 #include "player.h"
 
-#include "gui/palette.h"
+#include "gui/userpalette.h"
 
 #include <memory>
 #include <vector>
@@ -302,14 +302,12 @@ class LocalPlayer : public Player
         int getTotalWeight() const
         { return mTotalWeight; }
 
-        void setTotalWeight(int value)
-        { mTotalWeight = value; }
+        void setTotalWeight(int value);
 
         int getMaxWeight() const
         { return mMaxWeight; }
 
-        void setMaxWeight(int value)
-        { mMaxWeight = value; }
+        void setMaxWeight(int value);
 
         int getAttributeBase(int num)
         { return mAttributeBase[num]; }
@@ -349,7 +347,7 @@ class LocalPlayer : public Player
         { return mPathSetByMouse; }
 
         void addMessageToQueue(const std::string &message,
-                               Palette::ColorType color = Palette::EXP_INFO);
+                               int color = UserPalette::EXP_INFO);
 
         /**
          * Called when a option (set with config.addListener()) is changed
@@ -472,7 +470,7 @@ class LocalPlayer : public Player
         /** Animated target cursors. */
         SimpleAnimation *mTargetCursor[2][NUM_TC];
 
-        typedef std::pair<std::string, Palette::ColorType> MessagePair;
+        typedef std::pair<std::string, int> MessagePair;
         /** Queued exp messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;
