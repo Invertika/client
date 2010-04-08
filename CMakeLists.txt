@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 
-PROJECT(MANA)
+PROJECT(INVERTIKA)
 
 IF (NOT VERSION)
     SET(VERSION 1.0.0)
@@ -39,7 +39,7 @@ ELSE (WIN32)
     IF (!OSX)
         OPTION(USE_X11 "Use X11 Clipboard functionality" ON)
     ENDIF (!OSX)
-    SET(PKG_DATADIR ${CMAKE_INSTALL_PREFIX}/share/mana)
+    SET(PKG_DATADIR ${CMAKE_INSTALL_PREFIX}/share/invertika)
     SET(LOCALEDIR ${CMAKE_INSTALL_PREFIX}/share/locale)
     SET(PKG_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
 ENDIF (WIN32)
@@ -52,5 +52,5 @@ IF (GETTEXT_FOUND AND ENABLE_NLS)
 ENDIF()
 
 If(UNIX)
-    INSTALL(FILES mana.desktop DESTINATION share/applications)
+    INSTALL(FILES invertika.desktop DESTINATION share/applications)
 ENDIF()
