@@ -21,11 +21,12 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-
-	autoreconf -i
-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) \
-	--build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr \
-	--datadir=/usr/share/games --bindir=/usr/games --mandir=/usr/share/man
+	
+	cmake .
+	#autoreconf -i
+	#CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) \
+	#--build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr \
+	#--datadir=/usr/share/games --bindir=/usr/games --mandir=/usr/share/man
 	touch configure-stamp
 
 
@@ -54,9 +55,9 @@ install: build
 	dh_prep  
 	dh_installdirs
 
-	# Add here commands to install the package into debian/invertika-client.
-	$(MAKE) DESTDIR=$(CURDIR)/debian/invertika-client install
-	mv $(DESTDIR)/src/mana $(DESTDIR)/src/invertika-client
+	# Add here commands to install the package into debian/invertika.
+	$(MAKE) DESTDIR=$(CURDIR)/debian/invertika install
+	mv $(CURDIR)/debian/invertika/usr/mana $(CURDIR)/debian/invertika/usr/invertika
 
 
 # Build architecture-independent files here.
@@ -83,7 +84,7 @@ binary-arch: build install
 	dh_install -a
 	dh_installmenu -a
 	dh_installman -a
-	dh_strip -a --dbg-package=invertika-client-dbg
+	dh_strip -a --dbg-package=invertika-dbg
 	dh_compress -a
 	dh_fixperms -a
 	dh_installdeb -a
