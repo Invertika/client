@@ -122,8 +122,20 @@ void GeneralHandler::load()
 
 void GeneralHandler::reload()
 {
-    static_cast<CharHandler*>(mCharHandler.get())->setCharCreateDialog(0);
-    static_cast<CharHandler*>(mCharHandler.get())->setCharSelectDialog(0);
+    static_cast<CharHandler*>(Net::getCharHandler())->clear();
+
+    if (accountServerConnection)
+        accountServerConnection->disconnect();
+
+    if (gameServerConnection)
+        gameServerConnection->disconnect();
+
+    if (chatServerConnection)
+        chatServerConnection->disconnect();
+
+    netToken.clear();
+    gameServer.clear();
+    chatServer.clear();
 }
 
 void GeneralHandler::unload()
@@ -180,6 +192,15 @@ void GeneralHandler::guiWindowsUnloaded()
 void GeneralHandler::clearHandlers()
 {
     clearNetworkHandlers();
+}
+
+void GeneralHandler::stateChanged(State oldState, State newState)
+{
+    if (newState == STATE_GAME)
+    {
+        GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
+        game->gameLoading();
+    }
 }
 
 } // namespace ManaServ

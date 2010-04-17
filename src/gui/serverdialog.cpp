@@ -57,10 +57,10 @@ static std::string serverTypeToString(ServerInfo::Type type)
 {
     switch (type)
     {
-    case ServerInfo::EATHENA:
-        return "eAthena";
+    case ServerInfo::TMWATHENA:
+        return "TmwAthena";
     case ServerInfo::MANASERV:
-        return "manaserv";
+        return "ManaServ";
     default:
         return "";
     }
@@ -71,7 +71,7 @@ static unsigned short defaultPortForServerType(ServerInfo::Type type)
     switch (type)
     {
     default:
-    case ServerInfo::EATHENA:
+    case ServerInfo::TMWATHENA:
         return 6901;
     case ServerInfo::MANASERV:
         return 9601;
@@ -113,26 +113,12 @@ void ServersListModel::setVersionString(int index, const std::string &version)
     }
 }
 
-void ServersListModel::addServer(const ServerInfo &info,
-                                 const std::string &version)
-{
-    mServers->push_back(info);
-
-    if (version.empty())
-        mVersionStrings.push_back(VersionString(0, ""));
-    else
-    {
-        int width = gui->getFont()->getWidth(version);
-        mVersionStrings.push_back(VersionString(width, version));
-    }
-}
-
 std::string TypeListModel::getElementAt(int elementIndex)
 {
     if (elementIndex == 0)
-        return "eAthena";
+        return "TmwAthena";
     else if (elementIndex == 1)
-        return "Manaserv";
+        return "ManaServ";
     else
         return "Unknown";
 }
@@ -188,13 +174,12 @@ public:
 
             graphics->drawText(model->getElementAt(i), 2, top);
 
-            const ServersListModel::VersionString versionInfo = model->getVersionString(i);
-            if (versionInfo.first > 0)
+            if (info.version.first > 0)
             {
                 graphics->setColor(unsupported);
 
-                graphics->drawText(versionInfo.second,
-                                   getWidth() - versionInfo.first - 2, top);
+                graphics->drawText(info.version.second,
+                                   getWidth() - info.version.first - 2, top);
             }
         }
     }
@@ -347,7 +332,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             switch (mTypeField->getSelected())
             {
                 case 0:
-                    mServerInfo->type = ServerInfo::EATHENA;
+                    mServerInfo->type = ServerInfo::TMWATHENA;
                     break;
                 case 1:
                     mServerInfo->type = ServerInfo::MANASERV;
@@ -413,7 +398,7 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
     mPortField->setText(toString(myServer.port));
     switch (myServer.type)
     {
-        case ServerInfo::EATHENA:
+        case ServerInfo::TMWATHENA:
         case ServerInfo::UNKNOWN:
             mTypeField->setSelected(0);
             break;
@@ -459,6 +444,10 @@ void ServerDialog::logic()
         else if (mDownloadStatus == DOWNLOADING_PREPARING)
         {
             mDescription->setCaption(_("Preparing download"));
+        }
+        else if (mDownloadStatus == DOWNLOADING_ERROR)
+        {
+            mDescription->setCaption(_("Error retreiving server list!"));
         }
     }
 
@@ -538,11 +527,11 @@ void ServerDialog::loadServers()
         std::string version = XML::getProperty(serverNode, "minimumVersion",
                                                std::string());
 
-        server.meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
+        bool meetsMinimumVersion = (compareStrI(version, PACKAGE_VERSION)
                                       <= 0);
 
         // For display in the list
-        if (server.meetsMinimumVersion)
+        if (meetsMinimumVersion)
             version.clear();
         else
             version = strprintf(_("requires v%s"), version.c_str());
@@ -571,6 +560,8 @@ void ServerDialog::loadServers()
             }
         }
 
+        server.version.first = gui->getFont()->getWidth(version);
+        server.version.second = version;
 
         MutexLocker lock(&mMutex);
         // Add the server to the local list if it's not already present
@@ -581,7 +572,7 @@ void ServerDialog::loadServers()
             {
                 // Use the name listed in the server list
                 mServers[i].name = server.name;
-                mServers[i].meetsMinimumVersion = server.meetsMinimumVersion;
+                mServers[i].version = server.version;
                 mServersListModel->setVersionString(i, version);
                 found = true;
                 break;
@@ -589,7 +580,7 @@ void ServerDialog::loadServers()
         }
 
         if (!found)
-            mServersListModel->addServer(server, version);
+            mServers.push_back(server);
     }
 }
 
@@ -614,7 +605,6 @@ void ServerDialog::loadCustomServers()
             break;
 
         server.save = true;
-        server.meetsMinimumVersion = true;
         mServers.push_back(server);
     }
 }
@@ -680,8 +670,7 @@ int ServerDialog::downloadUpdate(void *ptr, DownloadStatus status,
     {
         logger->log("Error retreiving server list: %s\n",
                     sd->mDownload->getError());
-
-        finished = true;
+        sd->mDownloadStatus = DOWNLOADING_ERROR;
     }
     else
     {

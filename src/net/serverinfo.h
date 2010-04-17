@@ -33,8 +33,10 @@ public:
     enum Type {
         UNKNOWN,
         MANASERV,
-        EATHENA
+        TMWATHENA
     };
+
+    typedef std::pair<int, std::string> VersionString;
 
     Type type;
     std::string name;
@@ -42,16 +44,16 @@ public:
     unsigned short port;
 
     std::string description;
+    VersionString version;
 
     bool save;
-    bool meetsMinimumVersion;
 
     ServerInfo()
     {
         type = UNKNOWN;
         port = 0;
         save = false;
-        meetsMinimumVersion = true;
+        version.first = 0;
     }
 
     ServerInfo(const ServerInfo &info)
@@ -61,8 +63,9 @@ public:
         hostname = info.hostname;
         port = info.port;
         description = info.description;
+        version.first = info.version.first;
+        version.second = info.version.second;
         save = info.save;
-        meetsMinimumVersion = info.meetsMinimumVersion;
     }
 
     bool isValid() const
@@ -77,8 +80,9 @@ public:
         hostname.clear();
         port = 0;
         description.clear();
+        version.first = 0;
+        version.second.clear();
         save = false;
-        meetsMinimumVersion = true;
     }
 
     bool operator==(const ServerInfo &other) const
@@ -95,8 +99,11 @@ public:
 
     static Type parseType(const std::string &type)
     {
-        if (compareStrI(type, "eathena") == 0)
-            return EATHENA;
+        if (compareStrI(type, "tmwathena") == 0)
+            return TMWATHENA;
+        // Used for backward compatibility
+        else if (compareStrI(type, "eathena") == 0)
+            return TMWATHENA;
         else if (compareStrI(type, "manaserv") == 0)
             return MANASERV;
 

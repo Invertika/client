@@ -35,9 +35,11 @@ extern ManaServ::ChatHandler *chatHandler;
 
 namespace ManaServ {
 
+extern Connection *chatServerConnection;
 extern Connection *gameServerConnection;
 extern std::string netToken;
 extern ServerInfo gameServer;
+extern ServerInfo chatServer;
 
 GameHandler::GameHandler()
 {
@@ -60,7 +62,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             if (errMsg == ERRMSG_OK)
             {
                 netToken = msg.readString(32);
-\
+
                 if (!netToken.empty())
                 {
                     Client::setState(STATE_SWITCH_CHARACTER);
@@ -91,7 +93,8 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
 
 void GameHandler::connect()
 {
-    //
+    gameServerConnection->connect(gameServer.hostname, gameServer.port);
+    chatServerConnection->connect(chatServer.hostname, chatServer.port);
 }
 
 bool GameHandler::isConnected()
@@ -108,15 +111,7 @@ void GameHandler::disconnect()
 
 void GameHandler::inGame()
 {
-
-    MessageOut msg(PGMSG_CONNECT);
-    msg.writeString(netToken, 32);
-    gameServerConnection->send(msg);
-
-    chatHandler->connect();
-    
-    // Attack range from item DB
-    player_node->setAttackRange(-1);
+    // TODO
 }
 
 void GameHandler::mapLoaded(const std::string &mapName)
@@ -139,6 +134,18 @@ void GameHandler::quit(bool reconnectAccount)
 void GameHandler::ping(int tick)
 {
     // TODO
+}
+
+void GameHandler::gameLoading()
+{
+    MessageOut msg(PGMSG_CONNECT);
+    msg.writeString(netToken, 32);
+    gameServerConnection->send(msg);
+
+    chatHandler->connect();
+
+    // Attack range from item DB
+    player_node->setAttackRange(-1);
 }
 
 } // namespace ManaServ

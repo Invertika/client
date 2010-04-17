@@ -105,7 +105,7 @@ class LocalPlayer : public Player
         /**
          * Constructor.
          */
-        LocalPlayer(int id= 65535, int job = 0);
+        LocalPlayer(int id= 65535, int subtype = 0);
 
         /**
          * Destructor.
@@ -115,6 +115,12 @@ class LocalPlayer : public Player
         virtual void logic();
 
         virtual void setAction(Action action, int attackType = 0);
+
+        /**
+         * Compute the next pathnode location when walking using keyboard.
+         * used by nextTile().
+         */
+        Position getNextWalkPosition(unsigned char dir);
 
         /**
          * Adds a new tile to the path when walking.

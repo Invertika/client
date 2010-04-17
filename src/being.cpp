@@ -67,14 +67,14 @@ static const int DEFAULT_BEING_HEIGHT = 32;
 int Being::mNumberOfHairstyles = 1;
 
 // TODO: mWalkTime used by eAthena only
-Being::Being(int id, int job, Map *map):
+Being::Being(int id, int subtype, Map *map):
     mFrame(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mSpeechTime(0),
     mAttackSpeed(350),
     mAction(STAND),
-    mJob(job),
+    mSubType(subtype),
     mId(id),
     mDirection(DOWN),
     mSpriteDirection(DIRECTION_DOWN),
@@ -127,112 +127,51 @@ void Being::setPosition(const Vector &pos)
                         (int)pos.y - getHeight() - mText->getHeight() - 6);
 }
 
-Position Being::checkNodeOffsets(const Position &position) const
-{
-    // Pre-computing character's position in tiles
-    const int tx = position.x / 32;
-    const int ty = position.y / 32;
-
-    // Pre-computing character's position offsets.
-    int fx = position.x % 32;
-    int fy = position.y % 32;
-
-    // Compute the being radius:
-    // FIXME: the beings' radius should be obtained from xml values
-    // and stored into the Being ojects.
-    int radius = getWidth() / 2;
-    // FIXME: Hande beings with more than 1/2 tile radius by not letting them
-    // go or spawn in too narrow places. The server will have to be aware
-    // of being's radius value (in tiles) to handle this gracefully.
-    if (radius > 32 / 2) radius = 32 / 2;
-    // set a default value if no value returned.
-    if (radius < 1) radius = 32 / 3;
-
-    // Fix coordinates so that the player does not seem to dig into walls.
-    if (fx > (32 - radius) && !mMap->getWalk(tx + 1, ty, getWalkMask()))
-        fx = 32 - radius;
-    else if (fx < radius && !mMap->getWalk(tx - 1, ty, getWalkMask()))
-        fx = radius;
-    else if (fy > (32 - radius) && !mMap->getWalk(tx, ty + 1, getWalkMask()))
-        fy = 32 - radius;
-    else if (fy < radius && !mMap->getWalk(tx, ty - 1, getWalkMask()))
-        fy = radius;
-
-    // FIXME: Check also diagonal positions.
-
-    // Test also the current character's position, to avoid the corner case
-    // where a player can approach an obstacle by walking from slightly
-    // under, diagonally. First part to the walk on water bug.
-    //if (offsetY < 16 && !mMap->getWalk(posX, posY - 1, getWalkMask()))
-      //fy = 16;
-
-    return Position(tx * 32 + fx, ty * 32 + fy);
-}
-
 void Being::setDestination(int dstX, int dstY)
 {
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         if (mMap)
             setPath(mMap->findPath(mX, mY, dstX, dstY, getWalkMask()));
         return;
     }
 
+    // Manaserv's part:
+
+    // We can't calculate anything without a map anyway.
+    if (!mMap)
+        return;
+
+    // Don't handle flawed destinations from server...
+    if (dstX == 0 || dstY == 0)
+        return;
+
     // If the destination is unwalkable, don't bother trying to get there
     if (!mMap->getWalk(dstX / 32, dstY / 32))
         return;
 
-    Position dest = checkNodeOffsets(dstX, dstY);
-    mDest.x = dest.x;
-    mDest.y = dest.y;
-    int srcX = mPos.x;
-    int srcY = mPos.y;
-
-    Path thisPath;
-
-    if (mMap)
-    {
-        thisPath = mMap->findPath(mPos.x / 32, mPos.y / 32,
-                                  mDest.x / 32, mDest.y / 32, getWalkMask());
-    }
+    Position dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
+                                           dstX, dstY);
+    Path thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
+                                   getCollisionRadius(), getWalkMask());
 
     if (thisPath.empty())
     {
+        // If there is no path but the destination is on the same walkable tile,
+        // we accept it.
+        if ((int)mPos.x / 32 == dest.x / 32
+            && (int)mPos.y / 32 == dest.y / 32)
+        {
+            mDest.x = dest.x;
+            mDest.y = dest.y;
+        }
         setPath(Path());
         return;
     }
 
-    // Find the starting offset
-    float startX = (srcX % 32);
-    float startY = (srcY % 32);
-
-    // Find the ending offset
-    float endX = (dstX % 32);
-    float endY = (dstY % 32);
-
-    // Find the distance, and divide it by the number of steps
-    int changeX = (int)((endX - startX) / thisPath.size());
-    int changeY = (int)((endY - startY) / thisPath.size());
-
-    // Convert the map path to pixels over tiles
-    // And add interpolation between the starting and ending offsets
-    Path::iterator it = thisPath.begin();
-    int i = 0;
-    while (it != thisPath.end())
-    {
-        // A position that is valid on the start and end tile is not
-        // necessarily valid on all the tiles in between, so check the offsets.
-        *it = checkNodeOffsets(it->x * 32 + startX + changeX * i,
-                               it->y * 32 + startY + changeY * i);
-        i++;
-        it++;
-    }
-
-    // Remove the last path node, as it's more clever to go to mDest instead.
-    // It also permit to avoid zigzag at the end of the path,
-    // especially with mouse.
-    thisPath.pop_back();
-    thisPath.push_back(Position(mDest.x, mDest.y));
+    // The destination is valid, so we set it.
+    mDest.x = dest.x;
+    mDest.y = dest.y;
 
     setPath(thisPath);
 }
@@ -246,7 +185,7 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 
-    if ((Net::getNetworkType() == ServerInfo::EATHENA) &&
+    if ((Net::getNetworkType() == ServerInfo::TMWATHENA) &&
             mAction != WALK && mAction != DEAD)
     {
         nextTile();
@@ -378,7 +317,7 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
             fireMissile(victim, mEquippedWeapon->getMissileParticle());
         }
     }
-    if (Net::getNetworkType() == ServerInfo::EATHENA)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         mFrame = 0;
         mWalkTime = tick_time;
@@ -571,6 +510,12 @@ void Being::nextTile()
     mWalkTime += (int)(mWalkSpeed.x / 10);
 }
 
+int Being::getCollisionRadius() const
+{
+    // FIXME: Get this from XML file
+    return 16;
+}
+
 void Being::logic()
 {
     // Reduce the time that speech is still displayed
@@ -601,7 +546,7 @@ void Being::logic()
         const float nominalLength = dir.length();
 
         // When we've not reached our destination, move to it.
-        if (nominalLength > 1.0f && !mWalkSpeed.isNull())
+        if (nominalLength > 0.0f && !mWalkSpeed.isNull())
         {
             // The deplacement of a point along a vector is calculated
             // using the Unit Vector (â) multiplied by the point speed.
@@ -628,22 +573,26 @@ void Being::logic()
             if (mAction != WALK)
                 setAction(WALK);
 
-            // Update the player sprite direction
-            int direction = 0;
-            const float dx = std::abs(dir.x);
-            float dy = std::abs(dir.y);
+            // Update the player sprite direction.
+            // N.B.: We only change this if the distance is more than one pixel.
+            if (nominalLength > 1.0f)
+            {
+                int direction = 0;
+                const float dx = std::abs(dir.x);
+                float dy = std::abs(dir.y);
 
-            // When not using mouse for the player, we slightly prefer
-            // UP and DOWN position, especially when walking diagonally.
-            if (this == player_node && !player_node->isPathSetByMouse())
-                dy = dy + 2;
+                // When not using mouse for the player, we slightly prefer
+                // UP and DOWN position, especially when walking diagonally.
+                if (this == player_node && !player_node->isPathSetByMouse())
+                    dy = dy + 2;
 
-            if (dx > dy)
-                 direction |= (dir.x > 0) ? RIGHT : LEFT;
-            else
-                 direction |= (dir.y > 0) ? DOWN : UP;
+                if (dx > dy)
+                     direction |= (dir.x > 0) ? RIGHT : LEFT;
+                else
+                     direction |= (dir.y > 0) ? DOWN : UP;
 
-            setDirection(direction);
+                setDirection(direction);
+            }
         }
         else if (!mPath.empty())
         {
@@ -656,7 +605,7 @@ void Being::logic()
             setAction(STAND);
         }
     }
-    else if (Net::getNetworkType() == ServerInfo::EATHENA)
+    else if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
         // Update pixel coordinates
         setPosition(mX * 32 + 16 + getXOffset(),
