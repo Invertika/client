@@ -1,7 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -19,36 +18,42 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TA_GUILDTAB_H
-#define TA_GUILDTAB_H
+#include "actor.h"
 
-#include "gui/widgets/chattab.h"
+#include "map.h"
 
-namespace TmwAthena {
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
 
-/**
- * A tab for a guild chat channel.
- */
-class GuildTab : public ChatTab
+Actor::Actor():
+        mMap(NULL),
+        mAlpha(1.0f)
+{}
+
+Actor::~Actor()
 {
-    public:
-        GuildTab();
-        ~GuildTab();
+    setMap(NULL);
+}
 
-        void showHelp();
+void Actor::setMap(Map *map)
+{
+    // Remove Actor from potential previous map
+    if (mMap)
+        mMap->removeActor(mMapActor);
 
-        bool handleCommand(const std::string &type, const std::string &args);
+    mMap = map;
 
-        void saveToLogFile(std::string &msg);
+    // Add Actor to potential new map
+    if (mMap)
+        mMapActor = mMap->addActor(this);
+}
 
-    protected:
-        void handleInput(const std::string &msg);
+int Actor::getTileX() const
+{
+    return getPixelX() / mMap->getTileWidth();
+}
 
-        void getAutoCompleteList(std::vector<std::string> &names) const;
-};
-
-extern GuildTab *guildTab;
-
-} // namespace TmwAthena
-
-#endif // TA_GUILDTAB_H
+int Actor::getTileY() const
+{
+    return getPixelY() / mMap->getTileHeight();
+}

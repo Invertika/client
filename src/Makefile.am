@@ -301,6 +301,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      utils/mutex.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
+	      actor.cpp \
+	      actor.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
 	      animationparticle.cpp \
@@ -311,6 +313,8 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      being.h \
 	      beingmanager.cpp \
 	      beingmanager.h \
+	      chatlog.cpp \
+	      chatlog.h \
 	      client.cpp \
 	      client.h \
 	      channel.cpp \
@@ -388,7 +392,6 @@ mana_SOURCES = gui/widgets/avatarlistbox.cpp \
 	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
-	      sprite.h \
 	      statuseffect.cpp \
 	      statuseffect.h \
 	      text.cpp \
