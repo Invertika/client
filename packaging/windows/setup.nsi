@@ -2,11 +2,11 @@ CRCCheck on
 SetCompress off
 SetCompressor /SOLID lzma
 
-!define SRCDIR "..\..\..\..\#Installer\tmw\"
+!define SRCDIR "..\..\..\..\#Installer\invertika\"
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Invertika"
-!define PRODUCT_VERSION "v1072"
+!define PRODUCT_VERSION "v1398"
 !define PRODUCT_PUBLISHER "The Invertika Developer Team"
 !define PRODUCT_WEB_SITE "http://invertika.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\invertika.exe"
@@ -140,8 +140,8 @@ Section "Invertika (benötigt)" SecCore
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   CreateDirectory "$SMPROGRAMS\Invertika"
-  CreateShortCut "$SMPROGRAMS\Invertika\Invertika.lnk" "$INSTDIR\invertika.exe"
-  CreateShortCut "$DESKTOP\Invertika.lnk" "$INSTDIR\invertika.exe"
+  CreateShortCut "$SMPROGRAMS\Invertika\Invertika.lnk" "$INSTDIR\invertika.exe" "data\branding.xml"
+  CreateShortCut "$DESKTOP\Invertika.lnk" "$INSTDIR\invertika.exe\" \"data\branding.xml"
 
   SetOutPath "$INSTDIR"
   File /r "${SRCDIR}\*.*"
