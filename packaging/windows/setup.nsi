@@ -140,8 +140,8 @@ Section "Invertika (benötigt)" SecCore
   SetOutPath "$INSTDIR"
   SetOverwrite ifnewer
   CreateDirectory "$SMPROGRAMS\Invertika"
-  CreateShortCut "$SMPROGRAMS\Invertika\Invertika.lnk" "$INSTDIR\invertika.exe" "data\branding.xml"
-  CreateShortCut "$DESKTOP\Invertika.lnk" "$INSTDIR\invertika.exe\" \"data\branding.xml"
+  CreateShortCut "$SMPROGRAMS\Invertika\Invertika.lnk" "$INSTDIR\invertika.exe" "branding.xml"
+  CreateShortCut "$DESKTOP\Invertika.lnk" "$INSTDIR\invertika.exe\" "branding.xml"
 
   SetOutPath "$INSTDIR"
   File /r "${SRCDIR}\*.*"
