@@ -98,6 +98,8 @@
 		<Unit filename="src\actor.h" />
 		<Unit filename="src\actorsprite.cpp" />
 		<Unit filename="src\actorsprite.h" />
+		<Unit filename="src\actorspritemanager.cpp" />
+		<Unit filename="src\actorspritemanager.h" />
 		<Unit filename="src\animatedsprite.cpp" />
 		<Unit filename="src\animatedsprite.h" />
 		<Unit filename="src\animationparticle.cpp" />
@@ -106,8 +108,6 @@
 		<Unit filename="src\avatar.h" />
 		<Unit filename="src\being.cpp" />
 		<Unit filename="src\being.h" />
-		<Unit filename="src\beingmanager.cpp" />
-		<Unit filename="src\beingmanager.h" />
 		<Unit filename="src\channel.cpp" />
 		<Unit filename="src\channel.h" />
 		<Unit filename="src\channelmanager.cpp" />
@@ -131,8 +131,6 @@
 		<Unit filename="src\equipment.h" />
 		<Unit filename="src\flooritem.cpp" />
 		<Unit filename="src\flooritem.h" />
-		<Unit filename="src\flooritemmanager.cpp" />
-		<Unit filename="src\flooritemmanager.h" />
 		<Unit filename="src\game.cpp" />
 		<Unit filename="src\game.h" />
 		<Unit filename="src\graphics.cpp" />
@@ -374,8 +372,6 @@
 		</Unit>
 		<Unit filename="src\map.cpp" />
 		<Unit filename="src\map.h" />
-		<Unit filename="src\monster.cpp" />
-		<Unit filename="src\monster.h" />
 		<Unit filename="src\net\adminhandler.h" />
 		<Unit filename="src\net\charhandler.cpp" />
 		<Unit filename="src\net\charhandler.h" />
@@ -479,6 +475,8 @@
 		<Unit filename="src\net\manaserv\protocol.h" />
 		<Unit filename="src\net\manaserv\specialhandler.cpp" />
 		<Unit filename="src\net\manaserv\specialhandler.h" />
+		<Unit filename="src\net\manaserv\stats.cpp" />
+		<Unit filename="src\net\manaserv\stats.h" />
 		<Unit filename="src\net\manaserv\tradehandler.cpp" />
 		<Unit filename="src\net\manaserv\tradehandler.h" />
 		<Unit filename="src\net\messagehandler.h" />
@@ -495,8 +493,6 @@
 		<Unit filename="src\net\specialhandler.h" />
 		<Unit filename="src\net\tradehandler.h" />
 		<Unit filename="src\net\worldinfo.h" />
-		<Unit filename="src\npc.cpp" />
-		<Unit filename="src\npc.h" />
 		<Unit filename="src\openglgraphics.cpp" />
 		<Unit filename="src\openglgraphics.h" />
 		<Unit filename="src\particle.cpp" />
@@ -508,8 +504,6 @@
 		<Unit filename="src\particleemitterprop.h" />
 		<Unit filename="src\party.cpp" />
 		<Unit filename="src\party.h" />
-		<Unit filename="src\player.cpp" />
-		<Unit filename="src\player.h" />
 		<Unit filename="src\playerrelations.cpp" />
 		<Unit filename="src\playerrelations.h" />
 		<Unit filename="src\position.cpp" />
@@ -523,6 +517,8 @@
 		<Unit filename="src\resources\ambientoverlay.h" />
 		<Unit filename="src\resources\animation.cpp" />
 		<Unit filename="src\resources\animation.h" />
+		<Unit filename="src\resources\beinginfo.cpp" />
+		<Unit filename="src\resources\beinginfo.h" />
 		<Unit filename="src\resources\colordb.cpp" />
 		<Unit filename="src\resources\colordb.h" />
 		<Unit filename="src\resources\dye.cpp" />
@@ -545,8 +541,6 @@
 		<Unit filename="src\resources\mapreader.h" />
 		<Unit filename="src\resources\monsterdb.cpp" />
 		<Unit filename="src\resources\monsterdb.h" />
-		<Unit filename="src\resources\monsterinfo.cpp" />
-		<Unit filename="src\resources\monsterinfo.h" />
 		<Unit filename="src\resources\music.cpp" />
 		<Unit filename="src\resources\music.h" />
 		<Unit filename="src\resources\npcdb.cpp" />

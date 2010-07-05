@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([Mana], [1.0.0], [themanaworld-devel@lists.sourceforge.net], [mana])
+AC_INIT([Mana], [1.0.0-beta2], [dev@manasource.org], [mana])
 AM_INIT_AUTOMAKE([1.9])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
@@ -36,6 +36,9 @@ AC_CHECK_LIB([guichan], [gcnGuichanVersion], ,
 AC_MSG_ERROR([ *** Unable to find Guichan library (http://guichan.sf.net/)]))
 AC_CHECK_HEADERS([guichan.hpp], ,
 AC_MSG_ERROR([ *** Guichan library found but cannot find headers (http://guichan.sf.net/)]))
+
+AC_CHECK_HEADERS([guichan/widgetlistener.hpp], ,
+AC_MSG_ERROR([ *** Guichan library version is found  but version is < 0.8.0 (http://guichan.sf.net/)]))
 
 if test -n "$SDL_CONFIG"; then
     LIBS="$LIBS `$SDL_CONFIG --libs`"
@@ -138,8 +141,10 @@ data/fonts/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
+data/graphics/sprites/Makefile
 data/help/Makefile
 data/icons/Makefile
+docs/Makefile
 po/Makefile.in
 ])
 
