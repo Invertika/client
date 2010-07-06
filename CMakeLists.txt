@@ -53,6 +53,7 @@ ENDIF()
 
 If(UNIX)
     INSTALL(FILES invertika.desktop DESTINATION share/applications)
+    INSTALL(FILES branding.xml DESTINATION ${PKG_DATADIR})
 ENDIF()
 
 SET(CPACK_PACKAGE_NAME "invertika")
