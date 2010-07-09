@@ -33,19 +33,25 @@ class Sprite
 
         /**
          * Resets the sprite.
+         *
+         * @returns true if the sprite changed, false otherwise
          */
-        virtual void reset() = 0;
+        virtual bool reset() = 0;
 
         /**
-         * Plays an action using the current direction
+         * Plays an action using the current direction.
+         *
+         * @returns true if the sprite changed, false otherwise
          */
-        virtual void play(SpriteAction action) = 0;
+        virtual bool play(SpriteAction action) = 0;
 
         /**
          * Inform the animation of the passed time so that it can output the
          * correct animation frame.
+         *
+         * @returns true if the sprite changed, false otherwise
          */
-        virtual void update(int time) = 0;
+        virtual bool update(int time) = 0;
 
         /**
          * Draw the current animation frame at the coordinates given in screen
@@ -66,12 +72,14 @@ class Sprite
         /**
          * Returns a reference to the current image being drawn.
          */
-        virtual Image* getImage() const = 0;
+        virtual const Image* getImage() const = 0;
 
         /**
          * Sets the direction.
+         *
+         * @returns true if the sprite changed, false otherwise
          */
-        virtual void setDirection(SpriteDirection direction) = 0;
+        virtual bool setDirection(SpriteDirection direction) = 0;
 
         /**
          * Sets the alpha value of the animated sprite
@@ -84,6 +92,16 @@ class Sprite
          */
         virtual float getAlpha() const
         { return mAlpha; }
+
+        /**
+         * Returns the current frame number for the sprite.
+         */
+        virtual size_t getCurrentFrame() const = 0;
+
+        /**
+         * Returns the frame count for the sprite.
+         */
+        virtual size_t getFrameCount() const = 0;
 
     protected:
         float mAlpha;                  /**< The alpha opacity used to draw */

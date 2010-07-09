@@ -29,9 +29,11 @@
 #include <SDL_types.h>
 
 #include <set>
+#include <list>
 
 class SimpleAnimation;
 class StatusEffect;
+class ActorSpriteListener;
 
 class ActorSprite : public CompoundSprite, public Actor
 {
@@ -53,6 +55,14 @@ public:
         NUM_TC
     };
 
+    enum TargetCursorType
+    {
+        TCT_NONE = -1,
+        TCT_NORMAL = 0,
+        TCT_IN_RANGE,
+        NUM_TCT
+    };
+
     ActorSprite(int id);
 
     ~ActorSprite();
@@ -72,6 +82,8 @@ public:
     virtual bool drawSpriteAt(Graphics *graphics, int x, int y) const;
 
     virtual void logic();
+
+    static void actorLogic();
 
     void setMap(Map* map);
 
@@ -95,7 +107,7 @@ public:
     /**
      * Sets the target animation for this actor.
      */
-    void setTargetAnimation(SimpleAnimation *animation);
+    void setTargetType(TargetCursorType type);
 
     /**
      * Untargets the actor.
@@ -139,6 +151,26 @@ public:
 
     virtual float getAlpha() const
     { return CompoundSprite::getAlpha(); }
+
+    virtual int getWidth() const
+    { return CompoundSprite::getWidth(); }
+
+    virtual int getHeight() const
+    { return CompoundSprite::getHeight(); }
+
+    static void load();
+
+    static void unload();
+
+    /**
+     * Add an ActorSprite listener.
+     */
+    void addActorSpriteListener(ActorSpriteListener *listener);
+
+    /**
+     * Remove an ActorSprite listener.
+     */
+    void removeActorSpriteListener(ActorSpriteListener *listener);
 
 protected:
     /**
@@ -185,8 +217,32 @@ private:
     /** Reset particle status effects on next redraw? */
     bool mMustResetParticles;
 
+    /** Load the target cursors into memory */
+    static void initTargetCursor();
+
+    /** Remove the target cursors from memory */
+    static void cleanupTargetCursors();
+
+    /**
+     * Helper function for loading target cursors
+     */
+    static void loadTargetCursor(const std::string &filename,
+                                 int width, int height, int type, int size);
+
+    /** Images of the target cursor. */
+    static ImageSet *targetCursorImages[NUM_TCT][NUM_TC];
+
+    /** Animated target cursors. */
+    static SimpleAnimation *targetCursor[NUM_TCT][NUM_TC];
+
+    static bool loaded;
+
     /** Target cursor being used */
     SimpleAnimation *mUsedTargetCursor;
+
+    typedef std::list<ActorSpriteListener*> ActorSpriteListeners;
+    typedef ActorSpriteListeners::iterator ActorSpriteListenerIterator;
+    ActorSpriteListeners mActorSpriteListeners;
 };
 
 #endif // ACTORSPRITE_H

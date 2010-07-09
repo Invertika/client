@@ -21,10 +21,9 @@
 
 #include "net/manaserv/buysellhandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "item.h"
 #include "localplayer.h"
-#include "npc.h"
 
 #include "gui/buy.h"
 #include "gui/chat.h"
@@ -49,8 +48,8 @@ BuySellHandler::BuySellHandler()
 
 void BuySellHandler::handleMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being || being->getType() != Being::NPC)
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being || being->getType() != ActorSprite::NPC)
     {
         return;
     }

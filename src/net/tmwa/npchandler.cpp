@@ -21,9 +21,8 @@
 
 #include "net/tmwa/npchandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "localplayer.h"
-#include "npc.h"
 
 #include "gui/npcdialog.h"
 
@@ -221,6 +220,11 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
+}
+
+void NpcHandler::clearDialogs()
+{
+    mNpcDialogs.clear();
 }
 
 } // namespace TmwAthena

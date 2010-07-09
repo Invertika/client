@@ -28,7 +28,6 @@
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
-#include "npc.h"
 
 #include "gui/chat.h"
 #include "gui/gui.h"
@@ -40,6 +39,7 @@
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
+#include "net/manaserv/npchandler.h"
 #include "net/manaserv/protocol.h"
 
 /**
@@ -57,6 +57,10 @@ namespace ManaServ {
 void RespawnRequestListener::action(const gcn::ActionEvent &event)
 {
     Net::getPlayerHandler()->respawn();
+
+    ManaServ::NpcHandler *handler =
+            static_cast<ManaServ::NpcHandler*>(Net::getNpcHandler());
+    handler->clearDialogs();
 }
 
 extern Connection *gameServerConnection;
@@ -325,11 +329,14 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    int id = floorItem->getId();
-    MessageOut msg(PGMSG_PICKUP);
-    msg.writeInt16(id >> 16);
-    msg.writeInt16(id & 0xFFFF);
-    gameServerConnection->send(msg);
+    if (floorItem)
+    {
+        int id = floorItem->getId();
+        MessageOut msg(PGMSG_PICKUP);
+        msg.writeInt16(id >> 16);
+        msg.writeInt16(id & 0xFFFF);
+        gameServerConnection->send(msg);
+    }
 }
 
 void PlayerHandler::setDirection(char direction)

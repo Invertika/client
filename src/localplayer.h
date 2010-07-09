@@ -22,7 +22,8 @@
 #ifndef LOCALPLAYER_H
 #define LOCALPLAYER_H
 
-#include "player.h"
+#include "being.h"
+#include "actorspritelistener.h"
 
 #include "gui/userpalette.h"
 
@@ -109,7 +110,7 @@ enum
 /**
  * The local player character.
  */
-class LocalPlayer : public Player
+class LocalPlayer : public Being, public ActorSpriteListener
 {
     public:
         /**
@@ -164,6 +165,12 @@ class LocalPlayer : public Player
         void pickUp(FloorItem *item);
 
         /**
+         * Called when an ActorSprite has been destroyed.
+         * @param actorSprite the ActorSprite being destroyed.
+         */
+        void actorSpriteDestroyed(const ActorSprite &actorSprite);
+
+        /**
          * Sets the attack range.
          */
         void setAttackRange(int range) { mAttackRange = range; }
@@ -193,11 +200,6 @@ class LocalPlayer : public Player
         { return mSpecials; }
 
         void attack(Being *target = NULL, bool keep = false);
-
-        /**
-         * Triggers whether or not to show the name as a GM name.
-         */
-        virtual void setGM(bool gm);
 
         void setGMLevel(int level);
 
@@ -403,7 +405,7 @@ class LocalPlayer : public Player
         std::string getFollow() const { return mPlayerFollowed; }
 
         /**
-         * Tells the engine wether to check
+         * Tells the engine whether to check
          * if the Player Name is to be displayed.
          */
         void setCheckNameSetting(bool checked) { mUpdateName = checked; }
@@ -423,9 +425,6 @@ class LocalPlayer : public Player
         bool mUpdateName;
 
         virtual void handleStatusEffect(StatusEffect *effect, int effectId);
-
-        // Colors don't change for local player
-        virtual void updateColors() {}
 
         void startWalking(unsigned char dir);
 
@@ -478,22 +477,6 @@ class LocalPlayer : public Player
 
         int mLocalWalkTime;   /**< Timestamp used to control keyboard walk
                                   messages flooding */
-
-        /** Load the target cursors into memory */
-        void initTargetCursor();
-
-        /**
-         * Helper function for loading target cursors
-         */
-        void loadTargetCursor(const std::string &filename,
-                              int width, int height,
-                              bool outRange, Being::TargetCursorSize size);
-
-        /** Images of the target cursor. */
-        ImageSet *mTargetCursorImages[2][NUM_TC];
-
-        /** Animated target cursors. */
-        SimpleAnimation *mTargetCursor[2][NUM_TC];
 
         typedef std::pair<std::string, int> MessagePair;
         /** Queued exp messages*/

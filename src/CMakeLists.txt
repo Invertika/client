@@ -41,6 +41,8 @@ ENDIF()
 IF (WIN32)
     SET(EXTRA_LIBRARIES ws2_32 winmm)
     FIND_PACKAGE(LibIntl REQUIRED)
+ELSEIF (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    FIND_PACKAGE(LibIntl REQUIRED)
 ELSEIF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # explicit linking to libintl is required on Solaris
     SET(EXTRA_LIBRARIES intl)
@@ -346,6 +348,8 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
+    resources/beinginfo.cpp
+    resources/beinginfo.h
     resources/colordb.cpp
     resources/colordb.h
     resources/dye.cpp
@@ -368,8 +372,6 @@ SET(SRCS
     resources/mapreader.h
     resources/monsterdb.cpp
     resources/monsterdb.h
-    resources/monsterinfo.cpp
-    resources/monsterinfo.h
     resources/music.cpp
     resources/music.h
     resources/npcdb.cpp
@@ -404,6 +406,9 @@ SET(SRCS
     actor.h
     actorsprite.cpp
     actorsprite.h
+    actorspritelistener.h
+    actorspritemanager.cpp
+    actorspritemanager.h
     animatedsprite.cpp
     animatedsprite.h
     animationparticle.cpp
@@ -412,8 +417,6 @@ SET(SRCS
     avatar.h
     being.cpp
     being.h
-    beingmanager.cpp
-    beingmanager.h
     chatlog.cpp
     chatlog.h
     client.cpp
@@ -436,8 +439,6 @@ SET(SRCS
     equipment.h
     flooritem.cpp
     flooritem.h
-    flooritemmanager.cpp
-    flooritemmanager.h
     game.cpp
     game.h
     graphics.cpp
@@ -467,10 +468,6 @@ SET(SRCS
     main.h
     map.cpp
     map.h
-    monster.cpp
-    monster.h
-    npc.cpp
-    npc.h
     openglgraphics.cpp
     openglgraphics.h
     particle.cpp
@@ -482,8 +479,6 @@ SET(SRCS
     particleemitterprop.h
     party.cpp
     party.h
-    player.cpp
-    player.h
     playerrelations.cpp
     playerrelations.h
     position.cpp
@@ -609,6 +604,8 @@ SET(SRCS_MANA
     net/manaserv/protocol.h
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
+    net/manaserv/stats.cpp
+    net/manaserv/stats.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h
     )

@@ -1,7 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -19,25 +18,25 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "being.h"
+#ifndef ACTORSPRITELISTENER_H
+#define ACTORSPRITELISTENER_H
 
-#ifndef NET_TA_TOKEN_H
-#define NET_TA_TOKEN_H
+class ActorSprite;
 
-struct Token
+class ActorSpriteListener
 {
-    int account_ID;
-    int session_ID1;
-    int session_ID2;
-    Gender sex;
+    public:
+        /**
+         * Destructor.
+         */
+        virtual ~ActorSpriteListener() {}
 
-    void clear()
-    {
-        account_ID = 0;
-        session_ID1 = 0;
-        session_ID2 = 0;
-        sex = GENDER_UNSPECIFIED;
-    }
+        /**
+         * Called when the ActorSprite has been destroyed. The listener will
+         * have to be registered first.
+         * @param actorSprite the ActorSprite being destroyed.
+         */
+        virtual void actorSpriteDestroyed(const ActorSprite &actorSprite) = 0;
 };
 
-#endif // NET_TA_TOKEN_H
+#endif // ACTORSPRITELISTENER_H

@@ -164,8 +164,6 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
 
-    printf("Path: %s -> %s\n", path.c_str(), PHYSFS_getRealDir(path.c_str()));
-
     for (char **i = list; *i; i++)
     {
         size_t len = strlen(*i);
@@ -318,7 +316,11 @@ struct DyedImageLoader
         }
         int fileSize;
         void *buffer = l->manager->loadFile(path, fileSize);
-        if (!buffer) return NULL;
+        if (!buffer)
+        {
+            delete d;
+            return NULL;
+        }
         Resource *res = d ? Image::load(buffer, fileSize, *d)
                           : Image::load(buffer, fileSize);
         free(buffer);

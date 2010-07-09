@@ -32,7 +32,6 @@
 #include "item.h"
 #include "log.h"
 #include "map.h"
-#include "monster.h"
 #include "particle.h"
 #include "simpleanimation.h"
 #include "sound.h"
@@ -80,7 +79,7 @@ const short walkingKeyboardDelay = 1000;
 LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
-    Player(id, subtype, 0),
+    Being(id, PLAYER, subtype, 0),
     mEquipment(new Equipment),
     mAttackRange(0),
     mTargetTime(-1),
@@ -113,11 +112,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
     mUpdateName = true;
 
-    mTextColor = &Theme::getThemeColor(Theme::PLAYER);
-    mNameColor = &userPalette->getColor(UserPalette::SELF);
-
-    initTargetCursor();
-
     config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
 }
@@ -128,13 +122,8 @@ LocalPlayer::~LocalPlayer()
 
     config.removeListener("showownname", this);
 
-    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
-    {
-        delete mTargetCursor[0][i];
-        delete mTargetCursor[1][i];
-        mTargetCursorImages[0][i]->decRef();
-        mTargetCursorImages[1][i]->decRef();
-    }
+    delete mAwayDialog;
+    delete mAwayListener;
 }
 
 void LocalPlayer::logic()
@@ -197,11 +186,10 @@ void LocalPlayer::logic()
 
     if (mTarget)
     {
-        if (mTarget->getType() == Being::NPC)
+        if (mTarget->getType() == ActorSprite::NPC)
         {
             // NPCs are always in range
-            mTarget->setTargetAnimation(
-                mTargetCursor[0][mTarget->getTargetCursorSize()]);
+            mTarget->setTargetType(TCT_IN_RANGE);
         }
         else
         {
@@ -217,10 +205,10 @@ void LocalPlayer::logic()
                 abs(mTarget->getTileY() - getTileY());
 
             const int attackRange = getAttackRange();
-            const int inRange = rangeX > attackRange || rangeY > attackRange
-                                                                    ? 1 : 0;
-            mTarget->setTargetAnimation(
-                mTargetCursor[inRange][mTarget->getTargetCursorSize()]);
+            const TargetCursorType targetType = rangeX > attackRange ||
+                                                rangeY > attackRange ?
+                                                TCT_NORMAL : TCT_IN_RANGE;
+            mTarget->setTargetType(targetType);
 
             if (!mTarget->isAlive())
                 stopAttack();
@@ -230,7 +218,7 @@ void LocalPlayer::logic()
         }
     }
 
-    Player::logic();
+    Being::logic();
 }
 
 void LocalPlayer::setAction(Action action, int attackType)
@@ -241,12 +229,7 @@ void LocalPlayer::setAction(Action action, int attackType)
         setTarget(NULL);
     }
 
-    Player::setAction(action, attackType);
-}
-
-void LocalPlayer::setGM(bool gm)
-{
-    mIsGM = gm;
+    Being::setAction(action, attackType);
 }
 
 void LocalPlayer::setGMLevel(int level)
@@ -632,7 +615,7 @@ void LocalPlayer::nextTile(unsigned char dir = 0)
         }
 
 
-        Player::nextTile();
+        Being::nextTile();
     }
     else
     {
@@ -671,7 +654,6 @@ void LocalPlayer::inviteToGuild(Being *being)
 {
     if (being->getType() != PLAYER)
         return;
-    Player *player = static_cast<Player*>(being);
 
     // TODO: Allow user to choose which guild to invite being to
     // For now, just invite to the first guild you have permissions to invite with
@@ -681,7 +663,7 @@ void LocalPlayer::inviteToGuild(Being *being)
     {
         if (checkInviteRights(itr->second->getName()))
         {
-            Net::getGuildHandler()->invite(itr->second->getId(), player);
+            Net::getGuildHandler()->invite(itr->second->getId(), being);
             return;
         }
     }
@@ -704,6 +686,9 @@ void LocalPlayer::setInvItem(int index, int id, int amount)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
+    if (!item)
+        return;
+
     int dx = item->getTileX() - (int) getPosition().x / 32;
     int dy = item->getTileY() - (int) getPosition().y / 32;
 
@@ -718,14 +703,22 @@ void LocalPlayer::pickUp(FloorItem *item)
         {
             setDestination(item->getPixelX() + 16, item->getPixelY() + 16);
             mPickUpTarget = item;
+            mPickUpTarget->addActorSpriteListener(this);
         }
         else
         {
             setDestination(item->getTileX(), item->getTileY());
             mPickUpTarget = item;
+            mPickUpTarget->addActorSpriteListener(this);
             stopAttack();
         }
     }
+}
+
+void LocalPlayer::actorSpriteDestroyed(const ActorSprite &actorSprite)
+{
+    if (mPickUpTarget == &actorSprite)
+        mPickUpTarget = 0;
 }
 
 Being *LocalPlayer::getTarget() const
@@ -754,15 +747,24 @@ void LocalPlayer::setTarget(Being *target)
         mTargetTime = -1;
     }
 
+    Being *oldTarget = 0;
     if (mTarget)
+    {
         mTarget->untarget();
+        oldTarget = mTarget;
+    }
 
-    if (mTarget && mTarget->getType() == Being::MONSTER)
+    if (mTarget && mTarget->getType() == ActorSprite::MONSTER)
         mTarget->setShowName(false);
 
     mTarget = target;
 
-    if (target && target->getType() == Being::MONSTER)
+    if (oldTarget)
+        oldTarget->updateName();
+    if (mTarget)
+        mTarget->updateName();
+
+    if (target && target->getType() == ActorSprite::MONSTER)
         target->setShowName(true);
 }
 
@@ -963,7 +965,7 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     mKeepAttacking = keep;
 
-    if (!target || target->getType() == Being::NPC)
+    if (!target || target->getType() == ActorSprite::NPC)
         return;
 
     if (mTarget != target || !mTarget)
@@ -1019,7 +1021,7 @@ void LocalPlayer::attack(Being *target, bool keep)
                 setDirection(LEFT);
         }
 
-        mWalkTime = tick_time;
+        mActionTime = tick_time;
         mTargetTime = tick_time;
     }
 
@@ -1296,13 +1298,11 @@ bool LocalPlayer::withinAttackRange(Being *target)
     }
     else
     {
-        int dist_x = abs(target->getTileX() - getTileY());
-        int dist_y = abs(target->getTileY() - getTileX());
+        int dist_x = abs(target->getTileX() - getTileX());
+        int dist_y = abs(target->getTileY() - getTileY());
 
         if (dist_x > getAttackRange() || dist_y > getAttackRange())
-        {
             return false;
-        }
 
         return true;
     }
@@ -1374,43 +1374,6 @@ void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
     }
 }
 
-void LocalPlayer::initTargetCursor()
-{
-    // Load target cursors
-    loadTargetCursor("target-cursor-blue-s.png", 44, 35, false, TC_SMALL);
-    loadTargetCursor("target-cursor-red-s.png", 44, 35, true, TC_SMALL);
-    loadTargetCursor("target-cursor-blue-m.png", 62, 44, false, TC_MEDIUM);
-    loadTargetCursor("target-cursor-red-m.png", 62, 44, true, TC_MEDIUM);
-    loadTargetCursor("target-cursor-blue-l.png", 82, 60, false, TC_LARGE);
-    loadTargetCursor("target-cursor-red-l.png", 82, 60, true, TC_LARGE);
-}
-
-void LocalPlayer::loadTargetCursor(const std::string &filename,
-                                   int width, int height,
-                                   bool outRange, TargetCursorSize size)
-{
-    assert(size > -1);
-    assert(size < 3);
-
-    ImageSet *currentImageSet = Theme::getImageSetFromTheme(filename,
-                                                            width, height);
-    Animation *anim = new Animation;
-
-    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
-    {
-        anim->addFrame(currentImageSet->get(i), 75,
-                      (16 - (currentImageSet->getWidth() / 2)),
-                      (16 - (currentImageSet->getHeight() / 2)));
-    }
-
-    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
-
-    const int index = outRange ? 1 : 0;
-
-    mTargetCursorImages[index][size] = currentImageSet;
-    mTargetCursor[index][size] = currentCursor;
-}
-
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)
 {
     mMessages.push_back(MessagePair(message, color));
@@ -1435,10 +1398,8 @@ void LocalPlayer::changeAwayMode()
                 config.getValue("afkMessage", "I am away from keyboard"));
         mAwayDialog->addActionListener(mAwayListener);
     }
-    else
-    {
-        mAwayDialog = 0;
-    }
+
+    mAwayDialog = 0;
 }
 
 void LocalPlayer::setAway(const std::string &message)

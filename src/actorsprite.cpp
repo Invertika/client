@@ -19,6 +19,7 @@
  */
 
 #include "actorsprite.h"
+#include "actorspritelistener.h"
 
 #include "client.h"
 #include "effectmanager.h"
@@ -34,9 +35,16 @@
 #include "net/net.h"
 
 #include "resources/image.h"
+#include "resources/imageset.h"
 #include "resources/resourcemanager.h"
 
+#include <cassert>
+
 #define EFFECTS_FILE "effects.xml"
+
+ImageSet *ActorSprite::targetCursorImages[2][NUM_TC];
+SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
+bool ActorSprite::loaded = false;
 
 ActorSprite::ActorSprite(int id):
     mId(id),
@@ -57,6 +65,11 @@ ActorSprite::~ActorSprite()
 
     if (player_node && player_node->getTarget() == this)
         player_node->setTarget(NULL);
+
+    // Notify listeners of the destruction.
+    for (ActorSpriteListenerIterator iter = mActorSpriteListeners.begin(),
+            end = mActorSpriteListeners.end(); iter != end; ++iter)
+        (*iter)->actorSpriteDestroyed(*this);
 }
 
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -70,7 +83,11 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
         ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
 
     if (mUsedTargetCursor)
+    {
+        mUsedTargetCursor->reset();
+        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
         mUsedTargetCursor->draw(graphics, px, py);
+    }
 
     return drawSpriteAt(graphics, px, py);
 }
@@ -83,9 +100,6 @@ bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 void ActorSprite::logic()
 {
     // Update sprite animations
-    if (mUsedTargetCursor)
-        mUsedTargetCursor->update(tick_time * MILLISECONDS_IN_A_TICK);
-
     update(tick_time * MILLISECONDS_IN_A_TICK);
 
     // Restart status/particle effects, if needed
@@ -105,6 +119,10 @@ void ActorSprite::logic()
     mChildParticleEffects.moveTo(mPos.x, mPos.y);
 }
 
+void ActorSprite::actorLogic()
+{
+}
+
 void ActorSprite::setMap(Map* map)
 {
     Actor::setMap(map);
@@ -119,10 +137,12 @@ void ActorSprite::controlParticle(Particle *particle)
     mChildParticleEffects.addLocally(particle);
 }
 
-void ActorSprite::setTargetAnimation(SimpleAnimation *animation)
+void ActorSprite::setTargetType(TargetCursorType type)
 {
-    mUsedTargetCursor = animation;
-    mUsedTargetCursor->reset();
+    if (type == TCT_NONE)
+        untarget();
+    else
+        mUsedTargetCursor = targetCursor[type][getTargetCursorSize()];
 }
 
 struct EffectDescription {
@@ -287,14 +307,14 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     {
         std::string file = "graphics/sprites/" + (*it)->sprite;
         int variant = (*it)->variant;
-        push_back(AnimatedSprite::load(file, variant));
+        addSprite(AnimatedSprite::load(file, variant));
     }
 
     // Ensure that something is shown, if desired
     if (size() == 0 && forceDisplay)
     {
         if (display.image.empty())
-            push_back(AnimatedSprite::load("graphics/sprites/error.xml"));
+            addSprite(AnimatedSprite::load("graphics/sprites/error.xml"));
         else
         {
             ResourceManager *resman = ResourceManager::getInstance();
@@ -304,7 +324,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
             if (!img)
                 img = Theme::getImageFromTheme("unknown-item.png");
 
-            push_back(new ImageSprite(img));
+            addSprite(new ImageSprite(img));
         }
     }
 
@@ -323,4 +343,122 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     }
 
     mMustResetParticles = true;
+}
+
+void ActorSprite::load()
+{
+    if (loaded)
+        unload();
+
+    initTargetCursor();
+
+    loaded = true;
+}
+
+void ActorSprite::unload()
+{
+    if (!loaded)
+        return;
+
+    cleanupTargetCursors();
+    loaded = false;
+}
+
+void ActorSprite::addActorSpriteListener(ActorSpriteListener *listener)
+{
+    mActorSpriteListeners.push_front(listener);
+}
+
+void ActorSprite::removeActorSpriteListener(ActorSpriteListener *listener)
+{
+    mActorSpriteListeners.remove(listener);
+}
+
+static const char *cursorType(int type)
+{
+    switch (type)
+    {
+    case ActorSprite::TCT_IN_RANGE:
+        return "in-range";
+    case ActorSprite::TCT_NORMAL:
+        return "normal";
+    default:
+        assert(false);
+    }
+}
+
+static const char *cursorSize(int size)
+{
+    switch (size)
+    {
+    case ActorSprite::TC_LARGE:
+        return "l";
+    case ActorSprite::TC_MEDIUM:
+        return "m";
+    case ActorSprite::TC_SMALL:
+        return "s";
+    default:
+        assert(false);
+    }
+}
+
+void ActorSprite::initTargetCursor()
+{
+    static std::string targetCursor = "graphics/target-cursor-%s-%s.png";
+    static int targetWidths[NUM_TC] = {44, 62, 82};
+    static int targetHeights[NUM_TC] = {35, 44, 60};
+
+    // Load target cursors
+    for (int size = TC_SMALL; size < NUM_TC; size++)
+    {
+        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        {
+            loadTargetCursor(strprintf(targetCursor.c_str(), cursorType(type),
+                                       cursorSize(size)), targetWidths[size],
+                             targetHeights[size], type, size);
+        }
+    }
+}
+
+void ActorSprite::cleanupTargetCursors()
+{
+    for (int size = TC_SMALL; size < NUM_TC; size++)
+    {
+        for (int type = TCT_NORMAL; type < NUM_TCT; type++)
+        {
+            delete targetCursor[type][size];
+            if (targetCursorImages[type][size])
+                targetCursorImages[type][size]->decRef();
+        }
+    }
+}
+
+void ActorSprite::loadTargetCursor(const std::string &filename,
+                                   int width, int height, int type, int size)
+{
+    assert(size > -1);
+    assert(size < 3);
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    ImageSet *currentImageSet = resman->getImageSet(filename, width, height);
+
+    if (!currentImageSet)
+    {
+        logger->log("Error loading target cursor: %s", filename.c_str());
+        return;
+    }
+
+    Animation *anim = new Animation;
+
+    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
+    {
+        anim->addFrame(currentImageSet->get(i), 75,
+                      (16 - (currentImageSet->getWidth() / 2)),
+                      (16 - (currentImageSet->getHeight() / 2)));
+    }
+
+    SimpleAnimation *currentCursor = new SimpleAnimation(anim);
+
+    targetCursorImages[type][size] = currentImageSet;
+    targetCursor[type][size] = currentCursor;
 }

@@ -21,16 +21,13 @@
 
 #include "gui/viewport.h"
 
+#include "actorspritemanager.h"
 #include "client.h"
-#include "beingmanager.h"
 #include "configuration.h"
-#include "flooritemmanager.h"
 #include "graphics.h"
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "map.h"
-#include "monster.h"
-#include "npc.h"
 #include "textmanager.h"
 
 #include "gui/gui.h"
@@ -40,7 +37,6 @@
 
 #include "net/net.h"
 
-#include "resources/monsterinfo.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/stringutils.h"
@@ -207,12 +203,16 @@ void Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Draw player names, speech, and emotion sprite as needed
-    const Beings &beings = beingManager->getAll();
-    for (Beings::const_iterator i = beings.begin(), i_end = beings.end();
-         i != i_end; ++i)
+    const ActorSprites &actors = actorSpriteManager->getAll();
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        (*i)->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
-        (*i)->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
+        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+            continue;
+
+        Being *b = static_cast<Being*>(*it);
+        b->drawSpeech((int) mPixelViewX, (int) mPixelViewY);
+        b->drawEmotion(graphics, (int) mPixelViewX, (int) mPixelViewY);
     }
 
     if (miniStatusWindow)
@@ -345,7 +345,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are busy
-    if (NPC::isTalking())
+    if (Being::isTalking())
         return;
 
     mPlayerFollowMouse = false;
@@ -381,33 +381,20 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         // Interact with some being
         if (mHoverBeing)
         {
-            switch (mHoverBeing->getType())
+            if (mHoverBeing->canTalk())
+                mHoverBeing->talkTo();
+            else
             {
-                // Talk to NPCs
-                case Being::NPC:
-                    static_cast<NPC*>(mHoverBeing)->talk();
-                    break;
-
-                // Attack or walk to monsters or players
-                case Being::MONSTER:
-                case Being::PLAYER:
-                    // Ignore it if its dead
-                    if (!mHoverBeing->isAlive())
-                        break;
-
+                // Ignore it if its dead
+                if (mHoverBeing->isAlive())
+                {
                     if (player_node->withinAttackRange(mHoverBeing) ||
                         keyboard.isKeyActive(keyboard.KEY_ATTACK))
-                    {
                         player_node->attack(mHoverBeing,
                             !keyboard.isKeyActive(keyboard.KEY_TARGET));
-                    }
                     else
-                    {
                         player_node->setGotoTarget(mHoverBeing);
-                    }
-                    break;
-                default:
-                    break;
+                }
              }
         // Picks up a item if we clicked on one
         }
@@ -433,8 +420,8 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
     else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
-        Being *target = beingManager->findNearestLivingBeing(
-                pixelX, pixelY, 20, Being::MONSTER);
+        Being *target = actorSpriteManager->findNearestLivingBeing(
+                pixelX, pixelY, 20, ActorSprite::MONSTER);
 
         if (target)
              player_node->setTarget(target);
@@ -460,9 +447,9 @@ void Viewport::mouseDragged(gcn::MouseEvent &event)
         }
         else
         {
-          if (mLocalWalkTime != player_node->getWalkTime())
+          if (mLocalWalkTime != player_node->getActionTime())
           {
-              mLocalWalkTime = player_node->getWalkTime();
+              mLocalWalkTime = player_node->getActionTime();
               int destX = (event.getX() + mPixelViewX + 16) /
                           mMap->getTileWidth();
               int destY = (event.getY() + mPixelViewY + 16) /
@@ -507,27 +494,23 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
-    mHoverBeing = beingManager->findBeingByPixel(x, y);
-    if (mHoverBeing && mHoverBeing->getType() == Being::PLAYER)
-        mBeingPopup->show(getMouseX(), getMouseY(),
-                          static_cast<Player*>(mHoverBeing));
-    else
-        mBeingPopup->setVisible(false);
+    mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
+    mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
-    mHoverItem = floorItemManager->findByCoordinates(x / mMap->getTileWidth(),
-                                                    y / mMap->getTileHeight());
+    mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
+                                              y / mMap->getTileHeight());
 
     if (mHoverBeing)
     {
         switch (mHoverBeing->getType())
         {
             // NPCs
-            case Being::NPC:
+            case ActorSprite::NPC:
                 gui->setCursorType(Gui::CURSOR_TALK);
                 break;
 
             // Monsters
-            case Being::MONSTER:
+            case ActorSprite::MONSTER:
                 gui->setCursorType(Gui::CURSOR_FIGHT);
                 break;
             default:
@@ -562,8 +545,11 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::clearHoverBeing(Being *being)
+void Viewport::clearHover(ActorSprite *actor)
 {
-    if (mHoverBeing == being)
+    if (mHoverBeing == actor)
         mHoverBeing = 0;
+
+    if (mHoverItem == actor)
+        mHoverItem = 0;
 }

@@ -21,8 +21,8 @@
 
 #include "net/tmwa/chathandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
@@ -70,19 +70,28 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_WHISPER_RESPONSE:
+            if (mSentWhispers.empty())
+                nick = "user";
+            else
+            {
+                nick = mSentWhispers.front();
+                mSentWhispers.pop();
+            }
+
             switch (msg.readInt8())
             {
                 case 0x00:
-                    // comment out since we'll local echo in chat.cpp instead, then only report failures
-                    //localChatTab->chatLog("Whisper sent", BY_SERVER);
+                    // Success (don't need to report)
                     break;
                 case 0x01:
-                    localChatTab->chatLog(_("Whisper could not be sent, user "
-                                            "is offline."), BY_SERVER);
+                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
+                                  "be sent, %s is offline."), nick.c_str()),
+                                        BY_SERVER);
                     break;
                 case 0x02:
-                    localChatTab->chatLog(_("Whisper could not be sent, "
-                                            "ignored by user."), BY_SERVER);
+                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
+                                  "be sent, ignored by %s."), nick.c_str()),
+                                        BY_SERVER);
                     break;
             }
             break;
@@ -112,7 +121,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
         // Received speech from being
         case SMSG_BEING_CHAT: {
             chatMsgLength = msg.readInt16() - 8;
-            being = beingManager->findBeing(msg.readInt32());
+            being = actorSpriteManager->findBeing(msg.readInt32());
 
             if (!being || chatMsgLength <= 0)
                 break;
@@ -197,6 +206,8 @@ void ChatHandler::privateMessage(const std::string &recipient,
     outMsg.writeInt16(text.length() + 28);
     outMsg.writeString(recipient, 24);
     outMsg.writeString(text, text.length());
+
+    mSentWhispers.push(recipient);
 }
 
 void ChatHandler::channelList()

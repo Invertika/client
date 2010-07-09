@@ -21,7 +21,6 @@
 
 #include "gui/sell.h"
 
-#include "npc.h"
 #include "shopitem.h"
 #include "units.h"
 
@@ -197,6 +196,11 @@ void SellDialog::action(const gcn::ActionEvent &event)
             // the inventory index of the next Duplicate otherwise.
             itemIndex = item->getCurrentInvIndex();
             sellCount = item->sellCurrentDuplicate(mAmountItems);
+
+            // For Manaserv, the Item id is to be given as index.
+            if ((Net::getNetworkType() == ServerInfo::MANASERV))
+                itemIndex = item->getId();
+
             Net::getNpcHandler()->sellItem(mNpcId, itemIndex, sellCount);
             mAmountItems -= sellCount;
         }

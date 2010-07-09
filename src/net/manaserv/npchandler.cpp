@@ -21,8 +21,7 @@
 
 #include "net/manaserv/npchandler.h"
 
-#include "beingmanager.h"
-#include "npc.h"
+#include "actorspritemanager.h"
 
 #include "gui/npcdialog.h"
 #include "gui/npcpostdialog.h"
@@ -56,8 +55,8 @@ NpcHandler::NpcHandler()
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
 {
-    Being *being = beingManager->findBeing(msg.readInt16());
-    if (!being || being->getType() != Being::NPC)
+    Being *being = actorSpriteManager->findBeing(msg.readInt16());
+    if (!being || being->getType() != ActorSprite::NPC)
     {
         return;
     }
@@ -223,6 +222,11 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
+}
+
+void NpcHandler::clearDialogs()
+{
+    mNpcDialogs.clear();
 }
 
 } // namespace ManaServ

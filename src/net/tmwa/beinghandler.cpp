@@ -21,14 +21,13 @@
 
 #include "net/tmwa/beinghandler.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "client.h"
 #include "effectmanager.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "log.h"
-#include "npc.h"
 #include "party.h"
 #include "playerrelations.h"
 
@@ -74,19 +73,19 @@ BeingHandler::BeingHandler(bool enableSync):
 
 Being *createBeing(int id, short job)
 {
-    Being::Type type = Being::UNKNOWN;
+    ActorSprite::Type type = ActorSprite::UNKNOWN;
     if (job <= 25 || (job >= 4001 && job <= 4049))
-        type = Being::PLAYER;
+        type = ActorSprite::PLAYER;
     else if (job >= 46 && job <= 1000)
-        type = Being::NPC;
+        type = ActorSprite::NPC;
     else if (job > 1000 && job <= 2000)
-        type = Being::MONSTER;
+        type = ActorSprite::MONSTER;
     else if (job == 45)
         return NULL; // Skip portals
 
-    Being *being = beingManager->createBeing(id, type, job);
+    Being *being = actorSpriteManager->createBeing(id, type, job);
 
-    if (type == Being::PLAYER || type == Being::NPC)
+    if (type == ActorSprite::PLAYER || type == ActorSprite::NPC)
     {
         MessageOut outMsg(0x0094);
         outMsg.writeInt32(id);//readLong(2));
@@ -97,7 +96,7 @@ Being *createBeing(int id, short job)
 
 void BeingHandler::handleMessage(Net::MessageIn &msg)
 {
-    if (!beingManager)
+    if (!actorSpriteManager)
         return;
 
     int id;
@@ -112,7 +111,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     int type, guild;
     Uint16 status;
     Being *srcBeing, *dstBeing;
-    Player *player = 0;
     int hairStyle, hairColor, flag;
     std::string player_followed;
 
@@ -128,7 +126,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             statusEffects |= ((Uint32)msg.readInt16()) << 16;  // option
             job = msg.readInt16();  // class
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
             {
@@ -145,14 +143,10 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     break;
             }
 
-            if (dstBeing->getType() == Being::PLAYER)
-                player = static_cast<Player*>(dstBeing);
-
-            if (msg.getId() == 0x0078)
+            if (msg.getId() == SMSG_BEING_VISIBLE)
             {
                 dstBeing->clearPath();
-                dstBeing->setFrame(0);
-                dstBeing->setWalkTime(tick_time);
+                dstBeing->setActionTime(tick_time);
                 dstBeing->setAction(Being::STAND);
             }
 
@@ -178,16 +172,13 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             shoes = msg.readInt16();  // clothes color - "abused" as shoes
             gloves = msg.readInt16();  // head dir - "abused" as gloves
             guild = msg.readInt32();  // guild
-            if (player)
+            if (guild == 0)
             {
-                if (guild == 0)
-                {
-                    player->clearGuilds();
-                }
-                else
-                {
-                    player->addGuild(Guild::getGuild(guild));
-                }
+                dstBeing->clearGuilds();
+            }
+            else
+            {
+                dstBeing->addGuild(Guild::getGuild(guild));
             }
             msg.readInt16();  // guild emblem
             msg.readInt16();  // manner
@@ -195,19 +186,19 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // karma
             gender = msg.readInt8();
 
-            if (player)
+            if (dstBeing->getType() == ActorSprite::PLAYER)
             {
-                player->setGender((gender == 0)
-                                  ? GENDER_FEMALE : GENDER_MALE);
+                dstBeing->setGender((gender == 0)
+                                    ? GENDER_FEMALE : GENDER_MALE);
                 // Set these after the gender, as the sprites may be gender-specific
-                player->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
-                player->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
-                player->setSprite(SPRITE_TOPCLOTHES, headMid);
-                player->setSprite(SPRITE_HAT, headTop);
-                player->setSprite(SPRITE_SHOE, shoes);
-                player->setSprite(SPRITE_GLOVES, gloves);
-                player->setSprite(SPRITE_WEAPON, weapon, "", true);
-                player->setSprite(SPRITE_SHIELD, shield);
+                dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
+                dstBeing->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
+                dstBeing->setSprite(SPRITE_TOPCLOTHES, headMid);
+                dstBeing->setSprite(SPRITE_HAT, headTop);
+                dstBeing->setSprite(SPRITE_SHOE, shoes);
+                dstBeing->setSprite(SPRITE_GLOVES, gloves);
+                dstBeing->setSprite(SPRITE_WEAPON, weapon, "", true);
+                dstBeing->setSprite(SPRITE_SHIELD, shield);
             }
 
             if (msg.getId() == SMSG_BEING_MOVE)
@@ -242,7 +233,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              * later versions of eAthena for both mobs and
              * players
              */
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
 
             Uint16 srcX, srcY, dstX, dstY;
             msg.readCoordinatePair(srcX, srcY, dstX, dstY);
@@ -267,7 +258,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // A being should be removed or has died
             id = msg.readInt32();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
                 break;
@@ -289,7 +280,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == 1)
                 dstBeing->setAction(Being::DEAD);
             else
-                beingManager->destroyBeing(dstBeing);
+                actorSpriteManager->destroy(dstBeing);
 
             break;
 
@@ -297,7 +288,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             // A being changed mortality status
             id = msg.readInt32();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
                 break;
@@ -313,8 +304,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_SKILL_DAMAGE:
             msg.readInt16(); // Skill Id
-            srcBeing = beingManager->findBeing(msg.readInt32());
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            srcBeing = actorSpriteManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32(); // Server tick
             msg.readInt32(); // src speed
             msg.readInt32(); // dst speed
@@ -329,8 +320,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_BEING_ACTION:
-            srcBeing = beingManager->findBeing(msg.readInt32());
-            dstBeing = beingManager->findBeing(msg.readInt32());
+            srcBeing = actorSpriteManager->findBeing(msg.readInt32());
+            dstBeing = actorSpriteManager->findBeing(msg.readInt32());
             msg.readInt32();   // server tick
             msg.readInt32();   // src speed
             msg.readInt32();   // dst speed
@@ -357,7 +348,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x02: // Sit
                     if (srcBeing)
                     {
-                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::SIT);
                     }
                     break;
@@ -365,7 +355,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 case 0x03: // Stand up
                     if (srcBeing)
                     {
-                        srcBeing->setFrame(0);
                         srcBeing->setAction(Being::STAND);
                     }
                     break;
@@ -374,11 +363,11 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_BEING_SELFEFFECT: {
             id = (Uint32)msg.readInt32();
-            if (!beingManager->findBeing(id))
+            if (!actorSpriteManager->findBeing(id))
                 break;
 
             int effectType = msg.readInt32();
-            Being* being = beingManager->findBeing(id);
+            Being* being = actorSpriteManager->findBeing(id);
 
             effectManager->trigger(effectType, being);
 
@@ -386,7 +375,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
         }
 
         case SMSG_BEING_EMOTION:
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
@@ -415,13 +404,10 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
              * 16 bit value will be 0.
              */
 
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
-
-            if (dstBeing->getType() == Being::PLAYER)
-                player = static_cast<Player*>(dstBeing);
 
             int type = msg.readInt8();
             int id = 0;
@@ -440,41 +426,41 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             switch (type)
             {
                 case 1:     // eAthena LOOK_HAIR
-                    player->setSpriteID(SPRITE_HAIR, id *-1);
+                    dstBeing->setSpriteID(SPRITE_HAIR, id *-1);
                     break;
                 case 2:     // Weapon ID in id, Shield ID in id2
-                    player->setSprite(SPRITE_WEAPON, id, "", true);
-                    player->setSprite(SPRITE_SHIELD, id2);
+                    dstBeing->setSprite(SPRITE_WEAPON, id, "", true);
+                    dstBeing->setSprite(SPRITE_SHIELD, id2);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
-                    player->setSprite(SPRITE_BOTTOMCLOTHES, id);
+                    dstBeing->setSprite(SPRITE_BOTTOMCLOTHES, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
-                    player->setSprite(SPRITE_HAT, id);
+                    dstBeing->setSprite(SPRITE_HAT, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
-                    player->setSprite(SPRITE_TOPCLOTHES, id);
+                    dstBeing->setSprite(SPRITE_TOPCLOTHES, id);
                     break;
                 case 6:     // eAthena LOOK_HAIR_COLOR
-                    player->setSpriteColor(SPRITE_HAIR, ColorDB::get(id));
+                    dstBeing->setSpriteColor(SPRITE_HAIR, ColorDB::get(id));
                     break;
                 case 8:     // eAthena LOOK_SHIELD
-                    player->setSprite(SPRITE_SHIELD, id);
+                    dstBeing->setSprite(SPRITE_SHIELD, id);
                     break;
                 case 9:     // eAthena LOOK_SHOES
-                    player->setSprite(SPRITE_SHOE, id);
+                    dstBeing->setSprite(SPRITE_SHOE, id);
                     break;
                 case 10:   // LOOK_GLOVES
-                    player->setSprite(SPRITE_GLOVES, id);
+                    dstBeing->setSprite(SPRITE_GLOVES, id);
                     break;
                 case 11:  // LOOK_CAPE
-                    player->setSprite(SPRITE_CAPE, id);
+                    dstBeing->setSprite(SPRITE_CAPE, id);
                     break;
                 case 12:
-                    player->setSprite(SPRITE_MISC1, id);
+                    dstBeing->setSprite(SPRITE_MISC1, id);
                     break;
                 case 13:
-                    player->setSprite(SPRITE_MISC2, id);
+                    dstBeing->setSprite(SPRITE_MISC2, id);
                     break;
                 default:
                     logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
@@ -485,13 +471,13 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_BEING_NAME_RESPONSE:
-            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            if ((dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 dstBeing->setName(msg.readString(24));
             }
             break;
         case SMSG_PLAYER_GUILD_PARTY_INFO:
-            if ((dstBeing = beingManager->findBeing(msg.readInt32())))
+            if ((dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 dstBeing->setPartyName(msg.readString(24));
                 dstBeing->setGuildName(msg.readString(24));
@@ -500,7 +486,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             }
             break;
         case SMSG_BEING_CHANGE_DIRECTION:
-            if (!(dstBeing = beingManager->findBeing(msg.readInt32())))
+            if (!(dstBeing = actorSpriteManager->findBeing(msg.readInt32())))
             {
                 break;
             }
@@ -523,7 +509,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                 << 16; // status.options; Aethyra uses this as misc2
             job = msg.readInt16();
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
 
             if (!dstBeing)
             {
@@ -533,13 +519,10 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     break;
             }
 
-            if (dstBeing->getType() == Being::PLAYER)
-                player = static_cast<Player*>(dstBeing);
-
             if (Party *party = player_node->getParty()){
                 if (party->isMember(id))
                 {
-                    player->setParty(party);
+                    dstBeing->setParty(party);
                 }
             }
 
@@ -565,21 +548,21 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt16();  // manner
             dstBeing->setStatusEffectBlock(32, msg.readInt16());  // opt3
             msg.readInt8();   // karma
-            player->setGender((msg.readInt8() == 0)
+            dstBeing->setGender((msg.readInt8() == 0)
                               ? GENDER_FEMALE : GENDER_MALE);
 
             // Set these after the gender, as the sprites may be gender-specific
-            player->setSprite(SPRITE_WEAPON, weapon, "", true);
-            player->setSprite(SPRITE_SHIELD, shield);
-            //player->setSprite(SPRITE_SHOE, shoes);
-            player->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
-            player->setSprite(SPRITE_TOPCLOTHES, headMid);
-            player->setSprite(SPRITE_HAT, headTop);
-            //player->setSprite(SPRITE_GLOVES, gloves);
-            //player->setSprite(SPRITE_CAPE, cape);
-            //player->setSprite(SPRITE_MISC1, misc1);
-            //player->setSprite(SPRITE_MISC2, misc2);
-            player->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
+            dstBeing->setSprite(SPRITE_WEAPON, weapon, "", true);
+            dstBeing->setSprite(SPRITE_SHIELD, shield);
+            //dstBeing->setSprite(SPRITE_SHOE, shoes);
+            dstBeing->setSprite(SPRITE_BOTTOMCLOTHES, headBottom);
+            dstBeing->setSprite(SPRITE_TOPCLOTHES, headMid);
+            dstBeing->setSprite(SPRITE_HAT, headTop);
+            //dstBeing->setSprite(SPRITE_GLOVES, gloves);
+            //dstBeing->setSprite(SPRITE_CAPE, cape);
+            //dstBeing->setSprite(SPRITE_MISC1, misc1);
+            //dstBeing->setSprite(SPRITE_MISC2, misc2);
+            dstBeing->setSprite(SPRITE_HAIR, hairStyle * -1, ColorDB::get(hairColor));
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
@@ -609,7 +592,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
 
             gmstatus = msg.readInt16();
             if (gmstatus & 0x80)
-                player->setGM(true);
+                dstBeing->setGM(true);
 
             if (msg.getId() == SMSG_PLAYER_UPDATE_1)
             {
@@ -632,8 +615,8 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();   // Lv
             msg.readInt8();   // unknown
 
-            dstBeing->setWalkTime(tick_time);
-            dstBeing->setFrame(0);
+            dstBeing->setActionTime(tick_time);
+            dstBeing->reset();
 
             dstBeing->setStunMode(stunMode);
             dstBeing->setStatusEffectBlock(0, (statusEffects >> 16) & 0xffff);
@@ -656,7 +639,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             id = msg.readInt32();
             if (mSync || id != player_node->getId())
             {
-                dstBeing = beingManager->findBeing(id);
+                dstBeing = actorSpriteManager->findBeing(id);
                 if (dstBeing)
                 {
                     Uint16 x, y;
@@ -664,10 +647,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
                     y = msg.readInt16();
                     dstBeing->setTileCoords(x, y);
                     if (dstBeing->getCurrentAction() == Being::WALK)
-                    {
-                        dstBeing->setFrame(0);
                         dstBeing->setAction(Being::STAND);
-                    }
                 }
             }
             break;
@@ -684,7 +664,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_PLAYER_STATUS_CHANGE:
             // Change in players' flags
             id = msg.readInt32();
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
             stunMode = msg.readInt16();
             statusEffects = msg.readInt16();
             statusEffects |= ((Uint32) msg.readInt16()) << 16;
@@ -704,7 +684,7 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
             id = msg.readInt32();
             flag = msg.readInt8(); // 0: stop, 1: start
 
-            dstBeing = beingManager->findBeing(id);
+            dstBeing = actorSpriteManager->findBeing(id);
             if (dstBeing)
                 dstBeing->setStatusEffect(status, flag);
             break;

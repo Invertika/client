@@ -21,7 +21,7 @@
 
 #include "map.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "client.h"
 #include "configuration.h"
 #include "graphics.h"
@@ -143,7 +143,6 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
         {
             while (ai != actors.end() && (*ai)->getPixelY() <= y * 32)
             {
-                (*ai)->setAlpha(1.0f);
                 (*ai)->draw(graphics, -scrollX, -scrollY);
                 ai++;
             }
@@ -167,7 +166,6 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
     {
         while (ai != actors.end())
         {
-            (*ai)->setAlpha(1.0f);
             (*ai)->draw(graphics, -scrollX, -scrollY);
             ai++;
         }
@@ -341,6 +339,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             {
                 actor->setAlpha(0.3f);
                 actor->draw(graphics, -scrollX, -scrollY);
+                actor->setAlpha(1.0f);
             }
         }
         ai++;
@@ -533,12 +532,14 @@ bool Map::getWalk(int x, int y, unsigned char walkmask) const
 
 bool Map::occupied(int x, int y) const
 {
-    const Beings &beings = beingManager->getAll();
-    for (Beings::const_iterator i = beings.begin(); i != beings.end(); i++)
+    const ActorSprites &actors = actorSpriteManager->getAll();
+    ActorSpritesConstIterator it, it_end;
+    for (it = actors.begin(), it_end = actors.end(); it != it_end; it++)
     {
-        const Being *being = *i;
+        const ActorSprite *actor = *it;
 
-        if (being->getTileX() == x && being->getTileY() == y)
+        if (actor->getTileX() == x && actor->getTileY() == y &&
+            actor->getType() != ActorSprite::FLOOR_ITEM)
             return true;
     }
 
@@ -579,16 +580,13 @@ const std::string Map::getName() const
     return getProperty("mapname");
 }
 
-const std::string *Map::getFilename() const
+const std::string Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
     int lastSlash = fileName.rfind("/") + 1;
     int lastDot = fileName.rfind(".");
 
-    std::string *sub = new std::string(
-        fileName.substr(lastSlash, lastDot - lastSlash));
-
-    return sub;
+    return fileName.substr(lastSlash, lastDot - lastSlash);
 }
 
 Position Map::checkNodeOffsets(int radius, unsigned char walkMask,

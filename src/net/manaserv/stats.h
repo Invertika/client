@@ -1,7 +1,6 @@
 /*
  *  The Mana Client
- *  Copyright (C) 2009  The Mana World Development Team
- *  Copyright (C) 2009-2010  The Mana Developers
+ *  Copyright (C) 2010  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -19,25 +18,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "being.h"
+#ifndef NET_MANASERV_STATS_H
+#define NET_MANASERV_STATS_H
 
-#ifndef NET_TA_TOKEN_H
-#define NET_TA_TOKEN_H
+#include <string>
+#include <vector>
 
-struct Token
-{
-    int account_ID;
-    int session_ID1;
-    int session_ID2;
-    Gender sex;
+namespace ManaServ {
+namespace Stats {
+    void load();
 
-    void clear()
-    {
-        account_ID = 0;
-        session_ID1 = 0;
-        session_ID2 = 0;
-        sex = GENDER_UNSPECIFIED;
-    }
-};
+    void unload();
 
-#endif // NET_TA_TOKEN_H
+    void informItemDB();
+
+    void informStatusWindow();
+
+    std::vector<std::string> getLabelVector();
+} // namespace Stats
+} // namespace ManaServ
+
+#endif // NET_MANASERV_STATS_H

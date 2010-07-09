@@ -24,7 +24,6 @@
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-#include "npc.h"
 #include "units.h"
 
 #include "gui/buy.h"
@@ -42,6 +41,7 @@
 #include "net/messageout.h"
 
 #include "net/tmwa/protocol.h"
+#include "net/tmwa/npchandler.h"
 
 #include "utils/stringutils.h"
 #include "utils/gettext.h"
@@ -86,6 +86,10 @@ namespace {
             SellDialog::closeAll();
 
             viewport->closePopupMenu();
+
+            TmwAthena::NpcHandler *handler =
+                    static_cast<TmwAthena::NpcHandler*>(Net::getNpcHandler());
+            handler->clearDialogs();
         }
     } deathListener;
 
@@ -212,7 +216,6 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->setFrame(0);
                 player_node->setTileCoords(x, y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
@@ -579,8 +582,11 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    MessageOut outMsg(CMSG_ITEM_PICKUP);
-    outMsg.writeInt32(floorItem->getId());
+    if (floorItem)
+    {
+        MessageOut outMsg(CMSG_ITEM_PICKUP);
+        outMsg.writeInt32(floorItem->getId());
+    }
 }
 
 void PlayerHandler::setDirection(char direction)

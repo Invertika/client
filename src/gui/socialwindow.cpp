@@ -20,11 +20,9 @@
 
 #include "gui/socialwindow.h"
 
-#include "beingmanager.h"
 #include "guild.h"
 #include "localplayer.h"
 #include "party.h"
-#include "player.h"
 
 #include "gui/confirmdialog.h"
 #include "gui/okdialog.h"
@@ -63,7 +61,7 @@ protected:
             mConfirmDialog(NULL)
     {}
 
-    ~SocialTab()
+    virtual ~SocialTab()
     {
         // Cleanup dialogs
         if (mInviteDialog)
@@ -106,6 +104,14 @@ public:
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    }
+
+    ~GuildTab()
+    {
+        delete mList;
+        mList = 0;
+        delete mScroll;
+        mScroll = 0;
     }
 
     void action(const gcn::ActionEvent &event)
@@ -179,6 +185,14 @@ public:
 
         mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
         mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
+    }
+
+    ~PartyTab()
+    {
+        delete mList;
+        mList = 0;
+        delete mScroll;
+        mScroll = 0;
     }
 
     void action(const gcn::ActionEvent &event)
@@ -328,6 +342,8 @@ SocialWindow::SocialWindow() :
     {
         addTab(player_node->getParty());
     }
+    else
+        updateButtons();
 }
 
 SocialWindow::~SocialWindow()
@@ -350,6 +366,7 @@ SocialWindow::~SocialWindow()
 
         mPartyInviter = "";
     }
+    delete mCreatePopup;
 }
 
 bool SocialWindow::addTab(Guild *guild)
@@ -361,6 +378,8 @@ bool SocialWindow::addTab(Guild *guild)
     mGuilds[guild] = tab;
 
     mTabs->addTab(tab, tab->mScroll);
+
+    updateButtons();
 
     return true;
 }
@@ -375,6 +394,8 @@ bool SocialWindow::removeTab(Guild *guild)
     delete it->second;
     mGuilds.erase(it);
 
+    updateButtons();
+
     return true;
 }
 
@@ -388,6 +409,8 @@ bool SocialWindow::addTab(Party *party)
 
     mTabs->addTab(tab, tab->mScroll);
 
+    updateButtons();
+
     return true;
 }
 
@@ -400,6 +423,8 @@ bool SocialWindow::removeTab(Party *party)
     mTabs->removeTab(it->second);
     delete it->second;
     mParties.erase(it);
+
+    updateButtons();
 
     return true;
 }
@@ -453,11 +478,11 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         else
             showPartyCreate();
     }
-    else if (event.getId() == "invite")
+    else if (event.getId() == "invite" && mTabs->getSelectedTabIndex() > -1)
     {
         static_cast<SocialTab*>(mTabs->getSelectedTab())->invite();
     }
-    else if (event.getId() == "leave")
+    else if (event.getId() == "leave" && mTabs->getSelectedTabIndex() > -1)
     {
         static_cast<SocialTab*>(mTabs->getSelectedTab())->leave();
     }
@@ -595,4 +620,11 @@ void SocialWindow::showPartyCreate()
                                         _("Choose your party's name."), this);
     mPartyCreateDialog->setActionEventId("create party");
     mPartyCreateDialog->addActionListener(this);
+}
+
+void SocialWindow::updateButtons()
+{
+    bool hasTabs = mTabs->getNumberOfTabs() > 0;
+    mInviteButton->setEnabled(hasTabs);
+    mLeaveButton->setEnabled(hasTabs);
 }

@@ -21,7 +21,7 @@
 
 #include "gui/setup_players.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "configuration.h"
 #include "log.h"
 
@@ -35,6 +35,7 @@
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/table.h"
 
+#include "utils/dtor.h"
 #include "utils/gettext.h"
 
 #include <string>
@@ -88,7 +89,8 @@ class PlayerTableModel : public TableModel
 {
 public:
     PlayerTableModel() :
-        mPlayers(NULL)
+        mPlayers(NULL),
+        mListModel(new PlayerRelationListModel)
     {
         playerRelationsUpdated();
     }
@@ -96,6 +98,7 @@ public:
     virtual ~PlayerTableModel()
     {
         freeWidgets();
+        delete mListModel;
         if (mPlayers)
             delete mPlayers;
     }
@@ -139,9 +142,8 @@ public:
             std::string name = (*player_names)[r];
             gcn::Widget *widget = new Label(name);
             mWidgets.push_back(widget);
-            gcn::ListModel *playerRelation = new PlayerRelationListModel;
 
-            gcn::DropDown *choicebox = new DropDown(playerRelation);
+            gcn::DropDown *choicebox = new DropDown(mListModel);
             choicebox->setSelected(player_relations.getRelation(name));
             mWidgets.push_back(choicebox);
         }
@@ -170,12 +172,7 @@ public:
             delete mPlayers;
         mPlayers = NULL;
 
-        for (std::vector<gcn::Widget *>::const_iterator it = mWidgets.begin();
-             it != mWidgets.end(); it++)
-        {
-            delete *it;
-        }
-
+        delete_all(mWidgets);
         mWidgets.clear();
     }
 
@@ -187,6 +184,7 @@ public:
 protected:
     std::vector<std::string> *mPlayers;
     std::vector<gcn::Widget *> mWidgets;
+    PlayerRelationListModel *mListModel;
 };
 
 /**
@@ -354,8 +352,8 @@ void Setup_Players::apply()
 
     config.setValue("showgender", mShowGender);
 
-    if (beingManager && mShowGender != showGender)
-        beingManager->updatePlayerNames();
+    if (actorSpriteManager && mShowGender != showGender)
+        actorSpriteManager->updatePlayerNames();
 
     config.setValue("enableChatLog", mEnableChatLog);
 }

@@ -37,6 +37,7 @@
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/protocol.h"
+#include "net/manaserv/stats.h"
 
 #include "resources/colordb.h"
 
@@ -150,13 +151,13 @@ void CharHandler::handleCharacterCreateResponse(Net::MessageIn &msg)
             case CREATE_INVALID_GENDER:
                 errorMessage = _("Invalid gender.");
                 break;
-            case CREATE_RAW_STATS_TOO_HIGH:
+            case CREATE_ATTRIBUTES_TOO_HIGH:
                 errorMessage = _("Character's stats are too high.");
                 break;
-            case CREATE_RAW_STATS_TOO_LOW:
+            case CREATE_ATTRIBUTES_TOO_LOW:
                 errorMessage = _("Character's stats are too low.");
                 break;
-            case CREATE_RAW_STATS_EQUAL_TO_ZERO:
+            case CREATE_ATTRIBUTES_EQUAL_TO_ZERO:
                 errorMessage = _("One stat is zero.");
                 break;
             default:
@@ -258,15 +259,7 @@ void CharHandler::setCharCreateDialog(CharCreateDialog *window)
     if (!mCharCreateDialog)
         return;
 
-    std::vector<std::string> attributes;
-    attributes.push_back(_("Strength:"));
-    attributes.push_back(_("Agility:"));
-    attributes.push_back(_("Dexterity:"));
-    attributes.push_back(_("Vitality:"));
-    attributes.push_back(_("Intelligence:"));
-    attributes.push_back(_("Willpower:"));
-
-    mCharCreateDialog->setAttributes(attributes, 60, 1, 20);
+    mCharCreateDialog->setAttributes(Stats::getLabelVector(), 60, 1, 20);
 }
 
 void CharHandler::requestCharacters()
@@ -304,12 +297,10 @@ void CharHandler::newCharacter(const std::string &name,
     msg.writeInt8(hairstyle);
     msg.writeInt8(hairColor);
     msg.writeInt8(gender);
-    msg.writeInt16(stats[0]);
-    msg.writeInt16(stats[1]);
-    msg.writeInt16(stats[2]);
-    msg.writeInt16(stats[3]);
-    msg.writeInt16(stats[4]);
-    msg.writeInt16(stats[5]);
+
+    std::vector<int>::const_iterator it, it_end;
+    for (it = stats.begin(), it_end = stats.end(); it != it_end; it++)
+        msg.writeInt16((*it));
 
     accountServerConnection->send(msg);
 }
@@ -328,17 +319,17 @@ void CharHandler::switchCharacter()
     gameHandler->quit(true);
 }
 
-int CharHandler::baseSprite() const
+unsigned int CharHandler::baseSprite() const
 {
     return SPRITE_BASE;
 }
 
-int CharHandler::hairSprite() const
+unsigned int CharHandler::hairSprite() const
 {
     return SPRITE_HAIR;
 }
 
-int CharHandler::maxSprite() const
+unsigned int CharHandler::maxSprite() const
 {
     return SPRITE_VECTOREND;
 }

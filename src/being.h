@@ -29,12 +29,11 @@
 #include "position.h"
 #include "vector.h"
 
-#include "resources/spritedef.h"
-
 #include <guichan/color.hpp>
 
 #include <SDL_types.h>
 
+#include <map>
 #include <set>
 #include <string>
 #include <vector>
@@ -45,13 +44,23 @@
 #define SPEECH_TIME 500
 #define SPEECH_MAX_TIME 1000
 
+class BeingInfo;
 class FlashText;
+class Guild;
 class ItemInfo;
 class Item;
 class Particle;
+class Party;
 class Position;
 class SpeechBubble;
 class Text;
+
+enum Gender
+{
+    GENDER_MALE = 0,
+    GENDER_FEMALE = 1,
+    GENDER_UNSPECIFIED = 2
+};
 
 class Being : public ActorSprite, public ConfigListener
 {
@@ -100,9 +109,11 @@ class Being : public ActorSprite, public ConfigListener
          * @param subtype partly determines the type of the being
          * @param map     the map the being is on
          */
-        Being(int id, int subtype, Map *map);
+        Being(int id, Type type, int subtype, Map *map);
 
         virtual ~Being();
+
+        Type getType() const { return mType; }
 
         /**
          * Removes all path nodes from this being.
@@ -110,19 +121,15 @@ class Being : public ActorSprite, public ConfigListener
         void clearPath();
 
         /**
-         * Returns the walk time.
-         * Used to know which frame to display and trigger
-         * the next Tile step.
-         * TODO: Used by eAthena only?
+         * Returns the time spent in the current action.
          */
-        int getWalkTime() const { return mWalkTime; }
+        int getActionTime() const { return mActionTime; }
 
         /**
-         * Set the current WalkTime value.
-         * TODO: Used by eAthena only?
+         * Set the current action time.
          * @see Ea::BeingHandler that set it to tick time.
          */
-        void setWalkTime(int walkTime) { mWalkTime = walkTime; }
+        void setActionTime(int actionTime) { mActionTime = actionTime; }
 
         /**
          * Makes this being take the next tile of its path.
@@ -188,7 +195,7 @@ class Being : public ActorSprite, public ConfigListener
          * @param damage the amount of damage recieved (0 means miss)
          * @param type the attack type
          */
-        virtual void takeDamage(Being *attacker, int damage, AttackType type);
+        void takeDamage(Being *attacker, int damage, AttackType type);
 
         /**
          * Handles an attack of another being by this being.
@@ -210,23 +217,82 @@ class Being : public ActorSprite, public ConfigListener
          *
          * @param name The name that should appear.
          */
-        virtual void setName(const std::string &name);
+        void setName(const std::string &name);
 
         bool getShowName() const
         { return mShowName; }
 
-        virtual void setShowName(bool doShowName);
+        void setShowName(bool doShowName);
 
         /**
-         * Following are set from the server (mainly for players)
+         * Sets the name of the party the being is in. Shown in BeingPopup.
          */
         void setPartyName(const std::string &name) { mPartyName = name; }
 
         const std::string &getPartyName() const { return mPartyName; }
 
-        virtual void setGuildName(const std::string &name);
+        /**
+         * Sets the name of the primary guild the being is in. Shown in
+         * BeingPopup (eventually).
+         */
+        void setGuildName(const std::string &name);
 
-        virtual void setGuildPos(const std::string &pos);
+        void setGuildPos(const std::string &pos);
+
+        /**
+         * Adds a guild to the being.
+         */
+        void addGuild(Guild *guild);
+
+        /**
+         * Removers a guild from the being.
+         */
+        void removeGuild(int id);
+
+        /**
+         * Returns a pointer to the specified guild that the being is in.
+         */
+        Guild *getGuild(const std::string &guildName) const;
+
+        /**
+         * Returns a pointer to the specified guild that the being is in.
+         */
+        Guild *getGuild(int id) const;
+
+        /**
+         * Returns all guilds the being is in.
+         */
+        const std::map<int, Guild*> &getGuilds() const
+        { return mGuilds; }
+
+        /**
+         * Removes all guilds the being is in.
+         */
+        void clearGuilds();
+
+        /**
+         * Get number of guilds the being belongs to.
+         */
+        short getNumberOfGuilds() const
+        { return mGuilds.size(); }
+
+        bool isInParty() const
+        { return mParty != NULL; }
+
+        void setParty(Party *party);
+
+        Party *getParty() const
+        { return mParty; }
+
+        /**
+         * Sets visible equipments for this being.
+         */
+        void setSprite(unsigned int slot, int id,
+                       const std::string &color = "", bool isWeapon = false);
+
+        void setSpriteID(unsigned int slot, int id);
+
+        void setSpriteColor(unsigned int slot, const std::string &color = "");
 
         /**
          * Get the number of hairstyles implemented
@@ -254,15 +320,27 @@ class Being : public ActorSprite, public ConfigListener
          */
         void drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
-         /**
-          * Return Being's current Job (player job, npc, monster, creature )
-          */
         Uint16 getSubType() const { return mSubType; }
 
          /**
-          * Set Being's current Job (player job, npc, monster, creature )
+          * Set Being's subtype (mostly for view for monsters and NPCs)
           */
-        virtual void setSubtype(Uint16 subtype) { mSubType = subtype; }
+        void setSubtype(Uint16 subtype);
+
+        const BeingInfo *getInfo() const
+        { return mInfo; }
+
+        TargetCursorSize getTargetCursorSize() const;
+
+        /**
+         * Gets the way the object is blocked by other objects.
+         */
+        unsigned char getWalkMask() const;
+
+        /**
+         * Gets the way the monster blocks pathfinding for other objects
+         */
+        Map::BlockType getBlockType() const;
 
         /**
          * Sets the walk speed.
@@ -316,16 +394,6 @@ class Being : public ActorSprite, public ConfigListener
         void setDirection(Uint8 direction);
 
         /**
-         * Returns the being's current sprite frame number.
-         */
-        int getCurrentFrame() const { return mFrame; }
-
-        /**
-         * Set the being's current sprite frame number.
-         */
-        void setFrame(int frame) { mFrame = frame; }
-
-        /**
          * Returns the direction the being is facing.
          */
         SpriteDirection getSpriteDirection() const
@@ -364,17 +432,10 @@ class Being : public ActorSprite, public ConfigListener
         void fireMissile(Being *target, const std::string &particle);
 
         /**
-         * Gets the way the object is blocked by other objects.
-         */
-        virtual unsigned char getWalkMask() const
-        { return 0x00; } //can walk through everything
-
-        /**
          * Returns the path this being is following. An empty path is returned
          * when this being isn't following any path currently.
          */
         const Path &getPath() const { return mPath; }
-
 
         /**
          * Set the Emoticon type and time displayed above
@@ -394,7 +455,7 @@ class Being : public ActorSprite, public ConfigListener
 
         static void load();
 
-        virtual void optionChanged(const std::string &value) {}
+        virtual void optionChanged(const std::string &value);
 
         void flashName(int time);
 
@@ -402,6 +463,31 @@ class Being : public ActorSprite, public ConfigListener
         { return mDamageTaken; }
 
         void updateName();
+
+        /**
+         * Sets the gender of this being.
+         */
+        virtual void setGender(Gender gender);
+
+        Gender getGender() const
+        { return mGender; }
+
+        /**
+         * Whether or not this player is a GM.
+         */
+        bool isGM() const
+        { return mIsGM; }
+
+        /**
+         * Triggers whether or not to show the name as a GM name.
+         */
+        void setGM(bool gm);
+
+        bool canTalk();
+
+        void talkTo();
+
+        static bool isTalking();
 
     protected:
         /**
@@ -412,24 +498,24 @@ class Being : public ActorSprite, public ConfigListener
         /**
          * Updates name's location.
          */
-        virtual void updateCoords();
+        void updateCoords();
 
-        virtual void showName();
+        void showName();
 
-        /** The current sprite Frame number to be displayed */
-        int mFrame;
+        void updateColors();
 
-        /** Used to trigger the nextStep (walking on next Tile)
-         * TODO: Used by eAthena only?
-         */
-        int mWalkTime;
+        BeingInfo *mInfo;
+
+        int mActionTime;      /**< Time spent in current action */
 
         int mEmotion;         /**< Currently showing emotion */
         int mEmotionTime;     /**< Time until emotion disappears */
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
 
+        int mAttackType;
         int mAttackSpeed;     /**< Attack speed */
+
         Action mAction;       /**< Action the being is performing */
         Uint16 mSubType;      /**< Subtype (graphical view, basically) */
 
@@ -457,6 +543,16 @@ class Being : public ActorSprite, public ConfigListener
 
         Vector mDest;  /**< destination coordinates. */
 
+        std::vector<int> mSpriteIDs;
+        std::vector<std::string> mSpriteColors;
+        Gender mGender;
+
+        // Character guild information
+        std::map<int, Guild*> mGuilds;
+        Party *mParty;
+
+        bool mIsGM;
+
     private:
 
         /**
@@ -465,6 +561,8 @@ class Being : public ActorSprite, public ConfigListener
          * TODO: Used by eAthena only?
          */
         int getOffset(char pos, char neg) const;
+
+        const Type mType;
 
         /** Speech Bubble components */
         SpeechBubble *mSpeechBubble;

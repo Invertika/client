@@ -21,7 +21,7 @@
 
 #include "chat.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "configuration.h"
 #include "localplayer.h"
 #include "party.h"
@@ -266,20 +266,20 @@ void ChatWindow::chatInput(const std::string &msg)
 
 void ChatWindow::doPresent()
 {
-    const Beings &beings = beingManager->getAll();
+    const ActorSprites &actors = actorSpriteManager->getAll();
     std::string response = "";
     int playercount = 0;
 
-    for (Beings::const_iterator bi = beings.begin(), be = beings.end();
-         bi != be; ++bi)
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        if ((*bi)->getType() == Being::PLAYER)
+        if ((*it)->getType() == ActorSprite::PLAYER)
         {
             if (!response.empty())
             {
                 response += ", ";
             }
-            response += (*bi)->getName();
+            response += static_cast<Being*>(*it)->getName();
             ++playercount;
         }
     }
@@ -431,7 +431,7 @@ void ChatWindow::setRecordingFile(const std::string &msg)
 }
 
 void ChatWindow::whisper(const std::string &nick,
-                         const std::string &mes, bool own)
+                         const std::string &mes, Own own)
 {
     if (mes.empty())
         return;
@@ -455,9 +455,13 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (tab)
     {
-        if (own)
+        if (own == BY_PLAYER)
         {
             tab->chatInput(mes);
+        }
+        else if (own == BY_SERVER)
+        {
+            tab->chatLog(mes);
         }
         else
         {
@@ -467,7 +471,7 @@ void ChatWindow::whisper(const std::string &nick,
     }
     else
     {
-        if (own)
+        if (own == BY_PLAYER)
         {
             Net::getChatHandler()->privateMessage(nick, mes);
 
@@ -531,7 +535,7 @@ void ChatWindow::autoComplete()
 
     if (newName == "")
     {
-        beingManager->getPlayerNames(nameList, true);
+        actorSpriteManager->getPlayerNames(nameList, true);
         newName = autoComplete(nameList, name);
     }
     if (newName == "")

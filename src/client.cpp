@@ -397,7 +397,7 @@ Client::Client(const Options &options):
     if (mCurrentServer.hostname.empty())
     {
         mCurrentServer.hostname = branding.getValue("defaultServer",
-                                            "server.themanaworld.org").c_str();
+                                                    "").c_str();
     }
 
     if (mCurrentServer.port == 0)
@@ -405,7 +405,7 @@ Client::Client(const Options &options):
         mCurrentServer.port = (short) branding.getValue("defaultPort",
                                                        DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
-                branding.getValue("defaultServerType", "eathena"));
+                branding.getValue("defaultServerType", "tmwathena"));
     }
 
     if (chatLogger)
@@ -433,6 +433,14 @@ Client::~Client()
     SDL_RemoveTimer(mLogicCounterId);
     SDL_RemoveTimer(mSecondsCounterId);
 
+    // Unload XML databases
+    ColorDB::unload();
+    EmoteDB::unload();
+    ItemDB::unload();
+    MonsterDB::unload();
+    NPCDB::unload();
+    StatusEffect::unload();
+
     // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
     delete emoteShortcut;
@@ -445,14 +453,6 @@ Client::~Client()
 
     // Shutdown sound
     sound.close();
-
-    // Unload XML databases
-    ColorDB::unload();
-    EmoteDB::unload();
-    ItemDB::unload();
-    MonsterDB::unload();
-    NPCDB::unload();
-    StatusEffect::unload();
 
     ResourceManager::deleteInstance();
 
@@ -748,6 +748,8 @@ int Client::exec()
                     StatusEffect::load();
                     Units::loadUnits();
 
+                    ActorSprite::load();
+
                     mDesktop->reloadWallpaper();
 
                     mState = STATE_GET_CHARACTERS;
@@ -966,6 +968,7 @@ int Client::exec()
 
                 case STATE_ERROR:
                     logger->log("State: ERROR");
+                    logger->log("Error: %s\n", errorMessage.c_str());
                     mCurrentDialog = new OkDialog(_("Error"), errorMessage);
                     mCurrentDialog->addActionListener(&errorListener);
                     mCurrentDialog = NULL; // OkDialog deletes itself
@@ -1106,8 +1109,7 @@ void Client::initConfiguration()
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 60);
-    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost",
-        "http://updates.themanaworld.org");
+    std::string defaultUpdateHost = branding.getValue("defaultUpdateHost", "");
     config.setValue("updatehost", defaultUpdateHost);
     config.setValue("customcursor", true);
     config.setValue("useScreenshotDirectorySuffix", true);
@@ -1150,12 +1152,15 @@ void Client::initUpdatesDir()
     // If updatesHost is currently empty, fill it from config file
     if (mUpdateHost.empty())
     {
-        mUpdateHost =
-            config.getValue("updatehost", "http://updates.themanaworld.org/");
+        mUpdateHost = config.getValue("updatehost", "");
     }
 
+    // Don't go out of range int he next check
+    if (mUpdateHost.length() < 2)
+        return;
+
     // Remove any trailing slash at the end of the update host
-    if (mUpdateHost.at(mUpdateHost.size() - 1) == '/')
+    if (!mUpdateHost.empty() && mUpdateHost.at(mUpdateHost.size() - 1) == '/')
         mUpdateHost.resize(mUpdateHost.size() - 1);
 
     // Parse out any "http://" or "ftp://", and set the updates directory
@@ -1163,7 +1168,7 @@ void Client::initUpdatesDir()
     pos = mUpdateHost.find("://");
     if (pos != mUpdateHost.npos)
     {
-        if (pos + 3 < mUpdateHost.length())
+        if (pos + 3 < mUpdateHost.length() && !mUpdateHost.empty())
         {
             updates << "updates/" << mUpdateHost.substr(pos + 3);
             mUpdatesDir = updates.str();

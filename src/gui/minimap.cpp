@@ -21,14 +21,13 @@
 
 #include "gui/minimap.h"
 
+#include "actorspritemanager.h"
 #include "being.h"
-#include "beingmanager.h"
 #include "configuration.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
-#include "player.h"
 
 #include "gui/setup.h"
 #include "gui/userpalette.h"
@@ -98,15 +97,13 @@ void Minimap::setMap(Map *map)
     if (map)
     {
         std::string tempname =
-            "graphics/minimaps/"+(*map->getFilename())+".png";
+            "graphics/minimaps/" + map->getFilename() + ".png";
         ResourceManager *resman = ResourceManager::getInstance();
 
         minimapName = map->getProperty("minimap");
 
         if (minimapName.empty() && resman->exists(tempname))
-        {
             minimapName = tempname;
-        }
 
         mMapImage = resman->getImage(minimapName);
     }
@@ -187,52 +184,46 @@ void Minimap::draw(gcn::Graphics *graphics)
             drawImage(mMapImage, mapOriginX, mapOriginY);
     }
 
-    const Beings &beings = beingManager->getAll();
+    const ActorSprites &actors = actorSpriteManager->getAll();
 
-    for (Beings::const_iterator bi = beings.begin(), bi_end = beings.end();
-         bi != bi_end; ++bi)
+    for (ActorSpritesConstIterator it = actors.begin(), it_end = actors.end();
+         it != it_end; it++)
     {
-        const Being *being = (*bi);
+        if ((*it)->getType() == ActorSprite::FLOOR_ITEM)
+            continue;
+
+        const Being *being = static_cast<Being*>(*it);
         int dotSize = 2;
 
-        switch (being->getType())
+        int type = UserPalette::PC;
+
+        if (being == player_node)
         {
-            case Being::PLAYER:
-                {
-                    const Player *player = static_cast<const Player*>(being);
-
-                    int type = UserPalette::PC;
-
-                    if (being == player_node)
-                    {
-                        type = UserPalette::SELF;
-                        dotSize = 3;
-                    }
-                    else if (player->isGM())
-                    {
-                        type = UserPalette::GM;
-                    }
-                    else if (player->isInParty())
-                    {
-                        type = UserPalette::PARTY;
-                    }
-
-                    graphics->setColor(userPalette->getColor(type));
+            type = UserPalette::SELF;
+            dotSize = 3;
+        }
+        else if (being->isGM())
+            type = UserPalette::GM;
+        else if (being->isInParty())
+            type = UserPalette::PARTY;
+        else
+        {
+            switch (being->getType())
+            {
+                case ActorSprite::MONSTER:
+                    graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
                     break;
-                 }
 
-            case Being::MONSTER:
-                graphics->setColor(userPalette->getColor(UserPalette::MONSTER));
-                break;
+                case ActorSprite::NPC:
+                    graphics->setColor(userPalette->getColor(UserPalette::NPC));
+                    break;
 
-            case Being::NPC:
-                graphics->setColor(userPalette->getColor(UserPalette::NPC));
-                break;
-
-            default:
-                continue;
+                default:
+                    continue;
+            }
         }
 
+        graphics->setColor(userPalette->getColor(type));
 
         const int offsetHeight = (int) ((dotSize - 1) * mHeightProportion);
         const int offsetWidth = (int) ((dotSize - 1) * mWidthProportion);

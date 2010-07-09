@@ -185,6 +185,12 @@ public:
         setCaption(name);
     }
 
+    ~SkillTab()
+    {
+        delete mListBox;
+        mListBox = 0;
+    }
+
     SkillInfo *getSelectedInfo()
     {
         return mListBox->getSelectedInfo();
@@ -233,10 +239,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "close")
     {
         setVisible(false);
-    }
-    else
-    {
-        printf("Unknown event '%s'\n", event.getId().c_str());
     }
 }
 

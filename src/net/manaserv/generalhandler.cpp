@@ -29,7 +29,6 @@
 #include "gui/register.h"
 #include "gui/skilldialog.h"
 #include "gui/specialswindow.h"
-#include "gui/statuswindow.h"
 
 #include "net/manaserv/beinghandler.h"
 #include "net/manaserv/buysellhandler.h"
@@ -47,6 +46,7 @@
 #include "net/manaserv/partyhandler.h"
 #include "net/manaserv/playerhandler.h"
 #include "net/manaserv/specialhandler.h"
+#include "net/manaserv/stats.h"
 #include "net/manaserv/tradehandler.h"
 
 #include "utils/gettext.h"
@@ -90,16 +90,6 @@ GeneralHandler::GeneralHandler():
     chatServerConnection = getConnection();
 
     generalHandler = this;
-
-    std::list<ItemDB::Stat> stats;
-    stats.push_back(ItemDB::Stat("str", N_("Strength %+d")));
-    stats.push_back(ItemDB::Stat("agi", N_("Agility %+d")));
-    stats.push_back(ItemDB::Stat("dex", N_("Dexterity %+d")));
-    stats.push_back(ItemDB::Stat("vit", N_("Vitality %+d")));
-    stats.push_back(ItemDB::Stat("int", N_("Intelligence %+d")));
-    stats.push_back(ItemDB::Stat("will", N_("Willpower %+d")));
-
-    ItemDB::setStatsList(stats);
 }
 
 void GeneralHandler::load()
@@ -136,6 +126,10 @@ void GeneralHandler::reload()
     netToken.clear();
     gameServer.clear();
     chatServer.clear();
+
+    Stats::unload();
+    Stats::load();
+    Stats::informItemDB();
 }
 
 void GeneralHandler::unload()
@@ -153,6 +147,7 @@ void GeneralHandler::unload()
     delete gameServerConnection;
     delete chatServerConnection;
 
+    Stats::unload();
     finalize();
 }
 
@@ -176,12 +171,7 @@ void GeneralHandler::guiWindowsLoaded()
 
     player_node->setExpNeeded(100);
 
-    statusWindow->addAttribute(16, _("Strength"), true);
-    statusWindow->addAttribute(17, _("Agility"), true);
-    statusWindow->addAttribute(18, _("Dexterity"), true);
-    statusWindow->addAttribute(19, _("Vitality"), true);
-    statusWindow->addAttribute(20, _("Intelligence"), true);
-    statusWindow->addAttribute(21, _("Willpower"), true);
+    Stats::informStatusWindow();
 }
 
 void GeneralHandler::guiWindowsUnloaded()
@@ -200,6 +190,11 @@ void GeneralHandler::stateChanged(State oldState, State newState)
     {
         GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
         game->gameLoading();
+    }
+    else if (newState == STATE_LOAD_DATA)
+    {
+        Stats::load();
+        Stats::informItemDB();
     }
 }
 

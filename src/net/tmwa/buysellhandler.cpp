@@ -21,11 +21,10 @@
 
 #include "net/tmwa/buysellhandler.h"
 
-#include "beingmanager.h"
+#include "actorspritemanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
-#include "npc.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
