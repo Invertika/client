@@ -26,6 +26,7 @@
 #include "configuration.h"
 #include "gui.h"
 #include "log.h"
+#include "main.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
@@ -220,6 +221,8 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     mTypeListModel = new TypeListModel();
     mTypeField = new DropDown(mTypeListModel);
+    mTypeField->setSelected((serverInfo->type == ServerInfo::MANASERV) ?
+                            1 : 0);
 
     mDescription = new Label(std::string());
 
@@ -525,6 +528,15 @@ void ServerDialog::loadServers()
         std::string type = XML::getProperty(serverNode, "type", "unknown");
 
         server.type = ServerInfo::parseType(type);
+
+        // Ignore unknown server types
+        if (server.type == ServerInfo::UNKNOWN)
+        {
+            logger->log("Ignoring server entry with unknown type: %s",
+                        type.c_str());
+            continue;
+        }
+
         server.name = XML::getProperty(serverNode, "name", std::string());
 
         std::string version = XML::getProperty(serverNode, "minimumVersion",
@@ -536,14 +548,10 @@ void ServerDialog::loadServers()
         // For display in the list
         if (meetsMinimumVersion)
             version.clear();
+        else if (version.empty())
+            version = _("requires a newer version");
         else
             version = strprintf(_("requires v%s"), version.c_str());
-
-        if (server.type == ServerInfo::UNKNOWN)
-        {
-            logger->log("Unknown server type: %s", type.c_str());
-            continue;
-        }
 
         for_each_xml_child_node(subNode, serverNode)
         {
