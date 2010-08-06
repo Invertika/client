@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/theme.h"
+#include "resources/theme.h"
 
 #include "client.h"
 #include "configuration.h"
@@ -40,10 +40,21 @@
 
 #include <algorithm>
 
-#define GUI_ROOT "graphics/gui/"
-
+static std::string defaultThemePath;
 std::string Theme::mThemePath;
 Theme *Theme::mInstance = 0;
+
+// Set the theme path...
+static void initDefaultThemePath()
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+    defaultThemePath = branding.getStringValue("guiThemePath");
+
+    if (!defaultThemePath.empty() && resman->isDirectory(defaultThemePath))
+        return;
+    else
+        defaultThemePath = "graphics/gui/";
+}
 
 Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
            const std::string &filePath,
@@ -55,8 +66,7 @@ Skin::Skin(ImageRect skin, Image *close, Image *stickyUp, Image *stickyDown,
     mCloseImage(close),
     mStickyImageUp(stickyUp),
     mStickyImageDown(stickyDown)
-{
-}
+{}
 
 Skin::~Skin()
 {
@@ -71,8 +81,8 @@ Skin::~Skin()
 
 void Skin::updateAlpha(float minimumOpacityAllowed)
 {
-    const float alpha = std::max((double)minimumOpacityAllowed,
-                                 config.getValue("guialpha", 0.8f));
+    const float alpha = std::max(minimumOpacityAllowed,
+                                              config.getFloatValue("guialpha"));
 
     for_each(mBorder.grid, mBorder.grid + 9,
              std::bind2nd(std::mem_fun(&Image::setAlpha), alpha));
@@ -99,6 +109,8 @@ Theme::Theme():
     mMinimumOpacity(-1.0f),
     mProgressColors(ProgressColors(THEME_PROG_END))
 {
+    initDefaultThemePath();
+
     config.addListener("guialpha", this);
     loadColors();
 
@@ -313,7 +325,7 @@ bool Theme::tryThemePath(std::string themePath)
 {
     if (!themePath.empty())
     {
-        themePath = GUI_ROOT + themePath;
+        themePath = defaultThemePath + themePath;
         if (PHYSFS_exists(themePath.c_str()))
         {
             mThemePath = themePath;
@@ -327,11 +339,11 @@ bool Theme::tryThemePath(std::string themePath)
 void Theme::prepareThemePath()
 {
     // Try theme from settings
-    if (!tryThemePath(config.getValue("theme", "")))
+    if (!tryThemePath(config.getStringValue("theme")))
         // Try theme from branding
-        if (!tryThemePath(branding.getValue("theme", "")))
+        if (!tryThemePath(branding.getStringValue("theme")))
             // Use default
-            mThemePath = GUI_ROOT;
+            mThemePath = defaultThemePath;
 
     instance()->loadColors(mThemePath);
 }
@@ -356,7 +368,7 @@ std::string Theme::resolveThemePath(const std::string &path)
         return getThemePath() + "/" + path;
 
     // Backup
-    return std::string(GUI_ROOT) + "/" + path;
+    return std::string(defaultThemePath) + "/" + path;
 }
 
 Image *Theme::getImageFromTheme(const std::string &path)
@@ -508,11 +520,11 @@ static int readProgressType(const std::string &type)
 
 void Theme::loadColors(std::string file)
 {
-    if (file == GUI_ROOT)
+    if (file == defaultThemePath)
         return; // No need to reload
 
     if (file == "")
-        file = GUI_ROOT;
+        file = defaultThemePath;
 
     file += "/colors.xml";
 

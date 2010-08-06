@@ -23,11 +23,10 @@
 
 #include "actorspritemanager.h"
 #include "being.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "playerrelations.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -60,8 +59,6 @@ ChatHandler::ChatHandler()
 
 void ChatHandler::handleMessage(Net::MessageIn &msg)
 {
-    if (!localChatTab) return;
-
     Being *being;
     std::string chatMsg;
     std::string nick;
@@ -84,14 +81,22 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
                     // Success (don't need to report)
                     break;
                 case 0x01:
-                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
-                                  "be sent, %s is offline."), nick.c_str()),
-                                        BY_SERVER);
+                    {
+                        Mana::Event event("WhisperError");
+                        event.setString("nick", nick);
+                        event.setString("error", strprintf(_("Whisper could "
+                                  "not be sent, %s is offline."), nick.c_str()));
+                        Mana::EventManager::trigger("Chat", event);
+                    }
                     break;
                 case 0x02:
-                    chatWindow->whisper(nick, strprintf(_("Whisper could not "
-                                  "be sent, ignored by %s."), nick.c_str()),
-                                        BY_SERVER);
+                    {
+                        Mana::Event event("WhisperError");
+                        event.setString("nick", nick);
+                        event.setString("error", strprintf(_("Whisper could "
+                                 "not be sent, ignored by %s."), nick.c_str()));
+                        Mana::EventManager::trigger("Chat", event);
+                    }
                     break;
             }
             break;
@@ -109,19 +114,26 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
             if (nick != "Server")
             {
                 if (player_relations.hasPermission(nick, PlayerRelation::WHISPER))
-                    chatWindow->whisper(nick, chatMsg);
+                {
+                    Mana::Event event("Whisper");
+                    event.setString("nick", nick);
+                    event.setString("message", chatMsg);
+                    Mana::EventManager::trigger("Chat", event);
+                }
             }
             else
             {
-                localChatTab->chatLog(chatMsg, BY_SERVER);
+                SERVER_NOTICE(chatMsg)
             }
 
             break;
 
         // Received speech from being
-        case SMSG_BEING_CHAT: {
+        case SMSG_BEING_CHAT:
+        {
             chatMsgLength = msg.readInt16() - 8;
-            being = actorSpriteManager->findBeing(msg.readInt32());
+            int beingId = msg.readInt32();
+            being = actorSpriteManager->findBeing(beingId);
 
             if (!being || chatMsgLength <= 0)
                 break;
@@ -130,46 +142,84 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
 
             std::string::size_type pos = chatMsg.find(" : ", 0);
             std::string sender_name = ((pos == std::string::npos)
-                                       ? ""
-                                       : chatMsg.substr(0, pos));
+                                       ? "" : chatMsg.substr(0, pos));
 
-            // We use getIgnorePlayer instead of ignoringPlayer here because ignorePlayer' side
-            // effects are triggered right below for Being::IGNORE_SPEECH_FLOAT.
-            if (player_relations.checkPermissionSilently(sender_name, PlayerRelation::SPEECH_LOG))
-                localChatTab->chatLog(chatMsg, BY_OTHER);
+            if (sender_name != being->getName()
+                && being->getType() == Being::PLAYER)
+            {
+                if (!being->getName().empty())
+                    sender_name = being->getName();
+            }
+            else
+            {
+                chatMsg.erase(0, pos + 3);
+            }
 
-            chatMsg.erase(0, pos + 3);
+            int perms;
+
+            if (being->getType() == Being::PLAYER)
+            {
+                perms = player_relations.checkPermissionSilently(sender_name,
+                    PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT);
+            }
+            else
+            {
+                perms = player_relations.getDefault()
+                        & (PlayerRelation::SPEECH_LOG
+                           | PlayerRelation::SPEECH_FLOAT);
+            }
+
             trim(chatMsg);
 
-            if (player_relations.hasPermission(sender_name, PlayerRelation::SPEECH_FLOAT))
-                being->setSpeech(chatMsg, SPEECH_TIME);
+            std::string reducedMessage = chatMsg;
+            chatMsg = removeColors(sender_name) + " : " + reducedMessage;
+
+            Mana::Event event("Being");
+            event.setString("message", chatMsg);
+            event.setString("text", reducedMessage);
+            event.setString("nick", sender_name);
+            event.setInt("beingId", beingId);
+            event.setInt("permissions", perms);
+            Mana::EventManager::trigger("Chat", event);
+
             break;
         }
 
         case SMSG_PLAYER_CHAT:
-        case SMSG_GM_CHAT: {
+        case SMSG_GM_CHAT:
+        {
             chatMsgLength = msg.readInt16() - 4;
 
             if (chatMsgLength <= 0)
                 break;
 
             chatMsg = msg.readString(chatMsgLength);
-            std::string::size_type pos = chatMsg.find(" : ", 0);
 
             if (msg.getId() == SMSG_PLAYER_CHAT)
             {
-                localChatTab->chatLog(chatMsg, BY_PLAYER);
+                std::string::size_type pos = chatMsg.find(" : ", 0);
+                std::string mes = chatMsg;
 
                 if (pos != std::string::npos)
                     chatMsg.erase(0, pos + 3);
 
                 trim(chatMsg);
 
-                player_node->setSpeech(chatMsg, SPEECH_TIME);
+                Mana::Event event("Player");
+                event.setString("message", mes);
+                event.setString("text", chatMsg);
+                event.setString("nick", player_node->getName());
+                event.setInt("beingId", player_node->getId());
+                event.setInt("permissions", player_relations.getDefault()
+                             & (PlayerRelation::SPEECH_LOG
+                                | PlayerRelation::SPEECH_FLOAT));
+                Mana::EventManager::trigger("Chat", event);
             }
             else
             {
-                localChatTab->chatLog(chatMsg, BY_GM);
+                Mana::Event event("Announcement");
+                event.setString("message", chatMsg);
+                Mana::EventManager::trigger("Chat", event);
             }
             break;
         }
@@ -177,7 +227,7 @@ void ChatHandler::handleMessage(Net::MessageIn &msg)
         case SMSG_MVP:
             // Display MVP player
             msg.readInt32(); // id
-            localChatTab->chatLog(_("MVP player."), BY_SERVER);
+            SERVER_NOTICE(_("MVP player."))
             break;
     }
 }
@@ -212,43 +262,43 @@ void ChatHandler::privateMessage(const std::string &recipient,
 
 void ChatHandler::channelList()
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::enterChannel(const std::string &channel,
                                const std::string &password)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::quitChannel(int channelId)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::sendToChannel(int channelId, const std::string &text)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::userList(const std::string &channel)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::setChannelTopic(int channelId, const std::string &text)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::setUserMode(int channelId, const std::string &name, int mode)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::kickUser(int channelId, const std::string &name)
 {
-    localChatTab->chatLog(_("Channels are not supported!"), BY_SERVER);
+    SERVER_NOTICE(_("Channels are not supported!"))
 }
 
 void ChatHandler::who()

@@ -23,6 +23,7 @@
 
 #include "client.h"
 #include "effectmanager.h"
+#include "eventmanager.h"
 #include "imagesprite.h"
 #include "localplayer.h"
 #include "log.h"
@@ -30,13 +31,12 @@
 #include "sound.h"
 #include "statuseffect.h"
 
-#include "gui/theme.h"
-
 #include "net/net.h"
 
 #include "resources/image.h"
 #include "resources/imageset.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <cassert>
 
@@ -53,9 +53,7 @@ ActorSprite::ActorSprite(int id):
     mChildParticleEffects(&mStatusParticleEffects, false),
     mMustResetParticles(false),
     mUsedTargetCursor(NULL)
-{
-    //
-}
+{}
 
 ActorSprite::~ActorSprite()
 {
@@ -261,12 +259,28 @@ void ActorSprite::internalTriggerEffect(int effectId, bool sfx, bool gfx)
 
 void ActorSprite::updateStunMode(int oldMode, int newMode)
 {
+    if (this == player_node)
+    {
+        Mana::Event event("Stun");
+        event.setInt("oldMode", oldMode);
+        event.setInt("newMode", newMode);
+        Mana::EventManager::trigger("ActorSprite", event);
+    }
+
     handleStatusEffect(StatusEffect::getStatusEffect(oldMode, false), -1);
     handleStatusEffect(StatusEffect::getStatusEffect(newMode, true), -1);
 }
 
 void ActorSprite::updateStatusEffect(int index, bool newStatus)
 {
+    if (this == player_node)
+    {
+        Mana::Event event("UpdateStatusEffect");
+        event.setInt("index", index);
+        event.setBool("newStatus", newStatus);
+        Mana::EventManager::trigger("ActorSprite", event);
+    }
+
     handleStatusEffect(StatusEffect::getStatusEffect(index, newStatus), index);
 }
 

@@ -24,9 +24,8 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/theme.h"
-
 #include "resources/image.h"
+#include "resources/theme.h"
 
 int RadioButton::instances = 0;
 float RadioButton::mAlpha = 1.0;
@@ -78,9 +77,9 @@ RadioButton::~RadioButton()
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getFloatValue("guialpha") != mAlpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = config.getFloatValue("guialpha");
         radioNormal->setAlpha(mAlpha);
         radioChecked->setAlpha(mAlpha);
         radioDisabled->setAlpha(mAlpha);

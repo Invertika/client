@@ -21,15 +21,16 @@
 
 #include "net/manaserv/guildhandler.h"
 
+#include "eventmanager.h"
 #include "guild.h"
 #include "log.h"
 #include "localplayer.h"
 #include "channel.h"
 #include "channelmanager.h"
 
-#include "gui/widgets/channeltab.h"
-#include "gui/chat.h"
 #include "gui/socialwindow.h"
+
+#include "gui/widgets/channeltab.h"
 
 #include "net/messagein.h"
 #include "net/net.h"
@@ -78,12 +79,12 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge guild was created
-                localChatTab->chatLog(_("Guild created."));
+                SERVER_NOTICE(_("Guild created."))
                 joinedGuild(msg);
             }
             else
             {
-                localChatTab->chatLog(_("Error creating guild."));
+                SERVER_NOTICE(_("Error creating guild."))
             }
         } break;
 
@@ -93,7 +94,7 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // TODO - Acknowledge invite was sent
-                localChatTab->chatLog(_("Invite sent."));
+                SERVER_NOTICE(_("Invite sent."))
             }
         } break;
 
@@ -200,12 +201,12 @@ void GuildHandler::handleMessage(Net::MessageIn &msg)
             if (msg.readInt8() == ERRMSG_OK)
             {
                 // promotion succeeded
-                localChatTab->chatLog(_("Member was promoted successfully."));
+                SERVER_NOTICE(_("Member was promoted successfully."))
             }
             else
             {
                 // promotion failed
-                localChatTab->chatLog(_("Failed to promote member."));
+                SERVER_NOTICE(_("Failed to promote member."))
             }
         }
 

@@ -32,6 +32,10 @@
 #include "gui/socialwindow.h"
 #include "gui/statuswindow.h"
 
+#include "net/messagein.h"
+#include "net/messageout.h"
+#include "net/serverinfo.h"
+
 #include "net/tmwa/adminhandler.h"
 #include "net/tmwa/beinghandler.h"
 #include "net/tmwa/buysellhandler.h"
@@ -53,9 +57,6 @@
 #include "net/tmwa/gui/guildtab.h"
 #include "net/tmwa/gui/partytab.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
-
 #include "resources/itemdb.h"
 
 #include "utils/gettext.h"
@@ -75,7 +76,7 @@ extern Party *taParty;
 
 GeneralHandler::GeneralHandler():
     mAdminHandler(new AdminHandler),
-    mBeingHandler(new BeingHandler(config.getValue("EnableSync", 0) == 1)),
+    mBeingHandler(new BeingHandler(config.getBoolValue("EnableSync"))),
     mBuySellHandler(new BuySellHandler),
     mCharHandler(new CharServerHandler),
     mChatHandler(new ChatHandler),
@@ -106,6 +107,8 @@ GeneralHandler::GeneralHandler():
     stats.push_back(ItemDB::Stat("luck", _("Luck %+d")));
 
     ItemDB::setStatsList(stats);
+
+    listen("Game");
 }
 
 GeneralHandler::~GeneralHandler()
@@ -209,47 +212,48 @@ void GeneralHandler::flushNetwork()
     }
 }
 
-void GeneralHandler::guiWindowsLoaded()
-{
-    inventoryWindow->setSplitAllowed(false);
-    skillDialog->loadSkills("ea-skills.xml");
-
-    statusWindow->addAttribute(STR, _("Strength"), true, "");
-    statusWindow->addAttribute(AGI, _("Agility"), true, "");
-    statusWindow->addAttribute(VIT, _("Vitality"), true, "");
-    statusWindow->addAttribute(INT, _("Intelligence"), true, "");
-    statusWindow->addAttribute(DEX, _("Dexterity"), true, "");
-    statusWindow->addAttribute(LUK, _("Luck"), true, "");
-
-    statusWindow->addAttribute(ATK, _("Attack"), false, "");
-    statusWindow->addAttribute(DEF, _("Defense"), false, "");
-    statusWindow->addAttribute(MATK, _("M.Attack"), false, "");
-    statusWindow->addAttribute(MDEF, _("M.Defense"), false, "");
-    statusWindow->addAttribute(HIT, _("% Accuracy"), false, "");
-    statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
-    statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
-}
-
-void GeneralHandler::guiWindowsUnloaded()
-{
-    socialWindow->removeTab(taGuild);
-    socialWindow->removeTab(taParty);
-
-    delete guildTab;
-    guildTab = 0;
-
-    delete partyTab;
-    partyTab = 0;
-}
-
 void GeneralHandler::clearHandlers()
 {
     mNetwork->clearHandlers();
 }
 
-void GeneralHandler::stateChanged(State oldState, State newState)
+void GeneralHandler::event(const std::string &channel,
+                           const Mana::Event &event)
 {
-    //
+    if (channel == "Game")
+    {
+        if (event.getName() == "GuiWindowsLoaded")
+        {
+            inventoryWindow->setSplitAllowed(false);
+            skillDialog->loadSkills("ea-skills.xml");
+
+            statusWindow->addAttribute(STR, _("Strength"), true, "");
+            statusWindow->addAttribute(AGI, _("Agility"), true, "");
+            statusWindow->addAttribute(VIT, _("Vitality"), true, "");
+            statusWindow->addAttribute(INT, _("Intelligence"), true, "");
+            statusWindow->addAttribute(DEX, _("Dexterity"), true, "");
+            statusWindow->addAttribute(LUK, _("Luck"), true, "");
+
+            statusWindow->addAttribute(ATK, _("Attack"), false, "");
+            statusWindow->addAttribute(DEF, _("Defense"), false, "");
+            statusWindow->addAttribute(MATK, _("M.Attack"), false, "");
+            statusWindow->addAttribute(MDEF, _("M.Defense"), false, "");
+            statusWindow->addAttribute(HIT, _("% Accuracy"), false, "");
+            statusWindow->addAttribute(FLEE, _("% Evade"), false, "");
+            statusWindow->addAttribute(CRIT, _("% Critical"), false, "");
+        }
+        else if (event.getName() == "GuiWindowsUnloading")
+        {
+            socialWindow->removeTab(taGuild);
+            socialWindow->removeTab(taParty);
+
+            delete guildTab;
+            guildTab = 0;
+
+            delete partyTab;
+            partyTab = 0;
+        }
+    }
 }
 
 } // namespace TmwAthena

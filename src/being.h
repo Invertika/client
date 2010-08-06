@@ -24,6 +24,7 @@
 
 #include "actorsprite.h"
 #include "configlistener.h"
+#include "listener.h"
 #include "map.h"
 #include "particlecontainer.h"
 #include "position.h"
@@ -62,7 +63,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public ActorSprite, public ConfigListener
+class Being : public ActorSprite, public ConfigListener, public Mana::Listener
 {
     public:
         /**
@@ -73,7 +74,7 @@ class Being : public ActorSprite, public ConfigListener
         enum Action
         {
             STAND,
-            WALK,
+            MOVE,
             ATTACK,
             SIT,
             DEAD,
@@ -100,7 +101,13 @@ class Being : public ActorSprite, public ConfigListener
         /**
          * Directions, to be used as bitmask values
          */
-        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
+        enum BeingDirection
+        {
+            DOWN = 1,
+            LEFT = 2,
+            UP = 4,
+            RIGHT = 8
+        };
 
         /**
          * Constructor.
@@ -487,7 +494,7 @@ class Being : public ActorSprite, public ConfigListener
 
         void talkTo();
 
-        static bool isTalking();
+        void event(const std::string &channel, const Mana::Event &event);
 
     protected:
         /**

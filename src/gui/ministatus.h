@@ -22,6 +22,8 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
+#include "listener.h"
+
 #include "gui/widgets/popup.h"
 
 #include <vector>
@@ -36,21 +38,14 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup
+class MiniStatusWindow : public Popup, public Mana::Listener
 {
     public:
         MiniStatusWindow();
 
-        /**
-         * Sets one of the icons.
-         */
-        void setIcon(int index, AnimatedSprite *sprite);
-
-        void eraseIcon(int index);
-
         void drawIcons(Graphics *graphics);
 
-        void update(int id); // Same types as status window
+        void event(const std::string &channel, const Mana::Event &event);
 
         void logic(); // Updates icons
 
@@ -63,6 +58,13 @@ class MiniStatusWindow : public Popup
     private:
         bool isInBar(ProgressBar *bar, int x, int y) const;
 
+        /**
+         * Sets one of the icons.
+         */
+        void setIcon(int index, AnimatedSprite *sprite);
+
+        void eraseIcon(int index);
+
         /*
          * Mini Status Bars
          */
@@ -71,6 +73,7 @@ class MiniStatusWindow : public Popup
         ProgressBar *mXpBar;
         TextPopup *mTextPopup;
 
+        std::vector<int> mStatusEffectIcons;
         std::vector<AnimatedSprite *> mIcons;
 };
 

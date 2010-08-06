@@ -25,6 +25,7 @@
 #include "configuration.h"
 #include "localplayer.h"
 #include "party.h"
+#include "playerrelations.h"
 
 #include "gui/recorder.h"
 #include "gui/setup.h"
@@ -77,6 +78,9 @@ ChatWindow::ChatWindow():
     Window(_("Chat")),
     mTmpVisible(false)
 {
+    listen("Chat");
+    listen("Notices");
+
     setWindowName("Chat");
 
     setupWindow->registerWindowForReset(this);
@@ -108,7 +112,7 @@ ChatWindow::ChatWindow():
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 
-    mReturnToggles = config.getValue("ReturnToggles", "0") == "1";
+    mReturnToggles = config.getBoolValue("ReturnToggles");
 
     mRecorder = new Recorder(this);
 }
@@ -117,7 +121,7 @@ ChatWindow::~ChatWindow()
 {
     config.setValue("ReturnToggles", mReturnToggles);
     delete mRecorder;
-    delete_all(mWhispers);
+    removeAllWhispers();
     delete mItemLinkHandler;
 }
 
@@ -233,10 +237,6 @@ bool ChatWindow::isInputFocused() const
 
 void ChatWindow::removeTab(ChatTab *tab)
 {
-    // Prevent removal of the local chat tab
-    if (tab == localChatTab)
-        return;
-
     mChatTabs->removeTab(tab);
 }
 
@@ -256,6 +256,25 @@ void ChatWindow::removeWhisper(const std::string &nick)
     std::string tempNick = nick;
     toLower(tempNick);
     mWhispers.erase(tempNick);
+}
+
+void ChatWindow::removeAllWhispers()
+{
+    TabMap::iterator iter;
+    std::list<ChatTab*> tabs;
+
+    for (iter = mWhispers.begin(); iter != mWhispers.end(); ++iter)
+    {
+        tabs.push_back(iter->second);
+    }
+
+    for (std::list<ChatTab*>::iterator it = tabs.begin();
+         it != tabs.end(); ++it)
+    {
+        delete *it;
+    }
+
+    mWhispers.clear();
 }
 
 void ChatWindow::chatInput(const std::string &msg)
@@ -393,6 +412,40 @@ void ChatWindow::keyPressed(gcn::KeyEvent &event)
     }
 }
 
+void ChatWindow::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Notices")
+    {
+        if (event.getName() == "ServerNotice")
+            localChatTab->chatLog(event.getString("message"), BY_SERVER);
+    }
+    else if (channel == "Chat")
+    {
+        if (event.getName() == "Whisper")
+        {
+            whisper(event.getString("nick"), event.getString("message"));
+        }
+        else if (event.getName() == "WhisperError")
+        {
+            whisper(event.getString("nick"),
+                    event.getString("error"), BY_SERVER);
+        }
+        else if (event.getName() == "Player")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_PLAYER);
+        }
+        else if (event.getName() == "Announcement")
+        {
+            localChatTab->chatLog(event.getString("message"), BY_GM);
+        }
+        else if (event.getName() == "Being")
+        {
+            if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
+                localChatTab->chatLog(event.getString("message"), BY_OTHER);
+        }
+    }
+}
+
 void ChatWindow::addInputText(const std::string &text)
 {
     const int caretPos = mChatInput->getCaretPosition();
@@ -450,7 +503,7 @@ void ChatWindow::whisper(const std::string &nick,
 
     if (i != mWhispers.end())
         tab = i->second;
-    else if (config.getValue("whispertab", true))
+    else if (config.getBoolValue("whispertab"))
         tab = addWhisperTab(nick);
 
     if (tab)

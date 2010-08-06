@@ -26,9 +26,9 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include "utils/copynpaste.h"
 #include "utils/dtor.h"
@@ -65,7 +65,7 @@ TextField::TextField(const std::string &text, bool loseFocusOnTab):
                         gridx[x], gridy[y],
                         gridx[x + 1] - gridx[x] + 1,
                         gridy[y + 1] - gridy[y] + 1);
-                skin.grid[a]->setAlpha(config.getValue("guialpha", 0.8));
+                skin.grid[a]->setAlpha(config.getFloatValue("guialpha"));
                 a++;
             }
         }
@@ -86,8 +86,8 @@ TextField::~TextField()
 
 void TextField::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

@@ -24,9 +24,8 @@
 #include "configuration.h"
 #include "graphics.h"
 
-#include "gui/theme.h"
-
 #include "resources/image.h"
+#include "resources/theme.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
@@ -126,8 +125,8 @@ void Slider::init()
 
 void Slider::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (alpha != mAlpha)
     {

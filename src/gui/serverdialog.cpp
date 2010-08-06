@@ -30,7 +30,6 @@
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/button.h"
 #include "gui/widgets/dropdown.h"
@@ -42,10 +41,11 @@
 
 #include "net/net.h"
 
+#include "resources/theme.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
-#include "widgets/dropdown.h"
 
 #include <guichan/font.hpp>
 
@@ -485,10 +485,10 @@ void ServerDialog::setFieldsReadOnly(bool readOnly)
 void ServerDialog::downloadServerList()
 {
     // Try to load the configuration value for the onlineServerList
-    std::string listFile = branding.getValue("onlineServerList", std::string());
+    std::string listFile = branding.getStringValue("onlineServerList");
 
     if (listFile.empty())
-        listFile = config.getValue("onlineServerList", std::string());
+        listFile = config.getStringValue("onlineServerList");
 
     // Fall back to manasource.org when neither branding nor config set it
     if (listFile.empty())

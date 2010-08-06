@@ -25,10 +25,10 @@
 #include "commandhandler.h"
 #include "localplayer.h"
 
-#include "gui/theme.h"
-
 #include "net/chathandler.h"
 #include "net/net.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -42,7 +42,8 @@ WhisperTab::WhisperTab(const std::string &nick) :
 
 WhisperTab::~WhisperTab()
 {
-    chatWindow->removeWhisper(mNick);
+    if (chatWindow)
+        chatWindow->removeWhisper(mNick);
 }
 
 void WhisperTab::handleInput(const std::string &msg)

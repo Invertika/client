@@ -21,12 +21,13 @@
 
 #include "statuseffect.h"
 
+#include "eventmanager.h"
 #include "log.h"
 #include "sound.h"
 
-#include "gui/widgets/chattab.h"
-
 #include "utils/xml.h"
+
+#include "configuration.h"
 
 #include <map>
 
@@ -50,7 +51,7 @@ void StatusEffect::playSFX()
 void StatusEffect::deliverMessage()
 {
     if (!mMessage.empty())
-        localChatTab->chatLog(mMessage, BY_SERVER);
+        SERVER_NOTICE(mMessage)
 }
 
 Particle *StatusEffect::getParticle()
@@ -68,22 +69,22 @@ AnimatedSprite *StatusEffect::getIcon()
     else
     {
         AnimatedSprite *sprite = AnimatedSprite::load(
-                "graphics/sprites/" + mIcon);
+                                       paths.getStringValue("sprites") + mIcon);
         if (false && sprite)
         {
-            sprite->play(ACTION_DEFAULT);
+            sprite->play(SpriteAction::DEFAULT);
             sprite->reset();
         }
         return sprite;
     }
 }
 
-SpriteAction StatusEffect::getAction()
+std::string StatusEffect::getAction()
 {
     if (mAction.empty())
-        return ACTION_INVALID;
+        return SpriteAction::INVALID;
     else
-        return SpriteDef::makeSpriteAction(mAction);
+        return mAction;
 }
 
 
@@ -123,8 +124,7 @@ void StatusEffect::load()
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "status-effects"))
     {
-        logger->log("Error loading status effects file: "
-                    STATUS_EFFECTS_FILE);
+        logger->log("Error loading status effects file: " STATUS_EFFECTS_FILE);
         return;
     }
 

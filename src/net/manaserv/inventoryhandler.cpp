@@ -26,8 +26,7 @@
 #include "item.h"
 #include "itemshortcut.h"
 #include "localplayer.h"
-
-#include "gui/chat.h"
+#include "playerinfo.h"
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/messagein.h"
@@ -35,8 +34,6 @@
 #include "net/manaserv/protocol.h"
 
 #include "resources/iteminfo.h"
-
-#include "log.h" // <<< REMOVE ME!
 
 extern Net::InventoryHandler *inventoryHandler;
 
@@ -60,8 +57,8 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case GPMSG_INVENTORY_FULL:
-            player_node->clearInventory();
-            player_node->mEquipment->setBackend(&mEquips);
+            PlayerInfo::clearInventory();
+            PlayerInfo::getEquipment()->setBackend(&mEquips);
             // no break!
 
         case GPMSG_INVENTORY:
@@ -70,7 +67,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 unsigned int slot = msg.readInt8();
                 if (slot == 255)
                 {
-                    player_node->setMoney(msg.readInt32());
+                    PlayerInfo::setAttribute(MONEY, msg.readInt32());
                     continue;
                 }
 
@@ -82,7 +79,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 else if (slot >= 32 && slot < 32 + getSize(Inventory::INVENTORY))
                 {
                     int amount = id ? msg.readInt8() : 0;
-                    player_node->setInvItem(slot - 32, id, amount);
+                    PlayerInfo::setInventoryItem(slot - 32, id, amount);
                 }
             };
             break;
@@ -104,7 +101,6 @@ void InventoryHandler::unequipItem(const Item *item)
 
     // Tidy equipment directly to avoid weapon still shown bug, for instance
     int equipSlot = item->getInvIndex();
-    logger->log("Unequipping %d", equipSlot);
     mEquips.setEquipment(equipSlot, 0);
 }
 
@@ -130,7 +126,7 @@ bool InventoryHandler::canSplit(const Item *item)
 
 void InventoryHandler::splitItem(const Item *item, int amount)
 {
-    int newIndex = player_node->getInventory()->getFreeSlot();
+    int newIndex = PlayerInfo::getInventory()->getFreeSlot();
     if (newIndex > Inventory::NO_SLOT_INDEX)
     {
         MessageOut msg(PGMSG_MOVE_ITEM);
@@ -149,7 +145,7 @@ void InventoryHandler::moveItem(int oldIndex, int newIndex)
     MessageOut msg(PGMSG_MOVE_ITEM);
     msg.writeInt8(oldIndex);
     msg.writeInt8(newIndex);
-    msg.writeInt8(player_node->getInventory()->getItem(oldIndex)
+    msg.writeInt8(PlayerInfo::getInventory()->getItem(oldIndex)
                   ->getQuantity());
     gameServerConnection->send(msg);
 }

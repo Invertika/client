@@ -24,18 +24,20 @@
 #include "animatedsprite.h"
 #include "configuration.h"
 #include "graphics.h"
-#include "localplayer.h"
+#include "playerinfo.h"
+#include "statuseffect.h"
 
 #include "gui/gui.h"
 #include "gui/statuswindow.h"
 #include "gui/textpopup.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/progressbar.h"
 
 #include "net/net.h"
 #include "net/playerhandler.h"
 #include "net/gamehandler.h"
+
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -45,22 +47,27 @@ extern volatile int tick_time;
 MiniStatusWindow::MiniStatusWindow():
     Popup("MiniStatus")
 {
-    int max = player_node->getMaxHp();
-    mHpBar = new ProgressBar(max ? (float) player_node->getHp() / max : 0,
-                             100, 20, Theme::PROG_HP);
+    listen("Attributes");
+
+    mHpBar = new ProgressBar(0, 100, 20, Theme::PROG_HP);
+    StatusWindow::updateHPBar(mHpBar);
+
     if (Net::getGameHandler()->canUseMagicBar())
     {
-        max = player_node->getMaxMP();
-        mMpBar = new ProgressBar(max ? (float) player_node->getMaxMP() / max : 0,
-                             100, 20, Net::getPlayerHandler()->canUseMagic() ?
-                             Theme::PROG_MP : Theme::PROG_NO_MP);
+        mMpBar = new ProgressBar(0, 100, 20,
+                        Net::getPlayerHandler()->canUseMagic()
+                        ? Theme::PROG_MP : Theme::PROG_NO_MP);
+
+        StatusWindow::updateMPBar(mMpBar);
     }
     else
         mMpBar = 0;
 
-    max = player_node->getExpNeeded();
-    mXpBar = new ProgressBar(max ? (float) player_node->getExp() / max : 0,
-                             100, 20, Theme::PROG_EXP);
+    mXpBar = new ProgressBar(0, 100, 20, Theme::PROG_EXP);
+    StatusWindow::updateXPBar(mXpBar);
+
+    // Add the progressbars to the window
+
     mHpBar->setPosition(0, 3);
     if (mMpBar)
         mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
@@ -80,8 +87,6 @@ MiniStatusWindow::MiniStatusWindow():
     mTextPopup = new TextPopup();
 
     addMouseListener(this);
-
-    update(StatusWindow::HP);
 }
 
 void MiniStatusWindow::setIcon(int index, AnimatedSprite *sprite)
@@ -114,19 +119,82 @@ void MiniStatusWindow::drawIcons(Graphics *graphics)
     }
 }
 
-void MiniStatusWindow::update(int id)
+void MiniStatusWindow::event(const std::string &channel, const Mana::Event &event)
 {
-    if (id == StatusWindow::HP)
+    if (channel == "Attributes")
     {
-        StatusWindow::updateHPBar(mHpBar);
+        if (event.getName() == "UpdateAttribute")
+        {
+            int id = event.getInt("id");
+            if (id == HP || id == MAX_HP)
+            {
+                StatusWindow::updateHPBar(mHpBar);
+            }
+            else if (id == MP || id == MAX_MP)
+            {
+                StatusWindow::updateMPBar(mMpBar);
+            }
+            else if (id == EXP || id == EXP_NEEDED)
+            {
+                StatusWindow::updateXPBar(mXpBar);
+            }
+        }
     }
-    else if (id == StatusWindow::MP)
+    else if (channel == "ActorSprite")
     {
-        StatusWindow::updateMPBar(mMpBar);
-    }
-    else if (id == StatusWindow::EXP)
-    {
-        StatusWindow::updateXPBar(mXpBar);
+        if (event.getName() == "UpdateStatusEffect")
+        {
+            int index = event.getInt("index");
+            bool newStatus = event.getBool("newStatus");
+
+            StatusEffect *effect = StatusEffect::getStatusEffect(index,
+                                                                 newStatus);
+
+            if (effect)
+            {
+                effect->deliverMessage();
+                effect->playSFX();
+
+                AnimatedSprite *sprite = effect->getIcon();
+
+                typedef std::vector<int> IntMap;
+
+                if (!sprite)
+                {
+                    // delete sprite, if necessary
+                    for (unsigned int i = 0; i < mStatusEffectIcons.size();)
+                        if (mStatusEffectIcons[i] == index)
+                        {
+                            mStatusEffectIcons.erase(mStatusEffectIcons.begin()
+                                                     + i);
+                            miniStatusWindow->eraseIcon(i);
+                        }
+                        else
+                            i++;
+                }
+                else
+                {
+                    // replace sprite or append
+                    bool found = false;
+
+                    for (unsigned int i = 0; i < mStatusEffectIcons.size();
+                         i++)
+                        if (mStatusEffectIcons[i] == index)
+                        {
+                            miniStatusWindow->setIcon(i, sprite);
+                            found = true;
+                            break;
+                        }
+
+                    if (!found)
+                    { // add new
+                        int offset = mStatusEffectIcons.size();
+                        miniStatusWindow->setIcon(offset, sprite);
+                        mStatusEffectIcons.push_back(index);
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -162,23 +230,23 @@ void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
     if (event.getSource() == mXpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getExp(),
-                                   player_node->getExpNeeded()),
+                         strprintf("%u/%u", PlayerInfo::getAttribute(EXP),
+                                   PlayerInfo::getAttribute(EXP_NEEDED)),
                          strprintf("%s: %u", _("Need"),
-                                   player_node->getExpNeeded()
-                                   - player_node->getExp()));
+                                   PlayerInfo::getAttribute(EXP_NEEDED)
+                                   - PlayerInfo::getAttribute(EXP)));
     }
     else if (event.getSource() == mHpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getHp(),
-                                   player_node->getMaxHp()));
+                         strprintf("%u/%u", PlayerInfo::getAttribute(HP),
+                                   PlayerInfo::getAttribute(MAX_HP)));
     }
     else if (event.getSource() == mMpBar)
     {
         mTextPopup->show(x + getX(), y + getY(),
-                         strprintf("%u/%u", player_node->getMP(),
-                                   player_node->getMaxMP()));
+                         strprintf("%u/%u", PlayerInfo::getAttribute(MP),
+                                   PlayerInfo::getAttribute(MAX_MP)));
     }
     else
     {
@@ -192,5 +260,3 @@ void MiniStatusWindow::mouseExited(gcn::MouseEvent &event)
 
     mTextPopup->setVisible(false);
 }
-
-

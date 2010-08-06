@@ -26,12 +26,12 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 
@@ -110,8 +110,8 @@ DropDown::~DropDown()
 
 void DropDown::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8f),
-                       (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

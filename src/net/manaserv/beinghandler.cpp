@@ -144,7 +144,7 @@ static void handleLooks(Being *being, Net::MessageIn &msg)
     {
         if (!(mask & (1 << i))) continue;
         int id = msg.readInt16();
-        being->setSprite(slots[i], id);
+        being->setSprite(slots[i], id,"", (slots[i] == SPRITE_WEAPON));
     }
 }
 
@@ -231,7 +231,7 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         }
         if (speed)
         {
-           /**
+           /*
             * The being's speed is transfered in tiles per second * 10
             * to keep it transferable in a Byte.
             * We set it back to tiles per second and in a float.

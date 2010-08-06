@@ -23,14 +23,13 @@
 
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "units.h"
 #include "keyboardconfig.h"
+#include "playerinfo.h"
 
 #include "gui/itemamount.h"
 #include "gui/setup.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/button.h"
@@ -44,6 +43,7 @@
 #include "net/net.h"
 
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -60,6 +60,8 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     mInventory(inventory),
     mSplit(false)
 {
+    listen("Attributes");
+
     setWindowName(isMainInventory() ? "Inventory" : "Storage");
     setupWindow->registerWindowForReset(this);
     setResizable(true);
@@ -138,13 +140,19 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     slotsChanged(mInventory);
 
     if (!isMainInventory())
+    {
         setVisible(true);
+        PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() + 1);
+    }
 }
 
 InventoryWindow::~InventoryWindow()
 {
     instances.remove(this);
     mInventory->removeInventoyListener(this);
+
+    if (!isMainInventory())
+        PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() - 1);
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -234,7 +242,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (isStorageActive() && keyboard.isKeyActive(keyboard.KEY_EMOTE))
+        if (instances.size() > 1 && keyboard.isKeyActive(keyboard.KEY_EMOTE))
         {
             Item *item = mItems->getSelectedItem();
 
@@ -341,10 +349,29 @@ void InventoryWindow::close()
     }
 }
 
+void InventoryWindow::event(const std::string &channel, const Mana::Event &event)
+{
+    if (event.getName() == "UpdateAttribute")
+    {
+        int id = event.getInt("id");
+        if (id == TOTAL_WEIGHT ||
+            id == MAX_WEIGHT)
+        {
+            updateWeight();
+        }
+    }
+}
+
 void InventoryWindow::updateWeight()
 {
-    int total = player_node->getTotalWeight();
-    int max = player_node->getMaxWeight();
+    if (!isMainInventory())
+        return;
+
+    int total = PlayerInfo::getAttribute(TOTAL_WEIGHT);
+    int max = PlayerInfo::getAttribute(MAX_WEIGHT);
+
+    if (max <= 0)
+        return;
 
     // Adjust progress bar
     mWeightBar->setProgress((float) total / max);

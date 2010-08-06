@@ -21,12 +21,11 @@
 
 #include "net/tmwa/specialhandler.h"
 
-#include "localplayer.h"
+#include "eventmanager.h"
 #include "log.h"
+#include "playerinfo.h"
 
 #include "gui/skilldialog.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 #include "net/messageout.h"
@@ -105,8 +104,7 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
                 msg.skip(24); // unused
                 int up = msg.readInt8();
 
-                player_node->setAttributeBase(skillId, level);
-                player_node->setAttributeEffective(skillId, level);
+                PlayerInfo::setStatBase(skillId, level);
                 skillDialog->setModifiable(skillId, up);
             }
             break;
@@ -119,8 +117,7 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt16(); // range
                 int up = msg.readInt8();
 
-                player_node->setAttributeBase(skillId, level);
-                player_node->setAttributeEffective(skillId, level);
+                PlayerInfo::setStatBase(skillId, level);
                 skillDialog->setModifiable(skillId, up);
             }
             break;
@@ -218,7 +215,7 @@ void SpecialHandler::handleMessage(Net::MessageIn &msg)
                 }
             }
 
-            localChatTab->chatLog(msg);
+            SERVER_NOTICE(msg)
             break;
     }
 }

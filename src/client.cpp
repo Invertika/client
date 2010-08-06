@@ -25,6 +25,7 @@
 #include "chatlog.h"
 #include "configuration.h"
 #include "emoteshortcut.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
@@ -48,10 +49,8 @@
 #include "gui/sdlinput.h"
 #include "gui/serverdialog.h"
 #include "gui/setup.h"
-#include "gui/theme.h"
 #include "gui/unregisterdialog.h"
 #include "gui/updatewindow.h"
-#include "gui/userpalette.h"
 #include "gui/worldselectdialog.h"
 
 #include "gui/widgets/button.h"
@@ -70,8 +69,11 @@
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
+#include "resources/specialdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
@@ -110,6 +112,7 @@ LoginData loginData;
 
 Configuration config;         /**< XML file configuration reader */
 Configuration branding;       /**< XML branding information reader */
+Configuration paths;          /**< XML default paths information reader */
 Logger *logger;               /**< Log object */
 ChatLogger *chatLogger;       /**< Chat log object */
 KeyboardConfig keyboard;
@@ -216,6 +219,7 @@ Client::Client(const Options &options):
     if (!options.brandingPath.empty())
     {
         branding.init(options.brandingPath);
+        branding.setDefaultValues(getBrandingDefaults());
     }
 
     initHomeDir();
@@ -229,7 +233,7 @@ Client::Client(const Options &options):
 
     // Configure logger
     logger->setLogFile(mLocalDataDir + std::string("/mana.log"));
-    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
+    logger->setLogToStandardOut(config.getBoolValue("logToStandardOut"));
 
     // Log the mana version
     logger->log("Mana %s", FULL_VERSION);
@@ -333,11 +337,11 @@ Client::Client(const Options &options):
     graphics = new Graphics;
 #endif
 
-    const int width = (int) config.getValue("screenwidth", defaultScreenWidth);
-    const int height = (int) config.getValue("screenheight", defaultScreenHeight);
+    const int width = config.getIntValue("screenwidth");
+    const int height = config.getIntValue("screenheight");
     const int bpp = 0;
-    const bool fullscreen = ((int) config.getValue("screen", 0) == 1);
-    const bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
+    const bool fullscreen = config.getBoolValue("screen");
+    const bool hwaccel = config.getBoolValue("hwaccel");
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
@@ -360,13 +364,11 @@ Client::Client(const Options &options):
     // Initialize sound engine
     try
     {
-        if (config.getValue("sound", 0) == 1)
+        if (config.getBoolValue("sound"))
             sound.init();
 
-        sound.setSfxVolume((int) config.getValue("sfxVolume",
-                    defaultSfxVolume));
-        sound.setMusicVolume((int) config.getValue("musicVolume",
-                    defaultMusicVolume));
+        sound.setSfxVolume(config.getIntValue("sfxVolume"));
+        sound.setMusicVolume(config.getIntValue("musicVolume"));
     }
     catch (const char *err)
     {
@@ -391,28 +393,25 @@ Client::Client(const Options &options):
     mCurrentServer.port = options.serverPort;
     loginData.username = options.username;
     loginData.password = options.password;
-    loginData.remember = config.getValue("remember", 0);
+    loginData.remember = config.getBoolValue("remember");
     loginData.registerLogin = false;
 
     if (mCurrentServer.hostname.empty())
-    {
-        mCurrentServer.hostname = branding.getValue("defaultServer",
-                                                    "").c_str();
-    }
+        mCurrentServer.hostname = branding.getValue("defaultServer","").c_str();
 
     if (mCurrentServer.port == 0)
     {
         mCurrentServer.port = (short) branding.getValue("defaultPort",
-                                                       DEFAULT_PORT);
+                                                                  DEFAULT_PORT);
         mCurrentServer.type = ServerInfo::parseType(
-                branding.getValue("defaultServerType", "tmwathena"));
+                           branding.getValue("defaultServerType", "tmwathena"));
     }
 
     if (chatLogger)
         chatLogger->setServerName(mCurrentServer.hostname);
 
     if (loginData.username.empty() && loginData.remember)
-        loginData.username = config.getValue("username", "");
+        loginData.username = config.getStringValue("username");
 
     if (mState != STATE_ERROR)
         mState = STATE_CHOOSE_SERVER;
@@ -426,6 +425,9 @@ Client::Client(const Options &options):
     SDL_initFramerate(&mFpsManager);
     config.addListener("fpslimit", this);
     optionChanged("fpslimit");
+
+    // Initialize PlayerInfo
+    PlayerInfo::init();
 }
 
 Client::~Client()
@@ -571,10 +573,8 @@ int Client::exec()
                                      - 3, 3);
             top->add(mSetupButton);
 
-            int screenWidth = (int) config.getValue("screenwidth",
-                                                    defaultScreenWidth);
-            int screenHeight = (int) config.getValue("screenheight",
-                                                     defaultScreenHeight);
+            int screenWidth = config.getIntValue("screenwidth");
+            int screenHeight = config.getIntValue("screenheight");
 
             mDesktop->setSize(screenWidth, screenHeight);
         }
@@ -586,9 +586,12 @@ int Client::exec()
 
         if (mState != mOldState)
         {
-            Net::GeneralHandler *generalHandler = Net::getGeneralHandler();
-            if (generalHandler)
-                generalHandler->stateChanged(mOldState, mState);
+            {
+                Mana::Event event("StateChange");
+                event.setInt("oldState", mOldState);
+                event.setInt("newState", mState);
+                Mana::EventManager::trigger("Client", event);
+            }
 
             if (mOldState == STATE_GAME)
             {
@@ -738,11 +741,16 @@ int Client::exec()
                             false);
                     }
 
+                    // Read default paths file 'data/paths.xml'
+                    paths.init("paths.xml", true);
+                    paths.setDefaultValues(getPathsDefaults());
+
                     // Load XML databases
                     ColorDB::load();
                     ItemDB::load();
                     Being::load(); // Hairstyles
                     MonsterDB::load();
+                    SpecialDB::load();
                     NPCDB::load();
                     EmoteDB::load();
                     StatusEffect::load();
@@ -775,7 +783,7 @@ int Client::exec()
                             mOptions.character, CharSelectDialog::Choose))
                     {
                         ((CharSelectDialog*) mCurrentDialog)->selectByName(
-                                config.getValue("lastCharacter", ""),
+                                config.getStringValue("lastCharacter"),
                                 mOptions.chooseDefault ?
                                     CharSelectDialog::Choose :
                                     CharSelectDialog::Focus);
@@ -987,7 +995,7 @@ int Client::exec()
 
 void Client::optionChanged(const std::string &name)
 {
-    const int fpsLimit = (int) config.getValue("fpslimit", 60);
+    const int fpsLimit = config.getIntValue("fpslimit");
     mLimitFps = fpsLimit > 0;
     if (mLimitFps)
         SDL_setFramerate(&mFpsManager, fpsLimit);
@@ -1044,13 +1052,13 @@ void Client::initHomeDir()
 
     if (mConfigDir.empty()){
 #ifdef __APPLE__
-        mConfigDir = mLocalDataDir;
+        mConfigDir = mLocalDataDir + "/" + branding.getValue("appShort", "mana");
 #elif defined WIN32
         mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
         if (mConfigDir.empty())
             mConfigDir = mLocalDataDir;
         else
-            mConfigDir += "/mana/" + branding.getValue("appName", "Mana");
+            mConfigDir += "/mana/" + branding.getValue("appShort", "Mana");
 #else
         mConfigDir = std::string(PHYSFS_getUserDir()) +
             "/.config/mana/" + branding.getValue("appShort", "mana");
@@ -1138,6 +1146,7 @@ void Client::initConfiguration()
     {
         fclose(configFile);
         config.init(configPath);
+        config.setDefaultValues(getConfigDefaults());
     }
 }
 
@@ -1152,7 +1161,7 @@ void Client::initUpdatesDir()
     // If updatesHost is currently empty, fill it from config file
     if (mUpdateHost.empty())
     {
-        mUpdateHost = config.getValue("updatehost", "");
+        mUpdateHost = config.getStringValue("updatehost");
     }
 
     // Don't go out of range int he next check
@@ -1230,7 +1239,7 @@ void Client::initScreenshotDir()
     else
     {
         std::string configScreenshotDir =
-            config.getValue("screenshotDirectory", "");
+            config.getStringValue("screenshotDirectory");
         if (!configScreenshotDir.empty())
             mScreenshotDir = configScreenshotDir;
         else
@@ -1245,7 +1254,7 @@ void Client::initScreenshotDir()
         }
         config.setValue("screenshotDirectory", mScreenshotDir);
 
-        if (config.getValue("useScreenshotDirectorySuffix", true))
+        if (config.getBoolValue("useScreenshotDirectorySuffix"))
         {
             std::string configScreenshotSuffix =
                 config.getValue("screenshotDirectorySuffix",

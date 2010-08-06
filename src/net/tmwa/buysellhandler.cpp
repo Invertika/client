@@ -22,15 +22,15 @@
 #include "net/tmwa/buysellhandler.h"
 
 #include "actorspritemanager.h"
+#include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
 #include "gui/sell.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/messagein.h"
 
@@ -61,7 +61,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
         case SMSG_NPC_BUY_SELL_CHOICE:
-            if (!BuySellDialog::isActive())
+            if (PlayerInfo::getBuySellState() != BUYSELL_CHOOSING)
             {
                 mNpcId = msg.readInt32();
                 new BuySellDialog(mNpcId);
@@ -72,7 +72,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt16();  // length
             n_items = (msg.getLength() - 4) / 11;
             mBuyDialog = new BuyDialog(mNpcId);
-            mBuyDialog->setMoney(player_node->getMoney());
+            mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
             for (int k = 0; k < n_items; k++)
             {
@@ -90,7 +90,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             if (n_items > 0)
             {
                 SellDialog *dialog = new SellDialog(mNpcId);
-                dialog->setMoney(player_node->getMoney());
+                dialog->setMoney(PlayerInfo::getAttribute(MONEY));
 
                 for (int k = 0; k < n_items; k++)
                 {
@@ -98,7 +98,7 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
                     int value = msg.readInt32();
                     msg.readInt32();  // OCvalue
 
-                    Item *item = player_node->getInventory()->getItem(index);
+                    Item *item = PlayerInfo::getInventory()->getItem(index);
 
                     if (item && !(item->isEquipped()))
                         dialog->addItem(item, value);
@@ -106,29 +106,29 @@ void BuySellHandler::handleMessage(Net::MessageIn &msg)
             }
             else
             {
-                localChatTab->chatLog(_("Nothing to sell."), BY_SERVER);
+                SERVER_NOTICE(_("Nothing to sell."))
             }
             break;
 
         case SMSG_NPC_BUY_RESPONSE:
             if (msg.readInt8() == 0)
             {
-                localChatTab->chatLog(_("Thanks for buying."), BY_SERVER);
+                SERVER_NOTICE(_("Thanks for buying."))
             }
             else
             {
                 // Reset player money since buy dialog already assumed purchase
                 // would go fine
-                mBuyDialog->setMoney(player_node->getMoney());
-                localChatTab->chatLog(_("Unable to buy."), BY_SERVER);
+                mBuyDialog->setMoney(PlayerInfo::getAttribute(MONEY));
+                SERVER_NOTICE(_("Unable to buy."))
             }
             break;
 
         case SMSG_NPC_SELL_RESPONSE:
             if (msg.readInt8() == 0)
-                localChatTab->chatLog(_("Thanks for selling."), BY_SERVER);
+                SERVER_NOTICE(_("Thanks for selling."))
             else
-                localChatTab->chatLog(_("Unable to sell."), BY_SERVER);
+                SERVER_NOTICE(_("Unable to sell."))
 
             break;
     }

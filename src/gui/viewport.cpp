@@ -28,6 +28,7 @@
 #include "keyboardconfig.h"
 #include "localplayer.h"
 #include "map.h"
+#include "playerinfo.h"
 #include "textmanager.h"
 
 #include "gui/gui.h"
@@ -58,10 +59,10 @@ Viewport::Viewport():
     setOpaque(false);
     addMouseListener(this);
 
-    mScrollLaziness = (int) config.getValue("ScrollLaziness", 16);
-    mScrollRadius = (int) config.getValue("ScrollRadius", 0);
-    mScrollCenterOffsetX = (int) config.getValue("ScrollCenterOffsetX", 0);
-    mScrollCenterOffsetY = (int) config.getValue("ScrollCenterOffsetY", 0);
+    mScrollLaziness = config.getIntValue("ScrollLaziness");
+    mScrollRadius = config.getIntValue("ScrollRadius");
+    mScrollCenterOffsetX = config.getIntValue("ScrollCenterOffsetX");
+    mScrollCenterOffsetY = config.getIntValue("ScrollCenterOffsetY");
 
     config.addListener("ScrollLaziness", this);
     config.addListener("ScrollRadius", this);
@@ -345,7 +346,7 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         return;
 
     // Check if we are busy
-    if (Being::isTalking())
+    if (PlayerInfo::isTalking())
         return;
 
     mPlayerFollowMouse = false;
@@ -481,8 +482,8 @@ void Viewport::closePopupMenu()
 
 void Viewport::optionChanged(const std::string &name)
 {
-    mScrollLaziness = (int) config.getValue("ScrollLaziness", 32);
-    mScrollRadius = (int) config.getValue("ScrollRadius", 32);
+    mScrollLaziness = config.getIntValue("ScrollLaziness");
+    mScrollRadius = config.getIntValue("ScrollRadius");
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)
@@ -494,14 +495,19 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int x = (event.getX() + (int) mPixelViewX);
     const int y = (event.getY() + (int) mPixelViewY);
 
+    if (mHoverBeing)
+        mHoverBeing->removeActorSpriteListener(this);
     mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
     mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
 
+    if (mHoverItem)
+        mHoverItem->removeActorSpriteListener(this);
     mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
                                               y / mMap->getTileHeight());
 
     if (mHoverBeing)
     {
+        mHoverBeing->addActorSpriteListener(this);
         switch (mHoverBeing->getType())
         {
             // NPCs
@@ -521,6 +527,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     }
     else if (mHoverItem)
     {
+        mHoverItem->addActorSpriteListener(this);
         gui->setCursorType(Gui::CURSOR_PICKUP);
     }
     else
@@ -532,7 +539,7 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
 void Viewport::toggleDebugPath()
 {
     mShowDebugPath++;
-    if (mShowDebugPath > Map::MAP_SPECIAL)
+    if (mShowDebugPath > Map::MAP_SPECIAL3)
         mShowDebugPath = Map::MAP_NORMAL;
     if (mMap)
     {
@@ -545,11 +552,11 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::clearHover(ActorSprite *actor)
+void Viewport::actorSpriteDestroyed(const ActorSprite &actorSprite)
 {
-    if (mHoverBeing == actor)
+    if (&actorSprite == mHoverBeing)
         mHoverBeing = 0;
 
-    if (mHoverItem == actor)
+    if (&actorSprite == mHoverItem)
         mHoverItem = 0;
 }

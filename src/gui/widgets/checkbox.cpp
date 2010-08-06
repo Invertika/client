@@ -25,9 +25,9 @@
 #include "graphics.h"
 
 #include "gui/palette.h"
-#include "gui/theme.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 int CheckBox::instances = 0;
 float CheckBox::mAlpha = 1.0;
@@ -92,8 +92,8 @@ void CheckBox::draw(gcn::Graphics* graphics)
 
 void CheckBox::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8f),
-                       (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
     {

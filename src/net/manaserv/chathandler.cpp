@@ -26,8 +26,8 @@
 #include "client.h"
 #include "channel.h"
 #include "channelmanager.h"
-
-#include "gui/chat.h"
+#include "eventmanager.h"
+#include "playerrelations.h"
 
 #include "gui/widgets/channeltab.h"
 
@@ -149,7 +149,7 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
 
     if (id == 0)
     {
-        localChatTab->chatLog(chatMsg, BY_SERVER);
+        SERVER_NOTICE(chatMsg)
         return;
     }
 
@@ -159,12 +159,19 @@ void ChatHandler::handleGameChatMessage(Net::MessageIn &msg)
     if (being)
     {
         mes = being->getName() + " : " + chatMsg;
-        being->setSpeech(chatMsg, SPEECH_TIME);
     }
     else
         mes = "Unknown : " + chatMsg;
 
-    localChatTab->chatLog(mes, being == player_node ? BY_PLAYER : BY_OTHER);
+    Mana::Event event(being == player_node ? "Player" : "Being");
+    event.setString("message", mes);
+    event.setString("text", chatMsg);
+    event.setString("nick", being->getName());
+    event.setInt("beingId", id);
+    event.setInt("permissions", player_relations
+                 .checkPermissionSilently(being->getName(),
+                 PlayerRelation::SPEECH_LOG | PlayerRelation::SPEECH_FLOAT));
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
@@ -198,13 +205,13 @@ void ChatHandler::handleEnterChannelResponse(Net::MessageIn &msg)
     }
     else
     {
-        localChatTab->chatLog(_("Error joining channel."), BY_SERVER);
+        SERVER_NOTICE(_("Error joining channel."))
     }
 }
 
 void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
 {
-    localChatTab->chatLog(_("Listing channels."), BY_SERVER);
+    SERVER_NOTICE(_("Listing channels."))
     while (msg.getUnreadLength())
     {
         std::string channelName = msg.readString();
@@ -214,9 +221,9 @@ void ChatHandler::handleListChannelsResponse(Net::MessageIn &msg)
         numUsers << msg.readInt16();
         channelName += " - ";
         channelName += numUsers.str();
-        localChatTab->chatLog(channelName, BY_SERVER);
+        SERVER_NOTICE(channelName)
     }
-    localChatTab->chatLog(_("End of channel list."), BY_SERVER);
+    SERVER_NOTICE(_("End of channel list."))
 }
 
 void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
@@ -224,13 +231,18 @@ void ChatHandler::handlePrivateMessage(Net::MessageIn &msg)
     std::string userNick = msg.readString();
     std::string chatMsg = msg.readString();
 
-    chatWindow->whisper(userNick, chatMsg);
+    Mana::Event event("Whisper");
+    event.setString("nick", userNick);
+    event.setString("message", chatMsg);
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleAnnouncement(Net::MessageIn &msg)
 {
     std::string chatMsg = msg.readString();
-    localChatTab->chatLog(chatMsg, BY_GM);
+    Mana::Event event("Announcement");
+    event.setString("message", chatMsg);
+    Mana::EventManager::trigger("Chat", event);
 }
 
 void ChatHandler::handleChatMessage(Net::MessageIn &msg)
@@ -341,7 +353,7 @@ void ChatHandler::handleWhoResponse(Net::MessageIn &msg)
         {
             break;
         }
-        localChatTab->chatLog(userNick, BY_SERVER);
+        SERVER_NOTICE(userNick)
     }
 }
 

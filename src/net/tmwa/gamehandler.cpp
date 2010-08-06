@@ -22,11 +22,10 @@
 #include "net/tmwa/gamehandler.h"
 
 #include "client.h"
+#include "eventmanager.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "gui/okdialog.h"
 
@@ -58,6 +57,8 @@ GameHandler::GameHandler()
     };
     handledMessages = _messages;
     gameHandler = this;
+
+    listen("Game");
 }
 
 void GameHandler::handleMessage(Net::MessageIn &msg)
@@ -84,8 +85,7 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            localChatTab->chatLog(strprintf(_("Online users: %d"),
-                                            msg.readInt32()), BY_SERVER);
+            SERVER_NOTICE(strprintf(_("Online users: %d"), msg.readInt32()))
             break;
 
         case SMSG_CHAR_SWITCH_RESPONSE:
@@ -101,6 +101,21 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
                 new OkDialog(_("Game"), _("Request to quit denied!"), NULL);
             }
             break;
+    }
+}
+
+void GameHandler::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Game")
+    {
+        if (event.getName() == "EnginesInitalized")
+        {
+            Game::instance()->changeMap(mMap);
+        }
+        else if (event.getName() == "MapLoaded")
+        {
+            MessageOut outMsg(CMSG_MAP_LOADED);
+        }
     }
 }
 
@@ -139,16 +154,6 @@ bool GameHandler::isConnected()
 void GameHandler::disconnect()
 {
     mNetwork->disconnect();
-}
-
-void GameHandler::inGame()
-{
-    Game::instance()->changeMap(mMap);
-}
-
-void GameHandler::mapLoaded(const std::string &mapName)
-{
-    MessageOut outMsg(CMSG_MAP_LOADED);
 }
 
 void GameHandler::who()

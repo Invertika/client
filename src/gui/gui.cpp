@@ -24,7 +24,6 @@
 #include "gui/focushandler.h"
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
 #include "gui/truetypefont.h"
 
 #include "gui/widgets/window.h"
@@ -39,6 +38,7 @@
 #include "resources/imageset.h"
 #include "resources/imageloader.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
@@ -61,7 +61,7 @@ class GuiConfigListener : public ConfigListener
         {
             if (name == "customcursor")
             {
-                bool bCustomCursor = config.getValue("customcursor", 1) == 1;
+                bool bCustomCursor = config.getBoolValue("customcursor");
                 mGui->setUseCustomCursor(bCustomCursor);
             }
         }
@@ -104,9 +104,10 @@ Gui::Gui(Graphics *graphics):
     ResourceManager *resman = ResourceManager::getInstance();
 
     // Set global font
-    const int fontSize = (int) config.getValue("fontSize", 11);
+    const int fontSize = config.getValue("fontSize", 11);
     std::string fontFile = branding.getValue("font", "fonts/dejavusans.ttf");
     std::string path = resman->getPath(fontFile);
+
     try
     {
         mGuiFont = new TrueTypeFont(path, fontSize);
@@ -134,7 +135,7 @@ Gui::Gui(Graphics *graphics):
     gcn::Widget::setGlobalFont(mGuiFont);
 
     // Initialize mouse cursor and listen for changes to the option
-    setUseCustomCursor(config.getValue("customcursor", 1) == 1);
+    setUseCustomCursor(config.getBoolValue("customcursor"));
     mConfigListener = new GuiConfigListener(this);
     config.addListener("customcursor", mConfigListener);
 }

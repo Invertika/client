@@ -21,11 +21,12 @@
 
 #include "item.h"
 
-#include "gui/theme.h"
+#include "configuration.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 Item::Item(int id, int quantity, bool equipment, bool equipped):
     mImage(0),
@@ -58,13 +59,17 @@ void Item::setId(int id)
 
     ResourceManager *resman = ResourceManager::getInstance();
     SpriteDisplay display = getInfo().getDisplay();
-    std::string imagePath = "graphics/items/" + display.image;
+    std::string imagePath = paths.getStringValue("itemIcons")
+                            + display.image;
     mImage = resman->getImage(imagePath);
     mDrawImage = resman->getImage(imagePath);
 
     if (!mImage)
-        mImage = Theme::getImageFromTheme("unknown-item.png");
+        mImage = Theme::getImageFromTheme(paths.getValue("unknownItemFile",
+                                                         "unknown-item.png"));
 
     if (!mDrawImage)
-        mDrawImage = Theme::getImageFromTheme("unknown-item.png");
+        mDrawImage = Theme::getImageFromTheme(
+                                            paths.getValue("unknownItemFile",
+                                                           "unknown-item.png"));
 }

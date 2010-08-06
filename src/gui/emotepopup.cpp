@@ -29,11 +29,10 @@
 #include "localplayer.h"
 #include "log.h"
 
-#include "gui/theme.h"
-
 #include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 
@@ -61,7 +60,7 @@ EmotePopup::EmotePopup():
     if (!mSelectionImage)
         logger->error("Unable to load selection.png");
 
-    mSelectionImage->setAlpha(config.getValue("guialpha", 0.8));
+    mSelectionImage->setAlpha(config.getFloatValue("guialpha"));
 
     addMouseListener(this);
     recalculateSize();

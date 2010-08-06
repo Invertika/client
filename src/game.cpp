@@ -28,6 +28,7 @@
 #include "commandhandler.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "eventmanager.h"
 #include "emoteshortcut.h"
 #include "graphics.h"
 #include "itemshortcut.h"
@@ -128,6 +129,8 @@ ChatTab *localChatTab = NULL;
  */
 static void initEngines()
 {
+    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalizing"));
+
     actorSpriteManager = new ActorSpriteManager;
     commandHandler = new CommandHandler;
     channelManager = new ChannelManager;
@@ -135,6 +138,8 @@ static void initEngines()
 
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
+
+    Mana::EventManager::trigger("Game", Mana::Event("EnginesInitalized"));
 }
 
 /**
@@ -142,15 +147,17 @@ static void initEngines()
  */
 static void createGuiWindows()
 {
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoading"));
+
     setupWindow->clearWindowsForReset();
 
     // Create dialogs
     chatWindow = new ChatWindow;
     tradeWindow = new TradeWindow;
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
+    equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
     statusWindow = new StatusWindow;
     miniStatusWindow = new MiniStatusWindow;
-    inventoryWindow = new InventoryWindow(player_node->getInventory());
+    inventoryWindow = new InventoryWindow(PlayerInfo::getInventory());
     skillDialog = new SkillDialog;
     minimap = new Minimap;
     helpWindow = new HelpWindow;
@@ -170,7 +177,7 @@ static void createGuiWindows()
         logger->setChatWindow(chatWindow);
     }
 
-    Net::getGeneralHandler()->guiWindowsLoaded();
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsLoaded"));
 }
 
 #define del_0(X) { delete X; X = 0; }
@@ -180,7 +187,8 @@ static void createGuiWindows()
  */
 static void destroyGuiWindows()
 {
-    Net::getGeneralHandler()->guiWindowsUnloaded();
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloading"));
+
     logger->setChatWindow(NULL);
     del_0(localChatTab) // Need to do this first, so it can remove itself
     del_0(chatWindow)
@@ -198,6 +206,8 @@ static void destroyGuiWindows()
     del_0(outfitWindow)
     del_0(specialsWindow)
     del_0(socialWindow)
+
+    Mana::EventManager::trigger("Game", Mana::Event("GuiWindowsUnloaded"));
 }
 
 Game *Game::mInstance = 0;
@@ -227,8 +237,6 @@ Game::Game():
 
     initEngines();
 
-    Net::getGameHandler()->inGame();
-
     // Initialize beings
     actorSpriteManager->setPlayer(player_node);
 
@@ -250,6 +258,8 @@ Game::Game():
         joystick = new Joystick(0);
 
     setupWindow->setInGame(true);
+
+    Mana::EventManager::trigger("Game", Mana::Event("Constructed"));
 }
 
 Game::~Game()
@@ -269,6 +279,8 @@ Game::~Game()
     del_0(mCurrentMap)
 
     mInstance = 0;
+
+    Mana::EventManager::trigger("Game", Mana::Event("Destructed"));
 }
 
 static bool saveScreenshot()
@@ -312,11 +324,11 @@ static bool saveScreenshot()
         std::stringstream chatlogentry;
         // TODO: Make it one complete gettext string below
         chatlogentry << _("Screenshot saved as ") << filenameSuffix.str();
-        localChatTab->chatLog(chatlogentry.str(), BY_SERVER);
+        SERVER_NOTICE(chatlogentry.str())
     }
     else
     {
-        localChatTab->chatLog(_("Saving screenshot failed!"), BY_SERVER);
+        SERVER_NOTICE(_("Saving screenshot failed!"))
         logger->log("Error: could not save screenshot.");
     }
 
@@ -389,7 +401,7 @@ void Game::handleInput()
 
             // send straight to gui for certain windows
             if (quitDialog || TextDialog::isActive() ||
-                NpcPostDialog::isActive())
+                    PlayerInfo::getNPCPostCount() > 0)
             {
                 try
                 {
@@ -695,16 +707,12 @@ void Game::handleInput()
                         unsigned int deflt = player_relations.getDefault();
                         if (deflt & PlayerRelation::TRADE)
                         {
-                            localChatTab->chatLog(
-                                        _("Ignoring incoming trade requests"),
-                                        BY_SERVER);
+                            SERVER_NOTICE(_("Ignoring incoming trade requests"))
                             deflt &= ~PlayerRelation::TRADE;
                         }
                         else
                         {
-                            localChatTab->chatLog(
-                                        _("Accepting incoming trade requests"),
-                                        BY_SERVER);
+                            SERVER_NOTICE(_("Accepting incoming trade requests"))
                             deflt |= PlayerRelation::TRADE;
                         }
 
@@ -750,7 +758,7 @@ void Game::handleInput()
         return;
 
     // Moving player around
-    if (player_node->isAlive() && !Being::isTalking() &&
+    if (player_node->isAlive() && !PlayerInfo::isTalking() &&
         !chatWindow->isInputFocused() && !quitDialog)
     {
         // Get the state of the keyboard keys
@@ -924,7 +932,8 @@ void Game::changeMap(const std::string &mapPath)
 
     mMapName = mapPath;
 
-    std::string fullMap = "maps/" + mapPath + ".tmx";
+    std::string fullMap = paths.getValue("maps", "maps/")
+                          + mMapName + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
     if (!resman->exists(fullMap))
         fullMap += ".gz";
@@ -958,5 +967,7 @@ void Game::changeMap(const std::string &mapPath)
     delete mCurrentMap;
     mCurrentMap = newMap;
 
-    Net::getGameHandler()->mapLoaded(mapPath);
+    Mana::Event event("MapLoaded");
+    event.setString("mapPath", mapPath);
+    Mana::EventManager::trigger("Game", event);
 }

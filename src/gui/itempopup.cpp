@@ -26,7 +26,6 @@
 #include "units.h"
 
 #include "gui/gui.h"
-#include "gui/theme.h"
 
 #include "gui/widgets/icon.h"
 #include "gui/widgets/textbox.h"
@@ -36,6 +35,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 
@@ -102,8 +102,10 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
     if (showImage)
     {
         ResourceManager *resman = ResourceManager::getInstance();
-        Image *image = resman->getImage("graphics/items/" +
-                                        item.getDisplay().image);
+        Image *image = resman->getImage(
+                                  paths.getStringValue("itemIcons")
+                                  + item.getDisplay().image);
+
         mIcon->setImage(image);
         if (image)
         {

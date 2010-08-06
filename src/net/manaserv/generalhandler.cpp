@@ -90,6 +90,9 @@ GeneralHandler::GeneralHandler():
     chatServerConnection = getConnection();
 
     generalHandler = this;
+
+    listen("Client");
+    listen("Game");
 }
 
 void GeneralHandler::load()
@@ -163,38 +166,40 @@ void GeneralHandler::flushNetwork()
     }
 }
 
-void GeneralHandler::guiWindowsLoaded()
-{
-    inventoryWindow->setSplitAllowed(true);
-    skillDialog->loadSkills("mana-skills.xml");
-    specialsWindow->loadSpecials("specials.xml");
-
-    player_node->setExpNeeded(100);
-
-    Stats::informStatusWindow();
-}
-
-void GeneralHandler::guiWindowsUnloaded()
-{
-    // TODO
-}
-
 void GeneralHandler::clearHandlers()
 {
     clearNetworkHandlers();
 }
 
-void GeneralHandler::stateChanged(State oldState, State newState)
+void GeneralHandler::event(const std::string &channel,
+                           const Mana::Event &event)
 {
-    if (newState == STATE_GAME)
+    if (channel == "Client")
     {
-        GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
-        game->gameLoading();
+        int newState = event.getInt("newState");
+
+        if (newState == STATE_GAME)
+        {
+            GameHandler *game = static_cast<GameHandler*>(Net::getGameHandler());
+            game->gameLoading();
+        }
+        else if (newState == STATE_LOAD_DATA)
+        {
+            Stats::load();
+            Stats::informItemDB();
+        }
     }
-    else if (newState == STATE_LOAD_DATA)
+    else if (channel == "Game")
     {
-        Stats::load();
-        Stats::informItemDB();
+        if (event.getName() == "GuiWindowsLoaded")
+        {
+            inventoryWindow->setSplitAllowed(true);
+            skillDialog->loadSkills("mana-skills.xml");
+
+            PlayerInfo::setAttribute(EXP_NEEDED, 100);
+
+            Stats::informStatusWindow();
+        }
     }
 }
 

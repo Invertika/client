@@ -24,7 +24,8 @@
 #include "configuration.h"
 
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
+
+#include "resources/theme.h"
 
 #include "utils/dtor.h"
 
@@ -270,8 +271,8 @@ void GuiTable::draw(gcn::Graphics* graphics)
     if (!mModel)
         return;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-        mAlpha = config.getValue("guialpha", 0.8);
+    if (config.getFloatValue("guialpha") != mAlpha)
+        mAlpha = config.getFloatValue("guialpha");
 
     if (mOpaque)
     {

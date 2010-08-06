@@ -22,6 +22,7 @@
 #include "resources/iteminfo.h"
 
 #include "resources/itemdb.h"
+#include "configuration.h"
 
 const std::string &ItemInfo::getSprite(Gender gender) const
 {
@@ -40,35 +41,17 @@ const std::string &ItemInfo::getSprite(Gender gender) const
     }
 }
 
-void ItemInfo::setWeaponType(int type)
+void ItemInfo::setAttackAction(std::string attackAction)
 {
-    // See server item.hpp file for type values.
-    switch (type)
-    {
-        case WPNTYPE_NONE:
-            mAttackType = ACTION_DEFAULT;
-            break;
-        case WPNTYPE_KNIFE:
-        case WPNTYPE_SWORD:
-            mAttackType = ACTION_ATTACK_STAB;
-            break;
-        case WPNTYPE_THROWN:
-            mAttackType = ACTION_ATTACK_THROW;
-            break;
-        case WPNTYPE_BOW:
-            mAttackType = ACTION_ATTACK_BOW;
-            break;
-        case WPNTYPE_POLEARM:
-            mAttackType = ACTION_ATTACK_SWING;
-            break;
-        default:
-            mAttackType = ACTION_ATTACK;
-    }
+    if (attackAction.empty())
+        mAttackAction = SpriteAction::ATTACK; // (Equal to unarmed animation)
+    else
+        mAttackAction = attackAction;
 }
 
 void ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
-    mSounds[event].push_back("sfx/" + filename);
+    mSounds[event].push_back(paths.getStringValue("sfx") + filename);
 }
 
 const std::string &ItemInfo::getSound(EquipmentSoundEvent event) const

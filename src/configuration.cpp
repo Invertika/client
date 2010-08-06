@@ -98,6 +98,126 @@ ConfigurationObject::~ConfigurationObject()
     clear();
 }
 
+void Configuration::cleanDefaults()
+{
+    if (mDefaultsData)
+    {
+        for (DefaultsData::const_iterator iter = mDefaultsData->begin();
+             iter != mDefaultsData->end(); iter++)
+        {
+            if (iter->second)
+                delete(iter->second);
+        }
+        mDefaultsData->clear();
+        delete mDefaultsData;
+        mDefaultsData = 0;
+    }
+}
+
+Configuration::~Configuration()
+{
+    cleanDefaults();
+}
+
+void Configuration::setDefaultValues(DefaultsData *defaultsData)
+{
+    cleanDefaults();
+    mDefaultsData = defaultsData;
+}
+
+int Configuration::getIntValue(const std::string &key) const
+{
+    int defaultValue = 0;
+    if (mDefaultsData)
+    {
+        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+
+        if (itdef != mDefaultsData->end() && itdef->second
+            && itdef->second->getType() == Mana::VariableData::DATA_INT)
+        {
+            defaultValue = ((Mana::IntData*)itdef->second)->getData();
+        }
+        else
+        {
+            logger->log("%s: No integer value in registry for key %s",
+                                              mConfigPath.c_str(), key.c_str());
+        }
+    }
+    Options::const_iterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atoi(iter->second.c_str()) : defaultValue;
+}
+
+std::string Configuration::getStringValue(const std::string &key) const
+{
+    std::string defaultValue = "";
+    if (mDefaultsData)
+    {
+        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+
+        if (itdef != mDefaultsData->end() && itdef->second
+            && itdef->second->getType() == Mana::VariableData::DATA_STRING)
+        {
+            defaultValue = ((Mana::StringData*)itdef->second)->getData();
+        }
+        else
+        {
+            logger->log("%s: No string value in registry for key %s",
+                                              mConfigPath.c_str(), key.c_str());
+        }
+    }
+    Options::const_iterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? iter->second : defaultValue;
+}
+
+
+float Configuration::getFloatValue(const std::string &key) const
+{
+    float defaultValue = 0.0f;
+    if (mDefaultsData)
+    {
+        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+
+        if (itdef != mDefaultsData->end() && itdef->second
+            && itdef->second->getType() == Mana::VariableData::DATA_FLOAT)
+        {
+            defaultValue = ((Mana::FloatData*)itdef->second)->getData();
+        }
+        else
+        {
+            logger->log("%s: No float value in registry for key %s",
+                                              mConfigPath.c_str(), key.c_str());
+        }
+    }
+    Options::const_iterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : defaultValue;
+}
+
+bool Configuration::getBoolValue(const std::string &key) const
+{
+    bool defaultValue = false;
+    if (mDefaultsData)
+    {
+        DefaultsData::const_iterator itdef = mDefaultsData->find(key);
+
+        if (itdef != mDefaultsData->end() && itdef->second
+            && itdef->second->getType() == Mana::VariableData::DATA_BOOL)
+        {
+            defaultValue = ((Mana::BoolData*)itdef->second)->getData();
+        }
+        else
+        {
+            logger->log("%s: No boolean value in registry for key %s",
+                                              mConfigPath.c_str(), key.c_str());
+        }
+    }
+
+    Options::const_iterator iter = mOptions.find(key);
+    if (iter != mOptions.end())
+        return getBoolFromString(iter->second);
+    else
+        return defaultValue;
+}
+
 void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
 {
     clear();
@@ -137,33 +257,30 @@ void ConfigurationObject::initFromXML(xmlNodePtr parent_node)
     }
 }
 
-void Configuration::init(const std::string &filename)
+void Configuration::init(const std::string &filename, bool useResManager)
 {
-    mConfigPath = filename;
+    XML::Document doc(filename, useResManager);
 
-    // Do not attempt to read config from non-existant file
-    FILE *testFile = fopen(filename.c_str(), "r");
-    if (!testFile)
-        return;
+    if (useResManager)
+        mConfigPath = "PhysFS://" + filename;
     else
-        fclose(testFile);
+        mConfigPath = filename;
 
-    xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
+    if (!doc.rootNode())
+    {
+        logger->log("Couldn't open configuration file: %s", filename.c_str());
+        return;
+    }
 
-    if (!doc) return;
-
-    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
+    xmlNodePtr rootNode = doc.rootNode();
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "configuration"))
     {
         logger->log("Warning: No configuration file (%s)", filename.c_str());
-        xmlFreeDoc(doc);
         return;
     }
 
     initFromXML(rootNode);
-
-    xmlFreeDoc(doc);
 }
 
 void ConfigurationObject::writeToXML(xmlTextWriterPtr writer)

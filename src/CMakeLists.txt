@@ -32,8 +32,8 @@ ENDIF()
 
 IF (CMAKE_BUILD_TYPE)
     STRING(TOLOWER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_TOLOWER)
-    IF((CMAKE_BUILD_TYPE_TOLOWER MATCHES debug) OR
-       (CMAKE_BUILD_TYPE_TOLOWER MATCHES relwithdebinfo))
+    IF(CMAKE_BUILD_TYPE_TOLOWER MATCHES debug OR
+       CMAKE_BUILD_TYPE_TOLOWER MATCHES relwithdebinfo)
         SET(FLAGS "${FLAGS} -DDEBUG")
     ENDIF()
 ENDIF()
@@ -296,8 +296,6 @@ SET(SRCS
     gui/textdialog.h
     gui/textpopup.cpp
     gui/textpopup.h
-    gui/theme.cpp
-    gui/theme.h
     gui/trade.cpp
     gui/trade.h
     gui/truetypefont.cpp
@@ -306,8 +304,6 @@ SET(SRCS
     gui/unregisterdialog.h
     gui/updatewindow.cpp
     gui/updatewindow.h
-    gui/userpalette.cpp
-    gui/userpalette.h
     gui/viewport.cpp
     gui/viewport.h
     gui/windowmenu.cpp
@@ -382,8 +378,14 @@ SET(SRCS
     resources/resourcemanager.h
     resources/soundeffect.h
     resources/soundeffect.cpp
+    resources/specialdb.cpp
+    resources/specialdb.h
     resources/spritedef.h
     resources/spritedef.cpp
+    resources/theme.cpp
+    resources/theme.h
+    resources/userpalette.cpp
+    resources/userpalette.h
     resources/wallpaper.cpp
     resources/wallpaper.h
     utils/base64.cpp
@@ -432,11 +434,17 @@ SET(SRCS
     configlistener.h
     configuration.cpp
     configuration.h
+    defaults.cpp
+    defaults.h
     effectmanager.cpp
     effectmanager.h
     emoteshortcut.cpp
     emoteshortcut.h
     equipment.h
+    event.cpp
+    event.h
+    eventmanager.cpp
+    eventmanager.h
     flooritem.cpp
     flooritem.h
     game.cpp
@@ -460,6 +468,8 @@ SET(SRCS
     joystick.h
     keyboardconfig.cpp
     keyboardconfig.h
+    listener.cpp
+    listener.h
     localplayer.cpp
     localplayer.h
     log.cpp
@@ -479,6 +489,8 @@ SET(SRCS
     particleemitterprop.h
     party.cpp
     party.h
+    playerinfo.cpp
+    playerinfo.h
     playerrelations.cpp
     playerrelations.h
     position.cpp
@@ -505,6 +517,7 @@ SET(SRCS
     tileset.h
     units.cpp
     units.h
+    variabledata.h
     vector.cpp
     vector.h
     )
@@ -571,6 +584,7 @@ SET(SRCS_MANA
     net/manaserv/chathandler.h
     net/manaserv/connection.cpp
     net/manaserv/connection.h
+    net/manaserv/defines.h
     net/manaserv/effecthandler.cpp
     net/manaserv/effecthandler.h
     net/manaserv/gamehandler.cpp

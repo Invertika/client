@@ -24,28 +24,21 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
-#include "equipment.h"
+#include "eventmanager.h"
 #include "flooritem.h"
 #include "graphics.h"
 #include "guild.h"
-#include "inventory.h"
 #include "item.h"
 #include "log.h"
 #include "map.h"
 #include "particle.h"
+#include "playerinfo.h"
 #include "simpleanimation.h"
 #include "sound.h"
-#include "statuseffect.h"
 #include "text.h"
 
 #include "gui/gui.h"
-#include "gui/inventorywindow.h"
-#include "gui/ministatus.h"
 #include "gui/okdialog.h"
-#include "gui/skilldialog.h"
-#include "gui/statuswindow.h"
-#include "gui/theme.h"
-#include "gui/userpalette.h"
 
 #include "gui/widgets/chattab.h"
 
@@ -60,9 +53,10 @@
 
 #include "resources/animation.h"
 #include "resources/imageset.h"
-#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -80,34 +74,24 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(int id, int subtype):
     Being(id, PLAYER, subtype, 0),
-    mEquipment(new Equipment),
     mAttackRange(0),
     mTargetTime(-1),
     mLastTarget(-1),
-    mCharacterPoints(0),
-    mCorrectionPoints(0),
-    mSpecialRechargeUpdateNeeded(0),
-    mLevel(1),
-    mExp(0), mExpNeeded(0),
-    mMp(0), mMaxMp(0),
-    mMoney(0),
-    mTotalWeight(1), mMaxWeight(1),
-    mHp(1), mMaxHp(1),
-    mSkillPoints(0),
     mTarget(NULL),
     mPlayerFollowed(""),
     mPickUpTarget(NULL),
-    mTrading(false), mGoingToTarget(false), mKeepAttacking(false),
+    mGoingToTarget(false), mKeepAttacking(false),
     mLastAction(-1),
     mWalkingDir(0),
     mPathSetByMouse(false),
-    mInventory(new Inventory(Inventory::INVENTORY)),
     mLocalWalkTime(-1),
     mMessageTime(0),
     mAwayDialog(0),
     mAfkTime(0),
     mAwayMode(false)
 {
+    listen("Attributes");
+
     mAwayListener = new AwayListener();
 
     mUpdateName = true;
@@ -118,8 +102,6 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
 LocalPlayer::~LocalPlayer()
 {
-    delete mInventory;
-
     config.removeListener("showownname", this);
 
     delete mAwayDialog;
@@ -156,21 +138,7 @@ void LocalPlayer::logic()
         mMessageTime--;
     }
 
-    if ((mSpecialRechargeUpdateNeeded%11) == 0)
-    {
-        mSpecialRechargeUpdateNeeded = 0;
-        for (std::map<int, Special>::iterator i = mSpecials.begin();
-             i != mSpecials.end();
-             i++)
-        {
-            i->second.currentMana += i->second.recharge;
-            if (i->second.currentMana > i->second.neededMana)
-            {
-                i->second.currentMana = i->second.neededMana;
-            }
-        }
-    }
-    mSpecialRechargeUpdateNeeded++;
+    PlayerInfo::logic();
 
     // Targeting allowed 4 times a second
     if (get_elapsed_time(mLastTarget) >= 250)
@@ -669,21 +637,6 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
-void LocalPlayer::clearInventory()
-{
-    mEquipment->clear();
-    mInventory->clear();
-}
-
-void LocalPlayer::setInvItem(int index, int id, int amount)
-{
-    bool equipment = false;
-    int itemType = ItemDB::get(id).getType();
-    if (itemType != ITEM_UNUSABLE && itemType != ITEM_USABLE)
-        equipment = true;
-    mInventory->setItem(index, id, amount, equipment);
-}
-
 void LocalPlayer::pickUp(FloorItem *item)
 {
     if (!item)
@@ -821,11 +774,11 @@ void LocalPlayer::setWalkingDir(int dir)
     mWalkingDir = dir;
 
     // If we're not already walking, start walking.
-    if (mAction != WALK && dir)
+    if (mAction != MOVE && dir)
     {
         startWalking(dir);
     }
-    else if (mAction == WALK && (Net::getNetworkType() == ServerInfo::MANASERV))
+    else if (mAction == MOVE && (Net::getNetworkType() == ServerInfo::MANASERV))
     {
         nextTile(dir);
     }
@@ -838,7 +791,7 @@ void LocalPlayer::startWalking(unsigned char dir)
     if (!mMap || !dir)
         return;
 
-    if (mAction == WALK && !mPath.empty())
+    if (mAction == MOVE && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
         if (Net::getNetworkType() == ServerInfo::MANASERV)
@@ -893,7 +846,7 @@ void LocalPlayer::startWalking(unsigned char dir)
 
 void LocalPlayer::stopWalking(bool sendToServer)
 {
-    if (mAction == WALK && mWalkingDir)
+    if (mAction == MOVE && mWalkingDir)
     {
         mWalkingDir = 0;
         mLocalWalkTime = 0;
@@ -937,20 +890,6 @@ void LocalPlayer::emote(Uint8 emotion)
     Net::getPlayerHandler()->emote(emotion);
 }
 
-void LocalPlayer::useSpecial(int special)
-{
-    Net::getSpecialHandler()->use(special);
-}
-
-void LocalPlayer::setSpecialStatus(int id, int current, int max, int recharge)
-{
-    logger->log("SpecialUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
-                recharge);
-    mSpecials[id].currentMana = current;
-    mSpecials[id].neededMana = max;
-    mSpecials[id].recharge = recharge;
-}
-
 void LocalPlayer::attack(Being *target, bool keep)
 {
     if (Net::getNetworkType() == ServerInfo::MANASERV)
@@ -973,6 +912,7 @@ void LocalPlayer::attack(Being *target, bool keep)
         mLastTarget = -1;
         setTarget(target);
     }
+
     if (Net::getNetworkType() == ServerInfo::MANASERV)
     {
         Vector plaPos = this->getPosition();
@@ -1034,9 +974,7 @@ void LocalPlayer::attack(Being *target, bool keep)
             sound.playSfx(soundFile);
     }
     else
-    {
-        sound.playSfx("sfx/fist-swish.ogg");
-    }
+        sound.playSfx(paths.getValue("attackSfxFile", "fist-swish.ogg"));
 
     Net::getPlayerHandler()->attack(target->getId());
     if ((Net::getNetworkType() == ServerInfo::TMWATHENA) && !keep)
@@ -1054,196 +992,13 @@ void LocalPlayer::stopAttack()
     mLastTarget = -1;
 }
 
-void LocalPlayer::raiseAttribute(int attr)
-{
-    // we assume that the server allows the change.
-    // When not we will undo it later.
-    mCharacterPoints--;
-    IntMap::iterator it = mAttributeBase.find(attr);
-    if (it != mAttributeBase.end())
-        (*it).second++;
-    Net::getPlayerHandler()->increaseAttribute(attr);
-}
-
-void LocalPlayer::lowerAttribute(int attr)
-{
-    // we assume that the server allows the change.
-    // When not we will undo it later.
-    mCorrectionPoints--;
-    mCharacterPoints++;
-    IntMap::iterator it = mAttributeBase.find(attr);
-    if (it != mAttributeBase.end())
-        (*it).second--;
-    Net::getPlayerHandler()->decreaseAttribute(attr);
-}
-
-void LocalPlayer::setTotalWeight(int value)
-{
-    mTotalWeight = value;
-
-    inventoryWindow->updateWeight();
-}
-
-void LocalPlayer::setMaxWeight(int value)
-{
-    mMaxWeight = value;
-
-    inventoryWindow->updateWeight();
-}
-
-void LocalPlayer::setAttributeBase(int num, int value, bool notify)
-{
-    int old = mAttributeBase[num];
-
-    mAttributeBase[num] = value;
-    if (skillDialog)
-    {
-        if (skillDialog->update(num).empty() || !(value > old))
-            return;
-
-        if (old != 0 && notify)
-            effectManager->trigger(1, this);
-    }
-
-    if (statusWindow)
-        statusWindow->update(num);
-}
-
-void LocalPlayer::setAttributeEffective(int num, int value)
-{
-    mAttributeEffective[num] = value;
-    if (skillDialog)
-        skillDialog->update(num);
-
-    if (statusWindow)
-        statusWindow->update(num);
-}
-
-void LocalPlayer::setCharacterPoints(int n)
-{
-    mCharacterPoints = n;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::CHAR_POINTS);
-}
-
-void LocalPlayer::setCorrectionPoints(int n)
-{
-    mCorrectionPoints = n;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::CHAR_POINTS);
-}
-
-void LocalPlayer::setSkillPoints(int points)
-{
-    mSkillPoints = points;
-    if (skillDialog)
-        skillDialog->update();
-}
-
-void LocalPlayer::setExperience(int skill, int current, int next, bool notify)
-{
-    std::pair<int, int> cur = getExperience(skill);
-    int diff = current - cur.first;
-
-    cur = std::pair<int, int>(current, next);
-
-    mSkillExp[skill] = cur;
-
-    std::string name;
-    if (skillDialog)
-        name = skillDialog->update(skill);
-
-    if (mMap && notify && cur.first != -1 && diff > 0 && !name.empty())
-    {
-        addMessageToQueue(strprintf("%d %s xp", diff, name.c_str()));
-    }
-
-    if (statusWindow)
-        statusWindow->update(skill);
-}
-
-std::pair<int, int> LocalPlayer::getExperience(int skill)
-{
-    return mSkillExp[skill];
-}
-
-void LocalPlayer::setHp(int value)
-{
-    mHp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::HP);
-}
-
-void LocalPlayer::setMaxHp(int value)
-{
-    mMaxHp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::HP);
-}
-
-void LocalPlayer::setLevel(int value)
-{
-    mLevel = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::LEVEL);
-}
-
-void LocalPlayer::setExp(int value, bool notify)
-{
-    if (mMap && notify && value > mExp)
-    {
-        addMessageToQueue(toString(value - mExp) + " xp");
-    }
-    mExp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::EXP);
-}
-
-void LocalPlayer::setExpNeeded(int value)
-{
-    mExpNeeded = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::EXP);
-}
-
-void LocalPlayer::setMP(int value)
-{
-    mMp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MP);
-}
-
-void LocalPlayer::setMaxMP(int value)
-{
-    mMaxMp = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MP);
-}
-
-void LocalPlayer::setMoney(int value)
-{
-    mMoney = value;
-
-    if (statusWindow)
-        statusWindow->update(StatusWindow::MONEY);
-}
-
 void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
 {
     if (!amount)
     {
         if (config.getValue("showpickupchat", 1))
         {
-            localChatTab->chatLog(_("Unable to pick up item."), BY_SERVER);
+            SERVER_NOTICE(_("Unable to pick up item."))
         }
     }
     else
@@ -1252,10 +1007,9 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount)
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
-            localChatTab->chatLog(strprintf(ngettext("You picked up %d "
+            SERVER_NOTICE(strprintf(ngettext("You picked up %d "
                     "[@@%d|%s@@].", "You picked up %d [@@%d|%s@@].", amount),
-                    amount, itemInfo.getId(), itemInfo.getName().c_str()),
-                    BY_SERVER);
+                    amount, itemInfo.getId(), itemInfo.getName().c_str()))
         }
 
         if (mMap && config.getValue("showpickupparticle", 0))
@@ -1274,7 +1028,8 @@ int LocalPlayer::getAttackRange()
     }
     else
     {
-        Item *weapon = mEquipment->getEquipment(EQUIP_FIGHT1_SLOT);
+        // TODO: Fix this to be more generic
+        Item *weapon = PlayerInfo::getEquipment(EQUIP_FIGHT1_SLOT);
         if (weapon)
         {
             const ItemInfo info = weapon->getInfo();
@@ -1326,54 +1081,6 @@ void LocalPlayer::setGotoTarget(Being *target)
     }
 }
 
-extern MiniStatusWindow *miniStatusWindow;
-
-void LocalPlayer::handleStatusEffect(StatusEffect *effect, int effectId)
-{
-    Being::handleStatusEffect(effect, effectId);
-
-    if (effect)
-    {
-        effect->deliverMessage();
-        effect->playSFX();
-
-        AnimatedSprite *sprite = effect->getIcon();
-
-        if (!sprite)
-        {
-            // delete sprite, if necessary
-            for (unsigned int i = 0; i < mStatusEffectIcons.size();)
-                if (mStatusEffectIcons[i] == effectId)
-                {
-                    mStatusEffectIcons.erase(mStatusEffectIcons.begin() + i);
-                    miniStatusWindow->eraseIcon(i);
-                }
-                else
-                    i++;
-        }
-        else
-        {
-            // replace sprite or append
-            bool found = false;
-
-            for (unsigned int i = 0; i < mStatusEffectIcons.size(); i++)
-                if (mStatusEffectIcons[i] == effectId)
-                {
-                    miniStatusWindow->setIcon(i, sprite);
-                    found = true;
-                    break;
-                }
-
-            if (!found)
-            { // add new
-                int offset = mStatusEffectIcons.size();
-                miniStatusWindow->setIcon(offset, sprite);
-                mStatusEffectIcons.push_back(effectId);
-            }
-        }
-    }
-}
-
 void LocalPlayer::addMessageToQueue(const std::string &message, int color)
 {
     mMessages.push_back(MessagePair(message, color));
@@ -1385,6 +1092,25 @@ void LocalPlayer::optionChanged(const std::string &value)
     {
         setShowName(config.getValue("showownname", 1));
     }
+}
+
+void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
+{
+    if (channel == "Attributes")
+    {
+        if (event.getName() == "UpdateAttribute")
+        {
+            if (event.getInt("id") == EXP)
+            {
+                int change = event.getInt("newValue")
+                        - event.getInt("oldValue");
+
+                addMessageToQueue(toString(change) + " xp");
+            }
+        }
+    }
+    else
+        Being::event(channel, event);
 }
 
 void LocalPlayer::changeAwayMode()

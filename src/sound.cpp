@@ -27,6 +27,8 @@
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
+#include "configuration.h"
+
 Sound::Sound():
     mInstalled(false),
     mSfxVolume(100),
@@ -140,7 +142,7 @@ void Sound::setSfxVolume(int volume)
 static Mix_Music *loadMusic(const std::string &filename)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    std::string path = resman->getPath("music/" + filename);
+    std::string path = resman->getPath(paths.getStringValue("music") + filename);
 
     if (path.find(".zip/") != std::string::npos ||
         path.find(".zip\\") != std::string::npos)
@@ -149,7 +151,9 @@ static Mix_Music *loadMusic(const std::string &filename)
         // it to a temporary physical file so that SDL_mixer can stream it.
         logger->log("Loading music \"%s\" from temporary file tempMusic.ogg",
                     path.c_str());
-        bool success = resman->copyFile("music/" + filename, "tempMusic.ogg");
+        bool success = resman->copyFile(
+                               paths.getStringValue("music")
+                               + filename, "tempMusic.ogg");
         if (success)
             path = resman->getPath("tempMusic.ogg");
         else
@@ -235,7 +239,8 @@ void Sound::playSfx(const std::string &path)
         return;
 
     ResourceManager *resman = ResourceManager::getInstance();
-    SoundEffect *sample = resman->getSoundEffect(path);
+    SoundEffect *sample = resman->getSoundEffect(
+                                            paths.getStringValue("sfx") + path);
     if (sample)
     {
         logger->log("Sound::playSfx() Playing: %s", path.c_str());

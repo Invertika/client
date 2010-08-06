@@ -55,34 +55,29 @@ struct SpriteDisplay
 
 typedef std::list<SpriteReference*>::const_iterator SpriteRefs;
 
-enum SpriteAction
+/*
+ * Remember those are the main action.
+ * Action subtypes, e.g.: "attack_bow" are to be passed by items.xml after
+ * an ACTION_ATTACK call.
+ * Which special to be use to to be passed with the USE_SPECIAL call.
+ * Running, walking, ... is a sub-type of moving.
+ * ...
+ * Please don't add hard-coded subtypes here!
+ */
+namespace SpriteAction
 {
-    ACTION_DEFAULT = 0,
-    ACTION_STAND,
-    ACTION_WALK,
-    ACTION_RUN,
-    ACTION_ATTACK,
-    ACTION_ATTACK_SWING,
-    ACTION_ATTACK_STAB,
-    ACTION_ATTACK_BOW,
-    ACTION_ATTACK_THROW,
-    ACTION_SPECIAL_0,
-    ACTION_SPECIAL_1,
-    ACTION_SPECIAL_2,
-    ACTION_SPECIAL_3,
-    ACTION_SPECIAL_4,
-    ACTION_SPECIAL_5,
-    ACTION_SPECIAL_6,
-    ACTION_SPECIAL_7,
-    ACTION_SPECIAL_8,
-    ACTION_SPECIAL_9,
-    ACTION_CAST_MAGIC,
-    ACTION_USE_ITEM,
-    ACTION_SIT,
-    ACTION_SLEEP,
-    ACTION_HURT,
-    ACTION_DEAD,
-    ACTION_INVALID
+    static const std::string DEFAULT = "stand";
+    static const std::string STAND = "stand";
+    static const std::string SIT = "sit";
+    static const std::string SLEEP = "sleep";
+    static const std::string DEAD = "dead";
+    static const std::string MOVE = "walk";
+    static const std::string ATTACK = "attack";
+    static const std::string HURT = "hurt";
+    static const std::string USE_SPECIAL = "special";
+    static const std::string CAST_MAGIC = "magic";
+    static const std::string USE_ITEM = "item";
+    static const std::string INVALID = "";
 };
 
 enum SpriteDirection
@@ -109,12 +104,7 @@ class SpriteDef : public Resource
         /**
          * Returns the specified action.
          */
-        Action *getAction(SpriteAction action) const;
-
-        /**
-         * Converts a string into a SpriteAction enum.
-         */
-        static SpriteAction makeSpriteAction(const std::string &action);
+        Action *getAction(std::string action) const;
 
         /**
          * Converts a string into a SpriteDirection enum.
@@ -170,12 +160,12 @@ class SpriteDef : public Resource
          * When there are no animations defined for the action "complete", its
          * animations become a copy of those of the action "with".
          */
-        void substituteAction(SpriteAction complete, SpriteAction with);
+        void substituteAction(std::string complete, std::string with);
 
         typedef std::map<std::string, ImageSet*> ImageSets;
         typedef ImageSets::iterator ImageSetIterator;
 
-        typedef std::map<SpriteAction, Action*> Actions;
+        typedef std::map<std::string, Action*> Actions;
 
         ImageSets mImageSets;
         Actions mActions;

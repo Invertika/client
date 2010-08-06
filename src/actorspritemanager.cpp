@@ -23,8 +23,6 @@
 
 #include "localplayer.h"
 
-#include "gui/viewport.h"
-
 #include "utils/stringutils.h"
 #include "utils/dtor.h"
 
@@ -207,7 +205,6 @@ void ActorSpriteManager::logic()
     for (it = mDeleteActors.begin(), it_end = mDeleteActors.end();
          it != it_end; ++it)
     {
-        viewport->clearHover(*it);
         mActors.erase(*it);
         delete *it;
     }

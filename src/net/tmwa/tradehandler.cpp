@@ -21,15 +21,15 @@
 
 #include "net/tmwa/tradehandler.h"
 
+#include "eventmanager.h"
 #include "inventory.h"
 #include "item.h"
 #include "localplayer.h"
+#include "playerinfo.h"
 #include "playerrelations.h"
 
 #include "gui/confirmdialog.h"
 #include "gui/trade.h"
-
-#include "gui/widgets/chattab.h"
 
 #include "net/inventoryhandler.h"
 #include "net/messagein.h"
@@ -96,14 +96,14 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 if (player_relations.hasPermission(tradePartnerName,
                                                    PlayerRelation::TRADE))
                 {
-                    if (!player_node->tradeRequestOk() || confirmDlg)
+                    if (PlayerInfo::isTrading() || confirmDlg)
                     {
                         Net::getTradeHandler()->respond(false);
                         break;
                     }
 
                     tradePartnerName = tradePartnerNameTemp;
-                    player_node->setTrading(true);
+                    PlayerInfo::setTrading(true);
                     confirmDlg = new ConfirmDialog(_("Request for Trade"),
                             strprintf(_("%s wants to trade with you, do you "
                                       "accept?"), tradePartnerName.c_str()));
@@ -121,16 +121,16 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             switch (msg.readInt8())
             {
                 case 0: // Too far away
-                    localChatTab->chatLog(_("Trading isn't possible. Trade "
-                            "partner is too far away."), BY_SERVER);
+                    SERVER_NOTICE(_("Trading isn't possible. Trade "
+                            "partner is too far away."))
                     break;
                 case 1: // Character doesn't exist
-                    localChatTab->chatLog(_("Trading isn't possible. Character "
-                            "doesn't exist."), BY_SERVER);
+                    SERVER_NOTICE(_("Trading isn't possible. Character "
+                            "doesn't exist."))
                     break;
                 case 2: // Invite request check failed...
-                    localChatTab->chatLog(_("Trade cancelled due to an unknown "
-                            "reason."), BY_SERVER);
+                    SERVER_NOTICE(_("Trade cancelled due to an unknown "
+                            "reason."))
                     break;
                 case 3: // Trade accepted
                     tradeWindow->reset();
@@ -141,17 +141,15 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                 case 4: // Trade cancelled
                     if (player_relations.hasPermission(tradePartnerName,
                                                        PlayerRelation::SPEECH_LOG))
-                        localChatTab->chatLog(strprintf(_("Trade with %s "
-                                "cancelled."), tradePartnerName.c_str()),
-                                BY_SERVER);
+                        SERVER_NOTICE(strprintf(_("Trade with %s cancelled."),
+                                      tradePartnerName.c_str()))
                     // otherwise ignore silently
 
                     tradeWindow->setVisible(false);
-                    player_node->setTrading(false);
+                    PlayerInfo::setTrading(false);
                     break;
                 default: // Shouldn't happen as well, but to be sure
-                    localChatTab->chatLog(_("Unhandled trade cancel packet."),
-                            BY_SERVER);
+                    SERVER_NOTICE(_("Unhandled trade cancel packet."))
                     break;
             }
             break;
@@ -177,7 +175,7 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
                 const int index = msg.readInt16() - INVENTORY_OFFSET;
-                Item *item = player_node->getInventory()->getItem(index);
+                Item *item = PlayerInfo::getInventory()->getItem(index);
                 if (!item)
                 {
                     tradeWindow->receivedOk(true);
@@ -199,17 +197,17 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
                         break;
                     case 1:
                         // Add item failed - player overweighted
-                        localChatTab->chatLog(_("Failed adding item. Trade "
-                                "partner is over weighted."), BY_SERVER);
+                        SERVER_NOTICE(_("Failed adding item. Trade "
+                                "partner is over weighted."))
                         break;
                     case 2:
                          // Add item failed - player has no free slot
-                         localChatTab->chatLog(_("Failed adding item. Trade "
-                                 "partner has no free slot."), BY_SERVER);
+                         SERVER_NOTICE(_("Failed adding item. Trade "
+                                 "partner has no free slot."))
                          break;
                     default:
-                        localChatTab->chatLog(_("Failed adding item for "
-                                "unknown reason."), BY_SERVER);
+                        SERVER_NOTICE(_("Failed adding item for "
+                                "unknown reason."))
                         break;
                 }
             }
@@ -221,17 +219,17 @@ void TradeHandler::handleMessage(Net::MessageIn &msg)
             break;
 
         case SMSG_TRADE_CANCEL:
-            localChatTab->chatLog(_("Trade canceled."), BY_SERVER);
+            SERVER_NOTICE(_("Trade canceled."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
 
         case SMSG_TRADE_COMPLETE:
-            localChatTab->chatLog(_("Trade completed."), BY_SERVER);
+            SERVER_NOTICE(_("Trade completed."))
             tradeWindow->setVisible(false);
             tradeWindow->reset();
-            player_node->setTrading(false);
+            PlayerInfo::setTrading(false);
             break;
     }
 }
@@ -245,7 +243,7 @@ void TradeHandler::request(Being *being)
 void TradeHandler::respond(bool accept)
 {
     if (!accept)
-        player_node->setTrading(false);
+        PlayerInfo::setTrading(false);
 
     MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);

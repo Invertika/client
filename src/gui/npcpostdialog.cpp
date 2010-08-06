@@ -21,8 +21,10 @@
 
 #include "gui/npcpostdialog.h"
 
+#include "eventmanager.h"
+#include "playerinfo.h"
+
 #include "gui/widgets/button.h"
-#include "gui/widgets/chattab.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
@@ -78,11 +80,14 @@ NpcPostDialog::NpcPostDialog(int npcId):
 
     instances.push_back(this);
     setVisible(true);
+
+    PlayerInfo::setNPCPostCount(PlayerInfo::getNPCPostCount() + 1);
 }
 
 NpcPostDialog::~NpcPostDialog()
 {
     instances.remove(this);
+    PlayerInfo::setNPCPostCount(PlayerInfo::getNPCPostCount() - 1);
 }
 
 void NpcPostDialog::action(const gcn::ActionEvent &event)
@@ -91,8 +96,7 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
     {
         if (mSender->getText().empty() || mText->getText().empty())
         {
-            localChatTab->chatLog(_("Failed to send as sender or letter "
-                    "invalid."));
+            SERVER_NOTICE(_("Failed to send as sender or letter invalid."))
         }
         else
         {

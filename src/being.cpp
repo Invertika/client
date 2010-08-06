@@ -26,6 +26,7 @@
 #include "client.h"
 #include "configuration.h"
 #include "effectmanager.h"
+#include "event.h"
 #include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -33,22 +34,16 @@
 #include "map.h"
 #include "particle.h"
 #include "party.h"
+#include "playerrelations.h"
 #include "simpleanimation.h"
 #include "sound.h"
 #include "sprite.h"
 #include "text.h"
 #include "statuseffect.h"
 
-#include "gui/buy.h"
-#include "gui/buysell.h"
 #include "gui/gui.h"
-#include "gui/npcdialog.h"
-#include "gui/npcpostdialog.h"
-#include "gui/sell.h"
 #include "gui/socialwindow.h"
 #include "gui/speechbubble.h"
-#include "gui/theme.h"
-#include "gui/userpalette.h"
 
 #include "net/charhandler.h"
 #include "net/gamehandler.h"
@@ -65,6 +60,8 @@
 #include "resources/monsterdb.h"
 #include "resources/npcdb.h"
 #include "resources/resourcemanager.h"
+#include "resources/theme.h"
+#include "resources/userpalette.h"
 
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
@@ -74,7 +71,6 @@
 #include <cmath>
 
 #define HAIR_FILE "hair.xml"
-#define PARTICLE_LOCATION "graphics/particles/"
 
 static const int DEFAULT_BEING_WIDTH = 32;
 static const int DEFAULT_BEING_HEIGHT = 32;
@@ -112,7 +108,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mWalkSpeed = Net::getPlayerHandler()->getDefaultWalkSpeed();
 
     if (getType() == PLAYER)
-        mShowName = config.getValue("visiblenames", 1);
+        mShowName = config.getBoolValue("visiblenames");
 
     config.addListener("visiblenames", this);
 
@@ -120,6 +116,7 @@ Being::Being(int id, Type type, int subtype, Map *map):
         setShowName(true);
 
     updateColors();
+    listen("Chat");
 }
 
 Being::~Being()
@@ -215,8 +212,9 @@ void Being::setDestination(int dstX, int dstY)
 
     Position dest = mMap->checkNodeOffsets(getCollisionRadius(), getWalkMask(),
                                            dstX, dstY);
-    Path thisPath = mMap->findPixelPath(mPos.x, mPos.y, dest.x, dest.y,
-                                   getCollisionRadius(), getWalkMask());
+    Path thisPath = mMap->findPixelPath((int) mPos.x, (int) mPos.y,
+                                        dest.x, dest.y,
+                                        getCollisionRadius(), getWalkMask());
 
     if (thisPath.empty())
     {
@@ -249,7 +247,7 @@ void Being::setPath(const Path &path)
     mPath = path;
 
     if ((Net::getNetworkType() == ServerInfo::TMWATHENA) &&
-            mAction != WALK && mAction != DEAD)
+            mAction != MOVE && mAction != DEAD)
     {
         nextTile();
         mActionTime = tick_time;
@@ -298,7 +296,7 @@ void Being::setSpeech(const std::string &text, int time)
     if (!mSpeech.empty())
         mSpeechTime = time <= SPEECH_MAX_TIME ? time : SPEECH_MAX_TIME;
 
-    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
+    const int speech = config.getIntValue("speech");
     if (speech == TEXT_OVERHEAD)
     {
         if (mText)
@@ -550,20 +548,23 @@ void Being::fireMissile(Being *victim, const std::string &particle)
 
 void Being::setAction(Action action, int attackType)
 {
-    SpriteAction currentAction = ACTION_INVALID;
+    std::string currentAction = SpriteAction::INVALID;
 
     switch (action)
     {
-        case WALK:
-            currentAction = ACTION_WALK;
+        case MOVE:
+            currentAction = SpriteAction::MOVE;
+            // Note: When adding a run action,
+            // Differentiate walk and run with action name,
+            // while using only the ACTION_MOVE.
             break;
         case SIT:
-            currentAction = ACTION_SIT;
+            currentAction = SpriteAction::SIT;
             break;
         case ATTACK:
             if (mEquippedWeapon)
             {
-                currentAction = mEquippedWeapon->getAttackType();
+                currentAction = mEquippedWeapon->getAttackAction();
                 reset();
             }
             else
@@ -598,26 +599,27 @@ void Being::setAction(Action action, int attackType)
 
             break;
         case HURT:
-            //currentAction = ACTION_HURT;  // Buggy: makes the player stop
+            //currentAction = SpriteAction::HURT;// Buggy: makes the player stop
                                             // attacking and unable to attack
-                                            // again until he moves
+                                            // again until he moves.
+                                            // TODO: fix this!
             break;
         case DEAD:
-            currentAction = ACTION_DEAD;
+            currentAction = SpriteAction::DEAD;
             sound.playSfx(mInfo->getSound(SOUND_EVENT_DIE));
             break;
         case STAND:
-            currentAction = ACTION_STAND;
+            currentAction = SpriteAction::STAND;
             break;
     }
 
-    if (currentAction != ACTION_INVALID)
+    if (currentAction != SpriteAction::INVALID)
     {
         play(currentAction);
         mAction = action;
     }
 
-    if (currentAction != ACTION_WALK)
+    if (currentAction != SpriteAction::MOVE)
         mActionTime = tick_time;
 }
 
@@ -679,7 +681,7 @@ void Being::nextTile()
 
     mX = pos.x;
     mY = pos.y;
-    setAction(WALK);
+    setAction(MOVE);
     mActionTime += (int)(mWalkSpeed.x / 10);
 }
 
@@ -743,8 +745,8 @@ void Being::logic()
             else
                 setPosition(mPos + diff);
 
-            if (mAction != WALK)
-                setAction(WALK);
+            if (mAction != MOVE)
+                setAction(MOVE);
 
             // Update the player sprite direction.
             // N.B.: We only change this if the distance is more than one pixel.
@@ -773,7 +775,7 @@ void Being::logic()
             // remove it and go to the next one.
             mPath.pop_front();
         }
-        else if (mAction == WALK)
+        else if (mAction == MOVE)
         {
             setAction(STAND);
         }
@@ -790,7 +792,7 @@ void Being::logic()
             case HURT:
                break;
 
-            case WALK:
+            case MOVE:
                 if ((int) ((get_elapsed_time(mActionTime) * frameCount)
                         / getWalkSpeed().x) >= frameCount)
                     nextTile();
@@ -810,9 +812,9 @@ void Being::logic()
 
                     if (!particleEffect.empty() &&
                         findSameSubstring(particleEffect,
-                                          PARTICLE_LOCATION).empty())
-                        particleEffect = PARTICLE_LOCATION +
-                                         particleEffect;
+                                     paths.getStringValue("particles")).empty())
+                        particleEffect = paths.getStringValue("particles")
+                                         + particleEffect;
                 }
                 else
                 {
@@ -887,7 +889,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
     const int py = getPixelY() - offsetY;
-    const int speech = (int) config.getValue("speech", TEXT_OVERHEAD);
+    const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
     if (mSpeechTime == 0)
@@ -941,7 +943,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK ||  !(mDirection & (pos | neg)))
+    if (mAction != MOVE ||  !(mDirection & (pos | neg)))
         return 0;
 
     int offset = 0;
@@ -994,7 +996,7 @@ void Being::optionChanged(const std::string &value)
 {
     if (getType() == PLAYER && value == "visiblenames")
     {
-        setShowName(config.getValue("visiblenames", 1));
+        setShowName(config.getBoolValue("visiblenames"));
     }
 }
 
@@ -1010,7 +1012,7 @@ void Being::showName()
     mDispName = 0;
     std::string mDisplayName(mName);
 
-    if (config.getValue("showgender", false))
+    if (config.getBoolValue("showgender"))
     {
         if (getGender() == GENDER_FEMALE)
             mDisplayName += " \u2640";
@@ -1020,7 +1022,7 @@ void Being::showName()
 
     if (getType() == MONSTER)
     {
-        if (config.getValue("showMonstersTakedDamage", false))
+        if (config.getBoolValue("showMonstersTakedDamage"))
         {
             mDisplayName += ", " + toString(getDamageTaken());
         }
@@ -1113,8 +1115,8 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
             if (!color.empty())
                 filename += "|" + color;
 
-            equipmentSprite = AnimatedSprite::load("graphics/sprites/" +
-                                                   filename);
+            equipmentSprite = AnimatedSprite::load(
+                                    paths.getStringValue("sprites") + filename);
         }
 
         if (equipmentSprite)
@@ -1153,7 +1155,8 @@ void Being::load()
     // we can go.
     int hairstyles = 1;
 
-    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) != "error.xml")
+    while (ItemDB::get(-hairstyles).getSprite(GENDER_MALE) !=
+                                        paths.getStringValue("spriteErrorFile"))
         hairstyles++;
 
     mNumberOfHairstyles = hairstyles;
@@ -1199,9 +1202,20 @@ void Being::talkTo()
     Net::getNpcHandler()->talk(mId);
 }
 
-bool Being::isTalking()
+void Being::event(const std::string &channel, const Mana::Event &event)
 {
-    return NpcDialog::isActive() || BuyDialog::isActive() ||
-           SellDialog::isActive() || BuySellDialog::isActive() ||
-           NpcPostDialog::isActive();
+    if (channel == "Chat" &&
+            (event.getName() == "Being" || event.getName() == "Player") &&
+            event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
+    {
+        try
+        {
+            if (mId == event.getInt("beingId"))
+            {
+                setSpeech(event.getString("text"));
+            }
+        }
+        catch (Mana::BadEvent badEvent)
+        {}
+    }
 }

@@ -27,16 +27,16 @@
 #include "item.h"
 #include "itemshortcut.h"
 #include "keyboardconfig.h"
-#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
 #include "gui/itempopup.h"
 #include "gui/palette.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "resources/image.h"
 #include "resources/iteminfo.h"
+#include "resources/theme.h"
 
 #include "utils/stringutils.h"
 
@@ -53,7 +53,7 @@ ItemShortcutContainer::ItemShortcutContainer():
     mBackgroundImg = Theme::getImageFromTheme("item_shortcut_bgr.png");
     mMaxItems = itemShortcut->getItemCount();
 
-    mBackgroundImg->setAlpha(config.getValue("guialpha", 0.8));
+    mBackgroundImg->setAlpha(config.getFloatValue("guialpha"));
 
     mBoxHeight = mBackgroundImg->getHeight();
     mBoxWidth = mBackgroundImg->getWidth();
@@ -67,9 +67,9 @@ ItemShortcutContainer::~ItemShortcutContainer()
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
-    if (config.getValue("guialpha", 0.8) != mAlpha)
+    if (config.getFloatValue("guialpha") != mAlpha)
     {
-        mAlpha = config.getValue("guialpha", 0.8);
+        mAlpha = config.getFloatValue("guialpha");
         mBackgroundImg->setAlpha(mAlpha);
     }
 
@@ -94,7 +94,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
             continue;
 
         Item *item =
-            player_node->getInventory()->findItem(itemShortcut->getItem(i));
+                PlayerInfo::getInventory()->findItem(itemShortcut->getItem(i));
 
         if (item)
         {
@@ -151,7 +151,7 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
             if (itemId < 0)
                 return;
 
-            Item *item = player_node->getInventory()->findItem(itemId);
+            Item *item = PlayerInfo::getInventory()->findItem(itemId);
 
             if (item)
             {
@@ -187,7 +187,7 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
     }
     else if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Item *item = player_node->getInventory()->
+        Item *item = PlayerInfo::getInventory()->
                      findItem(itemShortcut->getItem(index));
 
         if (!item)
@@ -240,7 +240,7 @@ void ItemShortcutContainer::mouseMoved(gcn::MouseEvent &event)
     if (itemId < 0)
         return;
 
-    Item *item = player_node->getInventory()->findItem(itemId);
+    Item *item = PlayerInfo::getInventory()->findItem(itemId);
 
     if (item)
     {

@@ -28,8 +28,9 @@
 #include "localplayer.h"
 #include "log.h"
 #include "particle.h"
+#include "playerinfo.h"
+#include "configuration.h"
 
-#include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/okdialog.h"
 #include "gui/viewport.h"
@@ -37,6 +38,7 @@
 #include "net/net.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/defines.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/npchandler.h"
@@ -111,13 +113,13 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
                 if (stat == BASE_ATTR_HP)
                 {
-                    player_node->setMaxHp(base);
-                    player_node->setHp(value);
+                    PlayerInfo::setAttribute(MAX_HP, base);
+                    PlayerInfo::setAttribute(HP, value);
                 }
                 else
                 {
-                    player_node->setAttributeBase(stat, base);
-                    player_node->setAttributeEffective(stat, value);
+                    PlayerInfo::setStatBase(stat, base);
+                    PlayerInfo::setStatMod(stat, value - base);
                 }
             }
         } break;
@@ -131,23 +133,26 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 int current = msg.readInt32();
                 int next = msg.readInt32();
 
-                player_node->setExperience(skill, current, next);
+                PlayerInfo::setStatExperience(skill, current, next);
             }
         } break;
 
         case GPMSG_LEVELUP:
         {
-            player_node->setLevel(msg.readInt16());
-            player_node->setCharacterPoints(msg.readInt16());
-            player_node->setCorrectionPoints(msg.readInt16());
-            Particle* effect = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+            PlayerInfo::setAttribute(LEVEL, msg.readInt16());
+            PlayerInfo::setAttribute(CHAR_POINTS, msg.readInt16());
+            PlayerInfo::setAttribute(CORR_POINTS, msg.readInt16());
+            Particle* effect = particleEngine->addEffect(
+                                               paths.getStringValue("particles")
+                                     + paths.getStringValue("levelUpEffectFile")
+                                                         ,0, 0);
             player_node->controlParticle(effect);
         } break;
 
 
         case GPMSG_LEVEL_PROGRESS:
         {
-            player_node->setExp(msg.readInt8(), false);
+            PlayerInfo::setAttribute(EXP, msg.readInt8());
         } break;
 
 
@@ -171,18 +176,19 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     // has to be correct. The server is always right!
                     // undo attribute change and set points to 0
                     logger->log("Warning: Server denied increase of attribute %d (no points left) ", attrNum);
-                    int attrValue = player_node->getAttributeBase(attrNum) - 1;
-                    player_node->setCharacterPoints(0);
-                    player_node->setAttributeBase(attrNum, attrValue);
+                    int attrValue = PlayerInfo::getStatBase(attrNum) - 1;
+                    PlayerInfo::setAttribute(CHAR_POINTS, 0);
+                    PlayerInfo::setStatBase(attrNum, attrValue);
                 } break;
                 case ATTRIBMOD_DENIED:
                 {
                     // undo attribute change
                     logger->log("Warning: Server denied increase of attribute %d (reason unknown) ", attrNum);
-                    int points = player_node->getCharacterPoints() - 1;
-                    player_node->setCharacterPoints(points);
-                    int attrValue = player_node->getAttributeBase(attrNum) - 1;
-                    player_node->setAttributeBase(attrNum, attrValue);
+                    int points = PlayerInfo::getAttribute(CHAR_POINTS) - 1;
+                    PlayerInfo::setAttribute(CHAR_POINTS, points);
+
+                    int attrValue = PlayerInfo::getStatBase(attrNum) - 1;
+                    PlayerInfo::setStatBase(attrNum, attrValue);
                 } break;
             }
         } break;
@@ -207,21 +213,23 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     // has to be correct. The server is always right!
                     // undo attribute change and set points to 0
                     logger->log("Warning: Server denied reduction of attribute %d (no points left) ", attrNum);
-                    int attrValue = player_node->getAttributeBase(attrNum) + 1;
-                    player_node->setCorrectionPoints(0);
-                    player_node->setAttributeBase(attrNum, attrValue);
+                    int attrValue = PlayerInfo::getStatBase(attrNum) + 1;
+                    PlayerInfo::setAttribute(CHAR_POINTS, 0);
+                    PlayerInfo::setStatBase(attrNum, attrValue);
                     break;
                 } break;
                 case ATTRIBMOD_DENIED:
                 {
                     // undo attribute change
                     logger->log("Warning: Server denied reduction of attribute %d (reason unknown) ", attrNum);
-                    int charaPoints = player_node->getCharacterPoints() - 1;
-                    player_node->setCharacterPoints(charaPoints);
-                    int correctPoints = player_node->getCorrectionPoints() + 1;
-                    player_node->setCorrectionPoints(correctPoints);
-                    int attrValue = player_node->getAttributeBase(attrNum) + 1;
-                    player_node->setAttributeBase(attrNum, attrValue);
+                    int charaPoints = PlayerInfo::getAttribute(CHAR_POINTS) - 1;
+                    PlayerInfo::setAttribute(CHAR_POINTS, charaPoints);
+
+                    int correctPoints = PlayerInfo::getAttribute(CORR_POINTS) + 1;
+                    PlayerInfo::setAttribute(CORR_POINTS, correctPoints);
+
+                    int attrValue = PlayerInfo::getStatBase(attrNum) + 1;
+                    PlayerInfo::setStatBase(attrNum, attrValue);
                 } break;
             }
 
@@ -236,7 +244,7 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 int current = msg.readInt32();
                 int max = msg.readInt32();
                 int recharge = msg.readInt32();
-                player_node->setSpecialStatus(id, current, max, recharge);
+                PlayerInfo::setSpecialStatus(id, current, max, recharge);
             }
         } break;
         /*

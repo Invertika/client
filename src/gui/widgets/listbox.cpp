@@ -25,7 +25,8 @@
 
 #include "gui/palette.h"
 #include "gui/sdlinput.h"
-#include "gui/theme.h"
+
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
@@ -45,8 +46,8 @@ ListBox::~ListBox()
 
 void ListBox::updateAlpha()
 {
-    float alpha = std::max(config.getValue("guialpha", 0.8),
-                   (double) Theme::instance()->getMinimumOpacity());
+    float alpha = std::max(config.getFloatValue("guialpha"),
+                           Theme::instance()->getMinimumOpacity());
 
     if (mAlpha != alpha)
         mAlpha = alpha;

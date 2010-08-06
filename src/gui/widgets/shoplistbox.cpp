@@ -26,12 +26,12 @@
 #include "shopitem.h"
 
 #include "gui/itempopup.h"
-#include "gui/theme.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/shopitems.h"
 
 #include "resources/image.h"
+#include "resources/theme.h"
 
 #include <guichan/font.hpp>
 #include <guichan/listmodel.hpp>
@@ -71,8 +71,8 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
     if (!mListModel)
         return;
 
-    if (config.getValue("guialpha", 0.8) != mAlpha)
-        mAlpha = config.getValue("guialpha", 0.8);
+    if (config.getFloatValue("guialpha") != mAlpha)
+        mAlpha = config.getFloatValue("guialpha");
 
     int alpha = (int)(mAlpha * 255.0f);
     const gcn::Color* highlightColor =
