@@ -6,7 +6,7 @@ SetCompressor /SOLID lzma
 
 ; HM NIS Edit helper defines
 !define PRODUCT_NAME "Invertika"
-!define PRODUCT_VERSION "v1398"
+!define PRODUCT_VERSION "v1663"
 !define PRODUCT_PUBLISHER "The Invertika Developer Team"
 !define PRODUCT_WEB_SITE "http://invertika.org"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\invertika.exe"
