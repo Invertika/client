@@ -22,8 +22,11 @@
 #include "gui/npcdialog.h"
 
 #include "configuration.h"
+#include "event.h"
+#include "listener.h"
 #include "playerinfo.h"
 
+#include "gui/npcpostdialog.h"
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
@@ -34,9 +37,6 @@
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 
-#include "net/net.h"
-#include "net/npchandler.h"
-
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -46,6 +46,26 @@
 #define CAPTION_NEXT _("Next")
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
+
+#define NpcEvent(name) Mana::Event event(name);\
+event.setInt("npcId", mNpcId);
+
+typedef std::map<int, NpcDialog*> NpcDialogs;
+
+class NpcEventListener : public Mana::Listener
+{
+public:
+    void event(const std::string &channel, const Mana::Event &event);
+
+    NpcDialog *getDialog(int id, bool make = true);
+
+    void removeDialog(int id);
+
+private:
+    NpcDialogs mNpcDialogs;
+};
+
+static NpcEventListener *npcListener = NULL;
 
 NpcDialog::DialogList NpcDialog::instances;
 
@@ -144,6 +164,8 @@ NpcDialog::~NpcDialog()
     config.removeListener("logNpcInGui", this);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        - 1);
+
+    npcListener->removeDialog(mNpcId);
 }
 
 void NpcDialog::setText(const std::string &text)
@@ -196,27 +218,32 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
             if (mInputState == NPC_INPUT_LIST)
             {
-                int choice = 0;
                 int selectedIndex = mItemList->getSelected();
 
                 if (selectedIndex >= (int) mItems.size() || selectedIndex < 0)
-                {
                     return;
-                }
-                choice = selectedIndex + 1;
+
                 printText = mItems[selectedIndex];
 
-                Net::getNpcHandler()->listInput(mNpcId, choice);
+                NpcEvent("doMenu")
+                event.setInt("choice", selectedIndex + 1);
+                event.trigger("NPC");
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
                 printText = mTextField->getText();
-                Net::getNpcHandler()->stringInput(mNpcId, printText);
+
+                NpcEvent("doStringInput")
+                event.setString("value", printText);
+                event.trigger("NPC");
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
                 printText = strprintf("%d", mIntField->getValue());
-                Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
+
+                NpcEvent("doIntegerInput")
+                event.setInt("value", mIntField->getValue());
+                event.trigger("NPC");
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -254,12 +281,15 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    Net::getNpcHandler()->nextDialog(mNpcId);
+    NpcEvent("doNext");
+    event.trigger("NPC");
 }
 
 void NpcDialog::closeDialog()
 {
-    Net::getNpcHandler()->closeDialog(mNpcId);
+    NpcEvent("doClose");
+    event.trigger("NPC");
+    close();
 }
 
 int NpcDialog::getNumberOfElements()
@@ -283,15 +313,6 @@ void NpcDialog::choiceRequest()
 void NpcDialog::addChoice(const std::string &choice)
 {
     mItems.push_back(choice);
-}
-
-void NpcDialog::parseListItems(const std::string &itemString)
-{
-    std::istringstream iss(itemString);
-
-    std::string tmp;
-    while (getline(iss, tmp, ':'))
-        mItems.push_back(tmp);
 }
 
 void NpcDialog::textRequest(const std::string &defaultText)
@@ -408,6 +429,16 @@ void NpcDialog::closeAll()
     }
 }
 
+void NpcDialog::setup()
+{
+    if (npcListener)
+        return;
+
+    npcListener = new NpcEventListener();
+
+    npcListener->listen("NPC");
+}
+
 void NpcDialog::buildLayout()
 {
     clearLayout();
@@ -473,4 +504,126 @@ void NpcDialog::buildLayout()
     redraw();
 
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
+}
+
+void NpcEventListener::event(const std::string &channel,
+                             const Mana::Event &event)
+{
+    if (channel != "NPC")
+        return;
+
+    if (event.getName() == "Message")
+    {
+        NpcDialog *dialog = getDialog(event.getInt("id"));
+
+        dialog->addText(event.getString("text"));
+    }
+    else if (event.getName() == "Menu")
+    {
+        NpcDialog *dialog = getDialog(event.getInt("id"));
+
+        dialog->choiceRequest();
+
+        int count = event.getInt("choiceCount");
+        for (int i = 1; i <= count; i++)
+            dialog->addChoice(event.getString("choice" + toString(i)));
+    }
+    else if (event.getName() == "IntegerInput")
+    {
+        NpcDialog *dialog = getDialog(event.getInt("id"));
+
+        int defaultValue = event.getInt("default", 0);
+        int min = event.getInt("min", 0);
+        int max = event.getInt("max", 2147483647);
+
+        dialog->integerRequest(defaultValue, min, max);
+    }
+    else if (event.getName() == "StringInput")
+    {
+        NpcDialog *dialog = getDialog(event.getInt("id"));
+
+        try
+        {
+            dialog->textRequest(event.getString("default"));
+        }
+        catch (Mana::BadEvent)
+        {
+            dialog->textRequest("");
+        }
+    }
+    else if (event.getName() == "Next")
+    {
+        int id = event.getInt("id");
+        NpcDialog *dialog = getDialog(id, false);
+
+        if (!dialog)
+        {
+            int mNpcId = id;
+            NpcEvent("doNext");
+            event.trigger("NPC");
+            return;
+        }
+
+        dialog->showNextButton();
+    }
+    else if (event.getName() == "Close")
+    {
+        int id = event.getInt("id");
+        NpcDialog *dialog = getDialog(id, false);
+
+        if (!dialog)
+        {
+            int mNpcId = id;
+            NpcEvent("doClose");
+            event.trigger("NPC");
+            return;
+        }
+
+        dialog->showCloseButton();
+    }
+    else if (event.getName() == "CloseAll")
+    {
+        NpcDialog::closeAll();
+    }
+    else if (event.getName() == "End")
+    {
+        int id = event.getInt("id");
+        NpcDialog *dialog = getDialog(id, false);
+
+        if (dialog)
+            dialog->close();
+    }
+    else if (event.getName() == "Post")
+    {
+        new NpcPostDialog(event.getInt("id"));
+    }
+}
+
+NpcDialog *NpcEventListener::getDialog(int id, bool make)
+{
+    NpcDialogs::iterator diag = mNpcDialogs.find(id);
+    NpcDialog *dialog = 0;
+
+    if (diag == mNpcDialogs.end())
+    {
+        // Empty dialogs don't help
+        if (make)
+        {
+            dialog = new NpcDialog(id);
+            mNpcDialogs[id] = dialog;
+        }
+    }
+    else
+    {
+        dialog = diag->second;
+    }
+
+    return dialog;
+}
+
+void NpcEventListener::removeDialog(int id)
+{
+    NpcDialogs::iterator it = mNpcDialogs.find(id);
+    if (it != mNpcDialogs.end())
+        mNpcDialogs.erase(it);
 }

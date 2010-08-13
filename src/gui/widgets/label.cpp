@@ -24,15 +24,16 @@
 
 Label::Label()
 {
+    setForegroundColor(Theme::getThemeColor(Theme::TEXT));
 }
 
 Label::Label(const std::string &caption) :
     gcn::Label(caption)
 {
+    setForegroundColor(Theme::getThemeColor(Theme::TEXT));
 }
 
 void Label::draw(gcn::Graphics *graphics)
 {
-    setForegroundColor(Theme::getThemeColor(Theme::TEXT));
     gcn::Label::draw(static_cast<gcn::Graphics*>(graphics));
 }

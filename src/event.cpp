@@ -20,10 +20,13 @@
 
 #include "event.h"
 
+#include "listener.h"
 #include "variabledata.h"
 
 namespace Mana
 {
+
+ListenMap Event::mBindings;
 
 Event::~Event()
 {
@@ -55,6 +58,13 @@ int Event::getInt(const std::string &key) const throw (BadEvent)
     return static_cast<IntData *>(it->second)->getData();
 }
 
+bool Event::hasInt(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_INT);
+}
+
 void Event::setString(const std::string &key, const std::string &value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -76,6 +86,13 @@ const std::string &Event::getString(const std::string &key) const throw (BadEven
 }
 
 
+bool Event::hasString(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_STRING);
+}
+
 void Event::setFloat(const std::string &key, double value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -96,6 +113,13 @@ double Event::getFloat(const std::string &key) const throw (BadEvent)
     return static_cast<FloatData *>(it->second)->getData();
 }
 
+bool Event::hasFloat(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_FLOAT);
+}
+
 void Event::setBool(const std::string &key, bool value) throw (BadEvent)
 {
     if (mData.find(key) != mData.end())
@@ -114,6 +138,50 @@ bool Event::getBool(const std::string &key) const throw (BadEvent)
         throw BAD_VALUE;
 
     return static_cast<BoolData *>(it->second)->getData();
+}
+
+bool Event::hasBool(const std::string &key) const
+{
+    VariableMap::const_iterator it = mData.find(key);
+    return !(it == mData.end()
+             || it->second->getType() != VariableData::DATA_BOOL);
+}
+
+void Event::trigger(const std::string &channel, const Event &event)
+{
+    ListenMap::iterator it = mBindings.find(channel);
+
+    // Make sure something is listening
+    if (it == mBindings.end())
+        return;
+
+    // Loop though all listeners
+    ListenerSet::iterator lit = it->second.begin();
+    while (lit != it->second.end())
+    {
+        (*lit)->event(channel, event);
+        lit++;
+    }
+}
+
+void Event::bind(Listener *listener, const std::string &channel)
+{
+    mBindings[channel].insert(listener);
+}
+
+void Event::unbind(Listener *listener, const std::string &channel)
+{
+    mBindings[channel].erase(listener);
+}
+
+void Event::remove(Listener *listener)
+{
+    ListenMap::iterator it = mBindings.begin();
+    while (it != mBindings.end())
+    {
+        it->second.erase(listener);
+        it++;
+    }
 }
 
 } // namespace Mana

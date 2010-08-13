@@ -21,7 +21,7 @@
 
 #include "gui/npcpostdialog.h"
 
-#include "eventmanager.h"
+#include "event.h"
 #include "playerinfo.h"
 
 #include "gui/widgets/button.h"
@@ -29,9 +29,6 @@
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 #include "gui/widgets/scrollarea.h"
-
-#include "net/net.h"
-#include "net/npchandler.h"
 
 #include "utils/gettext.h"
 
@@ -100,8 +97,11 @@ void NpcPostDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
-            Net::getNpcHandler()->sendLetter(mNpcId, mSender->getText(),
-                                             mText->getText());
+            Mana::Event event("doSendLetter");
+            event.setInt("npcId", mNpcId);
+            event.setString("recipient", mSender->getText());
+            event.setString("text", mText->getText());
+            event.trigger("NPC");
         }
         setVisible(false);
     }

@@ -78,7 +78,7 @@ namespace SpriteAction
     static const std::string CAST_MAGIC = "magic";
     static const std::string USE_ITEM = "item";
     static const std::string INVALID = "";
-};
+}
 
 enum SpriteDirection
 {
@@ -104,7 +104,7 @@ class SpriteDef : public Resource
         /**
          * Returns the specified action.
          */
-        Action *getAction(std::string action) const;
+        Action *getAction(const std::string &action) const;
 
         /**
          * Converts a string into a SpriteDirection enum.
