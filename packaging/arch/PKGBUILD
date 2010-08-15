@@ -1,7 +1,7 @@
 pkgname=invertika-svn
 pkgver=1682
 pkgrel=1
-pkgdesc="Invertika is a MMORPG based on TheManaWorld, but completely German."
+pkgdesc="A MMORPG based on TheManaWorld, but completely German."
 arch=('any')
 url="http://invertika.org/"
 license=('GPL2')
