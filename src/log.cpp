@@ -19,26 +19,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
-#include <sstream>
-
 #include "log.h"
-
-#include "gui/widgets/chattab.h"
 
 #ifdef WIN32
 #include <windows.h>
 #elif __APPLE__
 #include <Carbon/Carbon.h>
-#elif __linux__ || __linux
-#include <stdlib.h>
 #endif
 
 #include <sys/time.h>
+#include <iostream>
+#include <sstream>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 Logger::Logger():
-    mLogToStandardOut(true),
-    mChatWindow(NULL)
+    mLogToStandardOut(true)
 {
 }
 
@@ -99,11 +96,6 @@ void Logger::log(const char *log_text, ...)
     if (mLogToStandardOut)
     {
         std::cout << timeStr.str() << buf << std::endl;
-    }
-
-    if (mChatWindow)
-    {
-        localChatTab->chatLog(buf, BY_LOGGER);
     }
 
     // Delete temporary buffer

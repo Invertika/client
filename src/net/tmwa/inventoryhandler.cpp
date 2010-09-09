@@ -109,6 +109,8 @@ InventoryHandler::InventoryHandler()
 
     mStorage = 0;
     mStorageWindow = 0;
+
+    listen("Item");
 }
 
 InventoryHandler::~InventoryHandler()
@@ -172,17 +174,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 }
 
                 if (msg.getId() == SMSG_PLAYER_INVENTORY)
-                {
-                    // Trick because arrows are not considered equipment
-                    bool isEquipment = arrow & 0x8000;
-
-                    inventory->setItem(index, itemId, amount, isEquipment);
-                }
+                    inventory->setItem(index, itemId, amount);
                 else
-                {
                     mInventoryItems.push_back(InventoryItem(index, itemId,
                                                             amount, false));
-                }
             }
             break;
 
@@ -226,11 +221,11 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
             msg.readInt8();  // refine
             for (int i = 0; i < 4; i++)
                 cards[i] = msg.readInt16();
-            equipType = msg.readInt16();
+            msg.readInt16(); // EquipType
             itemType = msg.readInt8();
 
             {
-                const ItemInfo &itemInfo = ItemDB::get(itemId);
+                const ItemInfo &itemInfo = itemDb->get(itemId);
 
                 if (msg.readInt8() > 0)
                 {
@@ -245,7 +240,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                     if  (item && item->getId() == itemId)
                         amount += inventory->getItem(index)->getQuantity();
 
-                    inventory->setItem(index, itemId, amount, equipType != 0);
+                    inventory->setItem(index, itemId, amount);
                 }
             } break;
 
@@ -302,8 +297,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 InventoryItems::iterator it = mInventoryItems.begin();
                 InventoryItems::iterator it_end = mInventoryItems.end();
                 for (; it != it_end; it++)
-                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity,
-                                      (*it).equip);
+                    mStorage->setItem((*it).slot, (*it).id, (*it).quantity);
                 mInventoryItems.clear();
 
                 if (!mStorageWindow)
@@ -328,9 +322,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 item->increaseQuantity(amount);
             }
             else
-            {
-                mStorage->setItem(index, itemId, amount, false);
-            }
+                mStorage->setItem(index, itemId, amount);
             break;
 
         case SMSG_PLAYER_STORAGE_REMOVE:
@@ -372,7 +364,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 msg.readInt8();  // refine
                 msg.skip(8);     // card
 
-                inventory->setItem(index, itemId, 1, true);
+                inventory->setItem(index, itemId, 1);
 
                 if (equipType)
                 {
@@ -421,83 +413,90 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::equipItem(const Item *item)
+void InventoryHandler::event(const std::string &channel,
+                             const Mana::Event &event)
 {
-    if (!item)
-        return;
+    if (channel == "Item")
+    {
+        if (event.getName() == "doCloseInventory")
+        {
+            // No need to worry about type
+            MessageOut outMsg(CMSG_CLOSE_STORAGE);
+        }
+        else
+        {
+            Item *item = event.getItem("item");
 
-    MessageOut outMsg(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt16(0);
-}
+            if (!item)
+                return;
 
-void InventoryHandler::unequipItem(const Item *item)
-{
-    if (!item)
-        return;
+            int index = item->getInvIndex() + INVENTORY_OFFSET;
 
-    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-}
+            if (event.getName() == "doEquip")
+            {
+                MessageOut outMsg(CMSG_PLAYER_EQUIP);
+                outMsg.writeInt16(index);
+                outMsg.writeInt16(0);
+            }
+            else if (event.getName() == "doUnequip")
+            {
+                MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
+                outMsg.writeInt16(index);
+            }
+            else if (event.getName() == "doUse")
+            {
+                MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
+                outMsg.writeInt16(index);
+                outMsg.writeInt32(item->getId()); // unused
+            }
+            else if (event.getName() == "doDrop")
+            {
+                int amount = event.getInt("amount", 1);
 
-void InventoryHandler::useItem(const Item *item)
-{
-    if (!item)
-        return;
+                // TODO: Fix wrong coordinates of drops, serverside?
+                // (what's wrong here?)
+                MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
+                outMsg.writeInt16(index);
+                outMsg.writeInt16(amount);
+            }
+            else if (event.getName() == "doMove")
+            {
+                int newIndex = event.getInt("newIndex", -1);
 
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt32(item->getId()); // unused
-}
+                if (newIndex >= 0)
+                {
+                    // Not implemented for tmwAthena (possible?)
+                }
+                else
+                {
+                    int source = event.getInt("source");
+                    int destination = event.getInt("destination");
+                    int amount = event.getInt("amount", 1);
 
-void InventoryHandler::dropItem(const Item *item, int amount)
-{
-    // TODO: Fix wrong coordinates of drops, serverside? (what's wrong here?)
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
-    outMsg.writeInt16(amount);
+                    if (source == Inventory::INVENTORY
+                            && destination == Inventory::STORAGE)
+                    {
+                        MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
+                        outMsg.writeInt16(index);
+                        outMsg.writeInt32(amount);
+                    }
+                    else if (source == Inventory::STORAGE
+                             && destination == Inventory::INVENTORY)
+                    {
+                        MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+                        outMsg.writeInt16(index - INVENTORY_OFFSET
+                                          + STORAGE_OFFSET);
+                        outMsg.writeInt32(amount);
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool InventoryHandler::canSplit(const Item *item)
 {
     return false;
-}
-
-void InventoryHandler::splitItem(const Item *item, int amount)
-{
-    // Not implemented for eAthena (possible?)
-}
-
-void InventoryHandler::moveItem(int oldIndex, int newIndex)
-{
-    // Not implemented for eAthena (possible?)
-}
-
-void InventoryHandler::openStorage(int type)
-{
-    // Doesn't apply to eAthena, since opening happens through NPCs?
-}
-
-void InventoryHandler::closeStorage(int type)
-{
-    MessageOut outMsg(CMSG_CLOSE_STORAGE);
-}
-
-void InventoryHandler::moveItem(int source, int slot, int amount,
-                                int destination)
-{
-    if (source == Inventory::INVENTORY && destination == Inventory::STORAGE)
-    {
-        MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
-        outMsg.writeInt16(slot + INVENTORY_OFFSET);
-        outMsg.writeInt32(amount);
-    }
-    else if (source == Inventory::STORAGE && destination == Inventory::INVENTORY)
-    {
-        MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
-        outMsg.writeInt16(slot + STORAGE_OFFSET);
-        outMsg.writeInt32(amount);
-    }
 }
 
 size_t InventoryHandler::getSize(int type) const

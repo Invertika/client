@@ -43,7 +43,7 @@ class Inventory
     public:
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
 
-        enum {
+        enum Type {
             INVENTORY,
             STORAGE,
             TRADE,
@@ -56,7 +56,7 @@ class Inventory
          *
          * @param size the number of items that fit in the inventory
          */
-        Inventory(int type, int size = -1);
+        Inventory(Type type, int size = -1);
 
         /**
          * Destructor.
@@ -84,12 +84,12 @@ class Inventory
         /**
          * Adds a new item in a free slot.
          */
-        void addItem(int id, int quantity, bool equipment = false);
+        void addItem(int id, int quantity);
 
         /**
          * Sets the item at the given position.
          */
-        void setItem(int index, int id, int quantity, bool equipment = false);
+        void setItem(int index, int id, int quantity);
 
         /**
          * Remove a item from the inventory.
@@ -143,7 +143,7 @@ class Inventory
 
         void distributeSlotsChangedEvent();
 
-        int mType;
+        Type mType;
         Item **mItems;  /**< The holder of items */
         int mSize;      /**< The max number of inventory items */
         int mUsed;      /**< THe number of slots in use */

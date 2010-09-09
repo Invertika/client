@@ -23,6 +23,7 @@
 #define NET_MANASERV_INVENTORYHANDLER_H
 
 #include "equipment.h"
+#include "listener.h"
 
 #include "net/inventoryhandler.h"
 
@@ -37,63 +38,37 @@ class EquipBackend : public Equipment::Backend
         { memset(mEquipment, 0, sizeof(mEquipment)); }
 
         Item *getEquipment(int index) const
-        { return mEquipment[index]; }
+        { return 0; }
 
         void clear()
         {
-            for (int i = 0; i < EQUIPMENT_SIZE; ++i)
-                delete mEquipment[i];
-
-            std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*) 0);
         }
 
-        void setEquipment(int index, int id, int quantity = 0)
+        void setEquipment(unsigned int slot, unsigned int used, int reference)
         {
-            if (mEquipment[index] && mEquipment[index]->getId() == id)
-                return;
+            printf("Equip: %d at %dx%d\n", reference, slot, used);
+        }
 
-            delete mEquipment[index];
-            mEquipment[index] = (id > 0) ? new Item(id, quantity) : 0;
-
-            if (mEquipment[index])
-            {
-                mEquipment[index]->setInvIndex(index);
-                mEquipment[index]->setEquipped(true);
-                mEquipment[index]->setInEquipment(true);
-            }
+        void addEquipment(unsigned int slot, int reference)
+        {
+            printf("Equip: %d at %d\n", reference, slot);
         }
 
     private:
         Item *mEquipment[EQUIPMENT_SIZE];
 };
 
-class InventoryHandler : public MessageHandler, Net::InventoryHandler
+class InventoryHandler : public MessageHandler, Net::InventoryHandler,
+        public Mana::Listener
 {
     public:
         InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void equipItem(const Item *item);
-
-        void unequipItem(const Item *item);
-
-        void useItem(const Item *item);
-
-        void dropItem(const Item *item, int amount);
+        void event(const std::string &channel, const Mana::Event &event);
 
         bool canSplit(const Item *item);
-
-        void splitItem(const Item *item, int amount);
-
-        void moveItem(int oldIndex, int newIndex);
-
-        void openStorage(int type);
-
-        void closeStorage(int type);
-
-        void moveItem(int source, int slot, int amount,
-                      int destination);
 
         size_t getSize(int type) const;
 

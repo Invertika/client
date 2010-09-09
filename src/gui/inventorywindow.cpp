@@ -97,7 +97,8 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
             longestUseString = unequip;
         }
 
-        mUseButton = new Button(longestUseString, "use", this);
+        mEquipButton = new Button(_("Equip"), "equip", this);
+        mUseButton = new Button(_("Activate"), "activate", this);
         mDropButton = new Button(_("Drop..."), "drop", this);
         mSplitButton = new Button(_("Split"), "split", this);
         mOutfitButton = new Button(_("Outfits"), "outfit", this);
@@ -111,8 +112,9 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
         place(5, 0, mSlotsBar, 2);
         place(0, 1, invenScroll, 7).setPadding(3);
         place(0, 2, mUseButton);
-        place(1, 2, mDropButton);
-        place(2, 2, mSplitButton);
+        place(1, 2, mEquipButton);
+        place(2, 2, mDropButton);
+        place(3, 2, mSplitButton);
         place(6, 2, mOutfitButton);
 
         updateWeight();
@@ -183,17 +185,21 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
     if (!item)
         return;
 
-    if (event.getId() == "use")
+    if (event.getId() == "activate")
+        item->doEvent("doUse");
+    else if (event.getId() == "equip")
     {
-        if (item->isEquipment())
+        if (item->isEquippable())
         {
             if (item->isEquipped())
-                Net::getInventoryHandler()->unequipItem(item);
+                item->doEvent("doUnequip");
             else
-                Net::getInventoryHandler()->equipItem(item);
+                item->doEvent("doEquip");
         }
         else
-            Net::getInventoryHandler()->useItem(item);
+        {
+            item->doEvent("doUse");
+        }
     }
     else if (event.getId() == "drop")
     {
@@ -249,13 +255,23 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             if(!item)
                 return;
             if (mInventory->isMainInventory())
-                Net::getInventoryHandler()->moveItem(Inventory::INVENTORY,
-                                            item->getInvIndex(), item->getQuantity(),
-                                            Inventory::STORAGE);
+            {
+                Mana::Event event("doMove");
+                event.setItem("item", item);
+                event.setInt("amount", item->getQuantity());
+                event.setInt("source", Inventory::INVENTORY);
+                event.setInt("destination", Inventory::STORAGE);
+                event.trigger("Item");
+            }
             else
-                Net::getInventoryHandler()->moveItem(Inventory::STORAGE,
-                                            item->getInvIndex(), item->getQuantity(),
-                                            Inventory::INVENTORY);
+            {
+                Mana::Event event("doMove");
+                event.setItem("item", item);
+                event.setInt("amount", item->getQuantity());
+                event.setInt("source", Inventory::STORAGE);
+                event.setInt("destination", Inventory::INVENTORY);
+                event.trigger("Item");
+            }
         }
     }
 }
@@ -299,25 +315,26 @@ void InventoryWindow::valueChanged(const gcn::SelectionEvent &event)
     if (!item || item->getQuantity() == 0)
     {
         mUseButton->setEnabled(false);
+        mEquipButton->setEnabled(false);
         mDropButton->setEnabled(false);
 
         return;
     }
 
-    mUseButton->setEnabled(true);
     mDropButton->setEnabled(true);
 
-    if (item->isEquipment())
+    if (item->getInfo().getEquippable())
     {
         if (item->isEquipped())
-            mUseButton->setCaption(_("Unequip"));
+            mEquipButton->setCaption(_("Unequip"));
         else
-            mUseButton->setCaption(_("Equip"));
+            mEquipButton->setCaption(_("Equip"));
+        mEquipButton->setEnabled(true);
     }
     else
-    {
-        mUseButton->setCaption(_("Use"));
-    }
+        mEquipButton->setEnabled(false);
+
+    mUseButton->setEnabled(item->getInfo().getActivatable());
 
     if (item->getQuantity() > 1)
         mDropButton->setCaption(_("Drop..."));
@@ -344,7 +361,9 @@ void InventoryWindow::close()
     }
     else
     {
-        Net::getInventoryHandler()->closeStorage(Inventory::STORAGE);
+        Mana::Event event("doCloseInventory");
+        event.setInt("type", mInventory->getType());
+        event.trigger("Item");
         scheduleDelete();
     }
 }

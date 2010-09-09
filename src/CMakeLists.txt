@@ -4,7 +4,6 @@ FIND_PACKAGE(SDL_mixer REQUIRED)
 FIND_PACKAGE(SDL_net REQUIRED)
 FIND_PACKAGE(SDL_ttf REQUIRED)
 FIND_PACKAGE(SDL_gfx REQUIRED)
-FIND_PACKAGE(ENet REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
 FIND_PACKAGE(PhysFS REQUIRED)
@@ -21,6 +20,13 @@ IF (CMAKE_COMPILER_IS_GNUCXX)
         SET(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -ggdb0 -gstabs2")
     ENDIF()
 ENDIF()
+
+IF (POLICY CMP0015)
+  CMAKE_POLICY(SET CMP0015 OLD)
+ENDIF()
+INCLUDE_DIRECTORIES("../libs/enet/include")
+LINK_DIRECTORIES("../libs/enet")
+SET(INTERNAL_LIBRARIES enet)
 
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
@@ -71,7 +77,6 @@ INCLUDE_DIRECTORIES(
     ${SDLNET_INCLUDE_DIR}
     ${SDLTTF_INCLUDE_DIR}
     ${SDLGFX_INCLUDE_DIR}
-    ${ENET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
     ${CURL_INCLUDE_DIR}
@@ -404,11 +409,12 @@ SET(SRCS
     utils/mkdir.h
     utils/xml.cpp
     utils/xml.h
+    utils/zlib.cpp
+    utils/zlib.h
     actor.cpp
     actor.h
     actorsprite.cpp
     actorsprite.h
-    actorspritelistener.h
     actorspritemanager.cpp
     actorspritemanager.h
     animatedsprite.cpp
@@ -572,6 +578,8 @@ SET(SRCS_TMWA
 SET(SRCS_MANA
     net/manaserv/adminhandler.cpp
     net/manaserv/adminhandler.h
+    net/manaserv/attributes.cpp
+    net/manaserv/attributes.h
     net/manaserv/beinghandler.cpp
     net/manaserv/beinghandler.h
     net/manaserv/buysellhandler.cpp
@@ -616,8 +624,6 @@ SET(SRCS_MANA
     net/manaserv/protocol.h
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
-    net/manaserv/stats.cpp
-    net/manaserv/stats.h
     net/manaserv/tradehandler.cpp
     net/manaserv/tradehandler.h
     )
@@ -636,13 +642,13 @@ SET (PROGRAMS invertika)
 ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
 
 TARGET_LINK_LIBRARIES(invertika
+    ${INTERNAL_LIBRARIES}
     ${SDLGFX_LIBRARIES}
     ${SDL_LIBRARY}
     ${SDLIMAGE_LIBRARY}
     ${SDLMIXER_LIBRARY}
     ${SDLNET_LIBRARY}
     ${SDLTTF_LIBRARY}
-    ${ENET_LIBRARIES}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}
     ${CURL_LIBRARIES}
@@ -651,6 +657,7 @@ TARGET_LINK_LIBRARIES(invertika
     ${OPENGL_LIBRARIES}
     ${LIBINTL_LIBRARIES}
     ${EXTRA_LIBRARIES})
+
 INSTALL(TARGETS invertika RUNTIME DESTINATION ${PKG_BINDIR})
 
 IF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
