@@ -24,6 +24,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 /**
  * Trims spaces off the end and the beginning of the given string.
@@ -121,7 +122,8 @@ int compareStrI(const std::string &a, const std::string &b);
 
 bool isWordSeparator(char chr);
 
-const std::string findSameSubstring(const std::string &str1, const std::string &str2);
+const std::string findSameSubstring(const std::string &str1,
+                                    const std::string &str2);
 
 const char* getSafeUtf8String(std::string text);
 
@@ -131,6 +133,9 @@ const char* getSafeUtf8String(std::string text);
  * @param text the string used to get the bool value
  * @return a boolean value..
  */
-bool getBoolFromString(const std::string &text);
+bool getBoolFromString(const std::string &text, bool def = false);
+
+std::string autocomplete(std::vector<std::string> &candidates,
+                         std::string base);
 
 #endif // UTILS_STRINGUTILS_H

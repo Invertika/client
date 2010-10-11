@@ -38,12 +38,6 @@ class Item;
 class Map;
 class OkDialog;
 
-class AwayListener : public gcn::ActionListener
-{
-    public:
-        void action(const gcn::ActionEvent &event);
-};
-
 /**
  * The local player character.
  */
@@ -178,15 +172,6 @@ class LocalPlayer : public Being
         bool isPathSetByMouse() const
         { return mPathSetByMouse; }
 
-        void changeAwayMode();
-
-        bool getAwayMode()
-        { return mAwayMode; }
-
-        void setAway(const std::string &message);
-
-        void afkRespond(ChatTab *tab, const std::string &nick);
-
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
@@ -196,29 +181,6 @@ class LocalPlayer : public Being
         void optionChanged(const std::string &value);
 
         void event(const std::string &channel, const Mana::Event &event);
-
-        /**
-         * set a following player by right clicking.
-         */
-        void setFollow(std::string player) { mPlayerFollowed = player; }
-
-        /**
-         * setting the next destination of the following, in case of warp
-         */
-        void setNextDest(int x, int y) { mNextDestX = x; mNextDestY = y; }
-
-        int getNextDestX() const { return mNextDestX; }
-        int getNextDestY() const { return mNextDestY; }
-
-        /**
-         * Stop following a player.
-         */
-        void cancelFollow() { mPlayerFollowed = ""; }
-
-        /**
-         * Get the playername followed by the current player.
-         */
-        std::string getFollow() const { return mPlayerFollowed; }
 
         /**
          * Tells the engine whether to check
@@ -247,11 +209,6 @@ class LocalPlayer : public Being
 
         Being *mTarget;
 
-        /** Follow system **/
-        std::string mPlayerFollowed;
-        int mNextDestX;
-        int mNextDestY;
-
         FloorItem *mPickUpTarget;
 
         bool mGoingToTarget;
@@ -267,11 +224,6 @@ class LocalPlayer : public Being
         /** Queued messages*/
         std::list<MessagePair> mMessages;
         int mMessageTime;
-        AwayListener *mAwayListener;
-        OkDialog *mAwayDialog;
-
-        int mAfkTime;
-        bool mAwayMode;
 };
 
 extern LocalPlayer *player_node;
