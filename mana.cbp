@@ -11,15 +11,15 @@
 				<Option object_output=".objs\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters="-u -d C:\mana\data" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
+					<Add option="-g" />
 					<Add option="-O3" />
 					<Add option="-Wall" />
+					<Add option="-Wno-switch" />
+					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
-					<Add option="-DNOGDI" />
 					<Add option="-DENABLE_NLS" />
-					<Add option="-DEATHENA_SUPPORT" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />
@@ -42,10 +42,8 @@
 					<Add library="physfs" />
 					<Add library="curl.dll" />
 					<Add library="intl" />
-					<Add library="enet" />
 					<Add library="ws2_32" />
 					<Add library="winmm" />
-					<Add directory="E:\Programme\CodeBlocks\include\SDL" />
 				</Linker>
 			</Target>
 			<Target title="Unix">
@@ -77,7 +75,6 @@
 					<Add library="SDL_ttf" />
 					<Add library="SDL_gfx" />
 					<Add library="png" />
-					<Add library="enet" />
 				</Linker>
 			</Target>
 		</Build>
@@ -89,17 +86,35 @@
 			<Add directory="include" />
 			<Add directory="include\libxml2" />
 			<Add directory="include\SDL" />
+			<Add directory="libs\enet\include" />
 		</Compiler>
 		<Linker>
 			<Add directory="lib" />
 		</Linker>
+		<Unit filename="libs\enet\include\enet\callbacks.h" />
+		<Unit filename="libs\enet\callbacks.c" />
+		<Unit filename="libs\enet\compress.c" />
+		<Unit filename="libs\enet\include\enet\enet.h" />
+		<Unit filename="libs\enet\host.c" />
+		<Unit filename="libs\enet\include\enet\list.h" />
+		<Unit filename="libs\enet\list.c" />
+		<Unit filename="libs\enet\packet.c" />
+		<Unit filename="libs\enet\peer.c" />
+		<Unit filename="libs\enet\include\enet\protocol.h" />
+		<Unit filename="libs\enet\protocol.c" />
+		<Unit filename="libs\enet\include\enet\time.h" />
+		<Unit filename="libs\enet\include\enet\types.h" />
+		<Unit filename="libs\enet\include\enet\unix.h" />
+		<Unit filename="libs\enet\unix.c" />
+		<Unit filename="libs\enet\include\enet\utility.h" />
+		<Unit filename="libs\enet\include\enet\win32.h" />
+		<Unit filename="libs\enet\win32.c" />
 		<Unit filename="src\SDLMain.h" />
 		<Unit filename="src\SDLMain.m" />
 		<Unit filename="src\actor.cpp" />
 		<Unit filename="src\actor.h" />
 		<Unit filename="src\actorsprite.cpp" />
 		<Unit filename="src\actorsprite.h" />
-		<Unit filename="src\actorspritelistener.h" />
 		<Unit filename="src\actorspritemanager.cpp" />
 		<Unit filename="src\actorspritemanager.h" />
 		<Unit filename="src\animatedsprite.cpp" />
@@ -366,9 +381,6 @@
 		<Unit filename="src\log.h" />
 		<Unit filename="src\main.cpp" />
 		<Unit filename="src\main.h" />
-		<Unit filename="src\mana-ea.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
 		<Unit filename="src\mana.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
@@ -388,6 +400,8 @@
 		<Unit filename="src\net\loginhandler.h" />
 		<Unit filename="src\net\manaserv\adminhandler.cpp" />
 		<Unit filename="src\net\manaserv\adminhandler.h" />
+		<Unit filename="src\net\manaserv\attributes.cpp" />
+		<Unit filename="src\net\manaserv\attributes.h" />
 		<Unit filename="src\net\manaserv\beinghandler.cpp" />
 		<Unit filename="src\net\manaserv\beinghandler.h" />
 		<Unit filename="src\net\manaserv\buysellhandler.cpp" />
@@ -432,8 +446,6 @@
 		<Unit filename="src\net\manaserv\protocol.h" />
 		<Unit filename="src\net\manaserv\specialhandler.cpp" />
 		<Unit filename="src\net\manaserv\specialhandler.h" />
-		<Unit filename="src\net\manaserv\stats.cpp" />
-		<Unit filename="src\net\manaserv\stats.h" />
 		<Unit filename="src\net\manaserv\tradehandler.cpp" />
 		<Unit filename="src\net\manaserv\tradehandler.h" />
 		<Unit filename="src\net\messagehandler.h" />
@@ -605,6 +617,8 @@
 		<Unit filename="src\utils\stringutils.h" />
 		<Unit filename="src\utils\xml.cpp" />
 		<Unit filename="src\utils\xml.h" />
+		<Unit filename="src\utils\zlib.cpp" />
+		<Unit filename="src\utils\zlib.h" />
 		<Unit filename="src\variabledata.h" />
 		<Unit filename="src\vector.cpp" />
 		<Unit filename="src\vector.h" />

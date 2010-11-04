@@ -97,7 +97,8 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mIsGM(false),
     mType(type),
     mX(0), mY(0),
-    mDamageTaken(0)
+    mDamageTaken(0),
+    mIp(0)
 {
     setMap(map);
     setSubtype(subtype);
@@ -321,7 +322,15 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     // Selecting the right color
     if (type == CRITICAL || type == FLEE)
     {
-        color = &userPalette->getColor(UserPalette::HIT_CRITICAL);
+        if (attacker == player_node)
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_LOCAL_PLAYER_CRITICAL);
+        }
+        else
+        {
+            color = &userPalette->getColor(UserPalette::HIT_CRITICAL);
+        }
     }
     else if (!amount)
     {
@@ -329,7 +338,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
         {
             // This is intended to be the wrong direction to visually
             // differentiate between hits and misses
-            color = &userPalette->getColor(UserPalette::HIT_MONSTER_PLAYER);
+            color = &userPalette->getColor(UserPalette::HIT_LOCAL_PLAYER_MISS);
         }
         else
         {
@@ -338,7 +347,16 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     }
     else if (getType() == MONSTER)
     {
-        color = &userPalette->getColor(UserPalette::HIT_PLAYER_MONSTER);
+        if (attacker == player_node)
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_LOCAL_PLAYER_MONSTER);
+        }
+        else
+        {
+            color = &userPalette->getColor(
+                UserPalette::HIT_PLAYER_MONSTER);
+        }
     }
     else
     {
@@ -421,13 +439,15 @@ void Being::setShowName(bool doShowName)
 
 void Being::setGuildName(const std::string &name)
 {
-    logger->log("Got guild name \"%s\" for being %s(%i)", name.c_str(), mName.c_str(), mId);
+    logger->log("Got guild name \"%s\" for being %s(%i)", name.c_str(),
+                mName.c_str(), mId);
 }
 
 
 void Being::setGuildPos(const std::string &pos)
 {
-    logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(), mName.c_str(), mId);
+    logger->log("Got guild position \"%s\" for being %s(%i)", pos.c_str(),
+                mName.c_str(), mId);
 }
 
 void Being::addGuild(Guild *guild)
@@ -530,7 +550,8 @@ void Being::fireMissile(Being *victim, const std::string &particle)
     if (!victim || particle.empty())
         return;
 
-    Particle *missile = particleEngine->addEffect(particle, getPixelX(), getPixelY());
+    Particle *missile = particleEngine->addEffect(particle,
+                                                  getPixelX(), getPixelY());
 
     if (missile)
     {
@@ -625,22 +646,20 @@ void Being::setAction(Action action, int attackType)
 
 void Being::setDirection(Uint8 direction)
 {
-    if (mDirection == direction)
-        return;
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+    {
+        if (mDirection == direction)
+            return;
+    }
 
     mDirection = direction;
 
-    // if the direction does not change much, keep the common component
-    int mFaceDirection = mDirection & direction;
-    if (!mFaceDirection)
-        mFaceDirection = direction;
-
     SpriteDirection dir;
-    if (mFaceDirection & UP)
+    if (mDirection & UP)
         dir = DIRECTION_UP;
-    else if (mFaceDirection & DOWN)
+    else if (mDirection & DOWN)
         dir = DIRECTION_DOWN;
-    else if (mFaceDirection & RIGHT)
+    else if (mDirection & RIGHT)
         dir = DIRECTION_RIGHT;
     else
         dir = DIRECTION_LEFT;
@@ -649,7 +668,7 @@ void Being::setDirection(Uint8 direction)
     CompoundSprite::setDirection(dir);
 }
 
-/** TODO: Used by eAthena only */
+/** Note: Used by Tmw-Athena only */
 void Being::nextTile()
 {
     if (mPath.empty())
@@ -939,7 +958,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
     }
 }
 
-/** TODO: eAthena only */
+/** Note: Used by Tmw-Athena only */
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
@@ -1012,12 +1031,23 @@ void Being::showName()
     mDispName = 0;
     std::string mDisplayName(mName);
 
-    if (config.getBoolValue("showgender"))
+    Being* player =  static_cast<Being*>(this);
+    if (player)
     {
-        if (getGender() == GENDER_FEMALE)
-            mDisplayName += " \u2640";
-        else if (getGender() == GENDER_MALE)
-            mDisplayName += " \u2642";
+        if (config.getBoolValue("showgender"))
+        {
+            if (getGender() == GENDER_FEMALE)
+                mDisplayName += " \u2640";
+            else if (getGender() == GENDER_MALE)
+                mDisplayName += " \u2642";
+        }
+
+        // Display the IP when under tmw-Athena (GM only).
+        if (Net::getNetworkType() == ServerInfo::TMWATHENA && player_node
+        && player_node->getShowIp() && player->getIp())
+        {
+            mDisplayName += strprintf(" %s", ipToString(player->getIp()));
+        }
     }
 
     if (getType() == MONSTER)

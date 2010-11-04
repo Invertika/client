@@ -68,6 +68,12 @@ extern LoginData loginData;
 int get_elapsed_time(int start_time);
 
 /**
+ * Returns if this call and the last call were done for the same
+ * selected index and within a short time.
+ */
+bool isDoubleClick(int selected);
+
+/**
  * All client states.
  */
 enum State {
@@ -183,6 +189,7 @@ public:
     void action(const gcn::ActionEvent &event);
 
 private:
+    void initRootDir();
     void initHomeDir();
     void initConfiguration();
     void initUpdatesDir();
@@ -200,6 +207,7 @@ private:
     std::string mUpdateHost;
     std::string mUpdatesDir;
     std::string mScreenshotDir;
+    std::string mRootDir;
 
     ServerInfo mCurrentServer;
 

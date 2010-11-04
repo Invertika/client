@@ -133,7 +133,6 @@ void connectToServer(ServerInfo &server)
     {
         // TODO: Query the server about itself and choose the netcode based on
         // that
-
         if (server.port == 6901)
             server.type = ServerInfo::TMWATHENA;
         else if (server.port == 9601)
