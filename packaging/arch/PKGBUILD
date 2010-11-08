@@ -1,5 +1,5 @@
 pkgname=invertika-svn
-pkgver=1682
+pkgver=2615
 pkgrel=1
 pkgdesc="A german MMORPG based on the Manasource plattform"
 arch=('any')
@@ -30,7 +30,7 @@ build() {
   #
   # BUILD
   #
-  cmake -G "Unix Makefiles"
+  cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="/usr"
   make
   make DESTDIR="$pkgdir/" install
 }
