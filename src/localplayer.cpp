@@ -87,19 +87,18 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mMessageTime(0),
     mShowIp(false)
 {
-    listen("Attributes");
+    listen(CHANNEL_ATTRIBUTES);
 
     mUpdateName = true;
 
-    config.addListener("showownname", this);
     setShowName(config.getValue("showownname", 1));
 
-    listen("ActorSprite");
+    listen(CHANNEL_CONFIG);
+    listen(CHANNEL_ACTORSPRITE);
 }
 
 LocalPlayer::~LocalPlayer()
 {
-    config.removeListener("showownname", this);
 }
 
 void LocalPlayer::logic()
@@ -1076,19 +1075,11 @@ void LocalPlayer::addMessageToQueue(const std::string &message, int color)
     mMessages.push_back(MessagePair(message, color));
 }
 
-void LocalPlayer::optionChanged(const std::string &value)
+void LocalPlayer::event(Channels channel, const Mana::Event &event)
 {
-    if (value == "showownname")
+    if (channel == CHANNEL_ACTORSPRITE)
     {
-        setShowName(config.getValue("showownname", 1));
-    }
-}
-
-void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
-{
-    if (channel == "ActorSprite")
-    {
-        if (event.getName() == "Destroyed")
+        if (event.getName() == EVENT_DESTROYED)
         {
             ActorSprite *actor = event.getActor("source");
 
@@ -1099,9 +1090,9 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
                 mTarget = 0;
         }
     }
-    else if (channel == "Attributes")
+    else if (channel == CHANNEL_ATTRIBUTES)
     {
-        if (event.getName() == "UpdateAttribute")
+        if (event.getName() == EVENT_UPDATEATTRIBUTE)
         {
             if (event.getInt("id") == EXP)
             {
@@ -1111,6 +1102,15 @@ void LocalPlayer::event(const std::string &channel, const Mana::Event &event)
                 addMessageToQueue(toString(change) + " xp");
             }
         }
+    }
+    else if (channel == CHANNEL_CONFIG)
+    {
+        if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+            event.getString("option") == "showownname")
+        {
+            setShowName(config.getValue("showownname", 1));
+        }
+
     }
 
     Being::event(channel, event);

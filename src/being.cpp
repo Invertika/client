@@ -49,6 +49,7 @@
 #include "net/gamehandler.h"
 #include "net/net.h"
 #include "net/playerhandler.h"
+#include "net/npchandler.h"
 
 #include "resources/beinginfo.h"
 #include "resources/colordb.h"
@@ -109,19 +110,16 @@ Being::Being(int id, Type type, int subtype, Map *map):
     if (getType() == PLAYER)
         mShowName = config.getBoolValue("visiblenames");
 
-    config.addListener("visiblenames", this);
-
     if (getType() == PLAYER || getType() == NPC)
         setShowName(true);
 
     updateColors();
-    listen("Chat");
+    listen(CHANNEL_CONFIG);
+    listen(CHANNEL_CHAT);
 }
 
 Being::~Being()
 {
-    config.removeListener("visiblenames", this);
-
     delete mSpeechBubble;
     delete mDispName;
     delete mText;
@@ -990,14 +988,6 @@ void Being::updateCoords()
         mDispName->adviseXY(getPixelX(), getPixelY());
 }
 
-void Being::optionChanged(const std::string &value)
-{
-    if (getType() == PLAYER && value == "visiblenames")
-    {
-        setShowName(config.getBoolValue("visiblenames"));
-    }
-}
-
 void Being::flashName(int time)
 {
     if (mDispName)
@@ -1208,15 +1198,13 @@ bool Being::canTalk()
 
 void Being::talkTo()
 {
-    Mana::Event event("doTalk");
-    event.setInt("npcId", mId);
-    event.trigger("NPC");
+    Net::getNpcHandler()->talk(mId);
 }
 
-void Being::event(const std::string &channel, const Mana::Event &event)
+void Being::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "Chat" &&
-            (event.getName() == "Being" || event.getName() == "Player") &&
+    if (channel == CHANNEL_CHAT &&
+            (event.getName() == EVENT_BEING || event.getName() == EVENT_PLAYER) &&
             event.getInt("permissions") & PlayerRelation::SPEECH_FLOAT)
     {
         try
@@ -1229,4 +1217,13 @@ void Being::event(const std::string &channel, const Mana::Event &event)
         catch (Mana::BadEvent badEvent)
         {}
     }
+    else if (channel == CHANNEL_CONFIG &&
+             event.getName() == EVENT_CONFIGOPTIONCHANGED)
+    {
+        if (getType() == PLAYER && event.getString("option") == "visiblenames")
+        {
+            setShowName(config.getBoolValue("visiblenames"));
+        }
+    }
+
 }

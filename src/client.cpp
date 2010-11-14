@@ -450,8 +450,13 @@ Client::Client(const Options &options):
 
     // Initialize frame limiting
     SDL_initFramerate(&mFpsManager);
-    config.addListener("fpslimit", this);
-    optionChanged("fpslimit");
+
+    listen(CHANNEL_CONFIG);
+
+    //TODO: fix having to fake a option changed event
+    Mana::Event fakeevent(EVENT_CONFIGOPTIONCHANGED);
+    fakeevent.setString("option", "fpslimit");
+    event(CHANNEL_CONFIG, fakeevent);
 
     // Initialize PlayerInfo
     PlayerInfo::init();
@@ -609,10 +614,10 @@ int Client::exec()
         if (mState != mOldState)
         {
             {
-                Mana::Event event("StateChange");
+                Mana::Event event(EVENT_STATECHANGE);
                 event.setInt("oldState", mOldState);
                 event.setInt("newState", mState);
-                event.trigger("Client");
+                event.trigger(CHANNEL_CLIENT);
             }
 
             if (mOldState == STATE_GAME)
@@ -772,7 +777,7 @@ int Client::exec()
                     paths.init("paths.xml", true);
                     paths.setDefaultValues(getPathsDefaults());
 
-                    Mana::Event::trigger("Client", "DBsLoading");
+                    Mana::Event::trigger(CHANNEL_CLIENT, EVENT_DBSLOADING);
 
                     // Load XML databases
                     ColorDB::load();
@@ -1022,12 +1027,18 @@ int Client::exec()
     return 0;
 }
 
-void Client::optionChanged(const std::string &name)
+void Client::event(Channels channel, const Mana::Event &event)
 {
-    const int fpsLimit = config.getIntValue("fpslimit");
-    mLimitFps = fpsLimit > 0;
-    if (mLimitFps)
-        SDL_setFramerate(&mFpsManager, fpsLimit);
+    if (channel == CHANNEL_CONFIG &&
+        event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getString("option") == "fpslimit")
+    {
+        const int fpsLimit = config.getIntValue("fpslimit");
+        mLimitFps = fpsLimit > 0;
+        if (mLimitFps)
+            SDL_setFramerate(&mFpsManager, fpsLimit);
+    }
+
 }
 
 void Client::action(const gcn::ActionEvent &event)

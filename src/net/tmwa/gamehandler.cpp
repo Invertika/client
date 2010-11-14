@@ -58,7 +58,7 @@ GameHandler::GameHandler()
     handledMessages = _messages;
     gameHandler = this;
 
-    listen("Game");
+    listen(CHANNEL_GAME);
 }
 
 void GameHandler::handleMessage(Net::MessageIn &msg)
@@ -105,15 +105,15 @@ void GameHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void GameHandler::event(const std::string &channel, const Mana::Event &event)
+void GameHandler::event(Channels channel, const Mana::Event &event)
 {
-    if (channel == "Game")
+    if (channel == CHANNEL_GAME)
     {
-        if (event.getName() == "EnginesInitalized")
+        if (event.getName() == EVENT_ENGINESINITALIZED)
         {
             Game::instance()->changeMap(mMap);
         }
-        else if (event.getName() == "MapLoaded")
+        else if (event.getName() == EVENT_MAPLOADED)
         {
             MessageOut outMsg(CMSG_MAP_LOADED);
         }

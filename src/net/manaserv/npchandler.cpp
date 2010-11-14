@@ -51,8 +51,6 @@ NpcHandler::NpcHandler()
     };
     handledMessages = _messages;
     npcHandler = this;
-
-    listen("NPC");
 }
 
 void NpcHandler::handleMessage(Net::MessageIn &msg)
@@ -69,7 +67,7 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
     switch (msg.getId())
     {
     case GPMSG_NPC_CHOICE:
-        event = new Mana::Event("Menu");
+        event = new Mana::Event(EVENT_MENU);
         event->setInt("id", npcId);
         while (msg.getUnreadLength())
         {
@@ -77,103 +75,56 @@ void NpcHandler::handleMessage(Net::MessageIn &msg)
             event->setString("choice" + toString(count), msg.readString());
         }
         event->setInt("choiceCount", count);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_NUMBER:
-        event = new Mana::Event("IntegerInput");
+        event = new Mana::Event(EVENT_INTEGERINPUT);
         event->setInt("id", npcId);
         event->setInt("min", msg.readInt32());
         event->setInt("max", msg.readInt32());
         event->setInt("default", msg.readInt32());
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_STRING:
-        event = new Mana::Event("StringInput");
+        event = new Mana::Event(EVENT_STRINGINPUT);
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_POST:
-        event = new Mana::Event("Post");
+        event = new Mana::Event(EVENT_POST);
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_ERROR:
-        event = new Mana::Event("End");
+        event = new Mana::Event(EVENT_END);
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_MESSAGE:
-        event = new Mana::Event("Message");
+        event = new Mana::Event(EVENT_MESSAGE);
         event->setInt("id", npcId);
         event->setString("text", msg.readString(msg.getUnreadLength()));
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         delete event;
 
-        event = new Mana::Event("Next");
+        event = new Mana::Event(EVENT_NEXT);
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
 
     case GPMSG_NPC_CLOSE:
-        event = new Mana::Event("Close");
+        event = new Mana::Event(EVENT_CLOSE);
         event->setInt("id", npcId);
-        event->trigger("NPC");
+        event->trigger(CHANNEL_NPC);
         break;
     }
 
     delete event;
-}
-
-void NpcHandler::event(const std::string &channel, const Mana::Event &event)
-{
-    if (channel == "NPC")
-    {
-        if (event.getName() == "doTalk")
-        {
-            MessageOut msg(PGMSG_NPC_TALK);
-            msg.writeInt16(event.getInt("npcId"));
-            gameServerConnection->send(msg);
-        }
-        else if (event.getName() == "doNext" || event.getName() == "doClose")
-        {
-            MessageOut msg(PGMSG_NPC_TALK_NEXT);
-            msg.writeInt16(event.getInt("npcId"));
-            gameServerConnection->send(msg);
-        }
-        else if (event.getName() == "doMenu")
-        {
-            MessageOut msg(PGMSG_NPC_SELECT);
-            msg.writeInt16(event.getInt("npcId"));
-            msg.writeInt8(event.getInt("choice"));
-            gameServerConnection->send(msg);
-        }
-        else if (event.getName() == "doIntegerInput")
-        {
-            MessageOut msg(PGMSG_NPC_NUMBER);
-            msg.writeInt16(event.getInt("npcId"));
-            msg.writeInt32(event.getInt("value"));
-            gameServerConnection->send(msg);
-        }
-        else if (event.getName() == "doStringInput")
-        {
-            MessageOut msg(PGMSG_NPC_STRING);
-            msg.writeInt16(event.getInt("npcId"));
-            msg.writeString(event.getString("value"));
-            gameServerConnection->send(msg);
-        }
-        else if (event.getName() == "doSendLetter")
-        {
-            MessageOut msg(PGMSG_NPC_POST_SEND);
-            msg.writeString(event.getString("recipient"));
-            msg.writeString(event.getString("text"));
-            gameServerConnection->send(msg);
-        }
-    }
 }
 
 void NpcHandler::startShopping(int beingId)
@@ -210,6 +161,93 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 void NpcHandler::endShopping(int beingId)
 {
     // TODO
+}
+
+void NpcHandler::talk(int npcId)
+{
+    MessageOut msg(PGMSG_NPC_TALK);
+    msg.writeInt16(npcId);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_TALKSENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::nextDialog(int npcId)
+{
+    MessageOut msg(PGMSG_NPC_TALK_NEXT);
+    msg.writeInt16(npcId);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_NEXTSENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::closeDialog(int npcId)
+{
+    MessageOut msg(PGMSG_NPC_TALK_NEXT);
+    msg.writeInt16(npcId);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_CLOSESENT);
+    event.setInt("npcId", npcId);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::menuSelect(int npcId, int choice)
+{
+    MessageOut msg(PGMSG_NPC_SELECT);
+    msg.writeInt16(npcId);
+    msg.writeInt8(choice);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_MENUSENT);
+    event.setInt("npcId", npcId);
+    event.setInt("choice", choice);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::integerInput(int npcId, int value)
+{
+    MessageOut msg(PGMSG_NPC_NUMBER);
+    msg.writeInt16(npcId);
+    msg.writeInt32(value);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_INTEGERINPUTSENT);
+    event.setInt("npcId", npcId);
+    event.setInt("value", value);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::stringInput(int npcId, const std::string &value)
+{
+    MessageOut msg(PGMSG_NPC_STRING);
+    msg.writeInt16(npcId);
+    msg.writeString(value);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_STRINGINPUTSENT);
+    event.setInt("npcId", npcId);
+    event.setString("value", value);
+    event.trigger(CHANNEL_NPC);
+}
+
+void NpcHandler::sendLetter(int npcId, const std::string &recipient,
+                const std::string &text)
+{
+    MessageOut msg(PGMSG_NPC_POST_SEND);
+    msg.writeString(recipient);
+    msg.writeString(text);
+    gameServerConnection->send(msg);
+
+    Mana::Event event(EVENT_SENDLETTERSENT);
+    event.setInt("npcId", npcId);
+    event.setString("recipient", recipient);
+    event.setString("text", text);
+    event.trigger(CHANNEL_NPC);
 }
 
 } // namespace ManaServ

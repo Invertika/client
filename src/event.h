@@ -28,6 +28,77 @@
 class ActorSprite;
 class Item;
 
+enum Channels
+{
+    CHANNEL_ACTORSPRITE,
+    CHANNEL_ATTRIBUTES,
+    CHANNEL_BUYSELL,
+    CHANNEL_CHAT,
+    CHANNEL_CLIENT,
+    CHANNEL_CONFIG,
+    CHANNEL_GAME,
+    CHANNEL_ITEM,
+    CHANNEL_NOTICES,
+    CHANNEL_NPC,
+    CHANNEL_STATUS,
+    CHANNEL_STORAGE
+};
+
+enum Events
+{
+    EVENT_ANNOUNCEMENT,
+    EVENT_BEING,
+    EVENT_CLOSE,
+    EVENT_CLOSEALL,
+    EVENT_CLOSESENT,
+    EVENT_CONFIGOPTIONCHANGED,
+    EVENT_CONSTRUCTED,
+    EVENT_DBSLOADING,
+    EVENT_DESTROYED,
+    EVENT_DESTRUCTED,
+    EVENT_DESTRUCTING,
+    EVENT_DOCLOSEINVENTORY,
+    EVENT_DODROP,
+    EVENT_DOEQUIP,
+    EVENT_DOMOVE,
+    EVENT_DOSPLIT,
+    EVENT_DOUNEQUIP,
+    EVENT_DOUSE,
+    EVENT_END,
+    EVENT_ENGINESINITALIZED,
+    EVENT_ENGINESINITALIZING,
+    EVENT_GUIWINDOWSLOADED,
+    EVENT_GUIWINDOWSLOADING,
+    EVENT_GUIWINDOWSUNLOADED,
+    EVENT_GUIWINDOWSUNLOADING,
+    EVENT_INTEGERINPUT,
+    EVENT_INTEGERINPUTSENT,
+    EVENT_MAPLOADED,
+    EVENT_MENU,
+    EVENT_MENUSENT,
+    EVENT_MESSAGE,
+    EVENT_NEXT,
+    EVENT_NEXTSENT,
+    EVENT_NPCCOUNT,
+    EVENT_PLAYER,
+    EVENT_POST,
+    EVENT_POSTCOUNT,
+    EVENT_SENDLETTERSENT,
+    EVENT_SERVERNOTICE,
+    EVENT_STATECHANGE,
+    EVENT_STORAGECOUNT,
+    EVENT_STRINGINPUT,
+    EVENT_STRINGINPUTSENT,
+    EVENT_STUN,
+    EVENT_TALKSENT,
+    EVENT_TRADING,
+    EVENT_UPDATEATTRIBUTE,
+    EVENT_UPDATESTAT,
+    EVENT_UPDATESTATUSEFFECT,
+    EVENT_WHISPER,
+    EVENT_WHISPERERROR
+};
+
 namespace Mana
 {
 
@@ -41,15 +112,15 @@ enum BadEvent {
 class Listener;
 
 typedef std::set<Listener *> ListenerSet;
-typedef std::map<std::string, ListenerSet > ListenMap;
+typedef std::map<Channels, ListenerSet > ListenMap;
 
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
 
 #define SERVER_NOTICE(message) { \
-Mana::Event event("ServerNotice"); \
+Mana::Event event(EVENT_SERVERNOTICE); \
 event.setString("message", message); \
-event.trigger("Notices", event); }
+event.trigger(CHANNEL_NOTICES, event); }
 
 class Event
 {
@@ -57,7 +128,7 @@ public:
     /**
      * Makes an event with the given name.
      */
-    Event(const std::string &name)
+    Event(Events name)
     { mEventName = name; }
 
     ~Event();
@@ -65,7 +136,7 @@ public:
     /**
      * Returns the name of the event.
      */
-    const std::string &getName() const
+    Events getName() const
     { return mEventName; }
 
 // Integers
@@ -220,20 +291,19 @@ public:
     /**
      * Sends this event to all classes listening to the given channel.
      */
-    inline void trigger(const std::string &channel) const
+    inline void trigger(Channels channel) const
     { trigger(channel, *this); }
 
     /**
      * Sends the given event to all classes listening to the given channel.
      */
-    static void trigger(const std::string &channel, const Event &event);
+    static void trigger(Channels channel, const Event &event);
 
     /**
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(const std::string& channel,
-                               const std::string& name)
+    static inline void trigger(Channels channel, Events name)
     { trigger(channel, Mana::Event(name)); }
 
 protected:
@@ -243,13 +313,13 @@ protected:
      * Binds the given listener to the given channel. The listener will receive
      * all events triggered on the channel.
      */
-    static void bind(Listener *listener, const std::string &channel);
+    static void bind(Listener *listener, Channels channel);
 
     /**
      * Unbinds the given listener from the given channel. The listener will no
      * longer receive any events from the channel.
      */
-    static void unbind(Listener *listener, const std::string &channel);
+    static void unbind(Listener *listener, Channels channel);
 
     /**
      * Unbinds the given listener from all channels.
@@ -259,7 +329,7 @@ protected:
 private:
     static ListenMap mBindings;
 
-    std::string mEventName;
+    Events mEventName;
 
     VariableMap mData;
 };

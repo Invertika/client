@@ -308,10 +308,10 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
 
     Item *item = getSelectedItem();
     {
-        Mana::Event event("doMove");
+        Mana::Event event(EVENT_DOMOVE);
         event.setItem("item", item);
         event.setInt("newIndex", index);
-        event.trigger("Item");
+        event.trigger(CHANNEL_ITEM);
     }
     selectNone();
 }
@@ -380,10 +380,10 @@ void ItemContainer::keyAction()
         mHighlightedIndex != -1)
     {
         Item *item = getSelectedItem();
-        Mana::Event event("doMove");
+        Mana::Event event(EVENT_DOMOVE);
         event.setItem("item", item);
         event.setInt("newIndex", mHighlightedIndex);
-        event.trigger("Item");
+        event.trigger(CHANNEL_ITEM);
         setSelectedIndex(mHighlightedIndex);
     }
     // If the highlight is on an item then select it.
@@ -396,10 +396,10 @@ void ItemContainer::keyAction()
     else if (mSelectedIndex != -1)
     {
         Item *item = getSelectedItem();
-        Mana::Event event("doMove");
+        Mana::Event event(EVENT_DOMOVE);
         event.setItem("item", item);
         event.setInt("newIndex", mHighlightedIndex);
-        event.trigger("Item");
+        event.trigger(CHANNEL_ITEM);
         selectNone();
     }
 }

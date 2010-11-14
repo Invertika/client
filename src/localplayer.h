@@ -181,12 +181,7 @@ class LocalPlayer : public Being
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
-        /**
-         * Called when a option (set with config.addListener()) is changed
-         */
-        void optionChanged(const std::string &value);
-
-        void event(const std::string &channel, const Mana::Event &event);
+        void event(Channels channel, const Mana::Event &event);
 
         /**
          * Tells the engine wether to check

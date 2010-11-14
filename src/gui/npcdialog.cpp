@@ -37,6 +37,9 @@
 #include "gui/widgets/textbox.h"
 #include "gui/widgets/textfield.h"
 
+#include "net/net.h"
+#include "net/npchandler.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -47,15 +50,12 @@
 #define CAPTION_CLOSE _("Close")
 #define CAPTION_SUBMIT _("Submit")
 
-#define NpcEvent(name) Mana::Event event(name);\
-event.setInt("npcId", mNpcId);
-
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
 class NpcEventListener : public Mana::Listener
 {
 public:
-    void event(const std::string &channel, const Mana::Event &event);
+    void event(Channels channel, const Mana::Event &event);
 
     NpcDialog *getDialog(int id, bool make = true);
 
@@ -143,7 +143,7 @@ NpcDialog::NpcDialog(int npcId)
     setVisible(true);
     requestFocus();
 
-    config.addListener("logNpcInGui", this);
+    listen(CHANNEL_CONFIG);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        + 1);
 }
@@ -161,7 +161,6 @@ NpcDialog::~NpcDialog()
 
     instances.remove(this);
 
-    config.removeListener("logNpcInGui", this);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        - 1);
 
@@ -225,25 +224,19 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
                 printText = mItems[selectedIndex];
 
-                NpcEvent("doMenu")
-                event.setInt("choice", selectedIndex + 1);
-                event.trigger("NPC");
+                Net::getNpcHandler()->menuSelect(mNpcId, selectedIndex + 1);
             }
             else if (mInputState == NPC_INPUT_STRING)
             {
                 printText = mTextField->getText();
 
-                NpcEvent("doStringInput")
-                event.setString("value", printText);
-                event.trigger("NPC");
+                Net::getNpcHandler()->stringInput(mNpcId, printText);
             }
             else if (mInputState == NPC_INPUT_INTEGER)
             {
                 printText = strprintf("%d", mIntField->getValue());
 
-                NpcEvent("doIntegerInput")
-                event.setInt("value", mIntField->getValue());
-                event.trigger("NPC");
+                Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
             }
             // addText will auto remove the input layout
             addText(strprintf("\n> \"%s\"\n", printText.c_str()), false);
@@ -281,14 +274,12 @@ void NpcDialog::action(const gcn::ActionEvent &event)
 
 void NpcDialog::nextDialog()
 {
-    NpcEvent("doNext");
-    event.trigger("NPC");
+    Net::getNpcHandler()->nextDialog(mNpcId);
 }
 
 void NpcDialog::closeDialog()
 {
-    NpcEvent("doClose");
-    event.trigger("NPC");
+    Net::getNpcHandler()->closeDialog(mNpcId);
     close();
 }
 
@@ -391,9 +382,13 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
-void NpcDialog::optionChanged(const std::string &name)
+void NpcDialog::event(Channels channel, const Mana::Event &event)
 {
-    if (name == "logNpcInGui")
+    if (channel != CHANNEL_CONFIG)
+        return;
+
+    if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+        event.getString("option") == "logNpcInGui")
     {
         mLogInteraction = config.getBoolValue("logNpcInGui");
     }
@@ -436,7 +431,7 @@ void NpcDialog::setup()
 
     npcListener = new NpcEventListener();
 
-    npcListener->listen("NPC");
+    npcListener->listen(CHANNEL_NPC);
 }
 
 void NpcDialog::buildLayout()
@@ -506,19 +501,19 @@ void NpcDialog::buildLayout()
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
-void NpcEventListener::event(const std::string &channel,
+void NpcEventListener::event(Channels channel,
                              const Mana::Event &event)
 {
-    if (channel != "NPC")
+    if (channel != CHANNEL_NPC)
         return;
 
-    if (event.getName() == "Message")
+    if (event.getName() == EVENT_MESSAGE)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
         dialog->addText(event.getString("text"));
     }
-    else if (event.getName() == "Menu")
+    else if (event.getName() == EVENT_MENU)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -528,7 +523,7 @@ void NpcEventListener::event(const std::string &channel,
         for (int i = 1; i <= count; i++)
             dialog->addChoice(event.getString("choice" + toString(i)));
     }
-    else if (event.getName() == "IntegerInput")
+    else if (event.getName() == EVENT_INTEGERINPUT)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -538,7 +533,7 @@ void NpcEventListener::event(const std::string &channel,
 
         dialog->integerRequest(defaultValue, min, max);
     }
-    else if (event.getName() == "StringInput")
+    else if (event.getName() == EVENT_STRINGINPUT)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -551,7 +546,7 @@ void NpcEventListener::event(const std::string &channel,
             dialog->textRequest("");
         }
     }
-    else if (event.getName() == "Next")
+    else if (event.getName() == EVENT_NEXT)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -559,14 +554,13 @@ void NpcEventListener::event(const std::string &channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent("doNext");
-            event.trigger("NPC");
+            Net::getNpcHandler()->nextDialog(mNpcId);
             return;
         }
 
         dialog->showNextButton();
     }
-    else if (event.getName() == "Close")
+    else if (event.getName() == EVENT_CLOSE)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -574,18 +568,17 @@ void NpcEventListener::event(const std::string &channel,
         if (!dialog)
         {
             int mNpcId = id;
-            NpcEvent("doClose");
-            event.trigger("NPC");
+            Net::getNpcHandler()->closeDialog(mNpcId);
             return;
         }
 
         dialog->showCloseButton();
     }
-    else if (event.getName() == "CloseAll")
+    else if (event.getName() == EVENT_CLOSEALL)
     {
         NpcDialog::closeAll();
     }
-    else if (event.getName() == "End")
+    else if (event.getName() == EVENT_END)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -593,7 +586,7 @@ void NpcEventListener::event(const std::string &channel,
         if (dialog)
             dialog->close();
     }
-    else if (event.getName() == "Post")
+    else if (event.getName() == EVENT_POST)
     {
         new NpcPostDialog(event.getInt("id"));
     }
