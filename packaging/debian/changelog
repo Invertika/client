@@ -1,6 +1,5 @@
-invertika (0.1-0ubuntu1) karmic; urgency=low
+invertika (0.1-0ubuntu0~ppa3) lucid; urgency=low
 
-  * updated to svncommit 1385
-  * swiched to cmake build
-  
- -- Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>  Mon, 05 Apr 2010 14:51:20 +0200
+  * Initial release
+
+ -- Jonathan Kolberg <bulldog98@kubuntu-de.org>  Tue, 02 Nov 2010 19:51:09 +0100

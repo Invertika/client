@@ -1,28 +1,20 @@
 Source: invertika
 Section: games
-Priority: optional
+Priority: extra
 Maintainer: Jonathan Raphael Joachim Kolberg <bulldog98@freenet.de>
-Build-Depends:  cvs-buildpackage, cmake, build-essential, libpthread-stubs0-dev, libsdl-ttf2.0-dev, libtool, libenet-dev, debhelper (>= 7), libcurl4-gnutls-dev, libgl1-mesa-dev, libguichan-dev (>= 0.8.1), libsdl1.2-dev, libsdl-image1.2-dev, libsdl-net1.2-dev, libsdl-mixer1.2-dev, libphysfs-dev, libpng12-dev, libxml2-dev, zlib1g-dev, libsdl-ttf2.0-dev, quilt, gettext, gettext-base , libsdl-gfx1.2-dev
-Standards-Version: 3.8.3
+Build-Depends: debhelper (>= 7), cmake, libcurl4-openssl-dev, libguichan-dev, libphysfs-dev, libpng12-dev, libpthread-stubs0-dev, libsdl-image1.2-dev, libsdl-mixer1.2-dev, libsdl-net1.2-dev, libsdl-ttf2.0-dev, libsdl-gfx1.2-dev, libxml2-dev, zlib1g-dev, libtool, libenet-dev,
+Standards-Version: 3.9.1
 Homepage: http://invertika.org
 
 Package: invertika
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, invertika-data (= ${source:Version})
-Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german.
-
-Package: invertika-dbg
-Architecture: any
-Priority: extra
-Depends: invertika (= ${binary:Version})
-Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german. (debugging symbols)
- .
-  This package provides debugging symbols for the invertika-client package.
+Description: invertika is an German 2D MMPORG client
 
 Package: invertika-data
 Architecture: all
 Recommends: invertika
-Description: Invertika is a 2D multi-platform MMORPG based on the Manasource Framework. The game language is german. (data files)
+Description: invertika is an German 2D MMORPG client
  .
   This package contains the data files.
   
