@@ -8,7 +8,7 @@
  <option name="defaultServer" value="server.invertika.org"/>
  <option name="defaultPort" value="9601"/>
  <option name="defaultServerType" value="manaserv"/>
- <option name="defaultUpdateHost" value="http://update.invertika.org"/>
+ <option name="defaultUpdateHost" value="http://update.server.invertika.org"/>
  <option name="font" value="fonts/dejavusans.ttf" />
  <option name="boldFont" value="fonts/dejavusans-bold.ttf" />
  <option name="theme" value="wood" />
