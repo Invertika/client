@@ -59,6 +59,9 @@
 #include <string>
 #include <cassert>
 
+// Character slots per row in the dialog
+static const int SLOTS_PER_ROW = 5;
+
 /**
  * Listener for confirming character deletion.
  */
@@ -118,6 +121,7 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
     mLocked(false),
     mUnregisterButton(0),
     mChangeEmailButton(0),
+    mCharacterEntries(0),
     mLoginData(loginData),
     mCharHandler(Net::getCharHandler())
 {
@@ -154,9 +158,10 @@ CharSelectDialog::CharSelectDialog(LoginData *loginData):
 
     place = getPlacer(0, 1);
 
-    for (int i = 0; i < MAX_CHARACTER_COUNT; i++) {
-        mCharacterEntries[i] = new CharacterDisplay(this);
-        place(i, 0, mCharacterEntries[i]);
+    for (int i = 0; i < (int)mLoginData->characterSlots; i++)
+    {
+        mCharacterEntries.push_back(new CharacterDisplay(this));
+        place(i % SLOTS_PER_ROW, (int)i / SLOTS_PER_ROW, mCharacterEntries[i]);
     }
 
     reflowLayout();
@@ -179,9 +184,14 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     // Check if a button of a character was pressed
     const gcn::Widget *sourceParent = event.getSource()->getParent();
     int selected = -1;
-    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
+    for (int i = 0; i < (int)mCharacterEntries.size(); ++i)
+    {
         if (mCharacterEntries[i] == sourceParent)
+        {
             selected = i;
+            break;
+        }
+    }
 
     const std::string &eventId = event.getId();
 
@@ -191,7 +201,8 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         {
             attemptCharacterSelect(selected);
         }
-        else if (eventId == "new" && !mCharacterEntries[selected]->getCharacter())
+        else if (eventId == "new"
+                 && !mCharacterEntries[selected]->getCharacter())
         {
             // Start new character dialog
             CharCreateDialog *charCreateDialog =
@@ -261,14 +272,17 @@ void CharSelectDialog::attemptCharacterSelect(int index)
 void CharSelectDialog::setCharacters(const Net::Characters &characters)
 {
     // Reset previous characters
-    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
-        mCharacterEntries[i]->setCharacter(0);
+    std::vector<CharacterDisplay*>::iterator iter, iter_end;
+    for (iter = mCharacterEntries.begin(), iter_end = mCharacterEntries.end();
+         iter != iter_end; ++iter)
+        (*iter)->setCharacter(0);
 
     Net::Characters::const_iterator i, i_end = characters.end();
     for (i = characters.begin(); i != i_end; ++i)
     {
         Net::Character *character = *i;
-        if (character->slot >= MAX_CHARACTER_COUNT) {
+        if (character->slot >= (int)mCharacterEntries.size())
+        {
             logger->log("Warning: slot out of range: %d", character->slot);
             continue;
         }
@@ -299,7 +313,7 @@ void CharSelectDialog::setLocked(bool locked)
     if (mChangeEmailButton)
         mChangeEmailButton->setEnabled(!locked);
 
-    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i)
+    for (int i = 0; i < (int)mCharacterEntries.size(); ++i)
         mCharacterEntries[i]->setActive(!mLocked);
 }
 
@@ -309,9 +323,12 @@ bool CharSelectDialog::selectByName(const std::string &name,
     if (mLocked)
         return false;
 
-    for (int i = 0; i < MAX_CHARACTER_COUNT; ++i) {
-        if (Net::Character *character = mCharacterEntries[i]->getCharacter()) {
-            if (character->dummy->getName() == name) {
+    for (int i = 0; i < (int)mCharacterEntries.size(); ++i)
+    {
+        if (Net::Character *character = mCharacterEntries[i]->getCharacter())
+        {
+            if (character->dummy->getName() == name)
+            {
                 mCharacterEntries[i]->requestFocus();
                 if (action == Choose)
                     attemptCharacterSelect(i);
