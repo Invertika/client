@@ -80,9 +80,14 @@ LocalPlayer::LocalPlayer(int id, int subtype):
     mPathSetByMouse(false),
     mLocalWalkTime(-1),
     mMessageTime(0),
-    mShowIp(false)
+    mShowIp(false),
+    mAwayDialog(0),
+    mAfkTime(0),
+    mAwayMode(false)
 {
     listen(CHANNEL_ATTRIBUTES);
+
+    mAwayListener = new AwayListener();
 
     mUpdateName = true;
 
@@ -94,6 +99,8 @@ LocalPlayer::LocalPlayer(int id, int subtype):
 
 LocalPlayer::~LocalPlayer()
 {
+    delete mAwayDialog;
+    delete mAwayListener;
 }
 
 void LocalPlayer::logic()
@@ -738,13 +745,10 @@ void LocalPlayer::setWalkingDir(int dir)
 
         // Else, he is not pressing a key,
         // and the current path hasn't been sent by mouse,
-        // then, stop (sending to server).
+        // then let the path die (1/2 tile after that.)
+        // This permit to avoid desyncs with other clients.
         else if (!dir)
-        {
-            if (!mPathSetByMouse)
-                player_node->stopWalking(true);
             return;
-        }
 
         // If the delay to send another walk message to the server hasn't expired,
         // don't do anything or we could get disconnected for spamming the server
@@ -794,6 +798,10 @@ void LocalPlayer::startWalking(unsigned char dir)
         dx--;
     if (dir & RIGHT)
         dx++;
+
+    // Update the direction when the walk just start
+    if (Net::getNetworkType() == ServerInfo::MANASERV)
+        setDirection(dir);
 
     if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
@@ -1109,4 +1117,59 @@ void LocalPlayer::event(Channels channel, const Mana::Event &event)
     }
 
     Being::event(channel, event);
+}
+
+void LocalPlayer::changeAwayMode()
+{
+    mAwayMode = !mAwayMode;
+    mAfkTime = 0;
+    if (mAwayMode)
+    {
+        mAwayDialog = new OkDialog(_("Away"),
+                config.getValue("afkMessage", "I am away from keyboard"));
+        mAwayDialog->addActionListener(mAwayListener);
+    }
+
+    mAwayDialog = 0;
+}
+
+void LocalPlayer::setAway(const std::string &message)
+{
+    if (!message.empty())
+        config.setValue("afkMessage", message);
+    changeAwayMode();
+}
+
+void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
+{
+    if (mAwayMode)
+    {
+        if (mAfkTime == 0
+            || cur_time < mAfkTime
+            || cur_time - mAfkTime > AWAY_LIMIT_TIMER)
+        {
+            std::string msg = "*AFK*: "
+                    + config.getValue("afkMessage", "I am away from keyboard");
+
+            Net::getChatHandler()->privateMessage(nick, msg);
+            if (!tab)
+            {
+                localChatTab->chatLog(getName() + " : " + msg,
+                                      ACT_WHISPER, false);
+            }
+            else
+            {
+                tab->chatLog(getName(), msg);
+            }
+            mAfkTime = cur_time;
+        }
+    }
+}
+
+void AwayListener::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "ok" && player_node->getAwayMode())
+    {
+        player_node->changeAwayMode();
+    }
 }

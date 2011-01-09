@@ -345,8 +345,6 @@ SET(SRCS
     resources/action.h
     resources/ambientlayer.cpp
     resources/ambientlayer.h
-    resources/ambientoverlay.cpp
-    resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
     resources/beinginfo.cpp
@@ -620,7 +618,7 @@ SET(SRCS_MANA
     net/manaserv/partyhandler.h
     net/manaserv/playerhandler.cpp
     net/manaserv/playerhandler.h
-    net/manaserv/protocol.h
+    net/manaserv/manaserv_protocol.h
     net/manaserv/specialhandler.cpp
     net/manaserv/specialhandler.h
     net/manaserv/tradehandler.cpp
