@@ -67,8 +67,9 @@ static const int boxPosition[][2] = {
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")),
-    mEquipment(equipment),
-    mSelected(-1)
+    mEquipBox(0),
+    mSelected(-1),
+    mEquipment(equipment)
 {
     mItemPopup = new ItemPopup;
     setupWindow->registerWindowForReset(this);
@@ -92,12 +93,6 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
 
     add(playerBox);
     add(mUnequip);
-
-    for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
-    {
-        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
-        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
-    }
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -110,47 +105,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    Graphics *g = static_cast<Graphics*>(graphics);
-
     Window::drawChildren(graphics);
-
-    for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
-    {
-        if (i == mSelected)
-        {
-            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
-
-            // Set color to the highlight color
-            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
-            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                            BOX_WIDTH, BOX_HEIGHT));
-        }
-
-        // Set color black
-        g->setColor(gcn::Color(0, 0, 0));
-        // Draw box border
-        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
-                                        BOX_WIDTH, BOX_HEIGHT));
-
-        Item *item = mEquipment->getEquipment(i);
-        if (item)
-        {
-            // Draw Item.
-            Image *image = item->getImage();
-            image->setAlpha(1.0f); // Ensure the image is drawn with maximum opacity
-            g->drawImage(image,
-                         mEquipBox[i].posX + 2,
-                         mEquipBox[i].posY + 2);
-            if (i == EQUIP_PROJECTILE_SLOT)
-            {
-                g->setColor(Theme::getThemeColor(Theme::TEXT));
-                graphics->drawText(toString(item->getQuantity()),
-                                   mEquipBox[i].posX + (BOX_WIDTH / 2),
-                                   mEquipBox[i].posY - getFont()->getHeight(),
-                                   gcn::Graphics::CENTER);
-            }
-        }
-    }
 }
 
 void EquipmentWindow::action(const gcn::ActionEvent &event)
@@ -165,14 +120,15 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
 
 Item *EquipmentWindow::getItem(int x, int y) const
 {
-    for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
+    if (Net::getNetworkType() == ServerInfo::TMWATHENA)
     {
-        gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                             BOX_WIDTH, BOX_HEIGHT);
-
-        if (tRect.isPointInRect(x, y))
+        for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
         {
-            return mEquipment->getEquipment(i);
+            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                 BOX_WIDTH, BOX_HEIGHT);
+
+            if (tRect.isPointInRect(x, y))
+                return mEquipment->getEquipment(i);
         }
     }
     return NULL;
@@ -188,14 +144,17 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
     {
         // Checks if any of the presses were in the equip boxes.
-        for (int i = 0; i < Equipment::EQUIP_VECTOREND; i++)
+        if (Net::getNetworkType() == ServerInfo::TMWATHENA)
         {
-            Item *item = mEquipment->getEquipment(i);
-            gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
-                                 BOX_WIDTH, BOX_HEIGHT);
+            for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
+            {
+                Item *item = mEquipment->getEquipment(i);
+                gcn::Rectangle tRect(mEquipBox[i].posX, mEquipBox[i].posY,
+                                     BOX_WIDTH, BOX_HEIGHT);
 
-            if (tRect.isPointInRect(x, y) && item)
-                setSelected(i);
+                if (tRect.isPointInRect(x, y) && item)
+                    setSelected(i);
+            }
         }
     }
     else if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
@@ -245,3 +204,71 @@ void EquipmentWindow::setSelected(int index)
     mSelected = index;
     mUnequip->setEnabled(mSelected != -1);
 }
+
+namespace TmwAthena {
+
+TaEquipmentWindow::TaEquipmentWindow(Equipment *equipment):
+    EquipmentWindow(equipment)
+{
+    // Load equipment boxes.
+    mEquipBox = new EquipBox[TmwAthena::EQUIP_VECTOR_END];
+
+    for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
+    {
+        mEquipBox[i].posX = boxPosition[i][0] + getPadding();
+        mEquipBox[i].posY = boxPosition[i][1] + getTitleBarHeight();
+    }
+}
+
+TaEquipmentWindow::~TaEquipmentWindow()
+{
+    delete[] mEquipBox;
+}
+
+void TaEquipmentWindow::draw(gcn::Graphics *graphics)
+{
+    EquipmentWindow::draw(graphics);
+
+    // Draw equipment boxes
+    Graphics *g = static_cast<Graphics*>(graphics);
+
+    for (int i = 0; i < TmwAthena::EQUIP_VECTOR_END; i++)
+    {
+        if (i == mSelected)
+        {
+            const gcn::Color color = Theme::getThemeColor(Theme::HIGHLIGHT);
+
+            // Set color to the highlight color
+            g->setColor(gcn::Color(color.r, color.g, color.b, getGuiAlpha()));
+            g->fillRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                            BOX_WIDTH, BOX_HEIGHT));
+        }
+
+        // Set color black
+        g->setColor(gcn::Color(0, 0, 0));
+        // Draw box border
+        g->drawRectangle(gcn::Rectangle(mEquipBox[i].posX, mEquipBox[i].posY,
+                                        BOX_WIDTH, BOX_HEIGHT));
+
+        Item *item = mEquipment->getEquipment(i);
+        if (item)
+        {
+            // Draw Item.
+            Image *image = item->getImage();
+            image->setAlpha(1.0f); // Ensure the image is drawn with maximum opacity
+            g->drawImage(image,
+                          mEquipBox[i].posX + 2,
+                          mEquipBox[i].posY + 2);
+            if (i == TmwAthena::EQUIP_PROJECTILE_SLOT)
+            {
+                g->setColor(Theme::getThemeColor(Theme::TEXT));
+                graphics->drawText(toString(item->getQuantity()),
+                                    mEquipBox[i].posX + (BOX_WIDTH / 2),
+                                    mEquipBox[i].posY - getFont()->getHeight(),
+                                    gcn::Graphics::CENTER);
+            }
+        }
+    }
+}
+
+};
