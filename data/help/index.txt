@@ -4,10 +4,11 @@
  -> @@team|Entwickler Team@@
 
  -> @@commands|Tastenbelegung@@
- -> @@skills|Skills@@
-
  -> @@support|Support@@
- -> @@thankyou|Danksagung@@
+
+Weitere nützliche Infos finden sich in der Invertika-Wiki unter:
+
+##2     http://wiki.invertika.org
 
 
 ##3                           === Powered By ===

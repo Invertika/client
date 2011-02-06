@@ -3,7 +3,6 @@ SET(FILES
     commands.txt
     header.txt
     index.txt
-    skills.txt
     support.txt
     team.txt
 	windows.txt

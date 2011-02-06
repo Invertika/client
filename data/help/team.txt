@@ -7,15 +7,26 @@ seeseekey <seeseekey googlemail.com>
 
 ##2 Entwicklung von Inhalten:
 seeseekey <seeseekey googlemail.com>
-Delegan <delegan delegan.net>
+Delegan <deleganos googlemail.com>
 subnet_zero <zinkoxid googlemail.com>
+psyco001 <mino.chan1 googlemail.com>
+Jonathan Kolberg <bulldog98 freenet.de>
+jurkan <jurkan gmx.de>
+Clint Bellanger "pfunked" <clint.bellanger gmail.com>
+Dark_Mage <dark_mage.87 mail.ru>
+Andy <original-andy gmx.de>
+Erik Schilling <erikschilling freenet.de>
 
 ##2 Scripting:
 seeseekey <seeseekey googlemail.com>
+Andy <original-andy gmx.de>
+jurkan <jurkan gmx.de>
+Erik Schilling <erikschilling freenet.de>
 
 ##2 Musik und SFX Entwicklung:
 DJh2o2 <djh2o2 web.de>
 Nikola Whallon "saturn" <6.saturn.6 gmail.com>
+remaxim <opengameart.org/users/remaxim>
 
 ##2 Design:
 Frank Bürger <frank notizn.de>
@@ -26,7 +37,9 @@ MasterSam <mustersam web.de>
 Jonathan Kolberg <bulldog98 freenet.de>
 
 ##2 Packaging:
-Jonathan Kolberg <bulldog98 freenet.de>
+Jonathan Kolberg <bulldog98 freenet.de> (Ubuntu)
+jurkan <jurkan gmx.de> (Arch Linux)
+seeseekey <seeseekey googlemail.com> (Windows)
 
 ##2 Andere Beiträge:
 -
