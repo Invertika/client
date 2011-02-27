@@ -1167,6 +1167,9 @@ void Client::initHomeDir()
         mLocalDataDir = std::string(PHYSFS_getUserDir()) +
             "/Library/Application Support/" +
             branding.getValue("appName", "Mana");
+#elif defined __HAIKU__
+        mLocalDataDir = std::string(PHYSFS_getUserDir()) +
+           "/config/data/Mana";
 #elif defined WIN32
         mLocalDataDir = getSpecialFolderLocation(CSIDL_LOCAL_APPDATA);
         if (mLocalDataDir.empty())
@@ -1186,18 +1189,23 @@ void Client::initHomeDir()
 
     mConfigDir = mOptions.configDir;
 
-    if (mConfigDir.empty()){
+    if (mConfigDir.empty())
+    {
+        const std::string app = branding.getValue("appShort", "manasource");
 #ifdef __APPLE__
-        mConfigDir = mLocalDataDir + "/" + branding.getValue("appShort", "mana");
+        mConfigDir = mLocalDataDir + "/" + app;
+#elif defined __HAIKU__
+        mConfigDir = std::string(PHYSFS_getUserDir()) +
+           "/config/settings/Mana" +
+           branding.getValue("appName", "manasource");
 #elif defined WIN32
         mConfigDir = getSpecialFolderLocation(CSIDL_APPDATA);
         if (mConfigDir.empty())
             mConfigDir = mLocalDataDir;
         else
-            mConfigDir += "/mana/" + branding.getValue("appShort", "Mana");
+            mConfigDir += "/mana/" + app;
 #else
-        mConfigDir = std::string(PHYSFS_getUserDir()) +
-            "/.config/mana/" + branding.getValue("appShort", "mana");
+        mConfigDir = std::string(PHYSFS_getUserDir()) + "/.config/mana/" + app;
 #endif
     }
 
