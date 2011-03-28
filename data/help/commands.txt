@@ -22,7 +22,7 @@
      ##2Alt + 0-9##P          Zeigt Emotions an
      ##2Alt + S##P            Hinsetzen / Aufstehen
      ##2Alt + F##P            Aktiviert/Deaktiviert das Debug Pathfinding Feature
-     ##2Alt + P##P            Erstellt einen Screenshoot
+     ##2P##P                  Erstellt einen Screenshoot
      ##2Alt + T##P            Aktiviert/Deaktiviert das Ignorieren einkommender Handelsanfragen
      ##2A##P                  Anvisieren des nächstgelegenden Monsters
      ##2H##P                  Versteckt alle unwichtigen Fenster
