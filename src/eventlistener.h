@@ -18,28 +18,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LISTENER_H
-#define LISTENER_H
+#ifndef EVENTLISTENER_H
+#define EVENTLISTENER_H
 
 #include "event.h"
 
 #include <string>
 
-namespace Mana
-{
-
-class Listener
+class EventListener
 {
 public:
-    virtual ~Listener();
+    virtual ~EventListener();
 
-    void listen(Channels channel);
+    void listen(Event::Channel channel);
 
-    void ignore(Channels channel);
+    void ignore(Event::Channel channel);
 
-    virtual void event(Channels channel, const Event &event) = 0;
+    virtual void event(Event::Channel channel, const Event &event) = 0;
 };
 
-} // namespace Mana
-
-#endif
+#endif // EVENTLISTENER_H
