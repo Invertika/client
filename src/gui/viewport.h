@@ -22,7 +22,7 @@
 #ifndef VIEWPORT_H
 #define VIEWPORT_H
 
-#include "listener.h"
+#include "eventlistener.h"
 #include "position.h"
 
 #include "gui/widgets/windowcontainer.h"
@@ -54,17 +54,11 @@ const int walkingMouseDelay = 500;
  * coordinates.
  */
 class Viewport : public WindowContainer, public gcn::MouseListener,
-        public Mana::Listener
+        public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         Viewport();
 
-        /**
-         * Destructor.
-         */
         ~Viewport();
 
         /**
@@ -171,7 +165,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void shakeScreenStop()
         { mShakeEffects.clear(); }
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     private:
         /**

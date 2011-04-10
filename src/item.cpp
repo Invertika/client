@@ -72,19 +72,19 @@ void Item::setId(int id)
                                                            "unknown-item.png"));
 }
 
-void Item::doEvent(Events eventName)
+void Item::doEvent(Event::Type eventName)
 {
-    Mana::Event event(eventName);
+    Event event(eventName);
     event.setItem("item", this);
-    event.trigger(CHANNEL_ITEM);
+    event.trigger(Event::ItemChannel);
 }
 
-void Item::doEvent(Events eventName, int amount)
+void Item::doEvent(Event::Type eventName, int amount)
 {
-    Mana::Event event(eventName);
+    Event event(eventName);
     event.setItem("item", this);
     event.setInt("amount", amount);
-    event.trigger(CHANNEL_ITEM);
+    event.trigger(Event::ItemChannel);
 }
 
 bool Item::isEquippable() const

@@ -269,13 +269,13 @@ void PopupMenu::handleLink(const std::string &link)
         if (mItem->isEquippable())
         {
             if (mItem->isEquipped())
-                mItem->doEvent(EVENT_DOUNEQUIP);
+                mItem->doEvent(Event::DoUnequip);
             else
-                mItem->doEvent(EVENT_DOEQUIP);
+                mItem->doEvent(Event::DoEquip);
         }
         else
         {
-            mItem->doEvent(EVENT_DOUSE);
+            mItem->doEvent(Event::DoUse);
         }
     }
     else if (link == "chat")

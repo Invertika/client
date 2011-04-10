@@ -30,7 +30,7 @@
 #include "gui/widgets/windowcontainer.h"
 
 #include "configuration.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "graphics.h"
 #include "log.h"
 
@@ -50,18 +50,18 @@ SDLInput *guiInput = 0;
 // Bolded font
 gcn::Font *boldFont = 0;
 
-class GuiConfigListener : public Mana::Listener
+class GuiConfigListener : public EventListener
 {
     public:
         GuiConfigListener(Gui *g):
             mGui(g)
         {}
 
-        void event(Channels channel, const Mana::Event &event)
+        void event(Event::Channel channel, const Event &event)
         {
-            if (channel == CHANNEL_CONFIG)
+            if (channel == Event::ConfigChannel)
             {
-                if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+                if (event.getType() == Event::ConfigOptionChanged &&
                     event.getString("option") == "customcursor")
                 {
                     bool bCustomCursor = config.getBoolValue("customcursor");
@@ -141,7 +141,7 @@ Gui::Gui(Graphics *graphics):
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getBoolValue("customcursor"));
     mConfigListener = new GuiConfigListener(this);
-    mConfigListener->listen(CHANNEL_CONFIG);
+    mConfigListener->listen(Event::ConfigChannel);
 }
 
 Gui::~Gui()

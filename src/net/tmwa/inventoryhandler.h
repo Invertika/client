@@ -24,7 +24,7 @@
 
 #include "equipment.h"
 #include "inventory.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
@@ -38,7 +38,8 @@
 
 namespace TmwAthena {
 
-class EquipBackend : public Equipment::Backend {
+class EquipBackend : public Equipment::Backend
+{
     public:
         EquipBackend()
         {
@@ -119,7 +120,7 @@ class InventoryItem
 typedef std::list<InventoryItem> InventoryItems;
 
 class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
-        public Mana::Listener
+        public EventListener
 {
     public:
         enum {
@@ -133,7 +134,7 @@ class InventoryHandler : public MessageHandler, public Net::InventoryHandler,
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         bool canSplit(const Item *item);
 

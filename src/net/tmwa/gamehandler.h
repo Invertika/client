@@ -22,7 +22,7 @@
 #ifndef NET_TA_MAPHANDLER_H
 #define NET_TA_MAPHANDLER_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/gamehandler.h"
 #include "net/net.h"
@@ -34,14 +34,14 @@
 namespace TmwAthena {
 
 class GameHandler : public MessageHandler, public Net::GameHandler,
-        public Mana::Listener
+        public EventListener
 {
     public:
         GameHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void connect();
 

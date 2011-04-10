@@ -23,7 +23,7 @@
 #define BEING_H
 
 #include "actorsprite.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "map.h"
 #include "position.h"
 #include "vector.h"
@@ -61,7 +61,7 @@ enum Gender
     GENDER_UNSPECIFIED = 2
 };
 
-class Being : public ActorSprite, public Mana::Listener
+class Being : public ActorSprite, public EventListener
 {
     public:
         /**
@@ -481,7 +481,7 @@ class Being : public ActorSprite, public Mana::Listener
 
         void talkTo();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     protected:
         /**

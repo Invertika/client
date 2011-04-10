@@ -23,7 +23,7 @@
 #define NET_MANASERV_INVENTORYHANDLER_H
 
 #include "equipment.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/inventoryhandler.h"
 
@@ -59,14 +59,14 @@ class EquipBackend : public Equipment::Backend
 };
 
 class InventoryHandler : public MessageHandler, Net::InventoryHandler,
-        public Mana::Listener
+        public EventListener
 {
     public:
         InventoryHandler();
 
         void handleMessage(Net::MessageIn &msg);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         bool canSplit(const Item *item);
 

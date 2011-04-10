@@ -110,7 +110,7 @@ InventoryHandler::InventoryHandler()
     mStorage = 0;
     mStorageWindow = 0;
 
-    listen(CHANNEL_ITEM);
+    listen(Event::ItemChannel);
 }
 
 InventoryHandler::~InventoryHandler()
@@ -431,12 +431,12 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::event(Channels channel,
-                             const Mana::Event &event)
+void InventoryHandler::event(Event::Channel channel,
+                             const Event &event)
 {
-    if (channel == CHANNEL_ITEM)
+    if (channel == Event::ItemChannel)
     {
-        if (event.getName() == EVENT_DOCLOSEINVENTORY)
+        if (event.getType() == Event::DoCloseInventory)
         {
             // No need to worry about type
             MessageOut outMsg(CMSG_CLOSE_STORAGE);
@@ -450,24 +450,24 @@ void InventoryHandler::event(Channels channel,
 
             int index = item->getInvIndex() + INVENTORY_OFFSET;
 
-            if (event.getName() == EVENT_DOEQUIP)
+            if (event.getType() == Event::DoEquip)
             {
                 MessageOut outMsg(CMSG_PLAYER_EQUIP);
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(0);
             }
-            else if (event.getName() == EVENT_DOUNEQUIP)
+            else if (event.getType() == Event::DoUnequip)
             {
                 MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
                 outMsg.writeInt16(index);
             }
-            else if (event.getName() == EVENT_DOUSE)
+            else if (event.getType() == Event::DoUse)
             {
                 MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
                 outMsg.writeInt16(index);
                 outMsg.writeInt32(item->getId()); // unused
             }
-            else if (event.getName() == EVENT_DODROP)
+            else if (event.getType() == Event::DoDrop)
             {
                 int amount = event.getInt("amount", 1);
 
@@ -477,7 +477,7 @@ void InventoryHandler::event(Channels channel,
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(amount);
             }
-            else if (event.getName() == EVENT_DOMOVE)
+            else if (event.getType() == Event::DoMove)
             {
                 int newIndex = event.getInt("newIndex", -1);
 

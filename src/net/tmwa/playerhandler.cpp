@@ -81,7 +81,7 @@ namespace {
 
             viewport->closePopupMenu();
 
-            Mana::Event::trigger(CHANNEL_NPC, EVENT_CLOSEALL);
+            Event::trigger(Event::NpcChannel, Event::CloseAll);
         }
     } deathListener;
 

@@ -55,7 +55,7 @@ enum
     PICKUP_TOO_FAR,
     PICKUP_INV_FULL,
     PICKUP_STACK_FULL,
-    PICKUP_DROP_STEAL,
+    PICKUP_DROP_STEAL
 };
 
 
@@ -65,14 +65,8 @@ enum
 class LocalPlayer : public Being
 {
     public:
-        /**
-         * Constructor.
-         */
         LocalPlayer(int id= 65535, int subtype = 0);
 
-        /**
-         * Destructor.
-         */
         ~LocalPlayer();
 
         virtual void logic();
@@ -212,7 +206,7 @@ class LocalPlayer : public Being
         void addMessageToQueue(const std::string &message,
                                int color = UserPalette::EXP_INFO);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         /**
          * Tells the engine wether to check
@@ -267,4 +261,4 @@ class LocalPlayer : public Being
 
 extern LocalPlayer *player_node;
 
-#endif
+#endif // LOCALPLAYER_H

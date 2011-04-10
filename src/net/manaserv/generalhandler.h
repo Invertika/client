@@ -22,7 +22,7 @@
 #ifndef NET_MANASERV_GENERALHANDLER_H
 #define NET_MANASERV_GENERALHANDLER_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "net/generalhandler.h"
 #include "net/net.h"
@@ -31,7 +31,7 @@
 
 namespace ManaServ {
 
-class GeneralHandler : public Net::GeneralHandler, public Mana::Listener
+class GeneralHandler : public Net::GeneralHandler, public EventListener
 {
     public:
         GeneralHandler();
@@ -46,7 +46,7 @@ class GeneralHandler : public Net::GeneralHandler, public Mana::Listener
 
         void clearHandlers();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     protected:
         MessageHandlerPtr mBeingHandler;

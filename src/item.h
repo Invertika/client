@@ -34,14 +34,8 @@ class Image;
 class Item
 {
     public:
-        /**
-         * Constructor.
-         */
         Item(int id = -1, int quantity = 0, bool equipped = false);
 
-        /**
-         * Destructor.
-         */
         virtual ~Item();
 
         /**
@@ -114,9 +108,9 @@ class Item
          */
         int getInvIndex() const { return mInvIndex; }
 
-        void doEvent(Events eventName);
+        void doEvent(Event::Type eventType);
 
-        void doEvent(Events eventName, int amount);
+        void doEvent(Event::Type eventType, int amount);
 
         /**
          * Returns information about this item type.
@@ -131,7 +125,6 @@ class Item
         bool mEquipped;       /**< Item is equipped. */
         bool mInEquipment;    /**< Item is in equipment */
         int mInvIndex;        /**< Inventory index. */
-
 };
 
-#endif
+#endif // ITEM_H

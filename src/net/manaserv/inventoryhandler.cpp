@@ -52,7 +52,7 @@ InventoryHandler::InventoryHandler()
     handledMessages = _messages;
     inventoryHandler = this;
 
-    listen(CHANNEL_ITEM);
+    listen(Event::ItemChannel);
 }
 
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
@@ -108,10 +108,10 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-void InventoryHandler::event(Channels channel,
-                             const Mana::Event &event)
+void InventoryHandler::event(Event::Channel channel,
+                             const Event &event)
 {
-    if (channel == CHANNEL_ITEM)
+    if (channel == Event::ItemChannel)
     {
         Item *item = event.getItem("item");
 
@@ -120,13 +120,13 @@ void InventoryHandler::event(Channels channel,
 
         int index = item->getInvIndex();
 
-        if (event.getName() == EVENT_DOEQUIP)
+        if (event.getType() == Event::DoEquip)
         {
             MessageOut msg(PGMSG_EQUIP);
             msg.writeInt8(index);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == EVENT_DOUNEQUIP)
+        else if (event.getType() == Event::DoUnequip)
         {
             MessageOut msg(PGMSG_UNEQUIP);
             msg.writeInt8(index);
@@ -136,13 +136,13 @@ void InventoryHandler::event(Channels channel,
             // for instance.
             mEquips.setEquipment(index, 0, 0);
         }
-        else if (event.getName() == EVENT_DOUSE)
+        else if (event.getType() == Event::DoUse)
         {
             MessageOut msg(PGMSG_USE_ITEM);
             msg.writeInt8(index);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == EVENT_DODROP)
+        else if (event.getType() == Event::DoDrop)
         {
             int amount = event.getInt("amount", 1);
 
@@ -151,7 +151,7 @@ void InventoryHandler::event(Channels channel,
             msg.writeInt8(amount);
             gameServerConnection->send(msg);
         }
-        else if (event.getName() == EVENT_DOSPLIT)
+        else if (event.getType() == Event::DoSplit)
         {
             int amount = event.getInt("amount", 1);
 
@@ -165,7 +165,7 @@ void InventoryHandler::event(Channels channel,
                 gameServerConnection->send(msg);
             }
         }
-        else if (event.getName() == EVENT_DOMOVE)
+        else if (event.getType() == Event::DoMove)
         {
             int newIndex = event.getInt("newIndex", -1);
 

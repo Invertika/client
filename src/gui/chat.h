@@ -22,7 +22,7 @@
 #ifndef CHAT_H
 #define CHAT_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 #include "gui/widgets/textfield.h"
@@ -77,12 +77,9 @@ struct CHATLOG
  */
 class ChatWindow : public Window,
                    public gcn::ActionListener,
-                   public Mana::Listener
+                   public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         ChatWindow();
 
         /**
@@ -158,7 +155,7 @@ class ChatWindow : public Window,
 	void mousePressed(gcn::MouseEvent &event);
 	void mouseDragged(gcn::MouseEvent &event);
 
-        void event(Channels channel, const Mana::Event &event);
+	void event(Event::Channel channel, const Event &event);
 
         /**
          * Scrolls the chat window

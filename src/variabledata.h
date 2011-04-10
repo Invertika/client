@@ -26,9 +26,6 @@
 class ActorSprite;
 class Item;
 
-namespace Mana
-{
-
 class VariableData
 {
     public:
@@ -43,7 +40,7 @@ class VariableData
         DATA_ACTOR
     };
 
-    virtual ~VariableData() {};
+    virtual ~VariableData() {}
 
     virtual int getType() const = 0;
 };
@@ -125,7 +122,5 @@ public:
 private:
     ActorSprite *mData;
 };
-
-} // namespace Mana
 
 #endif

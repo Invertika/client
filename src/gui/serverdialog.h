@@ -111,16 +111,8 @@ class ServerDialog : public Window,
                      public gcn::SelectionListener
 {
     public:
-        /**
-         * Constructor
-         *
-         * @see Window::Window
-         */
         ServerDialog(ServerInfo *serverInfo, const std::string &dir);
 
-        /**
-         * Destructor
-         */
         ~ServerDialog();
 
         /**
@@ -157,6 +149,11 @@ class ServerDialog : public Window,
                                   size_t total, size_t remaining);
 
         void setFieldsReadOnly(bool readOnly);
+
+        static bool sortByLastUsage(const ServerInfo& serv1, const ServerInfo& serv2);
+        static bool sortByName(const ServerInfo& serv1, const ServerInfo& serv2);
+
+        void reorderList(int orderBy);
 
         TextField *mServerNameField;
         TextField *mPortField;

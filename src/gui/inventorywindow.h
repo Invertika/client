@@ -23,9 +23,10 @@
 #define INVENTORYWINDOW_H
 
 #include "inventory.h"
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
+#include "gui/widgets/textfield.h"
 
 #include "net/inventoryhandler.h"
 
@@ -48,17 +49,11 @@ class InventoryWindow : public Window,
                         public gcn::KeyListener,
                         public gcn::SelectionListener,
                         public InventoryListener,
-                        public Mana::Listener
+                        public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         InventoryWindow(Inventory *inventory);
 
-        /**
-         * Destructor.
-         */
         ~InventoryWindow();
 
         /**
@@ -107,11 +102,15 @@ class InventoryWindow : public Window,
          */
         void updateButtons();
 
+        bool isInputFocused() const;
+
+        static bool isAnyInputFocused();
+
         void slotsChanged(Inventory* inventory);
 
         bool isMainInventory() { return mInventory->isMainInventory(); }
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
     private:
         /**
@@ -126,12 +125,14 @@ class InventoryWindow : public Window,
         Inventory *mInventory;
         ItemContainer *mItems;
 
+        TextField *mFilterText;
+
         std::string mWeight, mSlots;
 
         gcn::Button *mUseButton, *mEquipButton, *mDropButton, *mSplitButton,
                     *mOutfitButton, *mStoreButton, *mRetrieveButton;
 
-        gcn::Label *mWeightLabel, *mSlotsLabel;
+        gcn::Label *mWeightLabel, *mSlotsLabel, *mFilterLabel;
 
         ProgressBar *mWeightBar, *mSlotsBar;
 

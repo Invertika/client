@@ -22,7 +22,7 @@
 #ifndef MINISTATUS_H
 #define MINISTATUS_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/popup.h"
 
@@ -38,14 +38,14 @@ class TextPopup;
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Popup, public Mana::Listener
+class MiniStatusWindow : public Popup, public EventListener
 {
     public:
         MiniStatusWindow();
 
         void drawIcons(Graphics *graphics);
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void logic(); // Updates icons
 

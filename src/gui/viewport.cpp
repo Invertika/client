@@ -71,8 +71,8 @@ Viewport::Viewport():
 
     setFocusable(true);
 
-    listen(CHANNEL_CONFIG);
-    listen(CHANNEL_ACTORSPRITE);
+    listen(Event::ConfigChannel);
+    listen(Event::ActorSpriteChannel);
 }
 
 Viewport::~Viewport()
@@ -584,9 +584,10 @@ void Viewport::hideBeingPopup()
     mBeingPopup->setVisible(false);
 }
 
-void Viewport::event(Channels channel, const Mana::Event &event)
+void Viewport::event(Event::Channel channel, const Event &event)
 {
-    if (channel == CHANNEL_ACTORSPRITE && event.getName() == EVENT_DESTROYED)
+    if (channel == Event::ActorSpriteChannel
+            && event.getType() == Event::Destroyed)
     {
         ActorSprite *actor = event.getActor("source");
 
@@ -596,8 +597,8 @@ void Viewport::event(Channels channel, const Mana::Event &event)
         if (mHoverItem == actor)
             mHoverItem = 0;
     }
-    else if (channel == CHANNEL_CONFIG &&
-             event.getName() == EVENT_CONFIGOPTIONCHANGED)
+    else if (channel == Event::ConfigChannel &&
+             event.getType() == Event::ConfigOptionChanged)
     {
         const std::string option = event.getString("option");
         if (option == "ScrollLaziness" || option == "ScrollRadius")

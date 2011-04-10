@@ -90,8 +90,8 @@ ChatWindow::ChatWindow():
     mAutoComplete(new ChatAutoComplete),
     mTmpVisible(false)
 {
-    listen(CHANNEL_CHAT);
-    listen(CHANNEL_NOTICES);
+    listen(Event::ChatChannel);
+    listen(Event::NoticesChannel);
 
     setWindowName("Chat");
 
@@ -375,33 +375,33 @@ void ChatWindow::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void ChatWindow::event(Channels channel, const Mana::Event &event)
+void ChatWindow::event(Event::Channel channel, const Event &event)
 {
-    if (channel == CHANNEL_NOTICES)
+    if (channel == Event::NoticesChannel)
     {
-        if (event.getName() == EVENT_SERVERNOTICE)
+        if (event.getType() == Event::ServerNotice)
             localChatTab->chatLog(event.getString("message"), BY_SERVER);
     }
-    else if (channel == CHANNEL_CHAT)
+    else if (channel == Event::ChatChannel)
     {
-        if (event.getName() == EVENT_WHISPER)
+        if (event.getType() == Event::Whisper)
         {
             whisper(event.getString("nick"), event.getString("message"));
         }
-        else if (event.getName() == EVENT_WHISPERERROR)
+        else if (event.getType() == Event::WhisperError)
         {
             whisper(event.getString("nick"),
                     event.getString("error"), BY_SERVER);
         }
-        else if (event.getName() == EVENT_PLAYER)
+        else if (event.getType() == Event::Player)
         {
             localChatTab->chatLog(event.getString("message"), BY_PLAYER);
         }
-        else if (event.getName() == EVENT_ANNOUNCEMENT)
+        else if (event.getType() == Event::Announcement)
         {
             localChatTab->chatLog(event.getString("message"), BY_GM);
         }
-        else if (event.getName() == EVENT_BEING)
+        else if (event.getType() == Event::Being)
         {
             if (event.getInt("permissions") & PlayerRelation::SPEECH_LOG)
                 localChatTab->chatLog(event.getString("message"), BY_OTHER);

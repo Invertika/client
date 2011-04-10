@@ -24,6 +24,7 @@
 #include "log.h"
 #include "playerinfo.h"
 #include "configuration.h"
+#include "eventlistener.h"
 
 #include "gui/setup.h"
 
@@ -211,6 +212,8 @@ private:
 SkillDialog::SkillDialog():
     Window(_("Skills"))
 {
+    listen(Event::AttributesChannel);
+
     setWindowName("Skills");
     setCloseButton(true);
     setResizable(true);
@@ -274,6 +277,17 @@ void SkillDialog::update()
     {
         if ((*it).second->modifiable)
             (*it).second->update();
+    }
+}
+
+void SkillDialog::event(Event::Channel channel, const Event &event)
+{
+    if (event.getType() == Event::UpdateAttribute)
+    {
+        if (event.getInt("id") == SKILL_POINTS)
+        {
+            update();
+        }
     }
 }
 

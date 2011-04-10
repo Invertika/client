@@ -453,6 +453,8 @@ SET(SRCS
     equipment.h
     event.cpp
     event.h
+    eventlistener.cpp
+    eventlistener.h
     flooritem.cpp
     flooritem.h
     game.cpp
@@ -476,8 +478,6 @@ SET(SRCS
     joystick.h
     keyboardconfig.cpp
     keyboardconfig.h
-    listener.cpp
-    listener.h
     localplayer.cpp
     localplayer.h
     log.cpp
@@ -641,15 +641,15 @@ IF (WIN32)
     )
 ENDIF ()
 
-SET (PROGRAMS invertika)
+SET (PROGRAMS mana)
 
 IF (ENABLE_MANASERV)
-    ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
 ELSE(ENABLE_MANASERV)
-    ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_TMWA})
 ENDIF(ENABLE_MANASERV)
 
-TARGET_LINK_LIBRARIES(invertika
+TARGET_LINK_LIBRARIES(mana
     ${INTERNAL_LIBRARIES}
     ${SDLGFX_LIBRARIES}
     ${SDL_LIBRARY}
@@ -666,12 +666,12 @@ TARGET_LINK_LIBRARIES(invertika
     ${LIBINTL_LIBRARIES}
     ${EXTRA_LIBRARIES})
 
-INSTALL(TARGETS invertika RUNTIME DESTINATION ${PKG_BINDIR})
+INSTALL(TARGETS mana RUNTIME DESTINATION ${PKG_BINDIR})
 
 IF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # we expect the SMCgtxt package to be present on Solaris;
     # the Solaris gettext is not API-compatible to GNU gettext
-    SET_TARGET_PROPERTIES(invertika PROPERTIES LINK_FLAGS "-L/usr/local/lib")
+    SET_TARGET_PROPERTIES(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
 ENDIF()
 
-SET_TARGET_PROPERTIES(invertika PROPERTIES COMPILE_FLAGS "${FLAGS}")
+SET_TARGET_PROPERTIES(mana PROPERTIES COMPILE_FLAGS "${FLAGS}")

@@ -28,80 +28,6 @@
 class ActorSprite;
 class Item;
 
-enum Channels
-{
-    CHANNEL_ACTORSPRITE,
-    CHANNEL_ATTRIBUTES,
-    CHANNEL_BUYSELL,
-    CHANNEL_CHAT,
-    CHANNEL_CLIENT,
-    CHANNEL_CONFIG,
-    CHANNEL_GAME,
-    CHANNEL_ITEM,
-    CHANNEL_NOTICES,
-    CHANNEL_NPC,
-    CHANNEL_STATUS,
-    CHANNEL_STORAGE
-};
-
-enum Events
-{
-    EVENT_ANNOUNCEMENT,
-    EVENT_BEING,
-    EVENT_CLOSE,
-    EVENT_CLOSEALL,
-    EVENT_CLOSESENT,
-    EVENT_CONFIGOPTIONCHANGED,
-    EVENT_CONSTRUCTED,
-    EVENT_DBSLOADING,
-    EVENT_DESTROYED,
-    EVENT_DESTRUCTED,
-    EVENT_DESTRUCTING,
-    EVENT_DOCLOSEINVENTORY,
-    EVENT_DODROP,
-    EVENT_DOEQUIP,
-    EVENT_DOMOVE,
-    EVENT_DOSPLIT,
-    EVENT_DOUNEQUIP,
-    EVENT_DOUSE,
-    EVENT_END,
-    EVENT_ENGINESINITALIZED,
-    EVENT_ENGINESINITALIZING,
-    EVENT_GUIWINDOWSLOADED,
-    EVENT_GUIWINDOWSLOADING,
-    EVENT_GUIWINDOWSUNLOADED,
-    EVENT_GUIWINDOWSUNLOADING,
-    EVENT_INTEGERINPUT,
-    EVENT_INTEGERINPUTSENT,
-    EVENT_MAPLOADED,
-    EVENT_MENU,
-    EVENT_MENUSENT,
-    EVENT_MESSAGE,
-    EVENT_NEXT,
-    EVENT_NEXTSENT,
-    EVENT_NPCCOUNT,
-    EVENT_PLAYER,
-    EVENT_POST,
-    EVENT_POSTCOUNT,
-    EVENT_SENDLETTERSENT,
-    EVENT_SERVERNOTICE,
-    EVENT_STATECHANGE,
-    EVENT_STORAGECOUNT,
-    EVENT_STRINGINPUT,
-    EVENT_STRINGINPUTSENT,
-    EVENT_STUN,
-    EVENT_TALKSENT,
-    EVENT_TRADING,
-    EVENT_UPDATEATTRIBUTE,
-    EVENT_UPDATESTAT,
-    EVENT_UPDATESTATUSEFFECT,
-    EVENT_WHISPER,
-    EVENT_WHISPERERROR
-};
-
-namespace Mana
-{
-
 // Possible exception that can be thrown
 enum BadEvent {
     BAD_KEY,
@@ -109,35 +35,99 @@ enum BadEvent {
     KEY_ALREADY_EXISTS
 };
 
-class Listener;
+class EventListener;
 
-typedef std::set<Listener *> ListenerSet;
-typedef std::map<Channels, ListenerSet > ListenMap;
-
+typedef std::set<EventListener *> ListenerSet;
 class VariableData;
 typedef std::map<std::string, VariableData *> VariableMap;
-
-#define SERVER_NOTICE(message) { \
-Mana::Event event(EVENT_SERVERNOTICE); \
-event.setString("message", message); \
-event.trigger(CHANNEL_NOTICES, event); }
 
 class Event
 {
 public:
+    enum Channel
+    {
+        ActorSpriteChannel,
+        AttributesChannel,
+        BuySellChannel,
+        ChatChannel,
+        ClientChannel,
+        ConfigChannel,
+        GameChannel,
+        ItemChannel,
+        NoticesChannel,
+        NpcChannel,
+        StatusChannel,
+        StorageChannel
+    };
+
+    enum Type
+    {
+        Announcement,
+        Being,
+        Close,
+        CloseAll,
+        CloseSent,
+        ConfigOptionChanged,
+        Constructed,
+        LoadingDatabases,
+        Destroyed,
+        Destructed,
+        Destructing,
+        DoCloseInventory,
+        DoDrop,
+        DoEquip,
+        DoMove,
+        DoSplit,
+        DoUnequip,
+        DoUse,
+        End,
+        EnginesInitialized,
+        EnginesInitializing,
+        GuiWindowsLoaded,
+        GuiWindowsLoading,
+        GuiWindowsUnloaded,
+        GuiWindowsUnloading,
+        IntegerInput,
+        IntegerInputSent,
+        MapLoaded,
+        Menu,
+        MenuSent,
+        Message,
+        Next,
+        NextSent,
+        NpcCount,
+        Player,
+        Post,
+        PostCount,
+        SendLetterSent,
+        ServerNotice,
+        StateChange,
+        StorageCount,
+        StringInput,
+        StringInputSent,
+        Stun,
+        TalkSent,
+        Trading,
+        UpdateAttribute,
+        UpdateStat,
+        UpdateStatusEffect,
+        Whisper,
+        WhisperError
+    };
+
     /**
      * Makes an event with the given name.
      */
-    Event(Events name)
-    { mEventName = name; }
+    Event(Type type)
+    { mType = type; }
 
     ~Event();
 
     /**
      * Returns the name of the event.
      */
-    Events getName() const
-    { return mEventName; }
+    Type getType() const
+    { return mType; }
 
 // Integers
 
@@ -291,49 +281,52 @@ public:
     /**
      * Sends this event to all classes listening to the given channel.
      */
-    inline void trigger(Channels channel) const
+    inline void trigger(Channel channel) const
     { trigger(channel, *this); }
 
     /**
      * Sends the given event to all classes listening to the given channel.
      */
-    static void trigger(Channels channel, const Event &event);
+    static void trigger(Channel channel, const Event &event);
 
     /**
      * Sends an empty event with the given name to all classes listening to the
      * given channel.
      */
-    static inline void trigger(Channels channel, Events name)
-    { trigger(channel, Mana::Event(name)); }
+    static inline void trigger(Channel channel, Type type)
+    { trigger(channel, Event(type)); }
 
 protected:
-    friend class Listener;
+    friend class EventListener;
 
     /**
      * Binds the given listener to the given channel. The listener will receive
      * all events triggered on the channel.
      */
-    static void bind(Listener *listener, Channels channel);
+    static void bind(EventListener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from the given channel. The listener will no
      * longer receive any events from the channel.
      */
-    static void unbind(Listener *listener, Channels channel);
+    static void unbind(EventListener *listener, Channel channel);
 
     /**
      * Unbinds the given listener from all channels.
      */
-    static void remove(Listener *listener);
+    static void remove(EventListener *listener);
 
 private:
+    typedef std::map<Channel, ListenerSet > ListenMap;
     static ListenMap mBindings;
 
-    Events mEventName;
-
+    Type mType;
     VariableMap mData;
 };
 
-} // namespace Mana
+#define SERVER_NOTICE(message) { \
+Event event(Event::ServerNotice); \
+event.setString("message", message); \
+event.trigger(Event::NoticesChannel, event); }
 
-#endif
+#endif // EVENT_H

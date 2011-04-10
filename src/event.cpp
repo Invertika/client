@@ -20,13 +20,10 @@
 
 #include "event.h"
 
-#include "listener.h"
+#include "eventlistener.h"
 #include "variabledata.h"
 
-namespace Mana
-{
-
-ListenMap Event::mBindings;
+Event::ListenMap Event::mBindings;
 
 Event::~Event()
 {
@@ -215,7 +212,7 @@ bool Event::hasActor(const std::string &key) const
 
 // Triggers
 
-void Event::trigger(Channels channel, const Event &event)
+void Event::trigger(Channel channel, const Event &event)
 {
     ListenMap::iterator it = mBindings.find(channel);
 
@@ -232,17 +229,17 @@ void Event::trigger(Channels channel, const Event &event)
     }
 }
 
-void Event::bind(Listener *listener, Channels channel)
+void Event::bind(EventListener *listener, Channel channel)
 {
     mBindings[channel].insert(listener);
 }
 
-void Event::unbind(Listener *listener, Channels channel)
+void Event::unbind(EventListener *listener, Channel channel)
 {
     mBindings[channel].erase(listener);
 }
 
-void Event::remove(Listener *listener)
+void Event::remove(EventListener *listener)
 {
     ListenMap::iterator it = mBindings.begin();
     while (it != mBindings.end())
@@ -251,5 +248,3 @@ void Event::remove(Listener *listener)
         it++;
     }
 }
-
-} // namespace Mana

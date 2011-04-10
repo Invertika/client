@@ -22,7 +22,7 @@
 #ifndef STATUS_H
 #define STATUS_H
 
-#include "listener.h"
+#include "eventlistener.h"
 
 #include "gui/widgets/window.h"
 
@@ -40,15 +40,12 @@ class VertContainer;
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window, public Mana::Listener
+class StatusWindow : public Window, public EventListener
 {
     public:
-        /**
-         * Constructor.
-         */
         StatusWindow();
 
-        void event(Channels channel, const Mana::Event &event);
+        void event(Event::Channel channel, const Event &event);
 
         void updateAttrs();
 

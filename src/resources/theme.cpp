@@ -111,7 +111,7 @@ Theme::Theme():
 {
     initDefaultThemePath();
 
-    listen(CHANNEL_CONFIG);
+    listen(Event::ConfigChannel);
     loadColors();
 
     mColors[HIGHLIGHT].ch = 'H';
@@ -208,10 +208,10 @@ void Theme::updateAlpha()
         iter->second->updateAlpha(mMinimumOpacity);
 }
 
-void Theme::event(Channels channel, const Mana::Event &event)
+void Theme::event(Event::Channel channel, const Event &event)
 {
-    if (channel == CHANNEL_CONFIG &&
-        event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+    if (channel == Event::ConfigChannel &&
+        event.getType() == Event::ConfigOptionChanged &&
         event.getString("option") == "guialpha")
     {
         updateAlpha();

@@ -23,7 +23,7 @@
 
 #include "configuration.h"
 #include "event.h"
-#include "listener.h"
+#include "eventlistener.h"
 #include "playerinfo.h"
 
 #include "gui/npcpostdialog.h"
@@ -52,10 +52,10 @@
 
 typedef std::map<int, NpcDialog*> NpcDialogs;
 
-class NpcEventListener : public Mana::Listener
+class NpcEventListener : public EventListener
 {
 public:
-    void event(Channels channel, const Mana::Event &event);
+    void event(Event::Channel channel, const Event &event);
 
     NpcDialog *getDialog(int id, bool make = true);
 
@@ -143,7 +143,7 @@ NpcDialog::NpcDialog(int npcId)
     setVisible(true);
     requestFocus();
 
-    listen(CHANNEL_CONFIG);
+    listen(Event::ConfigChannel);
     PlayerInfo::setNPCInteractionCount(PlayerInfo::getNPCInteractionCount()
                                        + 1);
 }
@@ -387,12 +387,12 @@ void NpcDialog::setVisible(bool visible)
     }
 }
 
-void NpcDialog::event(Channels channel, const Mana::Event &event)
+void NpcDialog::event(Event::Channel channel, const Event &event)
 {
-    if (channel != CHANNEL_CONFIG)
+    if (channel != Event::ConfigChannel)
         return;
 
-    if (event.getName() == EVENT_CONFIGOPTIONCHANGED &&
+    if (event.getType() == Event::ConfigOptionChanged &&
         event.getString("option") == "logNpcInGui")
     {
         mLogInteraction = config.getBoolValue("logNpcInGui");
@@ -436,7 +436,7 @@ void NpcDialog::setup()
 
     npcListener = new NpcEventListener();
 
-    npcListener->listen(CHANNEL_NPC);
+    npcListener->listen(Event::NpcChannel);
 }
 
 void NpcDialog::buildLayout()
@@ -506,19 +506,19 @@ void NpcDialog::buildLayout()
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
-void NpcEventListener::event(Channels channel,
-                             const Mana::Event &event)
+void NpcEventListener::event(Event::Channel channel,
+                             const Event &event)
 {
-    if (channel != CHANNEL_NPC)
+    if (channel != Event::NpcChannel)
         return;
 
-    if (event.getName() == EVENT_MESSAGE)
+    if (event.getType() == Event::Message)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
         dialog->addText(event.getString("text"));
     }
-    else if (event.getName() == EVENT_MENU)
+    else if (event.getType() == Event::Menu)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -528,7 +528,7 @@ void NpcEventListener::event(Channels channel,
         for (int i = 1; i <= count; i++)
             dialog->addChoice(event.getString("choice" + toString(i)));
     }
-    else if (event.getName() == EVENT_INTEGERINPUT)
+    else if (event.getType() == Event::IntegerInput)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -538,7 +538,7 @@ void NpcEventListener::event(Channels channel,
 
         dialog->integerRequest(defaultValue, min, max);
     }
-    else if (event.getName() == EVENT_STRINGINPUT)
+    else if (event.getType() == Event::StringInput)
     {
         NpcDialog *dialog = getDialog(event.getInt("id"));
 
@@ -546,12 +546,12 @@ void NpcEventListener::event(Channels channel,
         {
             dialog->textRequest(event.getString("default"));
         }
-        catch (Mana::BadEvent)
+        catch (BadEvent)
         {
             dialog->textRequest("");
         }
     }
-    else if (event.getName() == EVENT_NEXT)
+    else if (event.getType() == Event::Next)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -565,7 +565,7 @@ void NpcEventListener::event(Channels channel,
 
         dialog->showNextButton();
     }
-    else if (event.getName() == EVENT_CLOSE)
+    else if (event.getType() == Event::Close)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -579,11 +579,11 @@ void NpcEventListener::event(Channels channel,
 
         dialog->showCloseButton();
     }
-    else if (event.getName() == EVENT_CLOSEALL)
+    else if (event.getType() == Event::CloseAll)
     {
         NpcDialog::closeAll();
     }
-    else if (event.getName() == EVENT_END)
+    else if (event.getType() == Event::End)
     {
         int id = event.getInt("id");
         NpcDialog *dialog = getDialog(id, false);
@@ -591,7 +591,7 @@ void NpcEventListener::event(Channels channel,
         if (dialog)
             dialog->close();
     }
-    else if (event.getName() == EVENT_POST)
+    else if (event.getType() == Event::Post)
     {
         new NpcPostDialog(event.getInt("id"));
     }
