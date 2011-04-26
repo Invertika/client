@@ -26,7 +26,7 @@
      ##2Alt + T##P            Aktiviert/Deaktiviert das Ignorieren einkommender Handelsanfragen
      ##2A##P                  Anvisieren des nächstgelegenden Monsters
      ##2H##P                  Versteckt alle unwichtigen Fenster
-     ##2G or Z##P             Hebt ein Item auf
+     ##2Y oder Z##P             Hebt ein Item auf
      ##2Enter##P              Chatfenster fokusieren / Nachricht senden
      ##2Shift##P              Beim Angreifen halten, um das Ziel für automatischen Angriff zu halten
  
