@@ -28,25 +28,21 @@
 
 #include <sys/stat.h>
 
-#ifdef _MKDIR_TEST_
-// compile with -D_MKDIR_TEST_ to get a standalone binary
+#ifdef MKDIR_TEST
+// compile with -DMKDIR_TEST to get a standalone binary
 #include <cstdio>
 #include <cstdlib>
 #endif
 
 #include "mkdir.h"
 
+/// Create a directory, making leading components first if necessary
 int mkdir_r(const char *pathname) {
-    char tmp[PATH_MAX];
+    size_t len = strlen(pathname);
+    char tmp[len+2];
     char *p;
 
-    if (strlen(pathname) >= PATH_MAX-2)
-        return -1;
-
-    strncpy(tmp, pathname, sizeof(tmp)-1);
-    tmp[PATH_MAX-1] = '\0';
-
-    int len=strlen(tmp);
+    strcpy(tmp, pathname);
 
     // terminate the pathname with '/'
     if (tmp[len-1] != '/') {
@@ -96,7 +92,7 @@ int mkdir_r(const char *pathname) {
                 return -1;
             }
 
-#ifdef _MKDIR_TEST_
+#ifdef MKDIR_TEST
             printf("%s\n", tmp);
 #endif
             *p = '/';
@@ -105,7 +101,7 @@ int mkdir_r(const char *pathname) {
     return 0;
 }
 
-#ifdef _MKDIR_TEST_
+#ifdef MKDIR_TEST
 int main(int argc, char** argv) {
     if (argc < 2) exit(1);
     mkdir_r(argv[1]);

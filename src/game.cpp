@@ -96,7 +96,6 @@ Joystick *joystick = NULL;
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
 QuitDialog *quitDialog = NULL;
-OkDialog *disconnectedDialog = NULL;
 
 ChatWindow *chatWindow;
 StatusWindow *statusWindow;
@@ -221,12 +220,11 @@ Game *Game::mInstance = 0;
 
 Game::Game():
     mLastTarget(ActorSprite::UNKNOWN),
-    mCurrentMap(0), mMapName("")
+    mDisconnected(false),
+    mCurrentMap(0)
 {
     assert(!mInstance);
     mInstance = this;
-
-    disconnectedDialog = NULL;
 
     // Create the viewport
     viewport = new Viewport;
@@ -377,7 +375,7 @@ void Game::logic()
     cur_time = time(NULL);
 
     // Handle network stuff
-    if (!Net::getGameHandler()->isConnected())
+    if (!Net::getGameHandler()->isConnected() && !mDisconnected)
     {
         if (Client::getState() == STATE_CHANGE_MAP)
             return; // Not a problem here
@@ -386,14 +384,44 @@ void Game::logic()
             return; // Disconnect gets handled by STATE_ERROR
 
         errorMessage = _("The connection to the server was lost.");
+        Client::instance()->showOkDialog(_("Network Error"),
+                                         errorMessage,
+                                         STATE_CHOOSE_SERVER);
+        mDisconnected = true;
+    }
+}
 
-        if (!disconnectedDialog)
+/**
+ * handle item pick up case.
+ */
+static void handleItemPickUp()
+{
+    int x = player_node->getTileX();
+    int y = player_node->getTileY();
+
+    // Let's look for items around until you find one.
+    bool found = false;
+    for (int xX = x - 1; xX < x + 2; ++xX)
+    {
+        for (int yY = y - 1; yY < y + 2; ++yY)
         {
-            disconnectedDialog = new OkDialog(_("Network Error"),
-                                              errorMessage);
-            disconnectedDialog->addActionListener(&errorListener);
-            disconnectedDialog->requestMoveToTop();
+            FloorItem *item = actorSpriteManager->findItem(xX, yY);
+            if (item)
+            {
+                found = true;
+                player_node->pickUp(item);
+
+                // We found it, so set the player
+                // direction accordingly,
+                player_node->lookAt(
+                                  player_node->getMap()->getTileCenter(xX, yY));
+
+                // Get out of the loops
+                break;
+            }
         }
+        if (found)
+            break;
     }
 }
 
@@ -629,32 +657,7 @@ void Game::handleInput()
                 {
                     case KeyboardConfig::KEY_PICKUP:
                         {
-                            int x = player_node->getTileX();
-                            int y = player_node->getTileY();
-
-                            FloorItem *item =
-                                    actorSpriteManager->findItem(x, y);
-
-                            // If none below the player, try the tile in front
-                            // of the player
-                            if (!item)
-                            {
-                                // Temporary until tile-based picking is
-                                // removed.
-                                switch (player_node->getSpriteDirection())
-                                {
-                                    case DIRECTION_UP   : --y; break;
-                                    case DIRECTION_DOWN : ++y; break;
-                                    case DIRECTION_LEFT : --x; break;
-                                    case DIRECTION_RIGHT: ++x; break;
-                                    default: break;
-                                }
-
-                                item = actorSpriteManager->findItem(x, y);
-                            }
-
-                            if (item)
-                                player_node->pickUp(item);
+                            handleItemPickUp();
 
                             used = true;
                         }
@@ -982,9 +985,9 @@ void Game::changeMap(const std::string &mapPath)
     if (newMusic != oldMusic)
     {
         if (newMusic.empty())
-            sound.stopMusic();
+            sound.fadeOutMusic();
         else
-            sound.playMusic(newMusic);
+            sound.fadeOutAndPlayMusic(newMusic);
     }
 
     delete mCurrentMap;

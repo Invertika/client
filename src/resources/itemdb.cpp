@@ -180,9 +180,6 @@ void ItemDB::unload()
 
 void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
 {
-        if (!xmlStrEqual(node->name, BAD_CAST "item"))
-            return;
-
         int id = XML::getProperty(node, "id", 0);
 
         if (!id)
@@ -199,9 +196,16 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        std::string attackAction = XML::getProperty(node, "attack-action", "");
+        std::string attackAction = XML::getProperty(node, "attack-action",
+                                                    SpriteAction::INVALID);
         int attackRange = XML::getProperty(node, "attack-range", 0);
-        std::string missileParticle = XML::getProperty(node, "missile-particle", "");
+        std::string missileParticleFile = XML::getProperty(node,
+                                                           "missile-particle",
+                                                           "");
+        int hitEffectId = XML::getProperty(node, "hit-effect-id",
+                                           paths.getIntValue("hitEffectId"));
+        int criticalEffectId = XML::getProperty(node, "critical-hit-effect-id",
+                                      paths.getIntValue("criticalHitEffectId"));
 
         // Load Ta Item Type
         std::string typeStr = XML::getProperty(node, "type", "other");
@@ -218,9 +222,11 @@ void ItemDB::loadCommonRef(ItemInfo *itemInfo, xmlNodePtr node)
         itemInfo->mDescription = description;
         itemInfo->mView = view;
         itemInfo->mWeight = weight;
-        itemInfo->setAttackAction(attackAction);
+        itemInfo->mAttackAction = attackAction;
         itemInfo->mAttackRange = attackRange;
-        itemInfo->setMissileParticle(missileParticle);
+        itemInfo->setMissileParticleFile(missileParticleFile);
+        itemInfo->setHitEffectId(hitEffectId);
+        itemInfo->setCriticalHitEffectId(criticalEffectId);
 
         // Load <sprite>, <sound>, and <floor>
         for_each_xml_child_node(itemChild, node)
@@ -332,6 +338,9 @@ void TaItemDB::load()
 
     for_each_xml_child_node(node, rootNode)
     {
+        if (!xmlStrEqual(node->name, BAD_CAST "item"))
+            continue;
+
         TaItemInfo *itemInfo = new TaItemInfo;
 
         loadCommonRef(itemInfo, node);
@@ -430,6 +439,9 @@ void ManaServItemDB::load()
 
     for_each_xml_child_node(node, rootNode)
     {
+        if (!xmlStrEqual(node->name, BAD_CAST "item"))
+            continue;
+
         ManaServItemInfo *itemInfo = new ManaServItemInfo;
 
         loadCommonRef(itemInfo, node);

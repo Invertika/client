@@ -71,9 +71,7 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     //       these translations aren't necessary anymore. The sprites know
     //       best where their base point should be.
     const int px = getPixelX() + offsetX - 16;
-    // Temporary fix to the Y offset.
-    const int py = getPixelY() + offsetY -
-        ((Net::getNetworkType() == ServerInfo::MANASERV) ? 15 : 32);
+    const int py = getPixelY() + offsetY - 16;
 
     if (mUsedTargetCursor)
     {
@@ -165,7 +163,7 @@ static EffectDescription *getEffectDescription(int effectId)
         XML::Document doc(EFFECTS_FILE);
         xmlNodePtr root = doc.rootNode();
 
-        if (!root || !xmlStrEqual(root->name, BAD_CAST "being-effects"))
+        if (!root || !xmlStrEqual(root->name, BAD_CAST "effects"))
         {
             logger->log("Error loading being effects file: "
                     EFFECTS_FILE);

@@ -118,7 +118,7 @@ enum {
     PGMSG_DIRECTION_CHANGE         = 0x0272, // B Direction
     GPMSG_BEING_DIR_CHANGE         = 0x0273, // W being id, B direction
     GPMSG_BEING_HEALTH_CHANGE      = 0x0274, // W being id, W hp, W max hp
-    GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, W*2 position, B speed] }*
+    GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, [W*2 position,] W*2 destination, B speed] }*
     GPMSG_ITEMS                    = 0x0281, // { W item id, W*2 position }*
     PGMSG_ATTACK                   = 0x0290, // W being id
     GPMSG_BEING_ATTACK             = 0x0291, // W being id, B direction, B attacktype
@@ -352,11 +352,6 @@ enum {
     MOVING_POSITION = 1,
     // Payload contains the destination.
     MOVING_DESTINATION = 2
-};
-
-// Email change specific return values
-enum {
-    EMAILCHG_EXISTS_EMAIL = 0x40
 };
 
 // Chat errors return values

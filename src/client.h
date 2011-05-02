@@ -52,23 +52,23 @@ extern volatile int fps;
 extern volatile int tick_time;
 extern volatile int cur_time;
 
-class ErrorListener : public gcn::ActionListener
-{
-    public:
-        void action(const gcn::ActionEvent &event);
-};
-
 extern std::string errorMessage;
-extern ErrorListener errorListener;
 extern LoginData loginData;
 
 /**
- * Returns elapsed time. (Warning: supposes the delay is always < 100 seconds)
+ * @param startTime The value to check in client ticks.
+ *
+ * @return the elapsed time in milliseconds.
+ * between startTime and the current client tick value.
+ *
+ * @warning This function can't handle delays > 100 seconds.
+ * @see MILLISECONDS_IN_A_TICK
+ * @see tick_time
  */
-int get_elapsed_time(int start_time);
+int get_elapsed_time(int startTime);
 
 /**
- * Returns if this call and the last call were done for the same
+ * Returns whether this call and the last call were done for the same
  * selected index and within a short time.
  */
 bool isDoubleClick(int selected);
@@ -167,6 +167,20 @@ public:
 
     int exec();
 
+    /**
+     * Pops up an OkDialog with the given \a title and \a message, and
+     * switches to the given \a state when Ok is pressed.
+     */
+    void showOkDialog(const std::string &title,
+                      const std::string &message,
+                      State state);
+
+    /**
+     * Pops up an error dialog with the given \a message, and switches to the
+     * given \a state when Ok is pressed.
+     */
+    void showErrorDialog(const std::string &message, State state);
+
     static void setState(State state)
     { instance()->mState = state; }
 
@@ -218,6 +232,7 @@ private:
 
     State mState;
     State mOldState;
+    State mStateAfterOkDialog;
 
     SDL_Surface *mIcon;
 

@@ -40,6 +40,8 @@
 
 #include "utils/gettext.h"
 
+#define POSITION_DIFF_TOLERANCE 48
+
 namespace ManaServ {
 
 BeingHandler::BeingHandler()
@@ -89,37 +91,6 @@ void BeingHandler::handleMessage(Net::MessageIn &msg)
     }
 }
 
-Vector BeingHandler::giveSpeedInPixelsPerTicks(float speedInTilesPerSeconds)
-{
-    Vector speedInTicks;
-    Game *game = Game::instance();
-    Map *map = 0;
-    if (game)
-    {
-        map = game->getCurrentMap();
-        if (map)
-        {
-            speedInTicks.x = speedInTilesPerSeconds
-                * (float)map->getTileWidth()
-                / 1000 * (float) MILLISECONDS_IN_A_TICK;
-            speedInTicks.y = speedInTilesPerSeconds
-                * (float)map->getTileHeight()
-                / 1000 * (float) MILLISECONDS_IN_A_TICK;
-        }
-    }
-
-    if (!game || !map)
-    {
-        speedInTicks.x = speedInTicks.y = 0;
-        logger->log("Manaserv::BeingHandler: Speed wasn't given back"
-                    " because game/Map not initialized.");
-    }
-    // We don't use z for now.
-    speedInTicks.z = 0;
-
-    return speedInTicks;
-}
-
 static void handleLooks(Being *being, Net::MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
@@ -157,6 +128,14 @@ void BeingHandler::handleBeingEnterMessage(Net::MessageIn &msg)
     int py = msg.readInt16();
     BeingDirection direction = (BeingDirection)msg.readInt8();
     Being *being;
+
+    if (!Game::instance()->getCurrentMap()->containsPixel(px, py))
+    {
+        logger->log("Warning: Received GPMSG_BEING_ENTER for being id %i "
+                    "with position outside the map boundaries "
+                    "(x = %i, y = %i)", id, px, py);
+        return;
+    }
 
     switch (type)
     {
@@ -217,41 +196,72 @@ void BeingHandler::handleBeingsMoveMessage(Net::MessageIn &msg)
         int id = msg.readInt16();
         int flags = msg.readInt8();
         Being *being = actorSpriteManager->findBeing(id);
-        int sx = 0;
-        int sy = 0;
-        int speed = 0;
+        int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
+
+        if ((!flags & (MOVING_POSITION | MOVING_DESTINATION)))
+            continue;
 
         if (flags & MOVING_POSITION)
         {
             sx = msg.readInt16();
             sy = msg.readInt16();
+        }
+
+        if (flags & MOVING_DESTINATION)
+        {
+            dx = msg.readInt16();
+            dy = msg.readInt16();
             speed = msg.readInt8();
         }
-        if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
-        {
+
+        if (!being)
             continue;
-        }
+
         if (speed)
         {
            /*
             * The being's speed is transfered in tiles per second * 10
             * to keep it transferable in a Byte.
             * We set it back to tiles per second and in a float.
-            * Then, we translate it in pixels per ticks, to correspond
-            * with the Being::logic() function calls
-            * @see MILLISECONDS_IN_A_TICK
             */
-            being->setWalkSpeed(
-                               giveSpeedInPixelsPerTicks((float) speed / 10));
+            float speedTilesSeconds = (float) speed / 10;
+            being->setMoveSpeed(Vector(speedTilesSeconds, speedTilesSeconds,
+                                       0));
         }
 
         // Ignore messages from the server for the local player
         if (being == player_node)
             continue;
 
+        // If the position differs too much from the actual one, we resync
+        // the being position
         if (flags & MOVING_POSITION)
         {
-            being->setDestination(sx, sy);
+            if (!being->getMap()->containsPixel(sx, sy))
+            {
+                logger->log("Warning: Received GPMSG_BEINGS_MOVE for being id "
+                            "%i with position outside the map boundaries "
+                            "(x = %i, y = %i)", id, sx, sy);
+                continue;
+            }
+
+            Vector serverPos(sx, sy);
+            if (serverPos.length()
+                - being->getPosition().length() > POSITION_DIFF_TOLERANCE)
+                being->setPosition(serverPos);
+        }
+
+        if (flags & MOVING_DESTINATION)
+        {
+            if (!being->getMap()->containsPixel(dx, dy))
+            {
+                logger->log("Warning: Received GPMSG_BEINGS_MOVE for being id "
+                            "%i with destination outside the map boundaries "
+                            "(x = %i, y = %i)", id, dx, dy);
+                continue;
+            }
+
+            being->setDestination(dx, dy);
         }
     }
 }

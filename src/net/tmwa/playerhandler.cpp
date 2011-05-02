@@ -20,8 +20,9 @@
  */
 
 #include "net/tmwa/playerhandler.h"
+#include "net/tmwa/beinghandler.h"
 
-#include "event.h"
+#include "configuration.h"
 #include "game.h"
 #include "localplayer.h"
 #include "log.h"
@@ -198,20 +199,23 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                 float scrollOffsetX = 0.0f;
                 float scrollOffsetY = 0.0f;
 
-                /* Scroll if neccessary */
+                /* Scroll if necessary */
+                Map *map = game->getCurrentMap();
+                int tileX = player_node->getTileX();
+                int tileY = player_node->getTileY();
                 if (!sameMap
-                    || (abs(x - player_node->getTileX()) > MAP_TELEPORT_SCROLL_DISTANCE)
-                    || (abs(y - player_node->getTileY()) > MAP_TELEPORT_SCROLL_DISTANCE))
+                    || (abs(x - tileX) > MAP_TELEPORT_SCROLL_DISTANCE)
+                    || (abs(y - tileY) > MAP_TELEPORT_SCROLL_DISTANCE))
                 {
-                    Map *map = game->getCurrentMap();
-                    scrollOffsetX = (x - player_node->getTileX())
-                                    * map->getTileWidth();
-                    scrollOffsetY = (y - player_node->getTileY())
-                                    * map->getTileHeight();
+                    scrollOffsetX = (x - tileX) * map->getTileWidth();
+                    scrollOffsetY = (y - tileY) * map->getTileHeight();
                 }
 
                 player_node->setAction(Being::STAND);
-                player_node->setTileCoords(x, y);
+                Vector pos = map->getTileCenter(x, y);
+                player_node->setPosition(pos);
+                // Stop movement
+                player_node->setDestination(pos.x, pos.y);
 
                 logger->log("Adjust scrolling by %d:%d", (int) scrollOffsetX,
                            (int) scrollOffsetY);
@@ -222,13 +226,16 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
+                if (!player_node)
+                    break;
                 int type = msg.readInt16();
                 int value = msg.readInt32();
 
                 switch (type)
                 {
                     case 0x0000:
-                      player_node->setWalkSpeed(Vector(value, value, 0));
+                      player_node->setMoveSpeed(Vector(value / 10,
+                                                       value / 10, 0));
                     break;
                     case 0x0004: break; // manner
                     case 0x0005: PlayerInfo::setAttribute(HP, value); break;
@@ -306,14 +313,24 @@ void PlayerHandler::handleMessage(Net::MessageIn &msg)
                     PlayerInfo::setStatExperience(JOB, msg.readInt32(),
                                                   PlayerInfo::getStatExperience(JOB).second);
                     break;
-                case 0x0014: {
+
+                case 0x0014:
+                    {
                         int oldMoney = PlayerInfo::getAttribute(MONEY);
                         int newMoney = msg.readInt32();
+                        std::string money = Units::formatCurrency(
+                                            newMoney - oldMoney);
                         PlayerInfo::setAttribute(MONEY, newMoney);
                         if (newMoney > oldMoney)
-                            SERVER_NOTICE(strprintf(_("You picked up %s."),
-                                         Units::formatCurrency(newMoney -
-                                         oldMoney).c_str()))
+                        {
+                            if (config.getBoolValue("showpickupchat"))
+                                SERVER_NOTICE(strprintf(_("You picked up %s."),
+                                            Units::formatCurrency(newMoney -
+                                            oldMoney).c_str()))
+                            if (config.getBoolValue("showpickupparticle"))
+                                player_node->addMessageToQueue(money,
+                                                      UserPalette::PICKUP_INFO);
+                        }
                     }
                     break;
                 case 0x0016:
@@ -537,11 +554,17 @@ void PlayerHandler::increaseSkill(int skillId)
 
 void PlayerHandler::pickUp(FloorItem *floorItem)
 {
-    if (floorItem)
-    {
-        MessageOut outMsg(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(floorItem->getId());
-    }
+    static Uint32 lastTime = 0;
+
+    // Avoid spamming the server with pick-up requests to prevent the player
+    // from being kicked.
+    if (!floorItem || SDL_GetTicks() < lastTime + 100)
+        return;
+
+    MessageOut outMsg(CMSG_ITEM_PICKUP);
+    outMsg.writeInt32(floorItem->getId());
+
+    lastTime = SDL_GetTicks();
 }
 
 void PlayerHandler::setDirection(char direction)
@@ -553,8 +576,12 @@ void PlayerHandler::setDirection(char direction)
 
 void PlayerHandler::setDestination(int x, int y, int direction)
 {
+    // The destination coordinates are received in pixel, so we translate them
+    // into tiles.
+    Map *map = Game::instance()->getCurrentMap();
     MessageOut outMsg(CMSG_PLAYER_CHANGE_DEST);
-    outMsg.writeCoordinates(x, y, direction);
+    outMsg.writeCoordinates(x / map->getTileWidth(), y / map->getTileHeight(),
+                            direction);
 }
 
 void PlayerHandler::changeAction(Being::Action action)
@@ -603,11 +630,35 @@ int PlayerHandler::getJobLocation()
     return JOB;
 }
 
-Vector PlayerHandler::getDefaultWalkSpeed()
+Vector PlayerHandler::getDefaultMoveSpeed() const
 {
     // Return an normalized speed for any side
     // as the offset is calculated elsewhere.
-    return Vector(150, 150, 0);
+    // in ticks per tile.
+    return Vector(15.0f, 15.0f, 0.0f);
+}
+
+Vector PlayerHandler::getPixelsPerTickMoveSpeed(const Vector &speed, Map *map)
+{
+    Game *game = Game::instance();
+
+    if (game && !map)
+        map = game->getCurrentMap();
+
+    if (!map || speed.x == 0 || speed.y == 0)
+    {
+        logger->log("TmwAthena::PlayerHandler: Speed set to default: "
+                    "Map not yet initialized or invalid speed.");
+        return getDefaultMoveSpeed();
+    }
+
+    Vector speedInTicks;
+
+    // speedInTicks.z = 0; // We don't use z for now.
+    speedInTicks.x = 1 / speed.x * (float)map->getTileWidth();
+    speedInTicks.y = 1 / speed.y * (float)map->getTileHeight();
+
+    return speedInTicks;
 }
 
 } // namespace TmwAthena

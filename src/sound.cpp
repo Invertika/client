@@ -22,6 +22,7 @@
 #include <SDL.h>
 
 #include "configuration.h"
+#include "game.h"
 #include "localplayer.h"
 #include "log.h"
 #include "sound.h"
@@ -29,16 +30,37 @@
 #include "resources/resourcemanager.h"
 #include "resources/soundeffect.h"
 
+/**
+ * This will be set to true, when a music can be freed after a fade out
+ * Currently used by fadeOutCallBack()
+ */
+static bool sFadingOutEnded = false;
+
+/**
+ * Callback used at end of fadeout.
+ * It is called by Mix_MusicFadeFinished().
+ */
+static void fadeOutCallBack()
+{
+    sFadingOutEnded = true;
+}
+
 Sound::Sound():
     mInstalled(false),
     mSfxVolume(100),
     mMusicVolume(60),
     mMusic(NULL)
 {
+    // This set up our callback function used to
+    // handle fade outs endings.
+    sFadingOutEnded = false;
+    Mix_HookMusicFinished(fadeOutCallBack);
 }
 
 Sound::~Sound()
 {
+    // Unlink the callback function.
+    Mix_HookMusicFinished(NULL);
 }
 
 void Sound::init()
@@ -116,11 +138,6 @@ void Sound::info()
     logger->log("Sound::info() Format: %s", format);
     logger->log("Sound::info() Rate: %i", rate);
     logger->log("Sound::info() Channels: %i", channels);
-}
-
-int Sound::getMaxVolume() const
-{
-    return MIX_MAX_VOLUME;
 }
 
 void Sound::setMusicVolume(int volume)
@@ -223,8 +240,37 @@ void Sound::fadeOutMusic(int ms)
     if (mMusic)
     {
         Mix_FadeOutMusic(ms);
-        Mix_FreeMusic(mMusic);
-        mMusic = NULL;
+        // Note: The fadeOutCallBack handler will take care about freeing
+        // the music file at fade out ending.
+    }
+    else
+    {
+        sFadingOutEnded = true;
+    }
+}
+
+void Sound::fadeOutAndPlayMusic(const std::string &path, int ms)
+{
+    mNextMusicPath = path;
+    fadeOutMusic(ms);
+}
+
+void Sound::logic()
+{
+    if (sFadingOutEnded)
+    {
+        if (mMusic)
+        {
+            Mix_FreeMusic(mMusic);
+            mMusic = NULL;
+        }
+        sFadingOutEnded = false;
+
+        if (!mNextMusicPath.empty())
+        {
+            playMusic(mNextMusicPath);
+            mNextMusicPath.clear();
+        }
     }
 }
 
@@ -246,8 +292,10 @@ void Sound::playSfx(const std::string &path, int x, int y)
         int vol = 120;
         if (player_node && x > 0 && y > 0)
         {
-            int dx = player_node->getTileX() - x;
-            int dy = player_node->getTileY() - y;
+            Vector pos = player_node->getPosition();
+            Map *map = Game::instance()->getCurrentMap();
+            int dx = ((int)pos.x - x) / map->getTileWidth();
+            int dy = ((int)pos.y - y) / map->getTileHeight();
             if (dx < 0)
                 dx = -dx;
             if (dy < 0)
