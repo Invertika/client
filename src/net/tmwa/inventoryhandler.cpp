@@ -128,7 +128,7 @@ InventoryHandler::~InventoryHandler()
 void InventoryHandler::handleMessage(Net::MessageIn &msg)
 {
     int number, flag;
-    int index, amount, itemId, equipType, arrow;
+    int index, amount, itemId, equipType;
     int identified, cards[4], itemType;
     Inventory *inventory = PlayerInfo::getInventory();
     PlayerInfo::getEquipment()->setBackend(&mEquips);
@@ -158,7 +158,7 @@ void InventoryHandler::handleMessage(Net::MessageIn &msg)
                 itemType = msg.readInt8();
                 identified = msg.readInt8();
                 amount = msg.readInt16();
-                arrow = msg.readInt16();
+                msg.readInt16(); // Arrow
                 for (int i = 0; i < 4; i++)
                     cards[i] = msg.readInt16();
 
@@ -522,7 +522,7 @@ void InventoryHandler::event(Event::Channel channel,
                     else if (source == Inventory::STORAGE
                              && destination == Inventory::INVENTORY)
                     {
-                        MessageOut outMsg(CSMG_MOVE_FROM_STORAGE);
+                        MessageOut outMsg(CMSG_MOVE_FROM_STORAGE);
                         outMsg.writeInt16(index - INVENTORY_OFFSET
                                           + STORAGE_OFFSET);
                         outMsg.writeInt32(amount);
