@@ -76,7 +76,6 @@ Being::Being(int id, Type type, int subtype, Map *map):
     mInfo(BeingInfo::Unknown),
     mActionTime(0),
     mSpeechTime(0),
-    mAttackType(1),
     mAttackSpeed(350),
     mAction(STAND),
     mSubType(0xFFFF),
@@ -391,8 +390,10 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
         // Init the particle effect path based on current weapon or default.
         int hitEffectId = 0;
-        const ItemInfo *attackerWeapon = attacker->getEquippedWeapon();
-        if (attacker->getType() == PLAYER && attackerWeapon)
+        const ItemInfo *attackerWeapon = attacker ?
+            attacker->getEquippedWeapon() : 0;
+
+        if (attackerWeapon && attacker->getType() == PLAYER)
         {
             if (type != CRITICAL)
                 hitEffectId = attackerWeapon->getHitEffectId();
@@ -410,10 +411,16 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
     }
 }
 
-void Being::handleAttack(Being *victim, int damage, AttackType type)
+void Being::handleAttack(Being *victim, int damage, int attackId)
 {
+    // Monsters, NPCs and remote players handle the first attack (id="1")
+    // per default.
+    // TODO: Fix this for Manaserv by sending the attack id.
+    // TODO: Add attack type handling, see Attack struct and AttackType
+    // and make use of it by grouping attacks per attack type and add random
+    // attack use on tA, based on normal and critical attack types.
     if (this != player_node)
-        setAction(Being::ATTACK, 1);
+        setAction(Being::ATTACK, attackId);
 
     if (victim)
         lookAt(victim->getPosition());
@@ -421,7 +428,8 @@ void Being::handleAttack(Being *victim, int damage, AttackType type)
     if (getType() == PLAYER && victim && mEquippedWeapon)
         fireMissile(victim, mEquippedWeapon->getMissileParticleFile());
     else
-        fireMissile(victim, mInfo->getAttack(mAttackType)->missileParticle);
+        fireMissile(victim,
+                    mInfo->getAttack(attackId)->mMissileParticleFilename);
 
     sound.playSfx(mInfo->getSound((damage > 0) ?
                   SOUND_EVENT_HIT : SOUND_EVENT_MISS),
@@ -551,11 +559,6 @@ void Being::setParty(Party *party)
         old->removeMember(mId);
     }
 
-    if (party)
-    {
-        party->addMember(mId, mName);
-    }
-
     updateColors();
 
     if (this == player_node && socialWindow)
@@ -590,7 +593,7 @@ void Being::fireMissile(Being *victim, const std::string &particle)
 
 }
 
-void Being::setAction(Action action, int attackType)
+void Being::setAction(Action action, int attackId)
 {
     std::string currentAction = SpriteAction::INVALID;
 
@@ -613,16 +616,14 @@ void Being::setAction(Action action, int attackType)
             }
             else
             {
-                mAttackType = attackType;
-                currentAction = mInfo->getAttack(attackType)->action;
+                currentAction = mInfo->getAttack(attackId)->mAction;
                 reset();
 
-                int rotation = 0;
-                //attack particle effect
-                std::string particleEffect = mInfo->getAttack(attackType)
-                                              ->particleEffect;
-                if (!particleEffect.empty() && Particle::enabled)
+                // Attack particle effect
+                if (Particle::enabled)
                 {
+                    int effectId = mInfo->getAttack(attackId)->mEffectId;
+                    int rotation = 0;
                     switch (mSpriteDirection)
                     {
                         case DIRECTION_DOWN: rotation = 0; break;
@@ -631,10 +632,7 @@ void Being::setAction(Action action, int attackType)
                         case DIRECTION_RIGHT: rotation = 270; break;
                         default: break;
                     }
-                    Particle *p;
-                    p = particleEngine->addEffect(particleEffect, 0, 0,
-                                                  rotation);
-                    controlParticle(p);
+                    effectManager->trigger(effectId, this, rotation);
                 }
 
             }
@@ -948,16 +946,6 @@ void Being::drawSpeech(int offsetX, int offsetY)
     }
 }
 
-int Being::getWidth() const
-{
-    return std::max(CompoundSprite::getWidth(), DEFAULT_BEING_WIDTH);
-}
-
-int Being::getHeight() const
-{
-    return std::max(CompoundSprite::getHeight(), DEFAULT_BEING_HEIGHT);
-}
-
 void Being::updateCoords()
 {
     if (!mDispName)
@@ -965,10 +953,9 @@ void Being::updateCoords()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(),
-                getPixelY() - getHeight() - mDispName->getHeight());
+        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
     else
-        mDispName->adviseXY(getPixelX(), getPixelY());
+        mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
 }
 
 void Being::flashName(int time)
@@ -1074,10 +1061,10 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         ensureSize(slot + 1);
 
     if (slot >= mSpriteIDs.size())
-        mSpriteIDs.resize(slot + 1, 0);
+        mSpriteIDs.resize(slot + 1);
 
     if (slot >= mSpriteColors.size())
-        mSpriteColors.resize(slot + 1, "");
+        mSpriteColors.resize(slot + 1);
 
     // id = 0 means unequip
     if (id == 0)
@@ -1085,12 +1072,12 @@ void Being::setSprite(unsigned int slot, int id, const std::string &color,
         removeSprite(slot);
 
         if (isWeapon)
-            mEquippedWeapon = NULL;
+            mEquippedWeapon = 0;
     }
     else
     {
         std::string filename = itemDb->get(id).getSprite(mGender);
-        AnimatedSprite *equipmentSprite = NULL;
+        AnimatedSprite *equipmentSprite = 0;
 
         if (!filename.empty())
         {
@@ -1214,7 +1201,7 @@ void Being::event(Event::Channel channel, const Event &event)
 
 void Being::setMap(Map *map)
 {
-    Actor::setMap(map);
+    ActorSprite::setMap(map);
 
     // Recalculate pixel/tick speed
     if (map && !mMoveSpeed.isNull())

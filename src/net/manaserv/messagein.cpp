@@ -21,6 +21,7 @@
 
 #include "net/manaserv/messagein.h"
 
+#include <cstring>
 #include <enet/enet.h>
 
 namespace ManaServ {
@@ -32,9 +33,9 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readInt16();
 }
 
-int MessageIn::readInt16()
+uint16_t MessageIn::readInt16()
 {
-    int value = -1;
+    uint16_t value = 0;
     if (mPos + 2 <= mLength)
     {
         uint16_t t;
@@ -45,9 +46,9 @@ int MessageIn::readInt16()
     return value;
 }
 
-int MessageIn::readInt32()
+uint32_t MessageIn::readInt32()
 {
-    int value = -1;
+    uint32_t value = 0;
     if (mPos + 4 <= mLength)
     {
         uint32_t t;

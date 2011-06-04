@@ -78,7 +78,7 @@ BeingHandler::BeingHandler(bool enableSync):
     handledMessages = _messages;
 }
 
-Being *createBeing(int id, short job)
+static Being *createBeing(int id, short job)
 {
     ActorSprite::Type type = ActorSprite::UNKNOWN;
     if (job <= 25 || (job >= 4001 && job <= 4049))
@@ -110,12 +110,13 @@ static void handleMoveMessage(Map *map, Being *dstBeing,
     {
         Vector pos = map->getTileCenter(srcX, srcY);
         Vector dest = map->getTileCenter(dstX, dstY);
+        Vector beingPos = dstBeing->getPosition();
 
         // Don't set the position as the movement algorithm
         // can guess it and it would break the animation played,
         // when we're close enough.
-        if (std::abs(dest.x - pos.x) > POS_DEST_DIFF_TOLERANCE
-            || std::abs(dest.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
+        if (std::abs(beingPos.x - pos.x) > POS_DEST_DIFF_TOLERANCE
+            || std::abs(beingPos.y - pos.y) > POS_DEST_DIFF_TOLERANCE)
             dstBeing->setPosition(pos);
 
         dstBeing->setDestination(dest.x, dest.y);

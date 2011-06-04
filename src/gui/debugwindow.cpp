@@ -24,102 +24,218 @@
 #include "client.h"
 #include "game.h"
 #include "particle.h"
-#include "main.h"
 #include "map.h"
 
 #include "gui/setup.h"
-#include "gui/setup_video.h"
 #include "gui/viewport.h"
 
+#include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/layouthelper.h"
+#include "gui/widgets/radiobutton.h"
+#include "gui/widgets/tab.h"
+#include "gui/widgets/tabbedarea.h"
 
 #include "resources/image.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-DebugWindow::DebugWindow():
-    Window(_("Debug"))
+
+class DebugInfo : public Container
 {
-    setWindowName("Debug");
+public:
+    DebugInfo()
+    {
+#ifdef USE_OPENGL
+        if (Image::getLoadAsOpenGL())
+        {
+            mFPSText = _("%d FPS (OpenGL)");
+        }
+        else
+#endif
+        {
+            mFPSText = _("%d FPS");
+        }
+
+        mFPSLabel = new Label("");
+        mMusicFileLabel = new Label("");
+        mMapLabel = new Label("");
+        mMinimapLabel = new Label("");
+        mTileMouseLabel = new Label("");
+        mParticleCountLabel = new Label("");
+
+        LayoutHelper h = (this);
+        ContainerPlacer place = h.getPlacer(0, 0);
+
+        place(0, 0, mFPSLabel, 1);
+        place(0, 1, mMusicFileLabel, 1);
+        place(0, 2, mMapLabel, 1);
+        place(0, 3, mMinimapLabel, 1);
+        place(0, 4, mTileMouseLabel, 1);
+        place(0, 5, mParticleCountLabel, 1);
+
+        h.reflowLayout(0, 0);
+    }
+
+    void logic()
+    {
+        if (!isVisible())
+            return;
+
+        mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps));
+
+        if (const Map *map = Game::instance()->getCurrentMap())
+        {
+            // Get the current mouse position
+            const int mouseTileX = (viewport->getMouseX() +
+                             viewport->getCameraX()) / map->getTileWidth();
+            const int mouseTileY = (viewport->getMouseY() +
+                            viewport->getCameraY()) / map->getTileHeight();
+            mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
+                                        mouseTileX, mouseTileY));
+
+            mMusicFileLabel->setCaption(strprintf(
+                        _("Music: %s"), map->getProperty("music").c_str()));
+            mMinimapLabel->setCaption(strprintf(_("Minimap: %s"),
+                                      map->getProperty("minimap").c_str()));
+            mMapLabel->setCaption(strprintf(_("Map: %s"),
+                                    map->getProperty("_filename").c_str()));
+        }
+
+        mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),
+                                        Particle::particleCount));
+
+        mFPSLabel->adjustSize();
+        mMusicFileLabel->adjustSize();
+        mMapLabel->adjustSize();
+        mMinimapLabel->adjustSize();
+        mTileMouseLabel->adjustSize();
+        mParticleCountLabel->adjustSize();
+    }
+
+private:
+    std::string mFPSText;
+    Label *mFPSLabel;
+    Label *mMusicFileLabel;
+    Label *mMapLabel;
+    Label *mMinimapLabel;
+    Label *mTileMouseLabel;
+    Label *mParticleCountLabel;
+};
+
+class DebugSwitches : public Container, public gcn::ActionListener
+{
+public:
+    DebugSwitches()
+    {
+        Label *showLabel = new Label(_("Show:"));
+        mGrid = new CheckBox(_("Grid"));
+        mCollisionTiles = new CheckBox(_("Collision tiles"));
+        mBeingCollisionRadius = new CheckBox(_("Being collision radius"));
+        mBeingPosition = new CheckBox(_("Being positions"));
+        mBeingPath = new CheckBox(_("Being path"));
+        mMousePath = new CheckBox(_("Mouse path"));
+
+        Label *specialsLabel = new Label(_("Specials:"));
+        mSpecialNormal = new RadioButton(_("Normal"), "mapdebug");
+        mSpecial1 = new RadioButton(_("Special 1"), "mapdebug");
+        mSpecial2 = new RadioButton(_("Special 2"), "mapdebug");
+        mSpecial3 = new RadioButton(_("Special 3"), "mapdebug");
+
+        LayoutHelper h = (this);
+        ContainerPlacer place = h.getPlacer(0, 0);
+
+        place(0, 0, showLabel, 1);
+        place(0, 1, mGrid, 1);
+        place(0, 2, mCollisionTiles, 1);
+        place(0, 3, mBeingCollisionRadius, 1);
+        place(0, 4, mBeingPosition, 1);
+        place(0, 5, mBeingPath, 1);
+        place(0, 6, mMousePath, 1);
+        place(1, 0, specialsLabel, 1);
+        place(1, 1, mSpecialNormal, 1);
+        place(1, 2, mSpecial1, 1);
+        place(1, 3, mSpecial2, 1);
+        place(1, 4, mSpecial3, 1);
+
+        h.reflowLayout(0, 0);
+
+        mSpecialNormal->setSelected(true);
+
+        mGrid->addActionListener(this);
+        mCollisionTiles->addActionListener(this);
+        mBeingCollisionRadius->addActionListener(this);
+        mBeingPosition->addActionListener(this);
+        mBeingPath->addActionListener(this);
+        mMousePath->addActionListener(this);
+        mSpecialNormal->addActionListener(this);
+        mSpecial1->addActionListener(this);
+        mSpecial2->addActionListener(this);
+        mSpecial3->addActionListener(this);
+    }
+
+    void action(const gcn::ActionEvent &event)
+    {
+        int flags = 0;
+
+        if (mGrid->isSelected())
+            flags |= Map::MAP_GRID;
+        if (mCollisionTiles->isSelected())
+            flags |= Map::MAP_COLLISION_TILES;
+        if (mBeingCollisionRadius->isSelected())
+            flags |= Map::MAP_BEING_COLLISION_RADIUS;
+        if (mBeingPosition->isSelected())
+            flags |= Map::MAP_BEING_POSITION;
+        if (mBeingPath->isSelected())
+            flags |= Map::MAP_BEING_PATH;
+        if (mMousePath->isSelected())
+            flags |= Map::MAP_MOUSE_PATH;
+        if (mSpecial1->isSelected())
+            flags |= Map::MAP_SPECIAL1;
+        if (mSpecial2->isSelected())
+            flags |= Map::MAP_SPECIAL2;
+        if (mSpecial3->isSelected())
+            flags |= Map::MAP_SPECIAL3;
+
+        viewport->setShowDebugPath(flags);
+    }
+
+private:
+    CheckBox *mGrid;
+    CheckBox *mCollisionTiles;
+    CheckBox *mBeingCollisionRadius;
+    CheckBox *mBeingPosition;
+    CheckBox *mBeingPath;
+    CheckBox *mMousePath;
+    RadioButton *mSpecialNormal;
+    RadioButton *mSpecial1;
+    RadioButton *mSpecial2;
+    RadioButton *mSpecial3;
+};
+
+DebugWindow::DebugWindow()
+    : Window(_("Debug"))
+{
     setupWindow->registerWindowForReset(this);
 
     setResizable(true);
     setCloseButton(true);
-    setSaveVisible(true);
-    setDefaultSize(400, 100, ImageRect::CENTER);
-
-#ifdef USE_OPENGL
-    if (Image::getLoadAsOpenGL())
-    {
-        mFPSText = _("%d FPS (OpenGL)");
-    }
-    else
-#endif
-    {
-        mFPSText = _("%d FPS");
-    }
-
-    mFPSLabel = new Label(strprintf(_("%d FPS"), 0));
-    mMusicFileLabel = new Label(strprintf(_("Music: %s"), ""));
-    mMapLabel = new Label(strprintf(_("Map: %s"), ""));
-    mMinimapLabel = new Label(strprintf(_("Minimap: %s"), ""));
-    mTileMouseLabel = new Label(strprintf(_("Cursor: (%d, %d)"), 0, 0));
-    mParticleCountLabel = new Label(strprintf(_("Particle count: %d"), 88888));
-    mParticleDetailLabel = new Label();
-    mAmbientDetailLabel = new Label();
-
-    place(0, 0, mFPSLabel, 3);
-    place(3, 0, mTileMouseLabel);
-    place(0, 1, mMusicFileLabel, 3);
-    place(3, 1, mParticleCountLabel);
-    place(0, 2, mMapLabel, 4);
-    place(3, 2, mParticleDetailLabel);
-    place(0, 3, mMinimapLabel, 4);
-    place(3, 3, mAmbientDetailLabel);
-
+    setMinWidth(100);
+    setMinHeight(100);
+    setDefaultSize(0, 120, 300, 190);
     loadWindowState();
-}
 
-void DebugWindow::logic()
-{
-    if (!isVisible())
-        return;
+    TabbedArea *tabs = new TabbedArea;
+    place(0, 0, tabs, 2, 2);
+    widgetResized(NULL);
 
-    mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps));
+    Tab *tabInfo = new Tab;
+    tabInfo->setCaption(_("Info"));
+    tabs->addTab(tabInfo, new DebugInfo);
 
-    if (const Map *map = Game::instance()->getCurrentMap())
-    {
-          // Get the current mouse position
-        int mouseTileX = (viewport->getMouseX() + viewport->getCameraX())
-                        / map->getTileWidth();
-        int mouseTileY = (viewport->getMouseY() + viewport->getCameraY())
-                        / map->getTileHeight();
-        mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
-                        mouseTileX,
-                        mouseTileY));
-
-        mMusicFileLabel->setCaption(strprintf(
-            _("Music: %s"), map->getProperty("music").c_str()));
-        mMinimapLabel->setCaption(
-            strprintf(_("Minimap: %s"), map->getProperty("minimap").c_str()));
-        mMapLabel->setCaption(
-            strprintf(_("Map: %s"), map->getProperty("_filename").c_str()));
-    }
-
-    mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),
-                                    Particle::particleCount));
-
-    mParticleCountLabel->adjustSize();
-
-    mParticleDetailLabel->setCaption(strprintf(_("Particle detail: %s"),
-                                    Setup_Video::particleDetailToString()));
-
-    mParticleDetailLabel->adjustSize();
-
-    mAmbientDetailLabel->setCaption(strprintf(_("Ambient FX: %s"),
-                                    Setup_Video::overlayDetailToString()));
-
-    mAmbientDetailLabel->adjustSize();
+    Tab *tabSwitches = new Tab;
+    tabSwitches->setCaption(_("Switches"));
+    tabs->addTab(tabSwitches, new DebugSwitches);
 }

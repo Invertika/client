@@ -24,9 +24,6 @@
 
 #include "net/messageout.h"
 
-#include <iosfwd>
-#include <SDL_types.h>
-
 namespace TmwAthena {
 
 class Network;
@@ -39,16 +36,16 @@ class Network;
 class MessageOut : public Net::MessageOut
 {
     public:
-        MessageOut(short id);
+        MessageOut(uint16_t id);
 
-        void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);        /**< Writes a long. */
+        void writeInt16(uint16_t value);
+        void writeInt32(uint32_t value);
 
         /**
          * Encodes coordinates and direction in 3 bytes.
          */
-        void writeCoordinates(unsigned short x, unsigned short y,
-                              unsigned char direction);
+        void writeCoordinates(uint16_t x, uint16_t y,
+                              uint8_t direction);
 
     private:
         void expand(size_t size);

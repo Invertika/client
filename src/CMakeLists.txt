@@ -34,6 +34,7 @@ ENDIF()
 SET(FLAGS "-DPACKAGE_VERSION=\\\"${VERSION}\\\"")
 SET(FLAGS "${FLAGS} -DPKG_DATADIR=\\\"${PKG_DATADIR}/\\\"")
 SET(FLAGS "${FLAGS} -DLOCALEDIR=\\\"${LOCALEDIR}/\\\"")
+SET(FLAGS "${FLAGS} -std=c++0x")
 
 IF (ENABLE_NLS)
     SET(FLAGS "${FLAGS} -DENABLE_NLS=1")
@@ -188,6 +189,8 @@ SET(SRCS
     gui/widgets/shortcutcontainer.h
     gui/widgets/slider.cpp
     gui/widgets/slider.h
+    gui/widgets/spacer.cpp
+    gui/widgets/spacer.h
     gui/widgets/tab.cpp
     gui/widgets/tab.h
     gui/widgets/tabbedarea.cpp
@@ -284,6 +287,8 @@ SET(SRCS
     gui/setup_audio.h
     gui/setup_colors.cpp
     gui/setup_colors.h
+    gui/setup_interface.cpp
+    gui/setup_interface.h
     gui/setup_joystick.cpp
     gui/setup_joystick.h
     gui/setup_keyboard.cpp
@@ -641,15 +646,15 @@ IF (WIN32)
     )
 ENDIF ()
 
-SET (PROGRAMS invertika)
+SET (PROGRAMS mana)
 
 IF (ENABLE_MANASERV)
-    ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})
 ELSE(ENABLE_MANASERV)
-    ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_TMWA})
+    ADD_EXECUTABLE(mana WIN32 ${SRCS} ${SRCS_TMWA})
 ENDIF(ENABLE_MANASERV)
 
-TARGET_LINK_LIBRARIES(invertika
+TARGET_LINK_LIBRARIES(mana
     ${INTERNAL_LIBRARIES}
     ${SDLGFX_LIBRARIES}
     ${SDL_LIBRARY}
@@ -666,12 +671,12 @@ TARGET_LINK_LIBRARIES(invertika
     ${LIBINTL_LIBRARIES}
     ${EXTRA_LIBRARIES})
 
-INSTALL(TARGETS invertika RUNTIME DESTINATION ${PKG_BINDIR})
+INSTALL(TARGETS mana RUNTIME DESTINATION ${PKG_BINDIR})
 
 IF (CMAKE_SYSTEM_NAME STREQUAL SunOS)
     # we expect the SMCgtxt package to be present on Solaris;
     # the Solaris gettext is not API-compatible to GNU gettext
-    SET_TARGET_PROPERTIES(invertika PROPERTIES LINK_FLAGS "-L/usr/local/lib")
+    SET_TARGET_PROPERTIES(mana PROPERTIES LINK_FLAGS "-L/usr/local/lib")
 ENDIF()
 
-SET_TARGET_PROPERTIES(invertika PROPERTIES COMPILE_FLAGS "${FLAGS}")
+SET_TARGET_PROPERTIES(mana PROPERTIES COMPILE_FLAGS "${FLAGS}")

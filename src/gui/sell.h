@@ -27,8 +27,6 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
-#include <SDL_types.h>
-
 class Item;
 class ShopItems;
 class ShopListBox;
@@ -66,6 +64,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          * @see SelectionListener::selectionChanged
          */
         void valueChanged(const gcn::SelectionEvent &event);
+
+        /**
+         * Allows for quick-selling by extending double-click events.
+         */
+        void mouseClicked(gcn::MouseEvent &mouseEvent);
 
         /**
          * Gives Player's Money amount

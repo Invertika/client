@@ -21,6 +21,7 @@
 
 #include "gui/inventorywindow.h"
 
+#include "client.h"
 #include "inventory.h"
 #include "item.h"
 #include "units.h"
@@ -143,7 +144,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
     Layout &layout = getLayout();
     layout.setRowHeight(2, Layout::AUTO_SET);
 
-    mInventory->addInventoyListener(this);
+    mInventory->addInventoryListener(this);
 
     instances.push_back(this);
 
@@ -160,7 +161,7 @@ InventoryWindow::InventoryWindow(Inventory *inventory):
 InventoryWindow::~InventoryWindow()
 {
     instances.remove(this);
-    mInventory->removeInventoyListener(this);
+    mInventory->removeInventoryListener(this);
 
     if (!isMainInventory())
         PlayerInfo::setStorageCount(PlayerInfo::getStorageCount() - 1);
@@ -240,10 +241,17 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 {
     Window::mouseClicked(event);
 
+    Item *item = mItems->getSelectedItem();
+
+    if (event.getSource() == mItems && item && isDoubleClick(item->getInvIndex()))
+    {
+
+        if (isMainInventory() && item->getInfo().getActivatable())
+            action(gcn::ActionEvent(mUseButton, mUseButton->getActionEventId()));
+    }
+
     if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        Item *item = mItems->getSelectedItem();
-
         if (!item)
             return;
 

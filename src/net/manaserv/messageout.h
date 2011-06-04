@@ -29,12 +29,12 @@ namespace ManaServ {
 class MessageOut : public Net::MessageOut
 {
     public:
-        MessageOut(short id);
+        MessageOut(uint16_t id);
 
         ~MessageOut();
 
-        void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);        /**< Writes a long. */
+        void writeInt16(uint16_t value);
+        void writeInt32(uint32_t value);
 
     protected:
         /**

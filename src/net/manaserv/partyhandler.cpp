@@ -44,11 +44,13 @@ extern Net::PartyHandler *partyHandler;
 namespace ManaServ {
 
 extern Connection *chatServerConnection;
+extern Connection *gameServerConnection;
 
 PartyHandler::PartyHandler():
         mParty(Party::getParty(PARTY_ID))
 {
     static const Uint16 _messages[] = {
+        GPMSG_PARTY_INVITE_ERROR,
         CPMSG_PARTY_INVITE_RESPONSE,
         CPMSG_PARTY_INVITED,
         CPMSG_PARTY_ACCEPT_INVITE_RESPONSE,
@@ -60,12 +62,22 @@ PartyHandler::PartyHandler():
     };
     handledMessages = _messages;
     partyHandler = this;
+
+    mParty->setName("Party");
 }
 
 void PartyHandler::handleMessage(Net::MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case GPMSG_PARTY_INVITE_ERROR:
+        {
+            std::string name = msg.readString();
+            SERVER_NOTICE(strprintf(_("Party invite failed, because no player "
+                                      "called %s is within the visual range."),
+                                    name.c_str()));
+        } break;
+
         case CPMSG_PARTY_INVITE_RESPONSE:
         {
             if (msg.readInt8() == ERRMSG_OK)
@@ -83,10 +95,16 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
         {
             if (msg.readInt8() == ERRMSG_OK)
             {
-                //
-                SERVER_NOTICE(_("Joined party."));
+                player_node->setParty(mParty);
+                while (msg.getUnreadLength())
+                {
+                    std::string name = msg.readString();
+                    mParty->addMember(0, name);
+                }
             }
-        }
+            else
+                SERVER_NOTICE(_("Joining party failed."));
+        } break;
 
         case CPMSG_PARTY_QUIT_RESPONSE:
         {
@@ -99,13 +117,13 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_NEW_MEMBER:
         {
-            int id = msg.readInt16(); // being id
+            int id = msg.readInt32();
             std::string name = msg.readString();
 
             SERVER_NOTICE(strprintf(_("%s joined the party."),
                                             name.c_str()));
 
-            if (id == player_node->getId())
+            if (name == player_node->getName())
                 player_node->setParty(mParty);
 
             mParty->addMember(id, name);
@@ -113,7 +131,7 @@ void PartyHandler::handleMessage(Net::MessageIn &msg)
 
         case CPMSG_PARTY_MEMBER_LEFT:
         {
-            mParty->removeMember(msg.readString());
+            // mParty->removeMember(msg.readString());
         } break;
 
         case CPMSG_PARTY_REJECTED:
@@ -142,11 +160,11 @@ void PartyHandler::invite(Being *being)
 
 void PartyHandler::invite(const std::string &name)
 {
-    MessageOut msg(PCMSG_PARTY_INVITE);
+    MessageOut msg(PGMSG_PARTY_INVITE);
 
     msg.writeString(name);
 
-    chatServerConnection->send(msg);
+    gameServerConnection->send(msg);
 }
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)

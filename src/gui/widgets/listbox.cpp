@@ -118,14 +118,31 @@ void ListBox::keyPressed(gcn::KeyEvent& keyEvent)
     }
 }
 
-// Don't do anything on scrollwheel. ScrollArea will deal with that.
+void ListBox::mousePressed(gcn::MouseEvent &mouseEvent)
+{
+    if (mouseEvent.getButton() != gcn::MouseEvent::LEFT)
+        return;
+
+    int y = std::max(0, mouseEvent.getY());
+    if (y / (int)getRowHeight() < getListModel()->getNumberOfElements())
+    {
+        setSelected(y / getRowHeight());
+        distributeActionEvent();
+    }
+    else
+    {
+        setSelected(-1);
+    }
+}
 
 void ListBox::mouseWheelMovedUp(gcn::MouseEvent &mouseEvent)
 {
+    // Don't do anything on scrollwheel. ScrollArea will deal with that.
 }
 
 void ListBox::mouseWheelMovedDown(gcn::MouseEvent &mouseEvent)
 {
+    // Don't do anything on scrollwheel. ScrollArea will deal with that.
 }
 
 void ListBox::mouseDragged(gcn::MouseEvent &event)
@@ -135,5 +152,6 @@ void ListBox::mouseDragged(gcn::MouseEvent &event)
 
     // Make list selection update on drag, but guard against negative y
     int y = std::max(0, event.getY());
-    setSelected(y / getRowHeight());
+    if (y / (int)getRowHeight() < getListModel()->getNumberOfElements())
+        setSelected(y / getRowHeight());
 }

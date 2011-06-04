@@ -156,13 +156,11 @@ static void createGuiWindows()
     tradeWindow = new TradeWindow;
     switch (Net::getNetworkType())
     {
-      case ServerInfo::TMWATHENA:
-        equipmentWindow = new TmwAthena::TaEquipmentWindow(
-                                                    PlayerInfo::getEquipment());
-        break;
-      case ServerInfo::MANASERV:
-      default:
-        equipmentWindow = new EquipmentWindow(PlayerInfo::getEquipment());
+    case ServerInfo::TMWATHENA:
+    case ServerInfo::MANASERV:
+    default:
+        equipmentWindow =
+                new TmwAthena::TaEquipmentWindow(PlayerInfo::getEquipment());
         break;
     }
     statusWindow = new StatusWindow;
@@ -720,11 +718,6 @@ void Game::handleInput()
                     case KeyboardConfig::KEY_SCREENSHOT:
                         // Screenshot (picture, hence the p)
                         saveScreenshot();
-                        used = true;
-                        break;
-                    case KeyboardConfig::KEY_PATHFIND:
-                        // Find path to mouse (debug purpose)
-                        viewport->toggleDebugPath();
                         used = true;
                         break;
                     case KeyboardConfig::KEY_TRADE:

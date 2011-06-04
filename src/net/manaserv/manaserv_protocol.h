@@ -186,17 +186,19 @@ enum {
     CPMSG_GUILD_REJOIN                  = 0x0389, // S name, W guild, W rights, W channel, S announce
 
     // Party
-    PCMSG_PARTY_INVITE                  = 0x03A0, // S name
-    CPMSG_PARTY_INVITE_RESPONSE         = 0x03A1, // B error, S name
-    CPMSG_PARTY_INVITED                 = 0x03A2, // S name
+    PGMSG_PARTY_INVITE                  = 0x03A0, // S name
+    GPMSG_PARTY_INVITE_ERROR            = 0x03A1, // S name
+    GCMSG_PARTY_INVITE                  = 0x03A2, // S inviter, S invitee
+    CPMSG_PARTY_INVITE_RESPONSE         = 0x03A3, // B error, S name
+    CPMSG_PARTY_INVITED                 = 0x03A4, // S name
     PCMSG_PARTY_ACCEPT_INVITE           = 0x03A5, // S name
     CPMSG_PARTY_ACCEPT_INVITE_RESPONSE  = 0x03A6, // B error, { S name }
     PCMSG_PARTY_REJECT_INVITE           = 0x03A7, // S name
     CPMSG_PARTY_REJECTED                = 0x03A8, // S name
     PCMSG_PARTY_QUIT                    = 0x03AA, // -
     CPMSG_PARTY_QUIT_RESPONSE           = 0x03AB, // B error
-    CPMSG_PARTY_NEW_MEMBER              = 0x03B0, // W being id, S name
-    CPMSG_PARTY_MEMBER_LEFT             = 0x03B1, // W being id
+    CPMSG_PARTY_NEW_MEMBER              = 0x03B0, // D character id, S name
+    CPMSG_PARTY_MEMBER_LEFT             = 0x03B1, // D character id
 
     // Chat
     CPMSG_ERROR                    = 0x0401, // B error
@@ -436,6 +438,6 @@ enum SpriteLayer
     SPRITE_VECTOREND
 };
 
-}; // Namespace ManaServ
+} // namespace ManaServ
 
 #endif // MANASERV_PROTOCOL_H

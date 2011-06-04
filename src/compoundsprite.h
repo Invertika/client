@@ -45,12 +45,20 @@ public:
     /**
      * Gets the width in pixels of the first sprite in the list.
      */
-    virtual int getWidth() const;
+    virtual int getWidth() const
+    { return mWidth; }
 
     /**
      * Gets the height in pixels of the first sprite in the list.
      */
-    virtual int getHeight() const;
+    virtual int getHeight() const
+    { return mHeight; }
+
+    int getOffsetX() const
+    { return mOffsetX; }
+
+    int getOffsetY() const
+    { return mOffsetY; }
 
     virtual const Image* getImage() const;
 
@@ -88,6 +96,9 @@ public:
      */
     virtual size_t getFrameCount(size_t layer);
 
+    void doRedraw()
+    { mNeedsRedraw = true; }
+
 private:
     typedef CompoundSprite::iterator SpriteIterator;
     typedef CompoundSprite::const_iterator SpriteConstIterator;
@@ -97,6 +108,7 @@ private:
     mutable Image *mImage;
     mutable Image *mAlphaImage;
 
+    mutable int mWidth, mHeight;
     mutable int mOffsetX, mOffsetY;
 
     mutable bool mNeedsRedraw;

@@ -4,6 +4,7 @@
 	<Project>
 		<Option title="Mana Client" />
 		<Option pch_mode="0" />
+		<Option default_target="Windows" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Windows">
@@ -20,6 +21,7 @@
 					<Add option="-Wno-unknown-pragmas" />
 					<Add option="-DUSE_OPENGL" />
 					<Add option="-DENABLE_NLS" />
+					<Add option="-std=c++0x" />
 				</Compiler>
 				<Linker>
 					<Add option="-enable-auto-import" />
@@ -44,37 +46,6 @@
 					<Add library="intl" />
 					<Add library="ws2_32" />
 					<Add library="winmm" />
-				</Linker>
-			</Target>
-			<Target title="Unix">
-				<Option platforms="Unix;" />
-				<Option output="mana" prefix_auto="1" extension_auto="1" />
-				<Option type="0" />
-				<Option compiler="gcc" />
-				<Option parameters='-u -d &quot;../manadata&quot;' />
-				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-g" />
-					<Add option="`sdl-config --cflags`" />
-					<Add option="-DMANASERV_SUPPORT" />
-					<Add option="-DUSE_OPENGL" />
-					<Add directory="\usr\local\include\libxml2" />
-				</Compiler>
-				<Linker>
-					<Add option="`sdl-config --libs`" />
-					<Add library="guichan" />
-					<Add library="guichan_sdl" />
-					<Add library="guichan_opengl" />
-					<Add library="GL" />
-					<Add library="physfs" />
-					<Add library="curl" />
-					<Add library="xml2" />
-					<Add library="SDL_mixer" />
-					<Add library="SDL_net" />
-					<Add library="SDL_image" />
-					<Add library="SDL_ttf" />
-					<Add library="SDL_gfx" />
-					<Add library="png" />
 				</Linker>
 			</Target>
 		</Build>
@@ -230,6 +201,8 @@
 		<Unit filename="src\gui\setup_audio.h" />
 		<Unit filename="src\gui\setup_colors.cpp" />
 		<Unit filename="src\gui\setup_colors.h" />
+		<Unit filename="src\gui\setup_interface.cpp" />
+		<Unit filename="src\gui\setup_interface.h" />
 		<Unit filename="src\gui\setup_joystick.cpp" />
 		<Unit filename="src\gui\setup_joystick.h" />
 		<Unit filename="src\gui\setup_keyboard.cpp" />
@@ -331,6 +304,8 @@
 		<Unit filename="src\gui\widgets\shortcutcontainer.h" />
 		<Unit filename="src\gui\widgets\slider.cpp" />
 		<Unit filename="src\gui\widgets\slider.h" />
+		<Unit filename="src\gui\widgets\spacer.cpp" />
+		<Unit filename="src\gui\widgets\spacer.h" />
 		<Unit filename="src\gui\widgets\tab.cpp" />
 		<Unit filename="src\gui\widgets\tab.h" />
 		<Unit filename="src\gui\widgets\tabbedarea.cpp" />
@@ -428,6 +403,7 @@
 		<Unit filename="src\net\manaserv\itemhandler.h" />
 		<Unit filename="src\net\manaserv\loginhandler.cpp" />
 		<Unit filename="src\net\manaserv\loginhandler.h" />
+		<Unit filename="src\net\manaserv\manaserv_protocol.h" />
 		<Unit filename="src\net\manaserv\messagehandler.cpp" />
 		<Unit filename="src\net\manaserv\messagehandler.h" />
 		<Unit filename="src\net\manaserv\messagein.cpp" />
@@ -442,7 +418,6 @@
 		<Unit filename="src\net\manaserv\partyhandler.h" />
 		<Unit filename="src\net\manaserv\playerhandler.cpp" />
 		<Unit filename="src\net\manaserv\playerhandler.h" />
-		<Unit filename="src\net\manaserv\manaserv_protocol.h" />
 		<Unit filename="src\net\manaserv\specialhandler.cpp" />
 		<Unit filename="src\net\manaserv\specialhandler.h" />
 		<Unit filename="src\net\manaserv\tradehandler.cpp" />

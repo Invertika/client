@@ -124,9 +124,9 @@ class Inventory
          */
         int getLastUsedSlot() const;
 
-        void addInventoyListener(InventoryListener* listener);
+        void addInventoryListener(InventoryListener* listener);
 
-        void removeInventoyListener(InventoryListener* listener);
+        void removeInventoryListener(InventoryListener* listener);
 
         int getType() const
         { return mType; }
@@ -146,4 +146,4 @@ class Inventory
         int mUsed;      /**< THe number of slots in use */
 };
 
-#endif
+#endif // INVENTORY_H

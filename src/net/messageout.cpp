@@ -22,18 +22,17 @@
 #include "net/messageout.h"
 
 #include <cstring>
-#include <string>
 
 namespace Net {
 
-MessageOut::MessageOut(short id):
+MessageOut::MessageOut(uint16_t id):
     mData(0),
     mDataSize(0),
     mPos(0)
 {
 }
 
-void MessageOut::writeInt8(Sint8 value)
+void MessageOut::writeInt8(uint8_t value)
 {
     expand(1);
     mData[mPos] = value;
@@ -57,7 +56,7 @@ void MessageOut::writeString(const std::string &string, int length)
     expand(length);
 
     // Write the actual string
-    memcpy(mData + mPos, string.c_str(), stringLength);
+    memcpy(mData + mPos, string.data(), stringLength);
 
     // Pad remaining space with zeros
     if (length > stringLength)

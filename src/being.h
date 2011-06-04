@@ -30,8 +30,6 @@
 
 #include <guichan/color.hpp>
 
-#include <SDL_types.h>
-
 #include <map>
 #include <set>
 #include <string>
@@ -172,9 +170,9 @@ class Being : public ActorSprite, public EventListener
          *
          * @param victim the victim being
          * @param damage the amount of damage dealt (0 means miss)
-         * @param type the attack type
+         * @param attackId the attack id
          */
-        virtual void handleAttack(Being *victim, int damage, AttackType type);
+        virtual void handleAttack(Being *victim, int damage, int attackId = 1);
 
         const ItemInfo *getEquippedWeapon() const
         { return mEquippedWeapon; }
@@ -261,7 +259,8 @@ class Being : public ActorSprite, public EventListener
          * Sets visible equipments for this being.
          */
         void setSprite(unsigned int slot, int id,
-                       const std::string &color = "", bool isWeapon = false);
+                       const std::string &color = std::string(),
+                       bool isWeapon = false);
 
         void setSpriteID(unsigned int slot, int id);
 
@@ -288,12 +287,12 @@ class Being : public ActorSprite, public EventListener
          */
         void drawSpeech(int offsetX, int offsetY);
 
-        Uint16 getSubType() const { return mSubType; }
+        uint16_t getSubType() const { return mSubType; }
 
          /**
           * Set Being's subtype (mostly for view for monsters and NPCs)
           */
-        void setSubtype(Uint16 subtype);
+        void setSubtype(uint16_t subtype);
 
         const BeingInfo *getInfo() const
         { return mInfo; }
@@ -355,12 +354,12 @@ class Being : public ActorSprite, public EventListener
         /**
          * Returns the current direction.
          */
-        Uint8 getDirection() const { return mDirection; }
+        uint8_t getDirection() const { return mDirection; }
 
         /**
          * Sets the current direction.
          */
-        void setDirection(Uint8 direction);
+        void setDirection(uint8_t direction);
 
         /**
          * Returns the direction the being is facing.
@@ -379,16 +378,6 @@ class Being : public ActorSprite, public EventListener
         {
             setPosition(Vector(x, y, z));
         }
-
-        /**
-         * Returns the horizontal size of the current base sprite of the being.
-         */
-        virtual int getWidth() const;
-
-        /**
-         * Returns the vertical size of the current base sprite of the being.
-         */
-        virtual int getHeight() const;
 
         /**
          * Returns the being's pixel radius used to detect collisions.
@@ -481,14 +470,13 @@ class Being : public ActorSprite, public EventListener
         /** Time until the last speech sentence disappears */
         int mSpeechTime;
 
-        int mAttackType;
         int mAttackSpeed;     /**< Attack speed */
 
         Action mAction;       /**< Action the being is performing */
-        Uint16 mSubType;      /**< Subtype (graphical view, basically) */
+        uint16_t mSubType;      /**< Subtype (graphical view, basically) */
 
-        Uint8 mDirection;               /**< Facing direction */
-        Uint8 mSpriteDirection;         /**< Facing direction */
+        uint8_t mDirection;             /**< Facing direction */
+        uint8_t mSpriteDirection;       /**< Facing direction */
         std::string mName;              /**< Name of character */
         std::string mPartyName;
 
