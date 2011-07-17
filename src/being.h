@@ -162,8 +162,10 @@ class Being : public ActorSprite, public EventListener
          * @param attacker the attacking being
          * @param damage the amount of damage recieved (0 means miss)
          * @param type the attack type
+         * @param attackId the attack id (used for monsters)
          */
-        void takeDamage(Being *attacker, int damage, AttackType type);
+        void takeDamage(Being *attacker, int damage,
+                        AttackType type, int attackId = 1);
 
         /**
          * Handles an attack of another being by this being.
@@ -339,7 +341,7 @@ class Being : public ActorSprite, public EventListener
         /**
          * Sets the current action.
          */
-        virtual void setAction(Action action, int attackType = 0);
+        virtual void setAction(Action action, int attackId = 1);
 
         /**
          * Get the being's action currently performed.

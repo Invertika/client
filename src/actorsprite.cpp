@@ -69,7 +69,7 @@ ActorSprite::~ActorSprite()
 bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = getPixelX() + offsetX;
-    int py = getPixelY() + offsetY;
+    int py = getDrawPixelY() + offsetY;
 
     if (mUsedTargetCursor)
     {
@@ -460,7 +460,7 @@ void ActorSprite::loadTargetCursor(const std::string &filename,
 
     for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
-        anim->addFrame(currentImageSet->get(i), 75,
+        anim->addFrame(currentImageSet->get(i), DEFAULT_FRAME_DELAY,
                       -(currentImageSet->getWidth() / 2),
                       -(currentImageSet->getHeight() / 2));
     }

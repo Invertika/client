@@ -27,6 +27,7 @@
 #include "configuration.h"
 #include "effectmanager.h"
 #include "event.h"
+#include "game.h"
 #include "graphics.h"
 #include "guild.h"
 #include "localplayer.h"
@@ -67,8 +68,6 @@
 
 #define HAIR_FILE "hair.xml"
 
-static const int DEFAULT_BEING_WIDTH = 32;
-static const int DEFAULT_BEING_HEIGHT = 32;
 int Being::mNumberOfHairstyles = 1;
 
 Being::Being(int id, Type type, int subtype, Map *map):
@@ -197,8 +196,8 @@ void Being::setDestination(int dstX, int dstY)
         return;
 
     // If the destination is unwalkable, don't bother trying to get there
-    int tileWidth = mMap->getTileWidth();
-    int tileHeight = mMap->getTileHeight();
+    const int tileWidth = mMap->getTileWidth();
+    const int tileHeight = mMap->getTileHeight();
     if (!mMap->getWalk(dstX / tileWidth, dstY / tileHeight))
         return;
 
@@ -302,14 +301,15 @@ void Being::setSpeech(const std::string &text, int time)
             delete mText;
 
         mText = new Text(mSpeech,
-                         getPixelX(), getPixelY() - getHeight(),
+                         getPixelX(), getDrawPixelY() - getHeight(),
                          gcn::Graphics::CENTER,
                          &userPalette->getColor(UserPalette::PARTICLE),
                          true);
     }
 }
 
-void Being::takeDamage(Being *attacker, int amount, AttackType type)
+void Being::takeDamage(Being *attacker, int amount,
+                       AttackType type, int attackId)
 {
     gcn::Font *font;
     std::string damage = amount ? toString(amount) : type == FLEE ?
@@ -364,7 +364,7 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        getPixelX(), getPixelY() - 16,
+                                        getPixelX(), getDrawPixelY() - 16,
                                         color, font, true);
 
     if (amount > 0)
@@ -399,6 +399,15 @@ void Being::takeDamage(Being *attacker, int amount, AttackType type)
                 hitEffectId = attackerWeapon->getHitEffectId();
             else
                 hitEffectId = attackerWeapon->getCriticalHitEffectId();
+        }
+        else if (attacker && attacker->getType() == MONSTER)
+        {
+            const Attack *attack = attacker->getInfo()->getAttack(attackId);
+
+            if (type != CRITICAL)
+                hitEffectId = attack->mHitEffectId;
+            else
+                hitEffectId = attack->mCriticalHitEffectId;
         }
         else
         {
@@ -582,7 +591,8 @@ void Being::fireMissile(Being *victim, const std::string &particle)
     if (missile)
     {
         Particle *target = particleEngine->createChild();
-        target->moveBy(Vector(0.0f, 0.0f, 32.0f));
+        target->moveBy(Vector(0.0f, 0.0f,
+                       Game::instance()->getCurrentTileWidth()));
         target->setLifetime(1000);
         victim->controlParticle(target);
 
@@ -883,10 +893,12 @@ void Being::logic()
 
     ActorSprite::logic();
 
-    // Remove it after 3 secs. TODO: Just play the dead animation before removing
+    // Remove it after 1.5 secs if the dead animation isn't long enough,
+    // or simply play it until it's finished.
     if (!isAlive() && Net::getGameHandler()->removeDeadBeings() &&
-        get_elapsed_time(mActionTime) > 3000)
+        get_elapsed_time(mActionTime) > std::max(getDuration(), 1500))
     {
+
         if (getType() != PLAYER)
             actorSpriteManager->destroy(this);
     }
@@ -895,7 +907,7 @@ void Being::logic()
 void Being::drawSpeech(int offsetX, int offsetY)
 {
     const int px = getPixelX() - offsetX;
-    const int py = getPixelY() - offsetY;
+    const int py = getDrawPixelY() - offsetY;
     const int speech = config.getIntValue("speech");
 
     // Draw speech above this being
@@ -929,7 +941,7 @@ void Being::drawSpeech(int offsetX, int offsetY)
         if (! mText)
         {
             mText = new Text(mSpeech,
-                             getPixelX(), getPixelY() - getHeight(),
+                             getPixelX(), getDrawPixelY() - getHeight(),
                              gcn::Graphics::CENTER,
                              &userPalette->getColor(UserPalette::PARTICLE),
                              true);
@@ -953,9 +965,9 @@ void Being::updateCoords()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight());
+        mDispName->adviseXY(getPixelX(), getDrawPixelY() - getHeight());
     else
-        mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
+        mDispName->adviseXY(getPixelX(), getDrawPixelY() + mDispName->getHeight());
 }
 
 void Being::flashName(int time)
@@ -1004,7 +1016,7 @@ void Being::showName()
         font = boldFont;
     }
 
-    mDispName = new FlashText(mDisplayName, getPixelX(), getPixelY(),
+    mDispName = new FlashText(mDisplayName, getPixelX(), getDrawPixelY(),
                               gcn::Graphics::CENTER, mNameColor, font);
 
     updateCoords();
