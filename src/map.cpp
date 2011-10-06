@@ -121,8 +121,10 @@ Image* MapLayer::getTile(int x, int y) const
     return mTiles[x + y * mWidth];
 }
 
-void MapLayer::draw(Graphics *graphics, int startX, int startY,
-                    int endX, int endY, int scrollX, int scrollY,
+void MapLayer::draw(Graphics *graphics,
+                    int startX, int startY,
+                    int endX, int endY,
+                    int scrollX, int scrollY,
                     const Actors &actors, int debugFlags) const
 {
     startX -= mX;
@@ -156,7 +158,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
             }
         }
 
-        if (!(debugFlags & Map::MAP_SPECIAL3))
+        if (!(debugFlags & Map::DEBUG_SPECIAL3))
         {
             const int py0 = pixelY + dy;
 
@@ -167,7 +169,7 @@ void MapLayer::draw(Graphics *graphics, int startX, int startY,
                 {
                     const int px = (x * mMap->getTileWidth()) + dx;
                     const int py = py0 - img->getHeight();
-                    if (!(debugFlags & (Map::MAP_SPECIAL1 | Map::MAP_SPECIAL2))
+                    if (!(debugFlags & (Map::DEBUG_SPECIAL1 | Map::DEBUG_SPECIAL2))
                         || img->getHeight() <= mMap->getTileHeight())
                     {
                         int width = 0;
@@ -218,8 +220,9 @@ int MapLayer::getTileDrawWidth(int x1, int y1, int endX, int &width) const
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
-    mMaxTileHeight(height),
-    mDebugFlags(0),
+    mMaxTileHeight(tileHeight),
+    mMaxTileWidth(tileWidth),
+    mDebugFlags(DEBUG_NONE),
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
@@ -321,11 +324,13 @@ void Map::addTileset(Tileset *tileset)
 
     if (tileset->getHeight() > mMaxTileHeight)
         mMaxTileHeight = tileset->getHeight();
+    if (tileset->getWidth() > mMaxTileWidth)
+        mMaxTileWidth = tileset->getWidth();
 }
 
 bool actorCompare(const Actor *a, const Actor *b)
 {
-    return a->getPixelY() < b->getPixelY();
+    return a->getDrawOrder() < b->getDrawOrder();
 }
 
 void Map::update(int ticks)
@@ -344,7 +349,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     // Calculate range of tiles which are on-screen
     int endPixelY = graphics->getHeight() + scrollY + mTileHeight - 1;
     endPixelY += mMaxTileHeight - mTileHeight;
-    int startX = scrollX / mTileWidth;
+    int startX = (scrollX - mMaxTileWidth + mTileWidth) / mTileWidth;
     int startY = scrollY / mTileHeight;
     int endX = (graphics->getWidth() + scrollX + mTileWidth - 1) / mTileWidth;
     int endY = endPixelY / mTileHeight;
@@ -365,7 +370,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
 
     bool overFringe = false;
 
-    if (mDebugFlags & MAP_SPECIAL3)
+    if (mDebugFlags & DEBUG_SPECIAL3)
     {
         for (; layeri != mLayers.end(); ++layeri)
         {
@@ -382,7 +387,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
     {
         for (; layeri != mLayers.end() && !overFringe; ++layeri)
         {
-            if ((*layeri)->isFringeLayer() && (mDebugFlags & MAP_SPECIAL2))
+            if ((*layeri)->isFringeLayer() && (mDebugFlags & DEBUG_SPECIAL2))
                 overFringe = true;
 
             (*layeri)->draw(graphics,
@@ -403,7 +408,7 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY)
             if (Actor *actor = *ai)
             {
                 // For now, just draw actors with only one layer.
-                if (actor->getNumberOfLayers() == 1)
+                if (actor->drawnWhenBehind())
                 {
                     actor->setAlpha(0.3f);
                     actor->draw(graphics, -scrollX, -scrollY);
@@ -438,7 +443,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
         {
 
             graphics->setColor(gcn::Color(0, 0, 0, 64));
-            if (debugFlags & MAP_GRID)
+            if (debugFlags & DEBUG_GRID)
             {
                 graphics->drawRectangle(gcn::Rectangle(
                     x * mTileWidth - scrollX,
@@ -446,7 +451,7 @@ void Map::drawCollision(Graphics *graphics, int scrollX, int scrollY,
                     mTileWidth + 1, mTileHeight + 1));
             }
 
-            if (!(debugFlags & MAP_COLLISION_TILES))
+            if (!(debugFlags & DEBUG_COLLISION_TILES))
                 continue;
 
             if (!getWalk(x, y, BLOCKMASK_WALL))
