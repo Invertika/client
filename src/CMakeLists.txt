@@ -646,7 +646,7 @@ IF (WIN32)
     )
 ENDIF ()
 
-SET (PROGRAMS mana)
+SET (PROGRAMS invertika)
 
 IF (ENABLE_MANASERV)
     ADD_EXECUTABLE(invertika WIN32 ${SRCS} ${SRCS_MANA} ${SRCS_TMWA})

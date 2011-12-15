@@ -34,6 +34,8 @@
 
 #include "net/manaserv/connection.h"
 #include "net/manaserv/gamehandler.h"
+#include "net/manaserv/beinghandler.h"
+#include "net/manaserv/inventoryhandler.h"
 #include "net/manaserv/messagein.h"
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
@@ -101,8 +103,8 @@ void CharHandler::handleCharacterInfo(Net::MessageIn &msg)
     CachedCharacterInfo info;
     info.slot = msg.readInt8();
     info.name = msg.readString();
-    info.gender = msg.readInt8() == GENDER_MALE ? GENDER_MALE :
-                                                  GENDER_FEMALE;
+    info.gender = msg.readInt8() == ManaServ::GENDER_MALE ?
+                                        ::GENDER_MALE : ::GENDER_FEMALE;
     info.hairStyle = msg.readInt8();
     info.hairColor = msg.readInt8();
     info.level = msg.readInt16();
@@ -355,17 +357,19 @@ void CharHandler::switchCharacter()
 
 unsigned int CharHandler::baseSprite() const
 {
-    return SPRITE_BASE;
+    return SPRITE_LAYER_BASE;
 }
 
 unsigned int CharHandler::hairSprite() const
 {
-    return SPRITE_HAIR;
+    return SPRITE_LAYER_HAIR;
 }
 
 unsigned int CharHandler::maxSprite() const
 {
-    return SPRITE_VECTOREND;
+    static unsigned int visibleSlots = FIXED_SPRITE_LAYER_SIZE
+        + Net::getInventoryHandler()->getVisibleSlotsNumber();
+    return visibleSlots;
 }
 
 void CharHandler::updateCharacters()
@@ -387,7 +391,7 @@ void CharHandler::updateCharacters()
         LocalPlayer *player = character->dummy = new LocalPlayer;
         player->setName(info.name);
         player->setGender(info.gender);
-        player->setSprite(SPRITE_HAIR, info.hairStyle * -1,
+        player->setSprite(SPRITE_LAYER_HAIR, info.hairStyle * -1,
                           ColorDB::get(info.hairColor));
         character->data.mAttributes[LEVEL] = info.level;
         character->data.mAttributes[CHAR_POINTS] = info.characterPoints;

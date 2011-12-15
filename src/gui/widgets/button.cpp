@@ -353,12 +353,3 @@ void Button::mouseExited(gcn::MouseEvent &event)
 
     mTextPopup->setVisible(false);
 }
-
-void Button::setButtonPopupText(const std::string& text)
-{
-    mPopupText = text;
-    if (!mPopupText.empty())
-        mTextPopup->show(getX(), getY(), mPopupText);
-    else
-        mTextPopup->setVisible(false);
-}

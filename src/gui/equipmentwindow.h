@@ -23,6 +23,7 @@
 #define EQUIPMENTWINDOW_H
 
 #include "equipment.h"
+#include "resources/image.h"
 
 #include "gui/widgets/window.h"
 
@@ -53,48 +54,52 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         void mousePressed(gcn::MouseEvent& mouseEvent);
 
+        /**
+         * Loads the correct amount of displayed equip boxes.
+         */
+        void loadEquipBoxes();
+
+        /**
+         * Returns the current selected slot or -1 if none.
+         */
+        int getSelected()
+        { return mSelected; }
+
   protected:
         /**
          * Equipment box.
          */
         struct EquipBox
         {
+            EquipBox() :
+                posX(0),
+                posY(0),
+                backgroundImage(0)
+            {}
+
             int posX;
             int posY;
+            Image* backgroundImage;
         };
 
         EquipBox *mEquipBox; /**< Equipment Boxes. */
 
         int mSelected; /**< Index of selected item. */
         Equipment *mEquipment;
+        int mBoxesNumber; /**< Number of equipment boxes to display */
 
     private:
         void mouseExited(gcn::MouseEvent &event);
         void mouseMoved(gcn::MouseEvent &event);
 
         Item *getItem(int x, int y) const;
+        const std::string getSlotName(int x, int y) const;
 
         void setSelected(int index);
 
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
 };
-
-namespace TmwAthena {
-
-class TaEquipmentWindow : public EquipmentWindow
-{
-    public:
-        TaEquipmentWindow(Equipment *equipment);
-        ~TaEquipmentWindow();
-
-        /**
-         * Draws the equipment window using TmwAthena routine.
-         */
-        void draw(gcn::Graphics *graphics);
-};
-
-} // namespace TmwAthena
 
 extern EquipmentWindow *equipmentWindow;
 
