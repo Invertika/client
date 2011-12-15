@@ -4,7 +4,6 @@ SET(FILES
     login_wallpaper_1600x1200.png
     login_wallpaper_640x480.png
     login_wallpaper_800x600.png
-    error.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/images)
