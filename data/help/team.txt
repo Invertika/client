@@ -16,12 +16,18 @@ Clint Bellanger "pfunked" <clint.bellanger gmail.com>
 Dark_Mage <dark_mage.87 mail.ru>
 Andy <original-andy gmx.de>
 Erik Schilling <erikschilling freenet.de>
+cmur2 <chrnicolai gmail.com>
+Postremus <panzer1996 googlemail.com>
+robert <rob_w1 gmx.net>
 
 ##2 Scripting:
 seeseekey <seeseekey googlemail.com>
 Andy <original-andy gmx.de>
 jurkan <jurkan gmx.de>
 Erik Schilling <erikschilling freenet.de>
+kizu <kizu-deutschland nord-com.net>
+cmur2 <chrnicolai gmail.com>
+Postremus <panzer1996 googlemail.com>
 
 ##2 Musik und SFX Entwicklung:
 DJh2o2 <djh2o2 web.de>
