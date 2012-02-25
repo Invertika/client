@@ -7,6 +7,6 @@
  
 ##2     http://forum.invertika.org
 
-  Außerdem sind wir im  IRC (irc.freenode.net) im Channel #Invertika zu finden. Ein Meldeformular, falls der Server mal offline ist. findet sich unter:
+  Außerdem sind wir im  IRC (irc.freenode.net) im Channel #Invertika zu finden. Ein Meldeformular, falls der Server mal offline ist, findet sich unter:
 
 ##2     http://invertika.org/pages/serverprobleme-melden.php

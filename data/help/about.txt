@@ -4,7 +4,7 @@
 ##3                      === ÜBER INVERTIKA ===
  
  Invertika ist ein auf der Technik von The Mana World basierendes MMORPG. 
- Die Spielmechanik ist entspricht der von The Mana World, nur die Inhalte 
+ Die Spielmechanik entspricht der von The Mana World, nur die Inhalte 
  sind andere und die Spielsprache ist Deutsch.
  
  Bei der Technik wird die neue (und noch in der Entwicklung befindliche) 
