@@ -1,8 +1,0 @@
-#!/bin/bash
-
-echo "# List of source files which contain translatable strings." > po/POTFILES.in
-echo "# Generated using: grep \"_(\" -Irl src | sort|grep -v .svn" >> po/POTFILES.in
-echo "" >> po/POTFILES.in
-grep "_(" -Irl src | sort|grep -v .svn >> po/POTFILES.in
-
-
