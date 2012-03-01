@@ -16,7 +16,7 @@
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>
     </AppDesignerFolder>
@@ -43,6 +43,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -167,6 +168,14 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\libraries\External\GWEN.Net\Gwen.Renderer.OpenTK\Gwen.Renderer.OpenTK.csproj">
+      <Project>{41650C82-D630-4E5C-845A-F1513C8FDC99}</Project>
+      <Name>Gwen.Renderer.OpenTK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libraries\External\GWEN.Net\Gwen\Gwen.csproj">
+      <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
+      <Name>Gwen</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\libraries\External\OpenTK\Source\GLControl\OpenTK.GLControl.csproj">
       <Project>{A625BE88-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK.GLControl</Name>
@@ -175,6 +184,9 @@
       <Project>{A37A7E14-0000-0000-0000-000000000000}</Project>
       <Name>OpenTK</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
