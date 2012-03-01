@@ -1,9 +1,9 @@
- <- @@index|Zurück zum Index@@
+﻿ <- @@index|Zurück zum Index@@
  
  
 ##3                            === SUPPORT ===
  
-  Solltest du Probleme haben so besuche das Invertika Forum unter:
+  Bei Problemen kannst du unser Forum aufsuchen. Dieses findet sich unter:
  
 ##2     http://forum.invertika.org
 
