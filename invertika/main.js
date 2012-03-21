@@ -82,6 +82,9 @@ var jsApp = {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
         }
+		
+		// begrenze auf 30 FPS
+		me.sys.fps = 30;
 
         // initialize the "audio"
         me.audio.init("mp3,ogg");
