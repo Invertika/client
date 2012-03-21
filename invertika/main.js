@@ -1,7 +1,7 @@
 /*!
  *
- *   TMW.js - An experimental web-based 2D MMORPG
- *   http://manasource.org/tmwjs
+ *   Invertika.js - Web-based 2D MMORPG
+ *   http://invertika.org
  *
  */
 
@@ -24,9 +24,6 @@ function addPlayer(player) {
 function localPlayerCreated(playerEntity) {
     player = playerEntity
     socket = io.connect();
-
-
-
 
     socket.on('connect', function() {
         socket.emit('logon', player.pos);
@@ -80,7 +77,7 @@ var g_resources= [
 var jsApp = {
 
     onload: function() {
-        if (!me.video.init('jsapp', 640, 384, false, 1.0))
+        if (!me.video.init('jsapp', 640, 480, false, 1.0))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
@@ -263,4 +260,22 @@ var PlayerEntity = Character.extend({
 
 window.onReady(function() {
     jsApp.onload();
+});
+
+var ScoreObject = me.HUD_Item.extend({
+    init: function(x, y) {
+        // call the parent constructor
+        this.parent(x, y);
+        // create a font
+        this.font = new me.BitmapFont("32x32_font", 32);
+    },
+ 
+    /* -----
+ 
+    draw our score
+ 
+    ------ */
+    draw: function(context, x, y) {
+        this.font.draw(context, this.value, this.pos.x + x, this.pos.y + y);
+    }
 });
