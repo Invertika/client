@@ -1,4 +1,0 @@
-?package(mana):needs="X11" section="Games/Adventure"\
- title="Invertika"\
- description="Invertika is a 2D MMORPG client."\
- command="/usr/games/invertika-client" icon="/usr/share/pixmaps/ivk.xpm"
