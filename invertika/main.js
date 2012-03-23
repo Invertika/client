@@ -96,6 +96,30 @@ var g_resources= [
     { name: "fog",              type: "image", src: "data/fog.png" }
 ];
 
+
+var supportsOrientationChange = "onorientationchange" in window,
+    orientationEvent = supportsOrientationChange ?
+"orientationchange" : "resize";
+
+
+window.addEventListener(orientationEvent, function() {
+        //var canvas = me.video.getScreenCanvas();
+        //canvas.width = window.innerWidth;
+        //canvas.height = window.innerHeight;
+        
+        //canvas.width = getWidth();
+        //canvas.height = getHeight();
+        
+        //me.game.viewport = new me.Viewport(0, 0, window.innerWidth,window.innerHeight);
+        //me.game.viewport.setBounds(window.innerWidth, window.innerHeight);
+        //me.game.viewport.setBounds(getWidth(), getHeight());
+        //me.game.repaint();
+        
+        $("#jsapp canvas").css("width", getWidth() + "px");
+        $("#jsapp canvas").css("height", getHeight() + "px");
+
+}, false); 
+
 var jsApp = {
 
     onload: function() {
