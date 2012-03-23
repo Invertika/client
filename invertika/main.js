@@ -10,6 +10,28 @@ var timeout
 var player
 var otherPlayers = {}
 
+function viewport()
+{
+var e = window
+, a = 'inner';
+if ( !( 'innerWidth' in window ) )
+{
+a = 'client';
+e = document.documentElement || document.body;
+}
+return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+}
+
+function getWidth() {
+    var vp=viewport();
+    return vp["width"];
+}
+
+function getHeight() {
+        var vp=viewport();
+    return vp["height"];     
+}
+
 function addPlayer(player) {
     me.ObjectSettings.spritewidth = 64;
     me.ObjectSettings.spriteheight = 64;
@@ -77,7 +99,7 @@ var g_resources= [
 var jsApp = {
 
     onload: function() {
-        if (!me.video.init('jsapp', 640, 480, false, 1.0))
+        if (!me.video.init('jsapp', 640, 384, false, 1.0))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
@@ -97,6 +119,23 @@ var jsApp = {
 
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
+        
+        //Debug
+        log.debug( 'leave onload (jsApp)' );
+        log.debug( 'getWidth: ' + getWidth() );
+        log.debug( 'getHeight: ' + getHeight() );
+        
+        // returns size of browser viewport
+        log.debug( 'window width: ' + $(window).width());
+        log.debug( 'window height: ' + $(window).height() );
+        
+        // returns size of HTML document
+        log.debug( 'window width: ' + $(document).width());
+        log.debug( 'window height: ' + $(document).height() );
+        
+        $("#jsapp canvas").css("width", getWidth() + "px");
+        $("#jsapp canvas").css("height", getHeight() + "px");
+
     },
 
     loaded: function() {
