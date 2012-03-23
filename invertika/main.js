@@ -133,6 +133,11 @@ var jsApp = {
         log.debug( 'window width: ' + $(document).width());
         log.debug( 'window height: ' + $(document).height() );
         
+        //document.body.style.overflow = "hidden";
+//var viewportWidth = $(window).width();
+//var viewportHeight = $(window).height();
+//document.body.style.overflow = "";
+        
         $("#jsapp canvas").css("width", getWidth() + "px");
         $("#jsapp canvas").css("height", getHeight() + "px");
 
