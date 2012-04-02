@@ -1,4 +1,4 @@
- <- @@index|Zurück zum Index@@
+﻿ <- @@index|Zurück zum Index@@
  
  
 ##3                            === Befehle ===
@@ -10,7 +10,7 @@
  Andere Tasten:
  
      ##2Ctrl##P               Angriff
-     ##2F1##P                 Ruft die Online Hilfe auf
+     ##2F1##P                 Ruft diese Hilfe auf
      ##2F2##P                 Ruft das Profilfenster auf
      ##2F3##P                 Ruft das Inventarfenster auf
      ##2F4##P                 Ruft das Ausrüstungsfenster
