@@ -8,7 +8,7 @@
  sind andere und die Spielsprache ist Deutsch.
  
  Bei der Technik wird die neue (und noch in der Entwicklung befindliche) 
- Version 0.1 des Servers und der Client Software. Man sollte sich von der 
+ Version 0.1 des Servers und der Client Software eingesetzt. Man sollte sich von der 
  niedrigen Versionnummer dabei nicht abschrecken lassen, das ganze ist 
  schon sehr ausgereift.
  
