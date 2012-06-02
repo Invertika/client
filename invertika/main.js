@@ -134,8 +134,8 @@ var jsApp = {
             return;
         }
 		
-		// begrenze auf 30 FPS
-		me.sys.fps = 30;
+	// begrenze auf 30 FPS
+	me.sys.fps = 30;
 
         // initialize the "audio"
         me.audio.init("mp3,ogg");
@@ -163,13 +163,12 @@ var jsApp = {
         log.debug( 'window height: ' + $(document).height() );
         
         //document.body.style.overflow = "hidden";
-//var viewportWidth = $(window).width();
-//var viewportHeight = $(window).height();
-//document.body.style.overflow = "";
+        //var viewportWidth = $(window).width();
+        //var viewportHeight = $(window).height();
+        //document.body.style.overflow = "";
         
         $("#jsapp canvas").css("width", getWidth() + "px");
         $("#jsapp canvas").css("height", getHeight() + "px");
-
     },
 
     loaded: function() {
