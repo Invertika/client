@@ -14,3 +14,4 @@ obj/
 *.dll
 *.manifest
 *.user
+/invertika/nbproject/private/
