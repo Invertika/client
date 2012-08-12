@@ -7,23 +7,32 @@
 
 function init(username, password)
 {
-    //alert("Yeah.")
-    
+	//alert("Testverbindung CK")
+	
     //Websocketverbindung aufbauen
     var accountserver = new WebSocket("ws://127.0.0.1:9601");
-    
-    //mNetwork->connect(mServer);
-    //MessageOut outMsg(CMSG_SERVER_VERSION_REQUEST);
-    
-    var msg = new MessageOut(0x7530); // CMSG_SERVER_VERSION_REQUEST
-    //console.log(msg.getData().byteLength);
-    accountserver.send(msg.getData());
+	
+	//Testlogin
+	var login="0010:seeseekey:geheim:3";
+	accountserver.send(login);
+
+	return;
+	
+    //Testlogin
+    //MessageOut outMsg(0x0064);
+    //outMsg.writeInt32(0); // client version
+    //outMsg.writeString(username, 24);
+    //outMsg.writeString(password, 24);
+
+    /*
+     * eAthena calls the last byte "client version 2", but it isn't used at
+     * at all. We're retasking it, as a bit mask:
+     *  0 - can handle the 0x63 "update host" packet
+     *  1 - defaults to the first char-server (instead of the last)
+     */
+    //outMsg.writeInt8(0x03);
 }
-//
-////var accountserver = new WebSocket("ws://127.0.0.1:5328/echo");
-//var accountserver = new WebSocket("ws://echo.websocket.org/");
-////var accountserver = new WebSocket("ws://127.0.0.1:7681/");
-//accountserver.binaryType = "arraybuffer";
+
 //accountserver.onopen = function(evt) {
 //    console.log("Connection made!");
 //    //var dataBuffer = new ArrayBuffer(4);
@@ -33,6 +42,7 @@ function init(username, password)
 //    console.log(msg.getData().byteLength);
 //    accountserver.send(msg.getData());
 //};
+
 //accountserver.onmessage = function(evt) {
 //    console.log( "Received Message: "  +  evt.data);
 //    console.log(new DataView(evt.data).getUint16(0));
