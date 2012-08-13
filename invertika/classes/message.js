@@ -13,7 +13,7 @@ var Message = new Class({
     },
 	
 	getString: function() {
-		var ret=this.id+":";
+		var ret=this.id.toString(16)+":";
 		var length=this.parts.length;
 
 		this.parts.each(function(part, index){
