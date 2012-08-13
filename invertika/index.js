@@ -5,19 +5,38 @@
  *
  */
 
+var ip = "127.0.0.1";
+var accountServerConnectionString=sprintf("ws://%s:9601", ip);
+
+var accountServer;
+
+//         // when data is comming from the server, this metod is called
+//         accountServer.onmessage = function (evt) {
+//			alert('message');	
+//         };
+//
+//         // when the connection is established, this method is called
+//         accountServer.onopen = function () {
+//			alert('connection open');
+//			// var login="0010:seeseekey:geheim:3";
+//			// accountServer.send(login);
+//         };
+//
+//         // when the connection is closed, this method is called
+//         accountServer.onclose = function () {
+//			alert('connection closed');
+//         }
+
 function init(username, password)
 {
-	//alert("Testverbindung CK")
+	accountServer = new WebSocket(accountServerConnectionString);
+	var loginCommand=sprintf("0010:%s:%s:3", username, password);
 	
-    //Websocketverbindung aufbauen
-    var accountserver = new WebSocket("ws://127.0.0.1:9601");
-	
-	//Testlogin
-	var login="0010:seeseekey:geheim:3";
-	accountserver.send(login);
+	// when the connection is established, this method is called
+	accountServer.onopen = function () {
+		accountServer.send(loginCommand);
+	};
 
-	return;
-	
     //Testlogin
     //MessageOut outMsg(0x0064);
     //outMsg.writeInt32(0); // client version
@@ -32,18 +51,3 @@ function init(username, password)
      */
     //outMsg.writeInt8(0x03);
 }
-
-//accountserver.onopen = function(evt) {
-//    console.log("Connection made!");
-//    //var dataBuffer = new ArrayBuffer(4);
-//    //var dataView = new DataView(dataBuffer);
-//    //dataView.setInt32(0, 0x1234ABCD);
-//    var msg = new MessageOut(0x0010); // PAMSG_LOGIN
-//    console.log(msg.getData().byteLength);
-//    accountserver.send(msg.getData());
-//};
-
-//accountserver.onmessage = function(evt) {
-//    console.log( "Received Message: "  +  evt.data);
-//    console.log(new DataView(evt.data).getUint16(0));
-//};

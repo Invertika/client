@@ -167,8 +167,8 @@ var jsApp = {
         //var viewportHeight = $(window).height();
         //document.body.style.overflow = "";
         
-        $("#jsapp canvas").css("width", getWidth() + "px");
-        $("#jsapp canvas").css("height", getHeight() + "px");
+        $("jsapp canvas").css("width", getWidth() + "px");
+        $("jsapp canvas").css("height", getHeight() + "px");
     },
 
     loaded: function() {
