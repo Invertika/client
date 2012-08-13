@@ -29,6 +29,8 @@ var accountServer;
 
 function init(username, password)
 {
+	//alert(Protocol.PAMSG_REGISTER);
+
 	accountServer = new WebSocket(accountServerConnectionString);
 	var loginCommand=sprintf("0010:%s:%s:3", username, password);
 	
