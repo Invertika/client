@@ -29,14 +29,17 @@ var accountServer;
 
 function init(username, password)
 {
-	//alert(Protocol.PAMSG_REGISTER);
-
 	accountServer = new WebSocket(accountServerConnectionString);
-	var loginCommand=sprintf("0010:%s:%s:3", username, password);
+	
+	//Login Kommando zusammenbauen
+	var loginMsg=new Message(Protocol.PAMSG_LOGIN);
+	loginMsg.addValue(username);
+	loginMsg.addValue(password);
+	loginMsg.addValue(3);
 	
 	// when the connection is established, this method is called
 	accountServer.onopen = function () {
-		accountServer.send(loginCommand);
+		accountServer.send(loginMsg.getString());
 	};
 
     //Testlogin
