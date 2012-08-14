@@ -33,6 +33,7 @@ function init(username, password)
 	
 	//Login Kommando zusammenbauen
 	var loginMsg=new Message(Protocol.PAMSG_LOGIN);
+	loginMsg.addValue(0); //Client Version
 	loginMsg.addValue(username);
 	loginMsg.addValue(password);
 	loginMsg.addValue(3);
