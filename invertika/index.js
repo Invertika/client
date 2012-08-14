@@ -42,6 +42,11 @@ function init(username, password)
 	accountServer.onopen = function () {
 		accountServer.send(loginMsg.getString());
 	};
+	
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = function (evt) {
+		alert(evt);	
+	};
 
     //Testlogin
     //MessageOut outMsg(0x0064);
