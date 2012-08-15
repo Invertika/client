@@ -9,7 +9,8 @@ var Message = new Class({
 	
 	//Methoden
     addValue: function(value) {
-		this.parts.include(value);
+		var maskedValue = value.replace(/:/g, "::");
+		this.parts.include(maskedValue);
     },
 	
 	getString: function() {
