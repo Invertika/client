@@ -10,23 +10,6 @@ var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 
 var accountServer;
 
-//         // when data is comming from the server, this metod is called
-//         accountServer.onmessage = function (evt) {
-//			alert('message');	
-//         };
-//
-//         // when the connection is established, this method is called
-//         accountServer.onopen = function () {
-//			alert('connection open');
-//			// var login="0010:seeseekey:geheim:3";
-//			// accountServer.send(login);
-//         };
-//
-//         // when the connection is closed, this method is called
-//         accountServer.onclose = function () {
-//			alert('connection closed');
-//         }
-
 function init(username, password)
 {
 	accountServer = new WebSocket(accountServerConnectionString);
