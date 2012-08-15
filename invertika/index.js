@@ -10,13 +10,15 @@ var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 
 var accountServer;
 
+var PROTOCOL_VERSION=1;
+
 function init(username, password)
 {
 	accountServer = new WebSocket(accountServerConnectionString);
 	
 	//Login Kommando zusammenbauen
 	var loginMsg=new Message(Protocol.PAMSG_LOGIN);
-	loginMsg.addValue(1); //Client Version
+	loginMsg.addValue(PROTOCOL_VERSION); //Client Version
 	loginMsg.addValue(username);
 	loginMsg.addValue(password);
 	loginMsg.addValue(3);
@@ -44,4 +46,25 @@ function init(username, password)
      *  1 - defaults to the first char-server (instead of the last)
      */
     //outMsg.writeInt8(0x03);
+}
+
+function registerAccount(username, password, email, captchaResponse)
+{
+	//Register Kommando zusammenbauen
+	var registerMsg=new Message(Protocol.PAMSG_REGISTER);
+	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
+	registerMsg.addValue(username);
+	registerMsg.addValue(sha256(username + password)); // Use a hashed password for privacy reasons
+	registerMsg.addValue(email);
+	registerMsg.addValue(captchaResponse);
+
+	// when the connection is established, this method is called
+	accountServer.onopen = function () {
+		accountServer.send(registerMsg.getString());
+	};
+	
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = function (message) {
+		alert(message.data);	
+	};
 }
