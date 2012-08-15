@@ -9,8 +9,15 @@ var Message = new Class({
 	
 	//Methoden
     addValue: function(value) {
-		var maskedValue = value.replace(/:/g, "::");
-		this.parts.include(maskedValue);
+		if(typeOf(value)=='string')
+		{
+			var maskedValue = value.replace(/:/g, "::");
+			this.parts.include(maskedValue);
+		}
+		else
+		{
+			this.parts.include(value);
+		}
     },
 	
 	getString: function() {
