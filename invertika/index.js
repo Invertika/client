@@ -54,7 +54,7 @@ function registerAccount(username, password, email, captchaResponse)
 	var registerMsg=new Message(Protocol.PAMSG_REGISTER);
 	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
 	registerMsg.addValue(username);
-	registerMsg.addValue(sha256(username + password)); // Use a hashed password for privacy reasons
+	registerMsg.addValue(sha256_digest(username + password)); // Use a hashed password for privacy reasons
 	registerMsg.addValue(email);
 	registerMsg.addValue(captchaResponse);
 
