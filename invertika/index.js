@@ -12,6 +12,11 @@ var accountServer;
 
 var PROTOCOL_VERSION=1;
 
+function debug()
+{
+	registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
+}
+
 function init(username, password)
 {
 	accountServer = new WebSocket(accountServerConnectionString);
@@ -50,6 +55,8 @@ function init(username, password)
 
 function registerAccount(username, password, email, captchaResponse)
 {
+	accountServer = new WebSocket(accountServerConnectionString);
+	
 	//Register Kommando zusammenbauen
 	var registerMsg=new Message(Protocol.PAMSG_REGISTER);
 	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
