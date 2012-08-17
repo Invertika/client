@@ -14,14 +14,46 @@ var PROTOCOL_VERSION=1;
 
 function debug()
 {
+	connect("seeseekey", "geheim");
 	//registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
-	login("seeseekey", "geheim");
+	//login("seeseekey", "geheim");
+}
+
+function connect(username, password)
+{
+	accountServer = new WebSocket(accountServerConnectionString);
+	
+	// when the connection is established, this method is called
+	accountServer.onopen = function () {
+		login("seeseekey", "geheim");
+	};
+	
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = function (message) {
+		var responseMessage=new MessageIn(message.data);
+	
+		switch(responseMessage.id)
+		{
+			case Protocol.APMSG_LOGIN_RESPONSE:
+			{
+				break;
+			}
+			default:
+			{
+				break;
+			}
+		}
+	
+		//Debug
+		alert(message.data);
+		alert(responseMessage.getPart(0));
+		alert(responseMessage.getPart(1));
+		alert(responseMessage.parts.length);
+	};
 }
 
 function login(username, password)
 {
-	accountServer = new WebSocket(accountServerConnectionString);
-	
 	//Login Kommando zusammenbauen
 	// var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN);
 	// loginMsg.addValue(PROTOCOL_VERSION); //Client Version
@@ -31,22 +63,6 @@ function login(username, password)
 	
 	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
-	
-	// when the connection is established, this method is called
-	accountServer.onopen = function () {
-		accountServer.send(loginMsg.getString());
-	};
-	
-	// when data is comming from the server, this metod is called
-	accountServer.onmessage = function (message) {
-		var responseMessage=new MessageIn(message.data);
-		
-		//Debug
-		alert(message.data);
-		alert(responseMessage.getPart(0));
-		alert(responseMessage.getPart(1));
-		alert(responseMessage.parts.length);
-	};
 }
 
 function registerAccount(username, password, email, captchaResponse)
@@ -60,21 +76,4 @@ function registerAccount(username, password, email, captchaResponse)
 	registerMsg.addValue(sha256_digest(username + password)); // Use a hashed password for privacy reasons
 	registerMsg.addValue(email);
 	registerMsg.addValue(captchaResponse);
-
-	// when the connection is established, this method is called
-	accountServer.onopen = function () {
-		accountServer.send(registerMsg.getString());
-	};
-	
-	// when data is comming from the server, this metod is called
-	accountServer.onmessage = function (message) {
-		var responseMessage=new MessageIn(message.data);
-		
-		//Debug
-		//alert(message.data);
-		//alert(responseMessage.getPart(0));
-		//alert(responseMessage.getPart(1));
-		
-		//Response Codes auswerten
-	};
 }
