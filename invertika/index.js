@@ -46,9 +46,9 @@ function connect(username, password)
 	
 		//Debug
 		alert(message.data);
-		alert(responseMessage.getPart(0));
-		alert(responseMessage.getPart(1));
-		alert(responseMessage.parts.length);
+		// alert(responseMessage.getPart(0));
+		// alert(responseMessage.getPart(1));
+		// alert(responseMessage.parts.length);
 	};
 }
 
