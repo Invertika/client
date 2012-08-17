@@ -23,11 +23,14 @@ function login(username, password)
 	accountServer = new WebSocket(accountServerConnectionString);
 	
 	//Login Kommando zusammenbauen
-	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN);
-	loginMsg.addValue(PROTOCOL_VERSION); //Client Version
+	// var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN);
+	// loginMsg.addValue(PROTOCOL_VERSION); //Client Version
+	// loginMsg.addValue(username);
+	// loginMsg.addValue(password);
+	// loginMsg.addValue(3);
+	
+	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
-	loginMsg.addValue(password);
-	loginMsg.addValue(3);
 	
 	// when the connection is established, this method is called
 	accountServer.onopen = function () {
