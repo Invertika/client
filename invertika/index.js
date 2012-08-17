@@ -63,6 +63,8 @@ function login(username, password)
 	
 	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
+	
+	accountServer.send(loginMsg.getString());
 }
 
 function registerAccount(username, password, email, captchaResponse)
@@ -76,4 +78,6 @@ function registerAccount(username, password, email, captchaResponse)
 	registerMsg.addValue(sha256_digest(username + password)); // Use a hashed password for privacy reasons
 	registerMsg.addValue(email);
 	registerMsg.addValue(captchaResponse);
+	
+	accountServer.send(registerMsg.getString());
 }
