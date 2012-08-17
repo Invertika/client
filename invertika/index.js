@@ -62,7 +62,7 @@ function registerAccount(username, password, email, captchaResponse)
 		
 		//Debug
 		alert(message.data);
-		alert(repsoneMessage.getPart(0));
-		alert(repsoneMessage.getPart(1));
+		alert(responseMessage.getPart(0));
+		alert(responseMessage.getPart(1));
 	};
 }

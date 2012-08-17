@@ -4,7 +4,7 @@ var MessageIn = new Class({
 	
 	//Konstruktor
 	initialize: function(message) {
-        this.parts = splitCommand(message);
+        this.parts = this.splitCommand(message);
     },
 	
 	//Methoden
@@ -41,5 +41,5 @@ var MessageIn = new Class({
 		if(cur.Length!=0) ret.include(cur);
 
 		return ret;
-	}.protect();			
+	}.protect()			
 });
