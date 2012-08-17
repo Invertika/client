@@ -1,4 +1,4 @@
-var Message = new Class({
+var MessageOut = new Class({
 	id: 0,
 	parts: [],
 	
