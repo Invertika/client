@@ -14,7 +14,8 @@ var PROTOCOL_VERSION=1;
 
 function debug()
 {
-	registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
+	//registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
+	login("seeseekey", "geheim");
 }
 
 function login(username, password)
@@ -36,6 +37,12 @@ function login(username, password)
 	// when data is comming from the server, this metod is called
 	accountServer.onmessage = function (message) {
 		var responseMessage=new MessageIn(message.data);
+		
+		//Debug
+		alert(message.data);
+		alert(responseMessage.getPart(0));
+		alert(responseMessage.getPart(1));
+		alert(responseMessage.parts.length);
 	};
 }
 
@@ -61,8 +68,10 @@ function registerAccount(username, password, email, captchaResponse)
 		var responseMessage=new MessageIn(message.data);
 		
 		//Debug
-		alert(message.data);
-		alert(responseMessage.getPart(0));
-		alert(responseMessage.getPart(1));
+		//alert(message.data);
+		//alert(responseMessage.getPart(0));
+		//alert(responseMessage.getPart(1));
+		
+		//Response Codes auswerten
 	};
 }
