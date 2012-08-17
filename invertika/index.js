@@ -17,12 +17,12 @@ function debug()
 	registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
 }
 
-function init(username, password)
+function login(username, password)
 {
 	accountServer = new WebSocket(accountServerConnectionString);
 	
 	//Login Kommando zusammenbauen
-	var loginMsg=new Message(Protocol.PAMSG_LOGIN);
+	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN);
 	loginMsg.addValue(PROTOCOL_VERSION); //Client Version
 	loginMsg.addValue(username);
 	loginMsg.addValue(password);
@@ -35,22 +35,8 @@ function init(username, password)
 	
 	// when data is comming from the server, this metod is called
 	accountServer.onmessage = function (message) {
-		alert(message.data);	
+		var responseMessage=new MessageIn(message.data);
 	};
-
-    //Testlogin
-    //MessageOut outMsg(0x0064);
-    //outMsg.writeInt32(0); // client version
-    //outMsg.writeString(username, 24);
-    //outMsg.writeString(password, 24);
-
-    /*
-     * eAthena calls the last byte "client version 2", but it isn't used at
-     * at all. We're retasking it, as a bit mask:
-     *  0 - can handle the 0x63 "update host" packet
-     *  1 - defaults to the first char-server (instead of the last)
-     */
-    //outMsg.writeInt8(0x03);
 }
 
 function registerAccount(username, password, email, captchaResponse)
@@ -58,7 +44,7 @@ function registerAccount(username, password, email, captchaResponse)
 	accountServer = new WebSocket(accountServerConnectionString);
 	
 	//Register Kommando zusammenbauen
-	var registerMsg=new Message(Protocol.PAMSG_REGISTER);
+	var registerMsg=new MessageOut(Protocol.PAMSG_REGISTER);
 	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
 	registerMsg.addValue(username);
 	registerMsg.addValue(sha256_digest(username + password)); // Use a hashed password for privacy reasons
@@ -72,6 +58,11 @@ function registerAccount(username, password, email, captchaResponse)
 	
 	// when data is comming from the server, this metod is called
 	accountServer.onmessage = function (message) {
-		alert(message.data);	
+		var responseMessage=new MessageIn(message.data);
+		
+		//Debug
+		alert(message.data);
+		alert(repsoneMessage.getPart(0));
+		alert(repsoneMessage.getPart(1));
 	};
 }
