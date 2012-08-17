@@ -10,15 +10,15 @@ var MessageIn = new Class({
 	//Methoden
 	getPart: function(index) {		
 		return this.parts[index];
-	}
+	},
 	
 	//Private Methoden
-	splitCommand(command) {
+	splitCommand: function(command) {
 		ret=new Array();
 		
 		cur="";
 		
-		for(int i=0; i<command.Length; i++)
+		for(var i=0; i<command.Length; i++)
 		{
 			if(command[i]==':')
 			{
