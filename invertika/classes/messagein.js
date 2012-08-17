@@ -18,11 +18,11 @@ var MessageIn = new Class({
 		
 		cur="";
 		
-		for(var i=0; i<command.Length; i++)
+		for(var i=0; i<command.length; i++)
 		{
 			if(command[i]==':')
 			{
-				if(i+1<command.Length&&command[i+1]==':')
+				if(i+1<command.length&&command[i+1]==':')
 				{
 					cur+=(':');
 					i++;
@@ -38,7 +38,7 @@ var MessageIn = new Class({
 			cur+=(command[i]);
 		}
 
-		if(cur.Length!=0) ret.include(cur);
+		if(cur.length!=0) ret.include(cur);
 
 		return ret;
 	}.protect()			
