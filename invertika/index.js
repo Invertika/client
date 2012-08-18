@@ -42,7 +42,7 @@ function connect(username, password)
 				var msg=new MessageOut(Protocol.PAMSG_LOGIN);
 				msg.addValue(PROTOCOL_VERSION); //Client Version
 				msg.addValue(username);
-				msg.addValue(sha256(sha256(sha256(username + password)) + token));
+				msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password)) + token));
 								
 				accountServer.send(msg.getString());
 				
