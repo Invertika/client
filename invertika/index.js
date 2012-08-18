@@ -34,8 +34,9 @@ function connect(username, password)
 	
 		switch(responseMessage.id)
 		{
-			case Protocol.APMSG_LOGIN_RESPONSE:
+			case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE:
 			{
+				alert("APMSG_LOGIN_RNDTRGR_RESPONSE");
 				break;
 			}
 			default:
@@ -46,7 +47,8 @@ function connect(username, password)
 	
 		//Debug
 		alert(message.data);
-		// alert(responseMessage.getPart(0));
+		alert(responseMessage.id);
+		alert(responseMessage.getPart(0));
 		// alert(responseMessage.getPart(1));
 		// alert(responseMessage.parts.length);
 	};
