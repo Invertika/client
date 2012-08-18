@@ -36,33 +36,29 @@ function connect(username, password)
 		{
 			case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE:
 			{
-				alert("APMSG_LOGIN_RNDTRGR_RESPONSE");
+				var token=responseMessage.getPart(0);
+				
+				//Login Kommando zusammenbauen
+				var msg=new MessageOut(Protocol.PAMSG_LOGIN);
+				msg.addValue(PROTOCOL_VERSION); //Client Version
+				msg.addValue(username);
+				msg.addValue(sha256(sha256(sha256(username + password)) + token));
+								
+				accountServer.send(msg.getString());
+				
 				break;
 			}
 			default:
 			{
+				alert("Unbekannte Nachricht: " + message.data);
 				break;
 			}
 		}
-	
-		//Debug
-		alert(message.data);
-		alert(responseMessage.id);
-		alert(responseMessage.getPart(0));
-		// alert(responseMessage.getPart(1));
-		// alert(responseMessage.parts.length);
 	};
 }
 
 function login(username, password)
-{
-	//Login Kommando zusammenbauen
-	// var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN);
-	// loginMsg.addValue(PROTOCOL_VERSION); //Client Version
-	// loginMsg.addValue(username);
-	// loginMsg.addValue(password);
-	// loginMsg.addValue(3);
-	
+{	
 	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
 	
