@@ -5,7 +5,7 @@ var MessageIn = new Class({
 	//Konstruktor
 	initialize: function(message) {
         this.parts = this.splitCommand(message);
-		this.id=this.parts[0];
+		this.id=parseInt(this.parts[0], 16);
 		this.parts.splice(0, 1); //Erstes Element entfernen
     },
 	
