@@ -14,9 +14,24 @@ var PROTOCOL_VERSION=1;
 
 function debug()
 {
-	connect("seeseekey", "geheim");
+	//debugConnect();
+	//connect("seeseekey", "geheim");
 	//registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
-	//login("seeseekey", "geheim");
+	connect("seeseekey", "geheim");
+}
+
+function debugConnect()
+{
+	accountServer = new WebSocket("ws://echo.websocket.org");
+	
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = function (message) {
+		alert("Unbekannte Nachricht: " + message.data);
+	};
+	
+	accountServer.onopen = function () {
+		//login("seeseekey", "geheim");
+	};
 }
 
 function connect(username, password)
@@ -25,7 +40,8 @@ function connect(username, password)
 	
 	// when the connection is established, this method is called
 	accountServer.onopen = function () {
-		login("seeseekey", "geheim");
+		//login("seeseekey", "geheim");
+		registerAccount("hallo", "geheim", "s.eeseekey@gmail.com", "IGNORxE");
 	};
 	
 	// when data is comming from the server, this metod is called
@@ -66,9 +82,7 @@ function login(username, password)
 }
 
 function registerAccount(username, password, email, captchaResponse)
-{
-	accountServer = new WebSocket(accountServerConnectionString);
-	
+{	
 	//Register Kommando zusammenbauen
 	var registerMsg=new MessageOut(Protocol.PAMSG_REGISTER);
 	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
