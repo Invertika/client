@@ -52,6 +52,33 @@ function onMessage(message)
 			
 			break;
 		}
+		case Protocol.APMSG_LOGIN_RESPONSE:
+		{
+			var errMsg=responseMessage.getPart(0);
+			
+			if(errMsg==Error.ERRMSG_OK) //alles Okay
+			{
+				var updateHost = responseMessage.getPart(1);
+				var clientDataUrl = responseMessage.getPart(2);
+				
+				var charSlots = parseInt(responseMessage.getPart(3));
+
+				//chooseCharacter();
+				var charNumber=1;
+				
+				var msg=new MessageOut(Protocol.PAMSG_CHAR_SELECT);
+				msg.addValue(charNumber);
+				
+				accountServer.send(msg.getString());
+			}
+			else
+			{
+				//nicht alles okay
+				//Login fehlgeschlagen
+			}
+
+			break;
+		}
 		default:
 		{
 			alert("Unbekannte Nachricht: " + message.data);
