@@ -56,7 +56,7 @@ function onMessage(message)
 		{
 			var errMsg=responseMessage.getPart(0);
 			
-			if(errMsg==Error.ERRMSG_OK) //alles Okay
+			if(errMsg==Error.ERRMSG_OK) //alles okay
 			{
 				var updateHost = responseMessage.getPart(1);
 				var clientDataUrl = responseMessage.getPart(2);
@@ -76,6 +76,28 @@ function onMessage(message)
 				//Login fehlgeschlagen
 			}
 
+			break;
+		}
+		case Protocol.APMSG_CHAR_SELECT_RESPONSE:
+		{
+			var errMsg=responseMessage.getPart(0);
+			
+			if(errMsg==Error.ERRMSG_OK) //alles okay
+			{
+				var netToken = responseMessage.getPart(1);
+				var gameAdress = responseMessage.getPart(2);
+				var gamePort = parseInt(responseMessage.getPart(2));
+				var chatAdress = responseMessage.getPart(3);
+				var chatPort = parseInt(responseMessage.getPart(4));
+				
+				//connectGameServer=true;
+				//connectChatServer=true;
+			}
+			else
+			{
+				//Problem aufgetreten
+			}
+			
 			break;
 		}
 		default:
