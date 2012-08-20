@@ -5,47 +5,16 @@
  *
  */
 
+// Variablen
 var ip = "127.0.0.1";
 var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 
 var accountServer;
-
 var PROTOCOL_VERSION=1;
 
-function debug()
+// Message Handler
+function onMessage(message) 
 {
-	//debugConnect();
-	//connect("seeseekey", "geheim");
-	//registerAccount("seeseekey", "geheim", "seeseekey@gmail.com", "IGNORE");
-	connect("seeseekey", "geheim");
-}
-
-function debugConnect()
-{
-	accountServer = new WebSocket("ws://echo.websocket.org");
-	
-	// when data is comming from the server, this metod is called
-	accountServer.onmessage = function (message) {
-		alert("Unbekannte Nachricht: " + message.data);
-	};
-	
-	accountServer.onopen = function () {
-		//login("seeseekey", "geheim");
-	};
-}
-
-function connect(username, password)
-{
-	accountServer = new WebSocket(accountServerConnectionString);
-	
-	// when the connection is established, this method is called
-	accountServer.onopen = function () {
-		//login("seeseekey", "geheim");
-		registerAccount("hallo", "geheim", "s.eeseekey@gmail.com", "IGNORxE");
-	};
-	
-	// when data is comming from the server, this metod is called
-	accountServer.onmessage = function (message) {
 		var responseMessage=new MessageIn(message.data);
 	
 		switch(responseMessage.id)
@@ -70,19 +39,30 @@ function connect(username, password)
 				break;
 			}
 		}
-	};
 }
 
+// Funktionen
 function login(username, password)
-{	
+{
+	accountServer = new WebSocket(accountServerConnectionString);
+	
+	//Login Paket zusammenbauen
 	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
+
+	// when the connection is established, this method is called
+	accountServer.onopen = function () {
+		accountServer.send(loginMsg.getString());
+	};
 	
-	accountServer.send(loginMsg.getString());
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = onMessage;
 }
 
-function registerAccount(username, password, email, captchaResponse)
+function register(username, password, email, captchaResponse)
 {	
+	accountServer = new WebSocket(accountServerConnectionString);
+
 	//Register Kommando zusammenbauen
 	var registerMsg=new MessageOut(Protocol.PAMSG_REGISTER);
 	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
@@ -91,5 +71,11 @@ function registerAccount(username, password, email, captchaResponse)
 	registerMsg.addValue(email);
 	registerMsg.addValue(captchaResponse);
 	
-	accountServer.send(registerMsg.getString());
+	// when the connection is established, this method is called
+	accountServer.onopen = function () {
+		accountServer.send(registerMsg.getString());
+	};
+	
+	// when data is comming from the server, this metod is called
+	accountServer.onmessage = onMessage;
 }
