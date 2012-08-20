@@ -19,8 +19,10 @@ var _password;
 function debug()
 {
 	//login("seeseekey", "geheim");
-	login("schnee", "geheim");
-	//register("schnee", "geheim", "se.eseekey@gmail.com", "IGNORE");
+	//login("schnee", "geheim");
+	login("florian", "geheim");
+
+	//register("florian", "geheim", "sees.eekey@gmail.com", "IGNORE");
 }
 
 // Message Handler
@@ -44,7 +46,13 @@ function onMessage(message)
 			var msg=new MessageOut(Protocol.PAMSG_LOGIN);
 			msg.addValue(PROTOCOL_VERSION); //Client Version
 			msg.addValue(username);
-			msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password)) + token));
+			msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password))+token));
+			
+			//BuildPW
+			// var a=sha256_digest(username + password);
+			// var b=sha256_digest(a);
+			// var c=sha256_digest(b+token);
+			// msg.addValue(c);
 							
 			accountServer.send(msg.getString());
 			
