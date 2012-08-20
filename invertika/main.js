@@ -111,22 +111,9 @@ var supportsOrientationChange = "onorientationchange" in window,
     orientationEvent = supportsOrientationChange ?
 "orientationchange" : "resize";
 
-window.addEventListener(orientationEvent, function() {
-        //var canvas = me.video.getScreenCanvas();
-        //canvas.width = window.innerWidth;
-        //canvas.height = window.innerHeight;
-        
-        //canvas.width = getWidth();
-        //canvas.height = getHeight();
-        
-        //me.game.viewport = new me.Viewport(0, 0, window.innerWidth,window.innerHeight);
-        //me.game.viewport.setBounds(window.innerWidth, window.innerHeight);
-        //me.game.viewport.setBounds(getWidth(), getHeight());
-        //me.game.repaint();
-        
-        $("#jsapp canvas").css("width", getWidth() + "px");
-        $("#jsapp canvas").css("height", getHeight() + "px");
-
+window.addEventListener(orientationEvent, function() {        
+		$('jsapp').getElement('canvas').setStyle('width', getWidth() + "px");
+		$('jsapp').getElement('canvas').setStyle('height', getHeight() + "px");
 }, false); 
 
 var jsApp = {
@@ -165,17 +152,9 @@ var jsApp = {
         // returns size of HTML document
         //log.debug( 'window width: ' + $(document).width());
         //log.debug( 'window height: ' + $(document).height() );
-        
-        //document.body.style.overflow = "hidden";
-        //var viewportWidth = $(window).width();
-        //var viewportHeight = $(window).height();
-        //document.body.style.overflow = "";
-        
-		$('jsapp canvas').setStyle('width', getWidth() + "px");
-		$('jsapp canvas').setStyle('height', getHeight() + "px");
 		
-        //$("jsapp canvas").css("width", getWidth() + "px");
-        //$("jsapp canvas").css("height", getHeight() + "px");
+		$('jsapp').getElement('canvas').setStyle('width', getWidth() + "px");
+		$('jsapp').getElement('canvas').setStyle('height', getHeight() + "px");
     },
 
     loaded: function() {
