@@ -47,12 +47,6 @@ function onMessage(message)
 			msg.addValue(PROTOCOL_VERSION); //Client Version
 			msg.addValue(username);
 			msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password))+token));
-			
-			//BuildPW
-			// var a=sha256_digest(username + password);
-			// var b=sha256_digest(a);
-			// var c=sha256_digest(b+token);
-			// msg.addValue(c);
 							
 			accountServer.send(msg.getString());
 			
