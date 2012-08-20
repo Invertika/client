@@ -12,11 +12,15 @@ var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 var accountServer;
 var PROTOCOL_VERSION=1;
 
+var _username;
+var _password;
+
 //Debug
 function debug()
 {
 	//login("seeseekey", "geheim");
-	register("abcdef", "geheim", "s.eeseekey@gmail.com", "IGNORE");
+	login("schnee", "geheim");
+	//register("schnee", "geheim", "se.eseekey@gmail.com", "IGNORE");
 }
 
 // Message Handler
@@ -26,7 +30,13 @@ function onMessage(message)
 
 	switch(responseMessage.id)
 	{
-		case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE:
+		case Protocol.APMSG_REGISTER_RESPONSE:
+		{
+			var registerReturnCode=responseMessage.getPart(0);
+			alert("Return code from register is: " + registerReturnCode);
+			break;
+		}
+		case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE: //Login Response
 		{
 			var token=responseMessage.getPart(0);
 			
@@ -56,6 +66,9 @@ function login(username, password)
 	//Login Paket zusammenbauen
 	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
 	loginMsg.addValue(username);
+	
+	this.username=username;
+	this.password=password;
 
 	// when the connection is established, this method is called
 	accountServer.onopen = function () {
