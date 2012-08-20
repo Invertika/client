@@ -16,14 +16,15 @@ var otherPlayers = {}
 
 function viewport()
 {
-var e = window
-, a = 'inner';
-if ( !( 'innerWidth' in window ) )
-{
-a = 'client';
-e = document.documentElement || document.body;
-}
-return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+	var e = window, a = 'inner';
+	
+	if ( !( 'innerWidth' in window ) )
+	{
+		a = 'client';
+		e = document.documentElement || document.body;
+	}
+	
+	return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 }
 
 function getWidth() {
@@ -105,7 +106,6 @@ document.ontouchmove = function(e){
              e.preventDefault();
 }
 
-
 //Anpassung an sich änderne Auflösung etc
 var supportsOrientationChange = "onorientationchange" in window,
     orientationEvent = supportsOrientationChange ?
@@ -144,15 +144,8 @@ var jsApp = {
         log.debug( 'leave onload (jsApp)' );
         log.debug( 'getWidth: ' + getWidth() );
         log.debug( 'getHeight: ' + getHeight() );
-        
-        // returns size of browser viewport
-        //log.debug( 'window width: ' + $(window).width());
-        //log.debug( 'window height: ' + $(window).height() );
-        
-        // returns size of HTML document
-        //log.debug( 'window width: ' + $(document).width());
-        //log.debug( 'window height: ' + $(document).height() );
-		
+      
+	  	//Canvas skalieren
 		$('jsapp').getElement('canvas').setStyle('width', getWidth() + "px");
 		$('jsapp').getElement('canvas').setStyle('height', getHeight() + "px");
     },
