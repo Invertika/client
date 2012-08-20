@@ -73,7 +73,6 @@ function onMessage(message)
 			}
 			else
 			{
-				//nicht alles okay
 				//Login fehlgeschlagen
 			}
 
