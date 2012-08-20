@@ -5,7 +5,11 @@
  *
  */
 
-var socket
+// var accountServer;
+// var chatServer;
+// var gameServer;
+ 
+//var socket
 var timeout
 var player
 var otherPlayers = {}
@@ -45,47 +49,47 @@ function addPlayer(player) {
 
 function localPlayerCreated(playerEntity) {
     player = playerEntity
-    socket = io.connect();
+    // socket = io.connect();
 
-    socket.on('connect', function() {
-        socket.emit('logon', player.pos);
-    });
+    // socket.on('connect', function() {
+        // socket.emit('logon', player.pos);
+    // });
 
-    socket.on('players', function(players) {
-        console.log("Players: " + players);
+    // socket.on('players', function(players) {
+        // console.log("Players: " + players);
 
-        players.forEach(addPlayer);
+        // players.forEach(addPlayer);
 
-        function sendPosition() {
-            socket.emit('move', player.pos);
-            timeout = setTimeout(sendPosition, 200);
-        }
+        // function sendPosition() {
+            // socket.emit('move', player.pos);
+            // timeout = setTimeout(sendPosition, 200);
+        // }
 
-        // We're connected and have sent out initial position, start sending out updates
-        timeout = setTimeout(sendPosition, 200);
-    });
+        ////We're connected and have sent out initial position, start sending out updates
+        // timeout = setTimeout(sendPosition, 200);
+    // });
 
-    socket.on('moved', function(player) {
-        //console.log("Moved: " + player.id + " " + player.x + "," + player.y);
-        var character = otherPlayers[player.id]
-        if (character) {
-            character.destinationX = player.x;
-            character.destinationY = player.y;
-        }
-    });
+    // socket.on('moved', function(player) {
+        console.log("Moved: " + player.id + " " + player.x + "," + player.y);
+        // var character = otherPlayers[player.id]
+        // if (character) {
+            // character.destinationX = player.x;
+            // character.destinationY = player.y;
+        // }
+    // });
 
-    socket.on('connected', function(player) {
-        console.log("Connected: " + player);
-        addPlayer(player);
-    });
+    // socket.on('connected', function(player) {
+        // console.log("Connected: " + player);
+        // addPlayer(player);
+    // });
 
-    socket.on('disconnected', function(player) {
-        console.log("Disconnected: " + player);
-        // TODO: Figure out how to remove characters from the map
-        var character = otherPlayers[player.id];
-        me.game.remove(character);
-        delete otherPlayers[player.id];
-    });
+    // socket.on('disconnected', function(player) {
+        // console.log("Disconnected: " + player);
+        ////TODO: Figure out how to remove characters from the map
+        // var character = otherPlayers[player.id];
+        // me.game.remove(character);
+        // delete otherPlayers[player.id];
+    // });
 }
 
 
@@ -155,12 +159,12 @@ var jsApp = {
         log.debug( 'getHeight: ' + getHeight() );
         
         // returns size of browser viewport
-        log.debug( 'window width: ' + $(window).width());
-        log.debug( 'window height: ' + $(window).height() );
+        //log.debug( 'window width: ' + $(window).width());
+        //log.debug( 'window height: ' + $(window).height() );
         
         // returns size of HTML document
-        log.debug( 'window width: ' + $(document).width());
-        log.debug( 'window height: ' + $(document).height() );
+        //log.debug( 'window width: ' + $(document).width());
+        //log.debug( 'window height: ' + $(document).height() );
         
         //document.body.style.overflow = "hidden";
         //var viewportWidth = $(window).width();
