@@ -12,8 +12,8 @@ var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 var accountServer;
 var PROTOCOL_VERSION=1;
 
-var _username;
-var _password;
+var username;
+var password;
 
 //Debug
 function debug()
@@ -56,7 +56,7 @@ function onMessage(message)
 		{
 			var errMsg=responseMessage.getPart(0);
 			
-			if(errMsg==Error.ERRMSG_OK) //alles okay
+			if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
 			{
 				var updateHost = responseMessage.getPart(1);
 				var clientDataUrl = responseMessage.getPart(2);
@@ -82,7 +82,7 @@ function onMessage(message)
 		{
 			var errMsg=responseMessage.getPart(0);
 			
-			if(errMsg==Error.ERRMSG_OK) //alles okay
+			if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
 			{
 				var netToken = responseMessage.getPart(1);
 				var gameAdress = responseMessage.getPart(2);

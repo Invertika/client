@@ -1,4 +1,4 @@
-var Error =
+var ErrorMessage =
 { 
 		// Generic return values
 		ERRMSG_OK:0,                      // everything is fine
