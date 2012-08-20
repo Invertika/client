@@ -12,33 +12,40 @@ var accountServerConnectionString=sprintf("ws://%s:9601", ip);
 var accountServer;
 var PROTOCOL_VERSION=1;
 
+//Debug
+function debug()
+{
+	//login("seeseekey", "geheim");
+	register("abcdef", "geheim", "s.eeseekey@gmail.com", "IGNORE");
+}
+
 // Message Handler
 function onMessage(message) 
 {
-		var responseMessage=new MessageIn(message.data);
-	
-		switch(responseMessage.id)
+	var responseMessage=new MessageIn(message.data);
+
+	switch(responseMessage.id)
+	{
+		case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE:
 		{
-			case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE:
-			{
-				var token=responseMessage.getPart(0);
-				
-				//Login Kommando zusammenbauen
-				var msg=new MessageOut(Protocol.PAMSG_LOGIN);
-				msg.addValue(PROTOCOL_VERSION); //Client Version
-				msg.addValue(username);
-				msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password)) + token));
-								
-				accountServer.send(msg.getString());
-				
-				break;
-			}
-			default:
-			{
-				alert("Unbekannte Nachricht: " + message.data);
-				break;
-			}
+			var token=responseMessage.getPart(0);
+			
+			//Login Kommando zusammenbauen
+			var msg=new MessageOut(Protocol.PAMSG_LOGIN);
+			msg.addValue(PROTOCOL_VERSION); //Client Version
+			msg.addValue(username);
+			msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password)) + token));
+							
+			accountServer.send(msg.getString());
+			
+			break;
 		}
+		default:
+		{
+			alert("Unbekannte Nachricht: " + message.data);
+			break;
+		}
+	}
 }
 
 // Funktionen
