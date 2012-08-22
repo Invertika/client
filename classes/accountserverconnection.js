@@ -3,12 +3,14 @@ var AccountServerConnection = new Class({
 	ip: "127.0.0.1",
 	socket: null,
 	username: "",
-	passwort: "",
+	password: "",
 	
 	//Konstruktor
 	initialize: function(ip, port) {
         this.ip = ip;
-		if(!port) port=9601;
+		
+		if(port) this.port=port;
+		else this.port=9601;
 		
 		this.connectionString=sprintf("ws://%s:%s", ip, port)
     },
