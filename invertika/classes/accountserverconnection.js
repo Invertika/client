@@ -1,9 +1,9 @@
 var AccountServerConnection = new Class({
 	connectionString: "",
 	ip: "127.0.0.1",
-	socket,
+	socket: null,
 	username: "",
-	passwort,
+	passwort: "",
 	
 	//Konstruktor
 	initialize: function(ip) {
