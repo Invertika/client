@@ -8,7 +8,7 @@ var AccountServerConnection = new Class({
 	//Konstruktor
 	initialize: function(ip, port) {
         this.ip = ip;
-		if(!port) port="9601";
+		if(!port) port=9601;
 		
 		this.connectionString=sprintf("ws://%s:%s", ip, port)
     },
@@ -24,6 +24,7 @@ var AccountServerConnection = new Class({
 			{
 				var registerReturnCode=responseMessage.getPart(0);
 				alert("Return code from register is: " + registerReturnCode);
+				
 				break;
 			}
 			case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE: //Login Response
@@ -36,7 +37,7 @@ var AccountServerConnection = new Class({
 				msg.addValue(username);
 				msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password))+token));
 							
-				accountServer.send(msg.getString());
+				this.socket.send(msg.getString());
 			
 				break;
 			}
