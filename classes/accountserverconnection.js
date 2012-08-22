@@ -6,9 +6,11 @@ var AccountServerConnection = new Class({
 	passwort: "",
 	
 	//Konstruktor
-	initialize: function(ip) {
+	initialize: function(ip, port) {
         this.ip = ip;
-		this.connectionString=sprintf("ws://%s:9601", ip)
+		if(!port) port="9601";
+		
+		this.connectionString=sprintf("ws://%s:%s", ip, port)
     },
 		
 	//MessageHandler
@@ -107,12 +109,12 @@ var AccountServerConnection = new Class({
 		this.password=password;
 
 		// when the connection is established, this method is called
-		accountServer.onopen = function () {
+		this.socket.onopen = function () {
 			this.socket.send(loginMsg.getString());
 		};
 	
 		// when data is comming from the server, this metod is called
-		this.socket.onmessage = onMessage;
+		this.socket.onmessage = this.onMessage;
 	},
 	
 	register: function(username, password, email, captchaResponse)
@@ -128,12 +130,12 @@ var AccountServerConnection = new Class({
 		registerMsg.addValue(captchaResponse);
 	
 		// when the connection is established, this method is called
-		accountServer.onopen = function () {
+		this.socket.onopen = function () {
 			this.socket.send(registerMsg.getString());
 		};
 	
 		// when data is comming from the server, this metod is called
-		this.socket.onmessage = onMessage;
+		this.socket.onmessage = this.onMessage;
 	}
 });
 
