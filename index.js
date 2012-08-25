@@ -13,12 +13,12 @@ var accountServer;
 //Debug
 function debug()
 {
-	accountServer=new AccountServerConnection(ip);
-	connection.login("florian", "geheim");
+	accountServer=new AccountServerConnection(ip, 9601);
+	//accountServer.login("florian", "geheim");
 	
 	//login("seeseekey", "geheim");
 	//login("schnee", "geheim");
-	login("florian", "geheim");
+	//login("florian", "geheim");
 
 	//register("florian", "geheim", "sees.eekey@gmail.com", "IGNORE");
 }
