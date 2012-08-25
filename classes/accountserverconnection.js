@@ -139,7 +139,27 @@ var AccountServerConnection = new Class({
 	
 		// when data is comming from the server, this metod is called
 		this.socket.onmessage = this.onMessage;
+	},
+	
+	createCharacter: function(name, slot, gender, hairStyle, hairColor, stats)
+	{
+		//Kommando zusammenbauen (PAMSG_CHAR_CREATE)
+		var msg=new MessageOut(Protocol.PAMSG_CHAR_CREATE);
+		msg.addValue(name);
+		msg.addValue(hairStyle);
+		msg.addValue(hairColor);
+		msg.addValue(gender);
+		msg.addValue(slot);
+		
+		//Charakterwerte in Nachricht schreiben
+		stats.each(function(statValue){
+		  msg.addValue(statValue);
+		});
+
+		//Senden
+	    this.socket.send(msg.getString());
 	}
+	
 });
 
 
