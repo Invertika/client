@@ -1,4 +1,6 @@
 var AccountServerConnection = new Class({
+	Implements: [Events],
+	
 	connectionString: "",
 	ip: "127.0.0.1",
 	socket: null,
@@ -53,14 +55,9 @@ var AccountServerConnection = new Class({
 					var clientDataUrl = responseMessage.getPart(2);
 				
 					var charSlots = parseInt(responseMessage.getPart(3));
-
-					//chooseCharacter();
-					var charNumber=1;
-				
-					var msg=new MessageOut(Protocol.PAMSG_CHAR_SELECT);
-					msg.addValue(charNumber);
-				
-					this.socket.send(msg.getString());
+					
+					//Event feuern damit der CLient entscheiden kann
+					this.fireEvent('charSelectNeeded');
 				}
 				else
 				{
@@ -93,7 +90,7 @@ var AccountServerConnection = new Class({
 			}
 			default:
 			{
-				alert("Unbekannte Nachricht: " + message.data);
+				log.warn("Unknown message " + message.data);
 				break;
 			}
 		}
@@ -158,8 +155,17 @@ var AccountServerConnection = new Class({
 
 		//Senden
 	    this.socket.send(msg.getString());
+	},
+	
+	/// mit dieser Funktion wird der Charakter ausgewählt
+	selectCharacter: function(charNumber)
+	{
+		//chooseCharacter();
+				
+		var msg=new MessageOut(Protocol.PAMSG_CHAR_SELECT);
+		msg.addValue(charNumber);
+				
+		this.socket.send(msg.getString());
 	}
 	
 });
-
-
