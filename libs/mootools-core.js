@@ -1,6 +1,7 @@
 /*
 ---
 MooTools: the javascript framework
+mootools-core-1.4.5-full-nocompat
 
 web build:
  - http://mootools.net/core/76bf47062d6c1983d66ce47ad66aa0e0

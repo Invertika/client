@@ -5,11 +5,34 @@
 
 		<meta charset="utf-8" />
 		
+		<!-- Bibliotheken -->
         <script type="text/javascript" src="libs/blackbird/blackbird.js"></script>
-        <script type="text/javascript" src="libs/mootools-core-1.4.5-full-nocompat.js"></script>
+        <script type="text/javascript" src="libs/mootools-core.js"></script>
+		<script type="text/javascript" src="libs/mootools-more.js"></script>
 		<script type="text/javascript" src="libs/sha256.js"></script>
 		<script type="text/javascript" src="libs/sprintf.js"></script>
 		
+		<!-- jxlib -->
+		<script type="text/javascript" src="libs/jxlib/jxlib.js"></script>
+		
+		 <!-- include the jx delicious skin -->
+		<link rel="stylesheet" href="libs/jxlib/themes/delicious/jxtheme.css" type="text/css" media="screen" charset="utf-8">
+		<!-- IE specific style sheets -->
+		<!--[if LTE IE 6]>
+		<link rel="stylesheet" href="libs/jxlib/themes/delicious/ie6.css" type="text/css" media="screen" charset="utf-8">
+		<![endif]-->
+		<!--[if IE 7]>
+		<link rel="stylesheet" href="libs/jxlib/themes/delicious/ie7.css" type="text/css" media="screen" charset="utf-8">
+		<![endif]-->
+
+		<!-- this prevents scrollbars from appearing on the page -->
+		<style type="text/css">
+		body {
+		overflow: hidden;
+		}
+		</style>
+		
+		<!-- Stylesheets -->
         <link type="text/css" rel="Stylesheet" href="libs/blackbird/blackbird.css" />
         <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
@@ -22,7 +45,7 @@
             -->
         </div>
         <div id="jsapp" align="center">
-            <script type="text/javascript" src="libs/melonJS-0.9.4-min.js"></script>
+            <script type="text/javascript" src="libs/melonJS.js"></script>
 			
 			<script type="text/javascript" src="classes/accountserverconnection.js"></script>
 			<script type="text/javascript" src="classes/error.js"></script>
@@ -30,13 +53,22 @@
 			<script type="text/javascript" src="classes/messageout.js"></script>
 			<script type="text/javascript" src="classes/messagein.js"></script>
 			<script type="text/javascript" src="classes/protocol.js"></script>
-            
+		
+			<script type="text/javascript" charset="utf-8">
+				window.addEvent('domready',function(){
+				  new Jx.Dialog({
+					label: 'Login',
+					modal: true,
+					content: 'jsapp'
+				  }).show();
+				});
+			</script>
 			<!-- Hauptklasse -->
-            <script type="text/javascript" src="index.js"></script>
+            <!-- <script type="text/javascript" src="index.js"></script> -->
             
 			<!-- Debug Skripte -->
             <script type="text/javascript">
-				debug();
+				//debug();
 				//init('seeseekey', 'geheim');
                 //init('<?php echo $_POST["username"]?>', '<?php echo $_POST["password"]?>');
             </script>
