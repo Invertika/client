@@ -43,7 +43,7 @@
             <span id="framecounter">(0/0 fps)</span>
             </font>  
             -->
-        </div>
+		</div>
         <div id="jsapp" align="center">
             <script type="text/javascript" src="libs/melonJS.js"></script>
 			
@@ -55,12 +55,23 @@
 			<script type="text/javascript" src="classes/protocol.js"></script>
 		
 			<script type="text/javascript" charset="utf-8">
-				window.addEvent('domready',function(){
-				  new Jx.Dialog({
+				window.addEvent('load',function(){
+				  dialog=new Jx.Dialog({
 					label: 'Login',
 					modal: true,
-					content: 'jsapp'
+					resize: false,
+					move: false,
+					content: 'login'
 				  }).show();
+				  
+				    new Jx.Form({
+    name: 'testForm',
+    formClass: 'jxFormInline'
+  }).addTo(dialog);
+  
+
+
+				  
 				});
 			</script>
 			<!-- Hauptklasse -->
@@ -75,5 +86,17 @@
         </div>
         <div id="footer" align="center">
         </div>
+		
+		<div class="login">
+			<form action="whatever" method="post" id="formLogin">
+				<div class="label">Username</div>
+				<div><input type="text" name="username"/></div>
+				<div class="label">Password</div>
+				<div><input type="password" name="password"/></div>
+				<div id="login" style="text-align:center;overflow:hidden;padding:10px;"></div>
+			</form>
+        </div>
+	
+		</div>
     </body>
 </html>
