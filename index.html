@@ -12,23 +12,13 @@
 		<script type="text/javascript" src="libs/sha256.js"></script>
 		<script type="text/javascript" src="libs/sprintf.js"></script>
 		
-		<!-- jxlib -->
-		<script type="text/javascript" src="libs/jxlib/jxlib.js"></script>
-		
-		 <!-- include the jx delicious skin -->
-		<link rel="stylesheet" href="libs/jxlib/themes/delicious/jxtheme.css" type="text/css" media="screen" charset="utf-8">
-		<!-- IE specific style sheets -->
-		<!--[if LTE IE 6]>
-		<link rel="stylesheet" href="libs/jxlib/themes/delicious/ie6.css" type="text/css" media="screen" charset="utf-8">
-		<![endif]-->
-		<!--[if IE 7]>
-		<link rel="stylesheet" href="libs/jxlib/themes/delicious/ie7.css" type="text/css" media="screen" charset="utf-8">
-		<![endif]-->
+		<!-- uki -->
+		<script type="text/javascript" src="libs/uki/uki.js"></script>
 
 		<!-- this prevents scrollbars from appearing on the page -->
 		<style type="text/css">
 		body {
-		overflow: hidden;
+		  overflow: hidden;
 		}
 		</style>
 		
@@ -54,28 +44,8 @@
 			<script type="text/javascript" src="classes/messagein.js"></script>
 			<script type="text/javascript" src="classes/protocol.js"></script>
 		
-			<script type="text/javascript" charset="utf-8">
-				window.addEvent('load',function(){
-				  dialog=new Jx.Dialog({
-					label: 'Login',
-					modal: true,
-					resize: false,
-					move: false,
-					content: 'login'
-				  }).show();
-				  
-				    new Jx.Form({
-    name: 'testForm',
-    formClass: 'jxFormInline'
-  }).addTo(dialog);
-  
-
-
-				  
-				});
-			</script>
 			<!-- Hauptklasse -->
-            <!-- <script type="text/javascript" src="index.js"></script> -->
+            <script type="text/javascript" src="index.js"></script>
             
 			<!-- Debug Skripte -->
             <script type="text/javascript">
@@ -84,19 +54,10 @@
                 //init('<?php echo $_POST["username"]?>', '<?php echo $_POST["password"]?>');
             </script>
         </div>
+		
+		<div id="gui"></div>
+		
         <div id="footer" align="center">
         </div>
-		
-		<div class="login">
-			<form action="whatever" method="post" id="formLogin">
-				<div class="label">Username</div>
-				<div><input type="text" name="username"/></div>
-				<div class="label">Password</div>
-				<div><input type="password" name="password"/></div>
-				<div id="login" style="text-align:center;overflow:hidden;padding:10px;"></div>
-			</form>
-        </div>
-	
-		</div>
     </body>
 </html>

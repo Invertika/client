@@ -56,3 +56,8 @@ body{
 width:640px;
 height:384px;
 }
+
+/* GUI */
+#gui {
+	{ text-align: center; }
+}

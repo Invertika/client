@@ -17,31 +17,40 @@ var jsApp = {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
         }
-		
-		var dialog = new DialogObject(10, 10, dialog, dialog[0].background.width - OFFSET_SIZE_TEXT_X, dialog[0].background.width - OFFSET_SIZE_TEXT_Y, OFFSET_DIALOG_X, OFFSET_DIALOG_Y, new me.Font("acmesa",20,"#880D0D", "center"), "enter", activateControls);
-		dialog.draw();
-		
-		var X=50;
-		var Y=50;
-		var dialog="Hallo Welt";
-		var widthText=10;
-		var heightText=10;
-		var offsetTextX=10;
-		var offsetTextY=10;
-		var font=new me.Font("Verdana", 14, "white");
-		var tagKey;
-		var callback;
-		var offsetAvatarX=10;
-		var offsetAvatarY=10;
-		
-		dialog = new DialogObject(X, Y, dialog, widthText, heightText,
-		offsetTextX, offsetTextY, font, tagKey, callback, offsetAvatarX,
-		offsetAvatarY); 
-		
-		dialog.draw();
+
+		//make nice things
 	}
 	
 }
+
+//Uki
+
+// controlls description
+function views() {
+    return [
+        { view: 'TextField',rect: '400 10 100 24', anchors: 'right top', value: "", placeholder: 'Username' },
+        { view: 'PasswordTextField',rect: '510 10 100 24', anchors: 'right top', value: "", placeholder: 'Password' },
+        { view: 'Button', rect: '620 10 200 24', anchors: 'right top', text: 'Login'},
+    ];
+}
+
+// page layout
+uki(
+    { view: 'Box', rect: '0 200 1000 400', minSize: '980 0', anchors: 'top left right width', childViews: [
+        { view: 'Box', background: 'theme(panel)', rect: '0 0 1000 50', // controlls on panel background
+            anchors: 'top left right width', childViews: views() },
+    ]}
+).attachTo( document.getElementById('gui'), '1000 300' );
+
+// Bind alert to all buttons
+uki('Button').bind('click', function() {
+    alert(uki('TextField').attr('value'));
+});
+
+// Make label work as labels in browser
+uki('Label').click(function() {
+   if (this.prevView().checked) this.prevView().checked(!this.prevView().checked()).focus();
+});
 
 //Debug
 function debug()
