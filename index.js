@@ -56,8 +56,18 @@ uki('Label').click(function() {
 //Debug
 function debug()
 {
-	accountServer=new AccountServerConnection(ip, 9601);
-	accountServer.login("florian", "geheim");
+	//accountServer=new AccountServerConnection(ip, 9601);
+	//accountServer.login("florian", "geheim");
+	
+	var registerMsg=new MessageOut(Protocol.PAMSG_REGISTER);
+	registerMsg.addValue(PROTOCOL_VERSION); //Client Version
+	registerMsg.addValue(username);
+	registerMsg.addValue(sha256_digest(username + password)); // Use a hashed password for privacy reasons
+	registerMsg.addValue(email);
+	registerMsg.addValue(captchaResponse);
+	
+	var blob=registerMsg.getBinary();
+	alert(blob);
 	
 	//login("seeseekey", "geheim");
 	//login("schnee", "geheim");
