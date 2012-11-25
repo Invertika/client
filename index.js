@@ -44,6 +44,7 @@ uki(
 
 // Bind alert to all buttons
 uki('Button').bind('click', function() {
+	accountServer.login("florian", "geheim");
     alert(uki('TextField').attr('value'));
 });
 
@@ -56,7 +57,7 @@ uki('Label').click(function() {
 function debug()
 {
 	accountServer=new AccountServerConnection(ip, 9601);
-	//accountServer.login("florian", "geheim");
+	accountServer.login("florian", "geheim");
 	
 	//login("seeseekey", "geheim");
 	//login("schnee", "geheim");

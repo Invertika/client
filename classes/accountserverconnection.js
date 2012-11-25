@@ -56,7 +56,7 @@ var AccountServerConnection = new Class({
 				
 					var charSlots = parseInt(responseMessage.getPart(3));
 					
-					//Event feuern damit der CLient entscheiden kann
+					//Event feuern damit der Client entscheiden kann
 					this.fireEvent('charSelectNeeded');
 				}
 				else
@@ -109,11 +109,14 @@ var AccountServerConnection = new Class({
 		this.password=password;
 
 		// when the connection is established, this method is called
+		//alert(this.socket);
+		
 		this.socket.onopen = function () {
-			this.socket.send(loginMsg.getString());
+			//this ist in diesem Block das Websocket selbst
+			this.send(loginMsg.getString());
 		};
 	
-		// when data is comming from the server, this metod is called
+		// when data is comming from the server, this method is called
 		this.socket.onmessage = this.onMessage;
 	},
 	
@@ -131,7 +134,8 @@ var AccountServerConnection = new Class({
 	
 		// when the connection is established, this method is called
 		this.socket.onopen = function () {
-			this.socket.send(registerMsg.getString());
+			//this ist in diesem Block das Websocket selbst
+			this.send(registerMsg.getString());
 		};
 	
 		// when data is comming from the server, this metod is called
