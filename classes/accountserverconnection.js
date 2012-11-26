@@ -103,7 +103,7 @@ var AccountServerConnection = new Class({
 	
 		//Login Paket zusammenbauen
 		var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
-		loginMsg.addValue(username);
+		loginMsg.addValueAsString(username);
 	
 		this.username=username;
 		this.password=password;
@@ -113,7 +113,7 @@ var AccountServerConnection = new Class({
 		
 		this.socket.onopen = function () {
 			//this ist in diesem Block das Websocket selbst
-			this.send(loginMsg.getString());
+			this.send(loginMsg.getBinary());
 		};
 	
 		// when data is comming from the server, this method is called
