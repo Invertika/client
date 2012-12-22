@@ -14,11 +14,7 @@ var MessageOut = new Class({
 		this.dataView=new DataView(this.data);
 		
 		//ID schreiben
-		//alert(length);
 		this.addValueAsInt16(this.id);
-		//this.dataView.setInt16(length, this.id);
-		//length+=2;
-		//alert(length);
     },
 	
 	//Methoden

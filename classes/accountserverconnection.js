@@ -108,9 +108,7 @@ var AccountServerConnection = new Class({
 		this.username=username;
 		this.password=password;
 
-		// when the connection is established, this method is called
-		//alert(this.socket);
-		
+		// when the connection is established, this method is called		
 		this.socket.onopen = function () {
 			//this ist in diesem Block das Websocket selbst
 			this.send(loginMsg.getBinary());
@@ -171,5 +169,4 @@ var AccountServerConnection = new Class({
 				
 		this.socket.send(msg.getString());
 	}
-	
 });

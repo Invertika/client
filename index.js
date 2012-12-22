@@ -20,7 +20,6 @@ var jsApp = {
 
 		//make nice things
 	}
-	
 }
 
 //Uki
@@ -58,16 +57,4 @@ function debug()
 {
 	accountServer=new AccountServerConnection(ip, 9601);
 	accountServer.login("a", "XXXXXX");
-	
-	//var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
-	//loginMsg.addValueAsString("seeseekey");
-	
-	//var blob=loginMsg.getBinary();
-	//alert(blob);
-	
-	//login("seeseekey", "geheim");
-	//login("schnee", "geheim");
-	//login("florian", "geheim");
-
-	//register("florian", "geheim", "sees.eekey@gmail.com", "IGNORE");
 }
