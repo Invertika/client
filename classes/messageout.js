@@ -25,7 +25,7 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		this.dataView.setInt8(length, value);
+		this.dataView.setInt8(length, value, true);
 		length+=1;
     },
 	
@@ -36,7 +36,7 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		this.dataView.setInt16(length, value);
+		this.dataView.setInt16(length, value, true);
 		length+=2;
     },
 	
@@ -51,7 +51,7 @@ var MessageOut = new Class({
 		var tmp=Utf8Utils.encode(value);
 		
 		//Länge setzen (in Zeichen)
-		this.addValueAsInt16(tmp.length);
+		this.addValueAsInt16(tmp.length, true);
 		
 		//In Arraybuffer schreiben
 		var b = new Uint8Array(this.data);
