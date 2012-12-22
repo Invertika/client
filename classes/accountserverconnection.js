@@ -57,7 +57,7 @@ var AccountServerConnection = new Class({
 					var charSlots = responseMessage.getInt8();
 					
 					//Event feuern damit der Client entscheiden kann
-					window.accountServer.fireEvent('charSelectNeeded');
+					window.accountServer.fireEvent('charSelectionNeeded');
 				}
 				else
 				{
