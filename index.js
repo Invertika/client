@@ -56,5 +56,5 @@ uki('Label').click(function() {
 function debug()
 {
 	accountServer=new AccountServerConnection(ip, 9601);
-	accountServer.login("a", "XXXXXX");
+	accountServer.login("seeseekey", "geheim");
 }

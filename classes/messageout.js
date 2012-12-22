@@ -47,11 +47,11 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		//Länge setzen (in Zeichen)
-		this.addValueAsInt16(value.length);
-		
 		//String umwandeln
 		var tmp=Utf8Utils.encode(value);
+		
+		//Länge setzen (in Zeichen)
+		this.addValueAsInt16(tmp.length);
 		
 		//In Arraybuffer schreiben
 		var b = new Uint8Array(this.data);
