@@ -47,17 +47,17 @@ var AccountServerConnection = new Class({
 			}
 			case Protocol.APMSG_LOGIN_RESPONSE:
 			{
-				var errMsg=responseMessage.getPart(0);
+				var errMsg=responseMessage.getInt8();
 			
 				if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
 				{
-					var updateHost = responseMessage.getPart(1);
-					var clientDataUrl = responseMessage.getPart(2);
+					var updateHost = responseMessage.getString();
+					var clientDataUrl = responseMessage.getString();
 				
-					var charSlots = parseInt(responseMessage.getPart(3));
+					var charSlots = responseMessage.getInt8();
 					
 					//Event feuern damit der Client entscheiden kann
-					this.fireEvent('charSelectNeeded');
+					window.accountServer.fireEvent('charSelectNeeded');
 				}
 				else
 				{
