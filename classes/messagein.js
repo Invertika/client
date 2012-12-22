@@ -30,7 +30,17 @@ var MessageIn = new Class({
 		var lengthOfString=this.getInt16();
 		
 		//String umwandeln
-		var ret=Utf8Utils.decode(this.data.slice(position, lengthOfString));
+		var bytesOfString=this.data.slice(this.position, lengthOfString);
+		
+		//Arraybuffer in normales JavaScript Array konvertieren
+		var array=new Array();
+
+		for(var i = 0; i < lengthOfString; i++){
+		    array[i] = this.dataView.getUint8(this.position+i);
+		}
+		
+		//Array dekodieren
+		var ret=Utf8Utils.decode(array);
 		
 		//Position aktualisieren
 		this.position+=lengthOfString;
