@@ -6,15 +6,23 @@ var MessageIn = new Class({
 
 	//Konstruktor
 	initialize: function(message) {
-        this.data=message;
+        this.data=new ArrayBuffer(message.length);;
+		
+		//In Arraybuffer schreiben
+		var b = new Uint8Array(this.data);
+		for(var i = 0; i < message.length; i++){
+		    b[i] = message.charCodeAt(i);
+		}
+		
 		this.dataView=new DataView(this.data);
 		this.id=this.getInt16();
     },
 	
 	//Methoden	
     getInt16: function() {				
-		this.dataView.getInt16(position, true);
-		position+=2;
+		var ret=this.dataView.getInt16(this.position, true);
+		this.position+=2;
+		return ret;
     },
 	
     getString: function() {		
@@ -25,7 +33,7 @@ var MessageIn = new Class({
 		var ret=Utf8Utils.decode(this.data.slice(position, lengthOfString));
 		
 		//Position aktualisieren
-		length+=lengthOfString;
+		this.position+=lengthOfString;
 		
 		return ret;
     }

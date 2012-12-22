@@ -33,7 +33,7 @@ var AccountServerConnection = new Class({
 			}
 			case Protocol.APMSG_LOGIN_RNDTRGR_RESPONSE: //Login Response
 			{
-				var token=responseMessage.getPart(0);
+				var token=responseMessage.getString();
 			
 				//Login Kommando zusammenbauen
 				var msg=new MessageOut(Protocol.PAMSG_LOGIN);
