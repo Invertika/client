@@ -56,14 +56,14 @@ uki('Label').click(function() {
 //Debug
 function debug()
 {
-	//accountServer=new AccountServerConnection(ip, 9601);
-	//accountServer.login("florian", "geheim");
+	accountServer=new AccountServerConnection(ip, 9601);
+	accountServer.login("a", "XXXXXX");
 	
-	var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
-	loginMsg.addValueAsString("seeseekey");
+	//var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
+	//loginMsg.addValueAsString("seeseekey");
 	
-	var blob=loginMsg.getBinary();
-	alert(blob);
+	//var blob=loginMsg.getBinary();
+	//alert(blob);
 	
 	//login("seeseekey", "geheim");
 	//login("schnee", "geheim");

@@ -8,15 +8,17 @@ var MessageOut = new Class({
 	
 	//Konstruktor
 	initialize: function(id) {
-        this.id = id;		
+        this.id=id;		
 		
 		this.data=new ArrayBuffer(this.maxLength);
 		this.dataView=new DataView(this.data);
 		
 		//ID schreiben
+		//alert(length);
 		this.addValueAsInt16(this.id);
 		//this.dataView.setInt16(length, this.id);
 		//length+=2;
+		//alert(length);
     },
 	
 	//Methoden
@@ -51,20 +53,23 @@ var MessageOut = new Class({
 		
 		//Länge setzen (in Zeichen)
 		this.addValueAsInt16(value.length);
-		//this.dataView.setInt16(length, value);
-		//length+=2;
 		
-	    //var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-	    var bufView = new Uint16Array(this.data);
-   
-	    for (var i=0; i<value.length; i++) 
-		{
-	      bufView[length+i] = value.charCodeAt(i);
-	    }
+		//String umwandeln
+		var tmp=Utf8Utils.encode(value);
+		
+		//In Arraybuffer schreiben
+		var b = new Uint8Array(this.data);
+		for(var i = 0; i < tmp.length; i++){
+		    b[length+i] = tmp[i];
+		}
+		
+		//Länge aktualisieren
+		length+=tmp.length;
     },
 	
 	getBinary: function() {
 		//Gibt das Datenarray zurück und schneidet es vorher auf die richtige Größe
-		return this.data.slice(0, length-1);
+		//alert(length);
+		return this.data.slice(0, length);
 	}
 });
