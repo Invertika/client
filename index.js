@@ -70,7 +70,7 @@ function onCharSelectionNeeded(object)
 	
 	button.bind('click', function() {
     	//alert("Character One is selected.");
-		accountServer.selectCharacter(1);
+		accountServer.selectCharacter(0);
 	});
 }
 

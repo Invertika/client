@@ -68,15 +68,15 @@ var AccountServerConnection = new Class({
 			}
 			case Protocol.APMSG_CHAR_SELECT_RESPONSE:
 			{
-				var errMsg=responseMessage.getPart(0);
+				var errMsg=responseMessage.getInt8();
 			
 				if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
 				{
-					var netToken = responseMessage.getPart(1);
-					var gameAdress = responseMessage.getPart(2);
-					var gamePort = parseInt(responseMessage.getPart(2));
-					var chatAdress = responseMessage.getPart(3);
-					var chatPort = parseInt(responseMessage.getPart(4));
+					var netToken=responseMessage.getString();
+					var gameAdress=responseMessage.getString();
+					var gamePort=responseMessage.getInt16(2);
+					var chatAdress=responseMessage.getString();
+					var chatPort=responseMessage.getInt16();
 				
 					//connectGameServer=true;
 					//connectChatServer=true;
