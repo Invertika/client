@@ -26,7 +26,7 @@ var AccountServerConnection = new Class({
 		{
 			case Protocol.APMSG_REGISTER_RESPONSE:
 			{
-				var registerReturnCode=responseMessage.getPart(0);
+				var registerReturnCode=responseMessage.getInt8();
 				alert("Return code from register is: " + registerReturnCode);
 				
 				break;
@@ -41,7 +41,7 @@ var AccountServerConnection = new Class({
 				msg.addValueAsString(window.accountServer.username);
 				msg.addValueAsString(sha256_digest(sha256_digest(sha256_digest(window.accountServer.username + window.accountServer.password))+token));
 							
-				this.socket.send(msg.getString());
+				this.send(msg.getBinary());
 			
 				break;
 			}

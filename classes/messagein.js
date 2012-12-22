@@ -19,6 +19,12 @@ var MessageIn = new Class({
     },
 	
 	//Methoden	
+    getInt8: function() {				
+		var ret=this.dataView.getInt8(this.position, true);
+		this.position+=1;
+		return ret;
+    },
+	
     getInt16: function() {				
 		var ret=this.dataView.getInt16(this.position, true);
 		this.position+=2;
