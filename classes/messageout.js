@@ -7,7 +7,7 @@ var MessageOut = new Class({
 	
 	//Konstruktor
 	initialize: function(id) {
-        this.id=id;		
+        this.id=id;
 		
 		this.data=new ArrayBuffer(this.maxLength);
 		this.dataView=new DataView(this.data);
@@ -24,8 +24,8 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		this.dataView.setInt8(length, value, true);
-		length+=1;
+		this.dataView.setInt8(this.length, value, true);
+		this.length+=1;
     },
 	
     addValueAsInt16: function(value) {		
@@ -35,8 +35,8 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		this.dataView.setInt16(length, value, true);
-		length+=2;
+		this.dataView.setInt16(this.length, value, true);
+		this.length+=2;
     },
 	
     addValueAsInt32: function(value) {		
@@ -46,8 +46,8 @@ var MessageOut = new Class({
 			return;
 		}
 		
-		this.dataView.setInt32(length, value, true);
-		length+=4;
+		this.dataView.setInt32(this.length, value, true);
+		this.length+=4;
     },
 	
     addValueAsString: function(value) {		
@@ -66,16 +66,15 @@ var MessageOut = new Class({
 		//In Arraybuffer schreiben
 		var b = new Uint8Array(this.data);
 		for(var i = 0; i < tmp.length; i++){
-		    b[length+i] = tmp[i];
+		    b[this.length+i] = tmp[i];
 		}
 		
 		//Länge aktualisieren
-		length+=tmp.length;
+		this.length+=tmp.length;
     },
 	
 	getBinary: function() {
 		//Gibt das Datenarray zurück und schneidet es vorher auf die richtige Größe
-		//alert(length);
-		return this.data.slice(0, length);
+		return this.data.slice(0, this.length);
 	}
 });
