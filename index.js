@@ -43,8 +43,9 @@ uki(
 
 // Bind alert to all buttons
 uki('Button').bind('click', function() {
-	accountServer.login("florian", "geheim");
-    alert(uki('TextField').attr('value'));
+	//accountServer.login("seeseekey", "geheim");
+	onCharSelectionNeeded(null);
+    //alert(uki('TextField').attr('value'));
 });
 
 // Make label work as labels in browser
@@ -61,6 +62,15 @@ function debug()
 }
 
 function onCharSelectionNeeded(object)
-{
-	alert("Select a char you must be!");
+{	
+	var button=uki({
+	    view: 'Button',
+	    rect: '200 40 200 80',
+	    text: 'Character One'
+	}).attachTo( document.getElementById('gui'), '600 -500' );
+	
+	button.bind('click', function() {
+    	alert("Character One is selected.");
+	});
 }
+
