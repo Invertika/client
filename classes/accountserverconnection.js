@@ -161,12 +161,10 @@ var AccountServerConnection = new Class({
 	
 	/// mit dieser Funktion wird der Charakter ausgewählt
 	selectCharacter: function(charNumber)
-	{
-		//chooseCharacter();
-				
+	{				
 		var msg=new MessageOut(Protocol.PAMSG_CHAR_SELECT);
-		msg.addValue(charNumber);
+		msg.addValueAsInt8(charNumber);
 				
-		this.socket.send(msg.getString());
+		this.socket.send(msg.getBinary());
 	}
 });

@@ -44,7 +44,6 @@ uki(
 // Bind alert to all buttons
 uki('Button').bind('click', function() {
 	//accountServer.login("seeseekey", "geheim");
-	onCharSelectionNeeded(null);
     //alert(uki('TextField').attr('value'));
 });
 
@@ -70,7 +69,8 @@ function onCharSelectionNeeded(object)
 	}).attachTo( document.getElementById('gui'), '600 -500' );
 	
 	button.bind('click', function() {
-    	alert("Character One is selected.");
+    	//alert("Character One is selected.");
+		accountServer.selectCharacter(1);
 	});
 }
 
