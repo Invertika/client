@@ -39,6 +39,17 @@ var MessageOut = new Class({
 		length+=2;
     },
 	
+    addValueAsInt32: function(value) {		
+		if((this.length+4)>=this.maxLength)
+		{
+			log.error('Maximum byte count for MessageOut is reached.');
+			return;
+		}
+		
+		this.dataView.setInt32(length, value, true);
+		length+=4;
+    },
+	
     addValueAsString: function(value) {		
 		if((this.length+2)>=this.maxLength)
 		{

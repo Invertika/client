@@ -37,9 +37,9 @@ var AccountServerConnection = new Class({
 			
 				//Login Kommando zusammenbauen
 				var msg=new MessageOut(Protocol.PAMSG_LOGIN);
-				msg.addValue(PROTOCOL_VERSION); //Client Version
-				msg.addValue(username);
-				msg.addValue(sha256_digest(sha256_digest(sha256_digest(username + password))+token));
+				msg.addValueAsInt32(PROTOCOL_VERSION); //Client Version
+				msg.addValueAsString(username);
+				msg.addValueAsString(sha256_digest(sha256_digest(sha256_digest(username + password))+token));
 							
 				this.socket.send(msg.getString());
 			
