@@ -1,6 +1,5 @@
 var MessageOut = new Class({
 	id: 0,
-	parts: [],
 	data: null,
 	dataView: null,
 	length: 0,
