@@ -144,15 +144,15 @@ var AccountServerConnection = new Class({
 	{
 		//Kommando zusammenbauen (PAMSG_CHAR_CREATE)
 		var msg=new MessageOut(Protocol.PAMSG_CHAR_CREATE);
-		msg.addValue(name);
-		msg.addValue(hairStyle);
-		msg.addValue(hairColor);
-		msg.addValue(gender);
-		msg.addValue(slot);
+		msg.addValueAsString(name);
+		msg.addValueAsInt8(hairStyle);
+		msg.addValueAsInt8(hairColor);
+		msg.addValueAsInt8(gender);
+		msg.addValueAsInt8(slot);
 		
 		//Charakterwerte in Nachricht schreiben
 		stats.each(function(statValue){
-		  msg.addValue(statValue);
+		  msg.addValueAsInt16(statValue);
 		});
 
 		//Senden
