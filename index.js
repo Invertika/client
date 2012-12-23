@@ -72,11 +72,11 @@ function onCharSelectionNeeded(object)
 	
 	button.bind('click', function() {
     	//alert("Character One is selected.");
-		//accountServer.selectCharacter(0);
+		//accountServer.selectCharacter(1);
 		
 		//Erzeuge Character
 		var stats = [5, 5, 6];
-		accountServer.createCharacter("Arbiter", 0, 0, 0, 0, stats);
+		accountServer.createCharacter("Arbiter", 1, 0, 0, 0, stats);
 	});
 }
 
