@@ -59,9 +59,7 @@ function debug()
     accountServer.addEvent('charSelectionNeeded', onCharSelectionNeeded);
 	accountServer.login("seeseekey", "geheim");
 	
-	//Erzeuge Character
-	var stats = [5, 5, 6];
-	accountServer.createCharacter("Arbiter", 0, 0, 0, 0, stats);
+
 }
 
 function onCharSelectionNeeded(object)
@@ -74,7 +72,11 @@ function onCharSelectionNeeded(object)
 	
 	button.bind('click', function() {
     	//alert("Character One is selected.");
-		accountServer.selectCharacter(0);
+		//accountServer.selectCharacter(0);
+		
+		//Erzeuge Character
+		var stats = [5, 5, 6];
+		accountServer.createCharacter("Arbiter", 0, 0, 0, 0, stats);
 	});
 }
 

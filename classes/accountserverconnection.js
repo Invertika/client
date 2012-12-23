@@ -156,7 +156,7 @@ var AccountServerConnection = new Class({
 		});
 
 		//Senden
-	    this.socket.send(msg.getString());
+	    this.socket.send(msg.getBinary());
 	},
 	
 	/// mit dieser Funktion wird der Charakter ausgewählt
