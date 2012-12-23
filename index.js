@@ -58,6 +58,10 @@ function debug()
 	accountServer=new AccountServerConnection(ip, 9601);
     accountServer.addEvent('charSelectionNeeded', onCharSelectionNeeded);
 	accountServer.login("seeseekey", "geheim");
+	
+	//Erzeuge Character
+	var stats = [5, 5, 6];
+	accountServer.createCharacter("Arbiter", 0, 0, 0, 0, stats);
 }
 
 function onCharSelectionNeeded(object)
