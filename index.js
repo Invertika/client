@@ -76,7 +76,7 @@ function onCharSelectionNeeded(object)
 		
 		//Erzeuge Character
 		var stats = [5, 5, 6];
-		accountServer.createCharacter("Arbiter", 1, 0, 0, 0, stats);
+		accountServer.createCharacter("Arbiter 902", 1, 0, 0, 0, stats);
 	});
 }
 
