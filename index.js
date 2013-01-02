@@ -58,8 +58,6 @@ function debug()
 	accountServer=new AccountServerConnection(ip, 9601);
     accountServer.addEvent('charSelectionNeeded', onCharSelectionNeeded);
 	accountServer.login("seeseekey", "geheim");
-	
-
 }
 
 function onCharSelectionNeeded(object)

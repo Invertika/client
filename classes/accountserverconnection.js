@@ -95,7 +95,7 @@ var AccountServerConnection = new Class({
 			}
 			default:
 			{
-				log.warn(sprintf("Unknown message with id %s", responseMessage.id));
+				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(responseMessage.id)));
 				break;
 			}
 		}
