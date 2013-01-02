@@ -88,6 +88,11 @@ var AccountServerConnection = new Class({
 			
 				break;
 			}
+			case Protocol.APMSG_CHAR_INFO:
+			{
+				log.warn(sprintf("Unimplemented command: %s", "APMSG_CHAR_INFO"));
+				break;
+			}
 			default:
 			{
 				log.warn(sprintf("Unknown message with id %s", responseMessage.id));
