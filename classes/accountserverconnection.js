@@ -11,10 +11,10 @@ var AccountServerConnection = new Class({
 	initialize: function(ip, port) {
         this.ip = ip;
 		
-		if(port) this.port=port;
-		else this.port=9601;
+        if(port) this.port=port;
+        else this.port=9601;
 		
-		this.connectionString=sprintf("ws://%s:%s", ip, port)
+        this.connectionString=sprintf("ws://%s:%s", ip, port)
     },
 		
 	//MessageHandler
