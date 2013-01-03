@@ -21,6 +21,7 @@ var AccountServerConnection = new Class({
 	onMessage: function(message) 
 	{
 		var responseMessage=new MessageIn(message.data);
+		log.debug(sprintf("Recieve message: %s", getEnumFromInteger(Protocol, responseMessage.id)));
 
 		switch(responseMessage.id)
 		{
@@ -95,7 +96,7 @@ var AccountServerConnection = new Class({
 			}
 			default:
 			{
-				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(responseMessage.id)));
+				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(Protocol, responseMessage.id)));
 				break;
 			}
 		}
@@ -138,7 +139,7 @@ var AccountServerConnection = new Class({
 		// when the connection is established, this method is called
 		this.socket.onopen = function () {
 			//this ist in diesem Block das Websocket selbst
-			this.send(registerMsg.getString());
+			registerMsg.send(this);
 		};
 	
 		// when data is comming from the server, this metod is called
@@ -161,7 +162,7 @@ var AccountServerConnection = new Class({
 		});
 
 		//Senden
-	    this.socket.send(msg.getBinary());
+		msg.send(this.socket);
 	},
 	
 	/// mit dieser Funktion wird der Charakter ausgewählt
@@ -170,6 +171,6 @@ var AccountServerConnection = new Class({
 		var msg=new MessageOut(Protocol.PAMSG_CHAR_SELECT);
 		msg.addValueAsInt8(charNumber);
 				
-		this.socket.send(msg.getBinary());
+		msg.send(this.socket);
 	}
 });

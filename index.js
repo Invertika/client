@@ -43,7 +43,6 @@ uki(
 
 // Bind alert to all buttons
 uki('Button').bind('click', function() {
-	//accountServer.login("seeseekey", "geheim");
     //alert(uki('TextField').attr('value'));
 });
 
