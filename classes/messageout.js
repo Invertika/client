@@ -6,7 +6,8 @@ var MessageOut = new Class({
 	maxLength: 1000,
 	
 	//Konstruktor
-	initialize: function(id) {
+	initialize: function(id) 
+	{
         this.id=id;
 		
 		this.data=new ArrayBuffer(this.maxLength);
@@ -17,7 +18,8 @@ var MessageOut = new Class({
     },
 	
 	//Methoden
-    addValueAsInt8: function(value) {		
+    addValueAsInt8: function(value) 
+	{		
 		if((this.length+1)>=this.maxLength)
 		{
 			log.error('Maximum byte count for MessageOut is reached.');
@@ -28,7 +30,8 @@ var MessageOut = new Class({
 		this.length+=1;
     },
 	
-    addValueAsInt16: function(value) {		
+    addValueAsInt16: function(value) 
+	{		
 		if((this.length+2)>=this.maxLength)
 		{
 			log.error('Maximum byte count for MessageOut is reached.');
@@ -39,7 +42,8 @@ var MessageOut = new Class({
 		this.length+=2;
     },
 	
-    addValueAsInt32: function(value) {		
+    addValueAsInt32: function(value) 
+	{		
 		if((this.length+4)>=this.maxLength)
 		{
 			log.error('Maximum byte count for MessageOut is reached.');
@@ -50,7 +54,8 @@ var MessageOut = new Class({
 		this.length+=4;
     },
 	
-    addValueAsString: function(value) {		
+    addValueAsString: function(value) 
+	{		
 		if((this.length+2)>=this.maxLength)
 		{
 			log.error('Maximum byte count for MessageOut is reached.');
@@ -73,7 +78,14 @@ var MessageOut = new Class({
 		this.length+=tmp.length;
     },
 	
-	getBinary: function() {
+	send: function(socket)
+	{
+		log.warn(sprintf("Send message: %s", getEnumFromInteger(this.id)));
+		socket.send(this.getBinary());
+	},
+	
+	getBinary: function() 
+	{
 		//Gibt das Datenarray zurück und schneidet es vorher auf die richtige Größe
 		return this.data.slice(0, this.length);
 	}

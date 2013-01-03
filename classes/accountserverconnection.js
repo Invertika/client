@@ -41,7 +41,7 @@ var AccountServerConnection = new Class({
 				msg.addValueAsString(window.accountServer.username);
 				msg.addValueAsString(sha256_digest(sha256_digest(sha256_digest(window.accountServer.username + window.accountServer.password))+token));
 							
-				this.send(msg.getBinary());
+				msg.send(this);
 			
 				break;
 			}
@@ -116,7 +116,7 @@ var AccountServerConnection = new Class({
 		// when the connection is established, this method is called		
 		this.socket.onopen = function () {
 			//this ist in diesem Block das Websocket selbst
-			this.send(loginMsg.getBinary());
+			loginMsg.send(this);
 		};
 	
 		// when data is comming from the server, this method is called
