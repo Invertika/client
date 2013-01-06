@@ -60,16 +60,14 @@ function debug()
 	
     accountServer.addEvent('charSelectionNeeded', onCharSelectionNeeded);
 	accountServer.addEvent('readyForGameAndChatServerConnect', onReadyForGameAndChatServerConnect)
-	
-	
+
 	accountServer.login("seeseekey", "geheim");
 	
 	GameServerConnection
 }
 
-function onReadyForGameAndChatServerConnect(netToken, gameAdress)
+function onReadyForGameAndChatServerConnect(token, gameAdress)
 {	
-	alert(netToken);
 	alert(gameAdress);
 }
 
