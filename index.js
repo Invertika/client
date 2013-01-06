@@ -76,4 +76,3 @@ function onCharSelectionNeeded(object)
 		//accountServer.createCharacter("Arbiter 902", 1, 0, 0, 0, stats);
 	});
 }
-

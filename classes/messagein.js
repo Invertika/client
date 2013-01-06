@@ -6,14 +6,7 @@ var MessageIn = new Class({
 
 	//Konstruktor
 	initialize: function(message) {
-        this.data=new ArrayBuffer(message.length);;
-		
-		//In Arraybuffer schreiben
-		var b = new Uint8Array(this.data);
-		for(var i = 0; i < message.length; i++){
-		    b[i] = message.charCodeAt(i);
-		}
-		
+		this.data=message;
 		this.dataView=new DataView(this.data);
 		this.id=this.getInt16();
     },

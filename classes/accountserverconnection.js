@@ -68,7 +68,7 @@ var AccountServerConnection = new Class({
 				break;
 			}
 			case Protocol.APMSG_CHAR_SELECT_RESPONSE:
-			{
+			{	
 				var errMsg=responseMessage.getInt8();
 			
 				if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
@@ -96,7 +96,7 @@ var AccountServerConnection = new Class({
 			}
 			default:
 			{
-				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(Protocol, responseMessage.id)));
+				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(Protocol, Protocol, responseMessage.id)));
 				break;
 			}
 		}
@@ -106,6 +106,7 @@ var AccountServerConnection = new Class({
 	login: function(username, password)
 	{
 		this.socket = new WebSocket(this.connectionString);
+		this.socket.binaryType = 'arraybuffer';
 	
 		//Login Paket zusammenbauen
 		var loginMsg=new MessageOut(Protocol.PAMSG_LOGIN_RNDTRGR);
@@ -127,6 +128,7 @@ var AccountServerConnection = new Class({
 	register: function(username, password, email, captchaResponse)
 	{	
 		this.socket = new WebSocket(this.connectionString);
+		this.socket.binaryType = 'arraybuffer';
 
 		//Register Kommando zusammenbauen
 		var registerMsg=new MessageOut(Protocol.PAMSG_REGISTER);
