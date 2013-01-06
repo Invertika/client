@@ -21,7 +21,7 @@ var AccountServerConnection = new Class({
 	onMessage: function(message) 
 	{
 		var responseMessage=new MessageIn(message.data);
-		log.debug(sprintf("Recieve message: %s", getEnumFromInteger(Protocol, responseMessage.id)));
+		log.debug(sprintf("Recieve message from account server: %s", getEnumFromInteger(Protocol, responseMessage.id)));
 
 		switch(responseMessage.id)
 		{
@@ -96,7 +96,7 @@ var AccountServerConnection = new Class({
 			}
 			default:
 			{
-				log.warn(sprintf("Unknown message: %s", getEnumFromInteger(Protocol, Protocol, responseMessage.id)));
+				log.warn(sprintf("Unknown message from account server: %s", getEnumFromInteger(Protocol, Protocol, responseMessage.id)));
 				break;
 			}
 		}
