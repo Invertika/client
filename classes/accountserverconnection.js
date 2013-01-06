@@ -79,6 +79,9 @@ var AccountServerConnection = new Class({
 					var chatAdress=responseMessage.getString();
 					var chatPort=responseMessage.getInt16();
 				
+					//Event feuern damit der Client die Verbindung herstellen kann
+					window.accountServer.fireEvent('readyForGameAndChatServerConnect', netToken, gameAdress);
+					
 					//connectGameServer=true;
 					//connectChatServer=true;
 				}

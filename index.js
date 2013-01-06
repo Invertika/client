@@ -8,6 +8,7 @@
 // Variablen
 var ip = "127.0.0.1";
 var accountServer;
+var gameServer;
 
 //jsApp
 var jsApp = {
@@ -54,9 +55,22 @@ uki('Label').click(function() {
 //Debug
 function debug()
 {
+	//AccountServer initialisieren
 	accountServer=new AccountServerConnection(ip, 9601);
+	
     accountServer.addEvent('charSelectionNeeded', onCharSelectionNeeded);
+	accountServer.addEvent('readyForGameAndChatServerConnect', onReadyForGameAndChatServerConnect)
+	
+	
 	accountServer.login("seeseekey", "geheim");
+	
+	GameServerConnection
+}
+
+function onReadyForGameAndChatServerConnect(netToken, gameAdress)
+{	
+	alert(netToken);
+	alert(gameAdress);
 }
 
 function onCharSelectionNeeded(object)

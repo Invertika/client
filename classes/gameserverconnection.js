@@ -1,4 +1,4 @@
-var AccountServerConnection = new Class({
+var GameServerConnection = new Class({
 	Implements: [Events],
 	
 	connectionString: "",
