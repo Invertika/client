@@ -80,7 +80,7 @@ var MessageOut = new Class({
 	
 	send: function(socket)
 	{
-		log.debug(sprintf("Send message: %s", getEnumFromInteger(Protocol, this.id)));
+		log.debug(sprintf("Send message %s to %s", getEnumFromInteger(Protocol, this.id), socket.url));
 		socket.send(this.getBinary());
 	},
 	
