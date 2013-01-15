@@ -6,6 +6,7 @@ var GameServerConnection = new Class({
 	socket: null,
 	username: "",
 	password: "",
+	connected: false,
 	
 	//Konstruktor
 	initialize: function(ip, port) {
@@ -25,14 +26,27 @@ var GameServerConnection = new Class({
 
 		switch(responseMessage.id)
 		{
-			//case Protocol.APMSG_CHAR_INFO:
-			//{
-			//	log.warn(sprintf("Unimplemented command: %s", "APMSG_CHAR_INFO"));
-			//	break;
-			//}
+			case Protocol.GPMSG_CONNECT_RESPONSE:
+			{
+				var errMsg=responseMessage.getInt8();
+			
+				if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
+				{
+					log.debug("Login on game server successful");
+					this.connected=true;
+					//TODO Action
+				}
+				else
+				{
+					//TODO entsprechene Fehlermeldung ausgeben
+					log.warn(sprintf("Errorcode from game server (GPMSG_CONNECT_RESPONSE): %s", getEnumFromInteger(ErrorMessage, errMsg)));
+				}
+				
+				break;
+			}
 			default:
 			{
-				log.warn(sprintf("Unknown message from game server: %s", getEnumFromInteger(Protocol, Protocol, responseMessage.id)));
+				log.warn(sprintf("Unknown message from game server: %s", getEnumFromInteger(Protocol, responseMessage.id)));
 				break;
 			}
 		}
