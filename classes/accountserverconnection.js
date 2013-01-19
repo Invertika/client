@@ -87,6 +87,7 @@ var AccountServerConnection = new Class({
 				}
 				else
 				{
+					log.warn(sprintf("Errorcode from account server (APMSG_CHAR_SELECT_RESPONSE): %s", getEnumFromInteger(ErrorMessage, errMsg)));
 					//Problem aufgetreten
 				}
 			
