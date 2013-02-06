@@ -13,7 +13,7 @@ var gameServer;
 //jsApp
 var jsApp = {
     onload: function() {
-        if (!me.video.init('jsapp', 640, 384, false, 1.0))
+        if (!me.video.init('jsapp', 640, 384, false, 'auto', false))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
@@ -67,7 +67,22 @@ function debug()
 function onReadyForGameAndChatServerConnect(netToken, gameAdress, gamePort, chatAdress, chatPort)
 {	
 	gameServer=new GameServerConnection(gameAdress, gamePort);
+	
+	gameServer.addEvent('gameServerLoginComplete', onGameServerLoginComplete);
+	gameServer.addEvent('gameServerMapChange', onGameServerMapChange);
+	
 	gameServer.login(netToken);
+}
+
+function onGameServerLoginComplete()
+{	
+	log.debug("Event onGameServerLoginComplete called");
+	jsApp.onload(); //melonJS aktivieren
+}
+
+function onGameServerMapChange(mapName, posX, posY)
+{	
+	log.debug("Event onGameServerMapChange called");
 }
 
 function onCharSelectionNeeded(object)

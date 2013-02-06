@@ -33,6 +33,8 @@ var GameServerConnection = new Class({
 				if(errMsg==ErrorMessage.ERRMSG_OK) //alles okay
 				{
 					log.debug("Login on game server successful");
+					window.gameServer.fireEvent('gameServerLoginComplete');
+					
 					this.connected=true;
 					//TODO Action
 				}
@@ -49,6 +51,9 @@ var GameServerConnection = new Class({
 				var mapName=responseMessage.getString();
 				var posX=responseMessage.getInt16();
 				var posY=responseMessage.getInt16();
+			
+				//Event feuern damit der Client entscheiden kann
+				window.gameServer.fireEvent('gameServerMapChange', [mapName, posX, posY]);
 			
 				log.debug(sprintf("GPMSG_PLAYER_MAP_CHANGE recieved from game server with map name %s and position %s, %s", mapName, posX, posY));
 			
