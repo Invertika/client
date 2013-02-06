@@ -75,7 +75,7 @@ var AccountServerConnection = new Class({
 				{
 					var netToken=responseMessage.getString();
 					var gameAdress=responseMessage.getString();
-					var gamePort=responseMessage.getInt16(2);
+					var gamePort=responseMessage.getInt16();
 					var chatAdress=responseMessage.getString();
 					var chatPort=responseMessage.getInt16();
 				

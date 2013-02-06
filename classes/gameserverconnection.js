@@ -44,6 +44,16 @@ var GameServerConnection = new Class({
 				
 				break;
 			}
+			case Protocol.GPMSG_PLAYER_MAP_CHANGE:
+			{
+				var mapName=responseMessage.getString();
+				var posX=responseMessage.getInt16();
+				var posY=responseMessage.getInt16();
+			
+				log.debug(sprintf("GPMSG_PLAYER_MAP_CHANGE recieved from game server with map name %s and position %s, %s", mapName, posX, posY));
+			
+				break;
+			}
 			default:
 			{
 				log.warn(sprintf("Unknown message from game server: %s", getEnumFromInteger(Protocol, responseMessage.id)));
