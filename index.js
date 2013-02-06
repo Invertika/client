@@ -10,10 +10,25 @@ var ip = "127.0.0.1";
 var accountServer;
 var gameServer;
 
+function viewport()
+{
+	var e = window, a = 'inner';
+	
+	if ( !( 'innerWidth' in window ) )
+	{
+		a = 'client';
+		e = document.documentElement || document.body;
+	}
+	
+	return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+}
+
 //jsApp
 var jsApp = {
     onload: function() {
-        if (!me.video.init('jsapp', 640, 480, false, 'auto', false))
+		//
+        //if (!me.video.init('jsapp', viewport()["width"], viewport()["height"], false, 'auto', false))
+		if (!me.video.init('jsapp', 720, 450, false, 'auto', false))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
