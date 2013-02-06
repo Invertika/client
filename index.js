@@ -89,7 +89,7 @@ uki(
         { view: 'Box', background: 'theme(panel)', rect: '0 0 1000 50', // controlls on panel background
             anchors: 'top left right width', childViews: views() },
     ]}
-).attachTo( document.getElementById('gui'), '1000 300' );
+).attachTo( $('gui'), '1000 300' );
 
 // Bind alert to all buttons
 uki('Button').bind('click', function() {
