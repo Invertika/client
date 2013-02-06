@@ -13,14 +13,49 @@ var gameServer;
 //jsApp
 var jsApp = {
     onload: function() {
-        if (!me.video.init('jsapp', 640, 384, false, 'auto', false))
+        if (!me.video.init('jsapp', 640, 480, false, 'auto', false))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
         }
 
 		//make nice things
-	}
+		// begrenze auf 30 FPS
+		me.sys.fps = 30;
+		
+        // initialize the "audio"
+        me.audio.init("mp3,ogg");
+
+        // set all resources to be loaded
+        me.loader.onload = this.loaded.bind(this);
+
+        // set all resources to be loaded
+        me.loader.preload(g_resources);
+
+        // load everything & display a loading screen
+        me.state.change(me.state.LOADING);
+		
+		log.debug( 'leave onload (jsApp)');
+	},
+	
+    loaded: function() {
+        // set the "Play/Ingame" Screen Object
+        me.state.set(me.state.PLAY, new PlayScreen());
+
+        // add our player entity in the entity pool
+        //me.entityPool.add("mainPlayer", PlayerEntity);
+
+        // enable the keyboard
+        me.input.bindKey(me.input.KEY.LEFT,  "left");
+        me.input.bindKey(me.input.KEY.RIGHT, "right");
+        me.input.bindKey(me.input.KEY.UP,    "up");
+        me.input.bindKey(me.input.KEY.DOWN,  "down");
+
+        //me.debug.renderHitBox = true;
+
+        // start the game
+        me.state.change(me.state.PLAY);
+    }
 }
 
 //Uki
@@ -53,8 +88,31 @@ uki('Label').click(function() {
 });
 
 //Debug
+var g_resources= [
+    { name: "desert1",          type: "image", src: "data/desert1.png" },
+    { name: "desert",           type: "tmx",   src: "data/desert.tmx" },
+    { name: "player_male_base", type: "image", src: "data/player_male_base.png" },
+    { name: "fog",              type: "image", src: "data/fog.png" }
+];
+
+/* the in game stuff*/
+var PlayScreen = me.ScreenObject.extend({
+
+    onResetEvent: function() {
+        // stuff to reset on state change
+        me.levelDirector.loadLevel("desert");
+    },
+
+    onDestroyEvent: function() {
+    }
+
+});
+
 function debug()
 {
+	//jsApp.onload(); //melonJS aktivieren
+	return;
+	
 	//AccountServer initialisieren
 	accountServer=new AccountServerConnection(ip, 9601);
 	
@@ -63,6 +121,10 @@ function debug()
 
 	accountServer.login("seeseekey", "geheim");
 }
+
+window.onReady(function() {
+    jsApp.onload();
+});
 
 function onReadyForGameAndChatServerConnect(netToken, gameAdress, gamePort, chatAdress, chatPort)
 {	
