@@ -26,7 +26,6 @@ function viewport()
 //jsApp
 var jsApp = {
     onload: function() {
-		//
         //if (!me.video.init('jsapp', viewport()["width"], viewport()["height"], false, 'auto', false))
 		if (!me.video.init('jsapp', 720, 450, false, 'auto', false))
         {
@@ -148,6 +147,7 @@ function onGameServerLoginComplete()
 {	
 	log.debug("Event onGameServerLoginComplete called");
 	jsApp.onload(); //melonJS aktivieren
+	$('gui').hide('slow'); //GUI erst einmal ausblenden
 }
 
 function onGameServerMapChange(mapName, posX, posY)
