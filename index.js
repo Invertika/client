@@ -109,10 +109,7 @@ var PlayScreen = me.ScreenObject.extend({
 });
 
 function debug()
-{
-	//jsApp.onload(); //melonJS aktivieren
-	return;
-	
+{	
 	//AccountServer initialisieren
 	accountServer=new AccountServerConnection(ip, 9601);
 	
@@ -121,10 +118,6 @@ function debug()
 
 	accountServer.login("seeseekey", "geheim");
 }
-
-window.onReady(function() {
-    jsApp.onload();
-});
 
 function onReadyForGameAndChatServerConnect(netToken, gameAdress, gamePort, chatAdress, chatPort)
 {	
