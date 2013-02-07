@@ -27,7 +27,7 @@ function viewport()
 var jsApp = {
     onload: function() {
         //if (!me.video.init('jsapp', viewport()["width"], viewport()["height"], false, 'auto', false))
-		if (!me.video.init('jsapp', 720, 450, false, 'auto', false))
+		if (!me.video.init('jsapp', 720, 450, false, 'auto', true))
         {
             alert("Sorry but your browser does not support html 5 canvas.");
             return;
@@ -45,6 +45,9 @@ var jsApp = {
 
         // set all resources to be loaded
         me.loader.preload(g_resources);
+		
+		//plugins registrieren
+		me.plugin.register(debugPanel, "debug");
 
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
