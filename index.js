@@ -23,7 +23,7 @@ function viewport()
 	return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 }
 
-//jsApp
+//Application jsApp
 var jsApp = {
     onload: function() {
         //if (!me.video.init('jsapp', viewport()["width"], viewport()["height"], false, 'auto', false))
@@ -75,7 +75,7 @@ var jsApp = {
     }
 }
 
-//Uki
+//Uki //TODO Replace with melonJS GUI Objects?
 
 // controlls description
 function views() {
