@@ -68,8 +68,6 @@ var jsApp = {
         me.input.bindKey(me.input.KEY.UP,    "up");
         me.input.bindKey(me.input.KEY.DOWN,  "down");
 
-        //me.debug.renderHitBox = true;
-
         // start the game
         me.state.change(me.state.PLAY);
     }
