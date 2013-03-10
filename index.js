@@ -25,6 +25,8 @@ function viewport()
 
 //Application jsApp
 var jsApp = {
+	playScreen:null,
+	
     onload: function() {
 		log.debug( 'Enter jsApp.onload()');
 		
@@ -62,17 +64,22 @@ var jsApp = {
 		log.debug( 'Leave jsApp.onload()');
 	},
 	
-    loaded: function() {
+    	loaded: function() {
+			//if(this.playScreen==undefined) return;
+			
 	//loaded: function(levelName) {
 		log.debug('Enter jsApp.loaded()');
 		
         // set the "Play/Ingame" Screen Object
-		var screen=new PlayScreen();
+		//var screen=new PlayScreen();
 		//screen.setLevel(levelName);
-		screen.setLevel("desert");
+		//screen.setLevel("desert");
 		
         //me.state.set(me.state.PLAY, new PlayScreen());
-		me.state.set(me.state.PLAY, screen);
+		jsApp.playScreen.loadLevel();
+		me.state.set(me.state.PLAY, jsApp.playScreen);
+		
+		
 
         // add our player entity in the entity pool
         //me.entityPool.add("mainPlayer", PlayerEntity);
@@ -93,6 +100,13 @@ var jsApp = {
 	{
 	    me.loader.load({name: "desert1",  type:"image",  src: MapsPath+"desert1.png"}, null, this.error);
 	    //me.loader.load({name: "stones",  type:"tmx",  src: MapsPath+"stones.tmx"}, this.loaded("stones"), this.error);
+		
+		if(this.playScreen==null)
+		{
+			this.playScreen=new PlayScreen();
+		}
+		
+		this.playScreen.setLevel("desert");
 		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
 	},
 	
@@ -140,10 +154,17 @@ var PlayScreen = me.ScreenObject.extend({
 	{
 		this.levelName=name;
 	},
+	
+	loadLevel: function()
+	{
+        // stuff to reset on state change
+        //me.levelDirector.loadLevel(this.levelName);	
+	},
 
     onResetEvent: function() {		
         // stuff to reset on state change
-        me.levelDirector.loadLevel(this.levelName);		
+        //me.levelDirector.loadLevel("desert");	
+		me.levelDirector.loadLevel(this.levelName);		
     },
 
     onDestroyEvent: function() {
@@ -182,7 +203,7 @@ function onGameServerLoginComplete()
 function onGameServerMapChange(mapName, posX, posY)
 {	
 	log.debug("Event onGameServerMapChange called");
-	jsApp.loadMap(); //map laden
+	jsApp.loadMap(mapName); //map laden
 }
 
 function onCharSelectionNeeded(object)
