@@ -45,6 +45,8 @@ var jsApp = {
 
         // set all resources to be loaded
         //me.loader.preload(g_resources);
+        me.loader.load({name: "desert1",  type:"image",  src: "data/desert1.png"}, null);
+        me.loader.load({name: "desert",  type:"tmx",  src: "data/desert.tmx"}, this.loaded);
 		
 		//plugins registrieren
 		me.plugin.register(debugPanel, "debug");
@@ -102,20 +104,12 @@ uki('Label').click(function() {
    if (this.prevView().checked) this.prevView().checked(!this.prevView().checked()).focus();
 });
 
-//Debug
-var g_resources= [
-    { name: "desert1",          type: "image", src: "data/desert1.png" },
-    { name: "desert",           type: "tmx",   src: "data/desert.tmx" },
-    { name: "player_male_base", type: "image", src: "data/player_male_base.png" },
-    { name: "fog",              type: "image", src: "data/fog.png" }
-];
-
 /* the in game stuff*/
 var PlayScreen = me.ScreenObject.extend({
 
-    onResetEvent: function() {
+    onResetEvent: function() {		
         // stuff to reset on state change
-        me.levelDirector.loadLevel("desert");
+        me.levelDirector.loadLevel("desert");		
     },
 
     onDestroyEvent: function() {
