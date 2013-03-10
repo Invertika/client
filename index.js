@@ -26,6 +26,8 @@ function viewport()
 //Application jsApp
 var jsApp = {
     onload: function() {
+		log.debug( 'Enter jsApp.onload()');
+		
         //if (!me.video.init('jsapp', viewport()["width"], viewport()["height"], false, 'auto', false))
 		if (!me.video.init('jsapp', 720, 450, false, 'auto', false))
         {
@@ -41,23 +43,28 @@ var jsApp = {
         me.audio.init("mp3,ogg");
 
         // set all resources to be loaded
-        me.loader.onload = this.loaded.bind(this);
+        //me.loader.onload = this.loaded.bind(this);
 
-        // set all resources to be loaded
-        //me.loader.preload(g_resources);
-        me.loader.load({name: "desert1",  type:"image",  src: "data/desert1.png"}, null);
-        me.loader.load({name: "desert",  type:"tmx",  src: "data/desert.tmx"}, this.loaded);
-		
 		//plugins registrieren
 		me.plugin.register(debugPanel, "debug");
 
+        // set all resources to be loaded
+        //me.loader.preload(g_resources);
+        me.loader.load({name: "desert1",  type:"image",  src: GameDataPath+"desert1.png"}, null, this.error);
+        me.loader.load({name: "desert",  type:"tmx",  src: GameDataPath+"desert.tmx"}, this.loaded, this.error);
+		
+        //me.loader.load({name: "desert1",  type:"image",  src: "data/desert1.png"}, null);
+        //me.loader.load({name: "desert",  type:"tmx",  src: "data/desert.tmx"}, this.loaded);
+		
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
 		
-		log.debug( 'leave onload (jsApp)');
+		log.debug( 'Leave jsApp.onload()');
 	},
 	
     loaded: function() {
+		log.debug('Enter jsApp.loaded()');
+		
         // set the "Play/Ingame" Screen Object
         me.state.set(me.state.PLAY, new PlayScreen());
 
@@ -72,7 +79,14 @@ var jsApp = {
 
         // start the game
         me.state.change(me.state.PLAY);
-    }
+		
+		log.debug('Leave jsApp.loaded()');
+    },
+	
+	error: function(error)
+	{
+		log.error('Error on loading data.');
+	}
 }
 
 //Uki //TODO Replace with melonJS GUI Objects?

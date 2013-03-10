@@ -1,1 +1,1 @@
-var DataPath="http://data.invertika.org/game/";
+var GameDataPath="data/";
