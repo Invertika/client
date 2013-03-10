@@ -50,8 +50,8 @@ var jsApp = {
 
         // set all resources to be loaded
         //me.loader.preload(g_resources);
-        me.loader.load({name: "desert1",  type:"image",  src: GameDataPath+"desert1.png"}, null, this.error);
-        me.loader.load({name: "desert",  type:"tmx",  src: GameDataPath+"desert.tmx"}, this.loaded, this.error);
+        //me.loader.load({name: "desert1",  type:"image",  src: MapsPath+"desert1.png"}, null, this.error);
+        //me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
 		
         //me.loader.load({name: "desert1",  type:"image",  src: "data/desert1.png"}, null);
         //me.loader.load({name: "desert",  type:"tmx",  src: "data/desert.tmx"}, this.loaded);
@@ -63,10 +63,16 @@ var jsApp = {
 	},
 	
     loaded: function() {
+	//loaded: function(levelName) {
 		log.debug('Enter jsApp.loaded()');
 		
         // set the "Play/Ingame" Screen Object
-        me.state.set(me.state.PLAY, new PlayScreen());
+		var screen=new PlayScreen();
+		//screen.setLevel(levelName);
+		screen.setLevel("desert");
+		
+        //me.state.set(me.state.PLAY, new PlayScreen());
+		me.state.set(me.state.PLAY, screen);
 
         // add our player entity in the entity pool
         //me.entityPool.add("mainPlayer", PlayerEntity);
@@ -83,7 +89,14 @@ var jsApp = {
 		log.debug('Leave jsApp.loaded()');
     },
 	
-	error: function(error)
+	loadMap: function(mapname)
+	{
+	    me.loader.load({name: "desert1",  type:"image",  src: MapsPath+"desert1.png"}, null, this.error);
+	    //me.loader.load({name: "stones",  type:"tmx",  src: MapsPath+"stones.tmx"}, this.loaded("stones"), this.error);
+		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
+	},
+	
+	error: function()
 	{
 		log.error('Error on loading data.');
 	}
@@ -121,9 +134,16 @@ uki('Label').click(function() {
 /* the in game stuff*/
 var PlayScreen = me.ScreenObject.extend({
 
+	levelName: "",
+
+	setLevel: function(name)
+	{
+		this.levelName=name;
+	},
+
     onResetEvent: function() {		
         // stuff to reset on state change
-        me.levelDirector.loadLevel("desert");		
+        me.levelDirector.loadLevel(this.levelName);		
     },
 
     onDestroyEvent: function() {
@@ -162,6 +182,7 @@ function onGameServerLoginComplete()
 function onGameServerMapChange(mapName, posX, posY)
 {	
 	log.debug("Event onGameServerMapChange called");
+	jsApp.loadMap(); //map laden
 }
 
 function onCharSelectionNeeded(object)
