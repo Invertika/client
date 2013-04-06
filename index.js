@@ -26,6 +26,7 @@ function viewport()
 //Application jsApp
 var jsApp = {
 	playScreen:null,
+	loadCounter:0,
 	
     onload: function() {
 		log.debug( 'Enter jsApp.onload()');
@@ -78,8 +79,6 @@ var jsApp = {
         //me.state.set(me.state.PLAY, new PlayScreen());
 		jsApp.playScreen.loadLevel();
 		me.state.set(me.state.PLAY, jsApp.playScreen);
-		
-		
 
         // add our player entity in the entity pool
         //me.entityPool.add("mainPlayer", PlayerEntity);
@@ -93,17 +92,35 @@ var jsApp = {
         // start the game
         me.state.change(me.state.PLAY);
 		
+		log.debug('Leave jsApp.loaded()');
+    },
+	
+    mapLoaded: function() {
 		var test=me.loader.getTMX("desert");
 		var list=getUsedResources(test);
 		
-		log.debug('Leave jsApp.loaded()');
+		this.loadCounter=list.Length;
+		
+		for(var i=0; i<list.length; i++)
+		{
+			var val=list[i];
+			//me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.loaded, this.error);
+			me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.initMap, this.error);
+		}
     },
 	
 	loadMap: function(mapname)
 	{
-	    me.loader.load({name: "desert1",  type:"image",  src: MapsPath+"desert1.png"}, null, this.error);
-	    //me.loader.load({name: "stones",  type:"tmx",  src: MapsPath+"stones.tmx"}, this.loaded("stones"), this.error);
+		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.mapLoaded, this.error);
+	},
+	
+	initMap: function()
+	{
+		this.loadCounter--;
+		alert("Muahaha");
 		
+		if(loadCounter==0)
+		{
 		if(this.playScreen==null)
 		{
 			this.playScreen=new PlayScreen();
@@ -111,6 +128,7 @@ var jsApp = {
 		
 		this.playScreen.setLevel("desert");
 		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
+		}
 	},
 	
 	error: function()
