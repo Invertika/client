@@ -44,7 +44,7 @@ var jsApp = {
         // initialize the "audio"
         me.audio.init("mp3,ogg");
 
-        // set all resources to be loaded
+        // set all resources to be 
         //me.loader.onload = this.loaded.bind(this);
 
 		//plugins registrieren
@@ -92,6 +92,9 @@ var jsApp = {
 
         // start the game
         me.state.change(me.state.PLAY);
+		
+		var test=me.loader.getTMX("desert");
+		var list=getUsedResources(test);
 		
 		log.debug('Leave jsApp.loaded()');
     },
