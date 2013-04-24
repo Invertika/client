@@ -10,7 +10,7 @@ var ip = "127.0.0.1";
 var accountServer;
 var gameServer;
 
-function viewport()
+function viewport() //TODO Durch empfohlende melonJS FAQ Variante ersetzen
 {
 	var e = window, a = 'inner';
 	
@@ -54,18 +54,8 @@ var jsApp = {
 		log.debug( 'Leave jsApp.onload()');
 	},
 	
-    	loaded: function() {
-    	//loaded: function(levelName) {
+    loaded: function() {
 		log.debug('Enter jsApp.loaded()');
-		
-        // set the "Play/Ingame" Screen Object
-		//var screen=new PlayScreen();
-		//screen.setLevel(levelName);
-		//screen.setLevel("desert");
-		
-        //me.state.set(me.state.PLAY, new PlayScreen());
-		jsApp.playScreen.loadLevel();
-		me.state.set(me.state.PLAY, jsApp.playScreen);
 
         // add our player entity in the entity pool
         //me.entityPool.add("mainPlayer", PlayerEntity);
@@ -90,14 +80,6 @@ var jsApp = {
 		jsApp.resourcesCount=list.length;
 		
 		jsApp.resourceLoaded();
-		
-		//for(var i=0; i<list.length; i++)
-		//{
-		//	var val=list[i];
-		//	//me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.loaded, this.error);
-		//	//me.loader.load({name: "desert1.png",  type:"image",  src: MapsPath+val}, jsApp.initMap, this.error);
-		//	me.loader.load({name: val,  type:"image",  src: MapsPath+val}, jsApp.initMap, jsApp.error);
-		//}
     },
 	
 	loadMap: function(mapname)
@@ -124,16 +106,14 @@ var jsApp = {
 	
 	initMap: function()
 	{
-			me.levelDirector.loadLevel("desert");
-			//alert("Muahaha");
+        me.levelDirector.loadLevel("desert");
+
 		if(this.playScreen==null)
 		{
 			this.playScreen=new PlayScreen();
 		}
 		
 		this.playScreen.setLevel("desert");
-		
-		//me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
 	},
 	
 	error: function()
@@ -141,6 +121,33 @@ var jsApp = {
 		log.error('Error on loading data.');
 	}
 }
+
+/* the in game stuff*/
+var PlayScreen = me.ScreenObject.extend({
+
+	levelName: "",
+
+	setLevel: function(name)
+	{
+		this.levelName=name;
+	},
+	
+	loadLevel: function()
+	{
+        // stuff to reset on state change
+        //me.levelDirector.loadLevel(this.levelName);	
+	},
+
+    onResetEvent: function() {		
+        // stuff to reset on state change
+        //me.levelDirector.loadLevel("desert");	
+		me.levelDirector.loadLevel(this.levelName);		
+    },
+
+    onDestroyEvent: function() {
+    }
+
+});
 
 //Uki //TODO Replace with melonJS GUI Objects?
 
@@ -171,33 +178,7 @@ uki('Label').click(function() {
    if (this.prevView().checked) this.prevView().checked(!this.prevView().checked()).focus();
 });
 
-/* the in game stuff*/
-var PlayScreen = me.ScreenObject.extend({
-
-	levelName: "",
-
-	setLevel: function(name)
-	{
-		this.levelName=name;
-	},
-	
-	loadLevel: function()
-	{
-        // stuff to reset on state change
-        //me.levelDirector.loadLevel(this.levelName);	
-	},
-
-    onResetEvent: function() {		
-        // stuff to reset on state change
-        //me.levelDirector.loadLevel("desert");	
-		me.levelDirector.loadLevel(this.levelName);		
-    },
-
-    onDestroyEvent: function() {
-    }
-
-});
-
+//Functions and Callbacks
 function debug()
 {	
 	//AccountServer initialisieren
