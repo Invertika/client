@@ -26,7 +26,8 @@ function viewport()
 //Application jsApp
 var jsApp = {
 	playScreen:null,
-	loadCounter:0,
+	resourcesCount:0,
+	resourcesIndex:0,
 	
     onload: function() {
 		log.debug( 'Enter jsApp.onload()');
@@ -38,26 +39,14 @@ var jsApp = {
             return;
         }
 
-		//make nice things
 		// begrenze auf 30 FPS
 		me.sys.fps = 30;
 		
         // initialize the "audio"
         me.audio.init("mp3,ogg");
 
-        // set all resources to be 
-        //me.loader.onload = this.loaded.bind(this);
-
 		//plugins registrieren
 		me.plugin.register(debugPanel, "debug");
-
-        // set all resources to be loaded
-        //me.loader.preload(g_resources);
-        //me.loader.load({name: "desert1",  type:"image",  src: MapsPath+"desert1.png"}, null, this.error);
-        //me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
-		
-        //me.loader.load({name: "desert1",  type:"image",  src: "data/desert1.png"}, null);
-        //me.loader.load({name: "desert",  type:"tmx",  src: "data/desert.tmx"}, this.loaded);
 		
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
@@ -66,9 +55,7 @@ var jsApp = {
 	},
 	
     	loaded: function() {
-			//if(this.playScreen==undefined) return;
-			
-	//loaded: function(levelName) {
+    	//loaded: function(levelName) {
 		log.debug('Enter jsApp.loaded()');
 		
         // set the "Play/Ingame" Screen Object
@@ -96,39 +83,57 @@ var jsApp = {
     },
 	
     mapLoaded: function() {
-		var test=me.loader.getTMX("desert");
-		var list=getUsedResources(test);
+		var mapTmx=me.loader.getTMX("desert");
+		var list=getUsedResources(mapTmx);
 		
-		this.loadCounter=list.Length;
+		jsApp.resourcesIndex=0;
+		jsApp.resourcesCount=list.length;
 		
-		for(var i=0; i<list.length; i++)
-		{
-			var val=list[i];
-			//me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.loaded, this.error);
-			me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.initMap, this.error);
-		}
+		jsApp.resourceLoaded();
+		
+		//for(var i=0; i<list.length; i++)
+		//{
+		//	var val=list[i];
+		//	//me.loader.load({name: val,  type:"image",  src: MapsPath+val}, this.loaded, this.error);
+		//	//me.loader.load({name: "desert1.png",  type:"image",  src: MapsPath+val}, jsApp.initMap, this.error);
+		//	me.loader.load({name: val,  type:"image",  src: MapsPath+val}, jsApp.initMap, jsApp.error);
+		//}
     },
 	
 	loadMap: function(mapname)
 	{
 		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.mapLoaded, this.error);
 	},
+
+	resourceLoaded: function()
+	{
+		if(jsApp.resourcesIndex==jsApp.resourcesCount)
+		{
+			jsApp.initMap();
+			return;
+		}
+		
+		var mapTmx=me.loader.getTMX("desert");
+		var list=getUsedResources(mapTmx);
+		
+		var val=list[jsApp.resourcesIndex];
+		me.loader.load({name: me.utils.getBasename(val),  type:"image",  src: MapsPath+val}, jsApp.resourceLoaded, jsApp.error);
+		
+		jsApp.resourcesIndex++;
+	},
 	
 	initMap: function()
 	{
-		this.loadCounter--;
-		alert("Muahaha");
-		
-		if(loadCounter==0)
-		{
+			me.levelDirector.loadLevel("desert");
+			//alert("Muahaha");
 		if(this.playScreen==null)
 		{
 			this.playScreen=new PlayScreen();
 		}
 		
 		this.playScreen.setLevel("desert");
-		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
-		}
+		
+		//me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.loaded, this.error);
 	},
 	
 	error: function()
