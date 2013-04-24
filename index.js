@@ -28,6 +28,7 @@ var jsApp = {
 	playScreen:null,
 	resourcesCount:0,
 	resourcesIndex:0,
+	currentyMap:"",
 	
     onload: function() {
 		log.debug( 'Enter jsApp.onload()');
@@ -73,7 +74,7 @@ var jsApp = {
     },
 	
     mapLoaded: function() {
-		var mapTmx=me.loader.getTMX("desert");
+		var mapTmx=me.loader.getTMX(jsApp.currentyMap);
 		var list=getUsedResources(mapTmx);
 		
 		jsApp.resourcesIndex=0;
@@ -84,7 +85,10 @@ var jsApp = {
 	
 	loadMap: function(mapname)
 	{
-		me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.mapLoaded, this.error);
+		var mapFilename=MapsPath+mapname+".tmx";
+		jsApp.currentyMap=mapname;
+		me.loader.load({name: mapname,  type:"tmx",  src: mapFilename}, this.mapLoaded, this.error);
+		//me.loader.load({name: "desert",  type:"tmx",  src: MapsPath+"desert.tmx"}, this.mapLoaded, this.error);
 	},
 
 	resourceLoaded: function()
@@ -95,7 +99,7 @@ var jsApp = {
 			return;
 		}
 		
-		var mapTmx=me.loader.getTMX("desert");
+		var mapTmx=me.loader.getTMX(jsApp.currentyMap);
 		var list=getUsedResources(mapTmx);
 		
 		var val=list[jsApp.resourcesIndex];
@@ -106,14 +110,14 @@ var jsApp = {
 	
 	initMap: function()
 	{
-        me.levelDirector.loadLevel("desert");
+        me.levelDirector.loadLevel(jsApp.currentyMap);
 
 		if(this.playScreen==null)
 		{
 			this.playScreen=new PlayScreen();
 		}
 		
-		this.playScreen.setLevel("desert");
+		this.playScreen.setLevel(jsApp.currentyMap);
 	},
 	
 	error: function()
