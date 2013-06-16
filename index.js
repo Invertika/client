@@ -49,6 +49,9 @@ var jsApp = {
 		//plugins registrieren
 		me.plugin.register(debugPanel, "debug");
 		
+		//Set Preloads
+		me.loader.preload(preloads);
+		
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
 		
