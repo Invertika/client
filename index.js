@@ -46,7 +46,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 		
         // call the constructor
         //this.parent(x, y, settings);
-		this.parent(30, 30, settings); //Debug
+		this.parent(x, y, settings); //Debug
 
 		// set the default horizontal & vertical speed (accel vector)
         this.setVelocity(3, 15);
@@ -129,7 +129,7 @@ var jsApp = {
         me.audio.init("mp3,ogg");
 
 		//plugins registrieren
-		me.plugin.register(debugPanel, "debug");
+		//me.plugin.register(debugPanel, "debug");
 		
 		//Set Preloads
 		//me.loader.onload = this.onload.bind(this);
@@ -178,8 +178,14 @@ var jsApp = {
 		jsApp.resourceLoaded();
     },
 	
-	loadMap: function(mapname)
+	playerPosX:0,
+	playerPosY:0,
+	
+	loadMap: function(mapname, initalPlayerPosX, initalPlayerPosY)
 	{
+		jsApp.playerPosX=initalPlayerPosX;
+		jsApp.playerPosY=initalPlayerPosY;
+		
 		var mapFilename=MapsPath+mapname+".tmx";
 		jsApp.currentyMap=mapname;
 		me.loader.load({name: mapname,  type:"tmx",  src: mapFilename}, this.mapLoaded, this.error);
@@ -214,10 +220,14 @@ var jsApp = {
         me.levelDirector.loadLevel(jsApp.currentyMap);
 		
 		//init person
+		//alert(jsApp.playerPosX);
+		//alert(jsApp.playerPosY);
+		
 		var settings={};
-		var myLaser = new me.game.PlayerEntity(30 , 30, settings);
+		
+		var myPlayer = new me.game.PlayerEntity(jsApp.playerPosX, jsApp.playerPosY, settings);
 		// Add the laser to the game manager with z value 3
-		me.game.add(myLaser, 100);
+		me.game.add(myPlayer, 100);
 		// And sort everything
 		me.game.sort();
 
@@ -325,7 +335,7 @@ function onGameServerLoginComplete()
 function onGameServerMapChange(mapName, posX, posY)
 {	
 	log.debug("Event onGameServerMapChange called");
-	jsApp.loadMap(mapName); //map laden
+	jsApp.loadMap(mapName, posX, posY); //map laden
 }
 
 function onCharSelectionNeeded(object)
