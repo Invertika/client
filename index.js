@@ -23,6 +23,88 @@ function viewport() //TODO Durch empfohlende melonJS FAQ Variante ersetzen
 	return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
 }
 
+/*------------------- 
+a player entity
+-------------------------------- */
+me.game.PlayerEntity = me.ObjectEntity.extend({
+
+    /* -----
+
+    constructor
+
+    ------ */
+
+    init: function(x, y, settings) {		 
+		// define this here instead of tiled
+		//settings.image = "player_male_base";
+		//settings.image = "player_male_base";
+		//settings.image = "player_male_base";
+		
+		settings.image = "player_male_base";
+		settings.spritewidth = 64;
+		settings.spriteheight = 64;
+		
+        // call the constructor
+        //this.parent(x, y, settings);
+		this.parent(30, 30, settings); //Debug
+
+		// set the default horizontal & vertical speed (accel vector)
+        this.setVelocity(3, 15);
+
+        // set the display to follow our position on both axis
+        me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+
+    },
+
+    /* -----
+
+    update the player pos
+
+    ------ */
+    update: function() {
+
+        if (me.input.isKeyPressed('left')) {
+            // flip the sprite on horizontal axis
+			this.flipX(true);
+			// update the entity velocity
+			this.vel.x -= this.accel.x * me.timer.tick;
+        } else if (me.input.isKeyPressed('right')) {
+            // unflip the sprite
+			this.flipX(false);
+			// update the entity velocity
+			this.vel.x += this.accel.x * me.timer.tick;
+        } else {
+            this.vel.x = 0;
+        }
+        if (me.input.isKeyPressed('jump')) {
+			// make sure we are not already jumping or falling
+            if (!this.jumping && !this.falling) {
+				// set current vel to the maximum defined value
+				// gravity will then do the rest
+				this.vel.y = -this.maxVel.y * me.timer.tick;
+				// set the jumping flag
+				this.jumping = true;
+			}
+
+        }
+
+        // check & update player movement
+        this.updateMovement();
+
+        // update animation if necessary
+        if (this.vel.x!=0 || this.vel.y!=0) {
+            // update object animation
+            this.parent();
+            return true;
+        }
+		
+		// else inform the engine we did not perform
+		// any update (e.g. position, animation)
+        return false;
+    }
+
+});
+
 //Application jsApp
 var jsApp = {
 	playScreen:null,
@@ -50,6 +132,8 @@ var jsApp = {
 		me.plugin.register(debugPanel, "debug");
 		
 		//Set Preloads
+		//me.loader.onload = this.onload.bind(this);
+		me.loader.onload = this.preloadsLoaded;
 		me.loader.preload(preloads);
 		
         // load everything & display a loading screen
@@ -58,17 +142,25 @@ var jsApp = {
 		log.debug( 'Leave jsApp.onload()');
 	},
 	
+	preloadsLoaded: function() {
+		//Do nothing
+		log.debug('Enter jsApp.preloadsLoaded()');
+	},
+	
     loaded: function() {
 		log.debug('Enter jsApp.loaded()');
 
         // add our player entity in the entity pool
-        //me.entityPool.add("mainPlayer", PlayerEntity);
+       // me.entityPool.add("mainPlayer", PlayerEntity);
+	   //me.entityPool.add("mainPlayer", me.game.PlayerEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT,  "left");
         me.input.bindKey(me.input.KEY.RIGHT, "right");
         me.input.bindKey(me.input.KEY.UP,    "up");
         me.input.bindKey(me.input.KEY.DOWN,  "down");
+		
+		//me.entityPool.add("mainPlayer", me.game.PlayerEntity);
 
         // start the game
         me.state.change(me.state.PLAY);
@@ -113,14 +205,30 @@ var jsApp = {
 	
 	initMap: function()
 	{
+		//me.entityPool.add("mainPlayer", me.game.PlayerEntity);
+		
+		//var ent=new ()
+		//this.moles[i] = new MoleEntity((112 + (i * 310)), 127+40)
+		//me.game.add ( me.game.PlayerEntity);
+		
         me.levelDirector.loadLevel(jsApp.currentyMap);
+		
+		//init person
+		var settings={};
+		var myLaser = new me.game.PlayerEntity(30 , 30, settings);
+		// Add the laser to the game manager with z value 3
+		me.game.add(myLaser, 100);
+		// And sort everything
+		me.game.sort();
 
 		if(this.playScreen==null)
 		{
 			this.playScreen=new PlayScreen();
 		}
-		
+
 		this.playScreen.setLevel(jsApp.currentyMap);
+		
+		//me.entityPool.add("mainPlayer", me.game.PlayerEntity);
 	},
 	
 	error: function()
