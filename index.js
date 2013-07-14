@@ -64,6 +64,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
     ------ */
     update: function() {
         if (me.input.isKeyPressed('left')) {
+			//alert("left OHA");
             // flip the sprite on horizontal axis
 			this.flipX(true);
 			// update the entity velocity
@@ -155,10 +156,8 @@ var jsApp = {
 	   //me.entityPool.add("mainPlayer", me.game.PlayerEntity);
 
         // enable the keyboard
-        me.input.bindKey(me.input.KEY.LEFT,  "left");
-        me.input.bindKey(me.input.KEY.RIGHT, "right");
-        me.input.bindKey(me.input.KEY.UP,    "up");
-        me.input.bindKey(me.input.KEY.DOWN,  "down");
+	    // enable the keyboard
+		//me.input.bindKey(me.input.KEY.X,	"left");
 		
 		//me.entityPool.add("mainPlayer", me.game.PlayerEntity);
 
@@ -230,6 +229,10 @@ var jsApp = {
 		me.game.add(myPlayer, 100);
 		// And sort everything
 		me.game.sort();
+		
+		//keys
+	    me.input.bindKey(me.input.KEY.LEFT,	"left");
+	    me.input.bindKey(me.input.KEY.RIGHT,	"right");
 
 		if(this.playScreen==null)
 		{
