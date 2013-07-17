@@ -25,10 +25,16 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 
 		// set the default horizontal & vertical speed (accel vector)
         //this.setVelocity(3, 15);
-		this.setVelocity(0, 0);
+		this.gravity=0; //player in a 2d adventure has no gravity
+		this.setVelocity(3, 3);
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+		
+  	    me.input.bindKey(me.input.KEY.LEFT,	"left");
+  	    me.input.bindKey(me.input.KEY.RIGHT,	"right");
+  	    me.input.bindKey(me.input.KEY.UP,	"up");
+  	    me.input.bindKey(me.input.KEY.DOWN,	"down");
 
     },
 
@@ -38,48 +44,71 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 
     ------ */
     update: function() {
-		this.doWalk(true);
-		return true;
 		
-        if (me.input.isKeyPressed('left')) {
-			//alert("left OHA");
-            // flip the sprite on horizontal axis
-			this.flipX(true);
+		if (me.input.isKeyPressed('left'))
+		{
+			console.log("left");
 			// update the entity velocity
 			this.vel.x -= this.accel.x * me.timer.tick;
-        } else if (me.input.isKeyPressed('right')) {
-            // unflip the sprite
-			this.flipX(false);
+			//this.directionString = "left";
+		}
+		else if (me.input.isKeyPressed('right'))
+		{
+			console.log("right");
 			// update the entity velocity
 			this.vel.x += this.accel.x * me.timer.tick;
-        } else {
-            this.vel.x = 0;
-        }
-        if (me.input.isKeyPressed('jump')) {
-			// make sure we are not already jumping or falling
-            if (!this.jumping && !this.falling) {
-				// set current vel to the maximum defined value
-				// gravity will then do the rest
-				this.vel.y = -this.maxVel.y * me.timer.tick;
-				// set the jumping flag
-				this.jumping = true;
-			}
-
-        }
-
+			//this.directionString = "right";
+		}
+		else
+		{
+			this.vel.x = 0;
+		}
+		
+		
+		if (me.input.isKeyPressed('up'))
+		{
+			console.log("up");
+			//alert("up");
+			// update the entity velocity
+			this.vel.y -= this.accel.y * me.timer.tick;
+			//console.log(this.accel.y );
+			//console.log(this.vel.y );
+			//this.directionString = "up";
+		}
+		else if (me.input.isKeyPressed('down'))
+		{
+			console.log("down");
+			//alert("down");
+			// update the entity velocity
+			this.vel.y += this.accel.y * me.timer.tick;
+			//this.directionString = "down";
+		}
+		else
+		{
+			//this.vel.y = 0;
+			this.vel.y = 0;
+		}
+		
+		//console.log(this.vel.x );
+		//console.log(this.vel.y );
+		
         // check & update player movement
-        this.updateMovement();
+       this.updateMovement();
+		//return true;
 
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
             // update object animation
+			//alert("update");
             this.parent();
+			//this.setCurrentAnimation(this.directionString + "walk");
             return true;
         }
-		
-		// else inform the engine we did not perform
+		//alert("update");
+		// else false the engine we did not perform
 		// any update (e.g. position, animation)
         return false;
     }
+    
 
 });
