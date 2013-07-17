@@ -61,7 +61,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 			// update the entity velocity
 			this.vel.x += this.accel.x * me.timer.tick;
 			//this.directionString = "right";
-			update=true;
+			updated=true;
 		}
 		else
 		{
@@ -78,7 +78,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 			//console.log(this.accel.y );
 			//console.log(this.vel.y );
 			//this.directionString = "up";
-			update=true;
+			updated=true;
 		}
 		else if (me.input.isKeyPressed('down'))
 		{
@@ -87,7 +87,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 			// update the entity velocity
 			this.vel.y += this.accel.y * me.timer.tick;
 			//this.directionString = "down";
-			update=true;
+			updated=true;
 		}
 		else
 		{
