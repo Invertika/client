@@ -85,5 +85,15 @@ var GameServerConnection = new Class({
 	
 		// when data is comming from the server, this method is called
 		this.socket.onmessage = this.onMessage;
+	},
+	
+	/// teilt dem Gameserver mti an welche Position der Charakter gegangen ist
+	walk: function(destX, destY)
+	{				
+		var msg=new MessageOut(Protocol.PGMSG_WALK);
+		msg.addValueAsInt16(destX);
+		msg.addValueAsInt16(destY);
+				
+		msg.send(this.socket);
 	}
 });
