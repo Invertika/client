@@ -93,8 +93,10 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 		//console.log(this.vel.y );
 		
         // check & update player movement
-       this.updateMovement();
+       this.updateMovement(this.pos.x, this.pos.y);
 		//return true;
+		
+		gameServer.walk();
 
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
