@@ -45,12 +45,15 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
     ------ */
     update: function() {
 		
+		var updated=false;
+		
 		if (me.input.isKeyPressed('left'))
 		{
-			console.log("left");
+			//console.log("left");
 			// update the entity velocity
 			this.vel.x -= this.accel.x * me.timer.tick;
 			//this.directionString = "left";
+			updated=true;
 		}
 		else if (me.input.isKeyPressed('right'))
 		{
@@ -58,6 +61,7 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 			// update the entity velocity
 			this.vel.x += this.accel.x * me.timer.tick;
 			//this.directionString = "right";
+			update=true;
 		}
 		else
 		{
@@ -67,21 +71,23 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 		
 		if (me.input.isKeyPressed('up'))
 		{
-			console.log("up");
+			//console.log("up");
 			//alert("up");
 			// update the entity velocity
 			this.vel.y -= this.accel.y * me.timer.tick;
 			//console.log(this.accel.y );
 			//console.log(this.vel.y );
 			//this.directionString = "up";
+			update=true;
 		}
 		else if (me.input.isKeyPressed('down'))
 		{
-			console.log("down");
+			//console.log("down");
 			//alert("down");
 			// update the entity velocity
 			this.vel.y += this.accel.y * me.timer.tick;
 			//this.directionString = "down";
+			update=true;
 		}
 		else
 		{
@@ -93,11 +99,14 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 		//console.log(this.vel.y );
 		
         // check & update player movement
-       this.updateMovement(this.pos.x, this.pos.y);
+       this.updateMovement();
 		//return true;
 		
-		gameServer.walk();
-
+		if(updated)
+		{
+            gameServer.walk(this.pos.x, this.pos.y);
+		}
+		
         // update animation if necessary
         if (this.vel.x!=0 || this.vel.y!=0) {
             // update object animation
