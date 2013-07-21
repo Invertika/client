@@ -105,6 +105,9 @@ me.game.PlayerEntity = me.ObjectEntity.extend({
 		if(updated)
 		{
             gameServer.walk(this.pos.x, this.pos.y);
+			console.log("Updated Position");
+			console.log(this.pos.x);
+			console.log(this.pos.y);
 		}
 		
         // update animation if necessary
